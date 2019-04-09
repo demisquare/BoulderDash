@@ -14,4 +14,5 @@
 * **demisquare** - (https://github.com/demisquare)
 * **Dygwah98** - (https://github.com/Dygwah98)
 * **DavidG33k** - (https://github.com/DavidG33k)
+* **TizianaOliviero** - (https://github.com/TizianaOliviero)
 
