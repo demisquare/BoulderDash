@@ -1,0 +1,32 @@
+Player:
+- Si muove in uno spazio vuoto, con la tastiera.
+- Deve sparare
+- Deve riuscire a "scavare" la mappa.
+- Se tocca i nemici ( o le pietre gli cadono addosso )  muore immediatamente.
+- Se tocca un diamante, lo raccoglie.
+- Se attraversa la porta e ha tutti i diamanti, vince.
+
+Enemy:
+- Si muove in uno spazio vuoto in maniera "casuale".
+- Ha una vita, se viene sparato la perde.
+- Se la vita va a zero, muore e sparisce.
+
+Rock:
+- La sua posizione è dettata dalla mappa.
+- Sta ferma finché il terreno sottostante sparisce.
+- Se non poggia più, cade verso il basso.
+- Se tocca il player mentre cade, il player muore immediatamente.
+
+Diamond:
+- La sua posizione è dettata dalla mappa.
+- Sta ferma finché il terreno sottostante sparisce.
+- Se non poggia più, cade verso il basso.
+- Se tocca il player, la raccoglie e sparisce.
+
+Door:
+- La sua posizione è dettata dalla mappa.
+- Se il player la tocca e ha tutti i diamanti, vinci il gioco.
+
+Map:
+- Viene generata da un file di testo.
+- Viene distrutta se il player cammina attraverso i punti pieni.
