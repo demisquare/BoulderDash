@@ -6,6 +6,11 @@
  - EmbASP Framework
  
 ## History:
+#### 30-04-19:
+- Added Gravity interface
+- Added Destructible interface
+- Added Map class
+
 #### 09-04-19:
 - First release.
 
