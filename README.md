@@ -9,7 +9,7 @@
 #### 03-05-19:
 - Added Sprite, Frame and Animation Classes
 - Added Living, Player and Enemy Classes
-- Added Player and Spritesheets
+- Added Player, Enemy and Block Spritesheets
 - Added sprites on Block-like classes
 
 #### 30-04-19:
