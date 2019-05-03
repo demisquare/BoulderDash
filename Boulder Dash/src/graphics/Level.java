@@ -15,7 +15,7 @@ public class Level extends JPanel implements KeyListener {
 		super();
 
 		// crea un player...
-		player = new Player(10, 10, 10);
+		player = new Player(10, 10, 3);
 	}
 
 	@Override
@@ -48,21 +48,21 @@ public class Level extends JPanel implements KeyListener {
 			break;
 
 		case KeyEvent.VK_RIGHT:
-			player.setDirection(Player.LEFT);
+			player.setDirection(Player.RIGHT);
 			player.getAnimation().start();
-			player.walk(Player.LEFT);
+			player.walk(Player.RIGHT);
 			break;
 
 		case KeyEvent.VK_UP:
-			player.setDirection(Player.LEFT);
+			player.setDirection(Player.UP);
 			player.getAnimation().start();
-			player.walk(Player.LEFT);
+			player.walk(Player.UP);
 			break;
 
 		case KeyEvent.VK_DOWN:
-			player.setDirection(Player.LEFT);
+			player.setDirection(Player.DOWN);
 			player.getAnimation().start();
-			player.walk(Player.LEFT);
+			player.walk(Player.DOWN);
 			break;
 
 		}

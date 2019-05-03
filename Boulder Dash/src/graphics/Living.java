@@ -68,7 +68,8 @@ public abstract class Living {
 		walkUp = new Animation(walkingUpSprites, speed);
 		walkDown = new Animation(walkingDownSprites, speed);
 
-		standPose = new Animation(standingSprites, 0);
+		standPose = new Animation(standingSprites, speed);
+		standPose.stop();
 
 		setAnimation(standPose);
 
