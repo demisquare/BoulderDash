@@ -16,7 +16,7 @@ public class Sprite {
 	public void loadSprite(String file) {
 
 		try {
-			spriteSheet = ImageIO.read(new File("assets/" + file + ".png"));
+			spriteSheet = ImageIO.read(new File("assets" + File.separator + file + ".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -38,6 +38,7 @@ public abstract class Living {
 		this.y = y;
 		this.speed = speed;
 
+		sprite = new Sprite();
 		sprite.loadSprite(file);
 
 		walkingDownSprites = new ArrayList<BufferedImage>();
@@ -69,7 +70,7 @@ public abstract class Living {
 
 		standPose = new Animation(standingSprites, 0);
 
-		animation = standPose;
+		setAnimation(standPose);
 
 	}
 
@@ -95,6 +96,30 @@ public abstract class Living {
 			break;
 		}
 
+	}
+
+	public Animation getAnimation() {
+		return animation;
+	}
+
+	public void setAnimation(Animation animation) {
+		this.animation = animation;
+	}
+
+	public void setDirection(int dir) {
+		switch (dir) {
+		case RIGHT:
+			this.animation = walkRight;
+
+		case LEFT:
+			this.animation =  walkLeft;
+
+		case UP:
+			this.animation =  walkUp;
+
+		case DOWN:
+			this.animation =  walkDown;
+		}
 	}
 
 }
