@@ -6,6 +6,12 @@
  - EmbASP Framework
  
 ## History:
+#### 03-05-19:
+- Added Sprite, Frame and Animation Classes
+- Added Living, Player and Enemy Classes
+- Added Player and Spritesheets
+- Added sprites on Block-like classes
+
 #### 30-04-19:
 - Added Gravity interface
 - Added Destructible interface
