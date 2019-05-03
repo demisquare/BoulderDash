@@ -4,6 +4,7 @@ public class Rock extends Block implements Gravity {
 
 	public Rock(int x, int y) {
 		super(x, y);
+		loadSprite("rock");
 		
 	}
 
