@@ -42,24 +42,28 @@ public class Level extends JPanel implements KeyListener {
 		// TODO Auto-generated method stub
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
+			//System.out.println("left");
 			player.setDirection(Player.LEFT);
 			player.getAnimation().start();
 			player.walk(Player.LEFT);
 			break;
 
 		case KeyEvent.VK_RIGHT:
+			//System.out.println("right");
 			player.setDirection(Player.RIGHT);
 			player.getAnimation().start();
 			player.walk(Player.RIGHT);
 			break;
 
 		case KeyEvent.VK_UP:
+			//System.out.println("up");
 			player.setDirection(Player.UP);
 			player.getAnimation().start();
 			player.walk(Player.UP);
 			break;
 
 		case KeyEvent.VK_DOWN:
+			//System.out.println("down");
 			player.setDirection(Player.DOWN);
 			player.getAnimation().start();
 			player.walk(Player.DOWN);
@@ -76,6 +80,34 @@ public class Level extends JPanel implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		player.getAnimation().stop();
 		player.getAnimation().reset();
+		
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_LEFT:
+			//System.out.println("left");
+			player.setStandPose(Player.LEFT);
+			player.getAnimation().start();
+			break;
 
+		case KeyEvent.VK_RIGHT:
+			//System.out.println("right");
+			player.setStandPose(Player.RIGHT);
+			player.getAnimation().start();
+			break;
+
+		case KeyEvent.VK_UP:
+			//System.out.println("up");
+			player.setStandPose(Player.UP);
+			player.getAnimation().start();
+			break;
+
+		case KeyEvent.VK_DOWN:
+			//System.out.println("down");
+			player.setStandPose(Player.DOWN);
+			player.getAnimation().start();
+			break;
+
+		}
+		player.getAnimation().update();
+		repaint();
 	}
 }

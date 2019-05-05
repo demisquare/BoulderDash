@@ -6,6 +6,9 @@
  - EmbASP Framework
  
 ## History:
+#### 05-05-19:
+- Fixed Player Sprite direction
+
 #### 03-05-19:
 - Added Sprite, Frame and Animation Classes
 - Added Living, Player and Enemy Classes
