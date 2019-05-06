@@ -29,6 +29,6 @@ public class Diamond extends Block implements Destructible, Gravity{
 
 	@Override
 	public abstract byte getType(){
-		return 1;
+		return types.DIAMOND;
 	}
 }

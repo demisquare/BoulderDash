@@ -7,7 +7,7 @@ import graphics.Sprite;
 public abstract class Block {
 
 	//corrispondono ai valori di ritorno dei vari getType: essendo public, si possono usare all'esterno in modo simile a Color.RED
-	public static byte Blocks[] = { EMPTY_BLOCK = 0, DIAMOND = 1, GROUND = 2, ROCK = 3};
+	public static byte types[] = { EMPTY_BLOCK = 0, DIAMOND = 1, GROUND = 2, ROCK = 3};
 
 	private int x;
 	private int y;
