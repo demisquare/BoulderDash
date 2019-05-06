@@ -12,6 +12,6 @@ public abstract class EmptyBlock extends Block {
 
     @Override
 	public abstract byte getType(){
-		return types.EMPTY_BLOCK;
+		return EMPTY_BLOCK;
 	}
 }

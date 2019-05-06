@@ -24,6 +24,6 @@ public class Rock extends Block implements Gravity {
 
 	@Override
 	public abstract byte getType(){
-		return types.ROCK;
+		return ROCK;
 	}
 }

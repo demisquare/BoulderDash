@@ -21,6 +21,6 @@ public class Ground extends Block implements Destructible {
 
 	@Override
 	public abstract byte getType(){
-		return types.GROUND;
+		return GROUND;
 	}
 }
