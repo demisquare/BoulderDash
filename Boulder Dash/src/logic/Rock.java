@@ -12,8 +12,18 @@ public class Rock extends Block implements Gravity {
 	}
 
 	@Override
-	public void toDo(){
+	private void gravity(){
 
 	}
 
+	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
+	@Override
+    public abstract void update(){
+		gravity();
+	}
+
+	@Override
+	public abstract byte getType(){
+		return 3;
+	}
 }

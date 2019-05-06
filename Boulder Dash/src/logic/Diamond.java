@@ -11,7 +11,24 @@ public class Diamond extends Block implements Destructible, Gravity{
 	}
 
 	@Override
-	public void toDo(){
+	private void destructible(){
 
+	}
+
+	@Override
+	private void gravity(){
+
+	}
+
+	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
+	@Override
+    public abstract void update(){
+		destructible();
+		gravity();
+	}
+
+	@Override
+	public abstract byte getType(){
+		return 1;
 	}
 }

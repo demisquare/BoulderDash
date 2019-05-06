@@ -7,7 +7,8 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
 public class Level extends JPanel implements KeyListener {
-	 private static final long serialVersionUID = -2545695383117923190L;
+	
+	private static final long serialVersionUID = -2545695383117923190L;
 
 	Living player;
 
