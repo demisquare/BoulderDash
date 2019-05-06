@@ -2,8 +2,8 @@ package logic;
 
 public abstract class EmptyBlock extends Block {
 
-    public EmptyBlock(int x, int y){
-        super(x, y);
+    public EmptyBlock(){
+        super(-1, -1, null);
     }
 
     //EmptyBlock è l'equivalente di un elemento vuoto, questo metodo non deve fare niente

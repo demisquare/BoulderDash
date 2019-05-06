@@ -4,15 +4,17 @@ import java.util.Random;
 
 public class Diamond extends Block implements Destructible, Gravity{
 
+	private static Random r = new Random();	
+
 	public Diamond(int x, int y) {
 		super(x, y);
-		Random r = new Random();
 		sprite = spritesheet.getSprite(3, r.nextInt(3));
 	}
 
 	@Override
-	private void destructible(){
-
+	private void destroy(boolean condition){
+		if(condition && mapRef != null)
+			mapRef[x][y] = emptyTile;
 	}
 
 	@Override
@@ -22,8 +24,8 @@ public class Diamond extends Block implements Destructible, Gravity{
 
 	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
 	@Override
-    public abstract void update(){
-		destructible();
+  	public abstract void update(){
+		destroy(false);
 		gravity();
 	}
 

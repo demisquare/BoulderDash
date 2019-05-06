@@ -1,20 +1,21 @@
 package logic;
 
-public interface Behaviour {
+interface Behaviour {
 
-	private void behave(); 
+	public void behave(); 
 }
 
-public interface Destructible {
+interface Destructible {
 
 	//definita per gli oggetti che possono essere distrutti durante la partita
 	//usata da: Ground, Diamond
-	private void destructible();
+	static final EmptyBlock emptyTile = new EmptyBlock();
+	public abstract void destroy(boolean condition);
 }
 
-public interface Gravity {
+interface Gravity {
 
 	//definita per gli oggetti che cadono se il tile sottostante è vuoto
 	//usata da: Rock, Diamond, Player
-	private void gravity();
+	public abstract void gravity();
 }

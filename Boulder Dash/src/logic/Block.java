@@ -11,13 +11,15 @@ public abstract class Block {
 	public static final byte DIAMOND = 1;
 	public static final byte GROUND = 2;
 	public static final byte ROCK = 3;
-
+	
 	private int x;
 	private int y;
 	protected Sprite spritesheet;
 	protected BufferedImage sprite;
+	private static Map mapRef = null;
 
 	public abstract byte getType(); //per distinguere i vari blocchi iterando su Map
+	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
 	public abstract void update();  //interfaccia per i metodi delle classi figlie
 
 	public Block(int x, int y) {
@@ -43,4 +45,7 @@ public abstract class Block {
 		this.y = y;
 	}
 
+	public bool isEmpty() {
+		return mapRef == null;
+	}
 }

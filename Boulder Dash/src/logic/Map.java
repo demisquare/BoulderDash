@@ -14,7 +14,8 @@ public class Map {
 
     public Map(String filename, int x, int y){
 
-        map = new Block[x][y]; //dimensioni?
+        map = new Block[][](x, y, map); //dimensioni?
+        Block.map = this;
         initialize(filename);
     }
 
