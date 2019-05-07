@@ -12,17 +12,17 @@ public class Rock extends Block implements Gravity {
 	}
 
 	@Override
-	private void gravity(){
+	public void gravity(){
 
 	}
 
 	@Override
-    public abstract void update(){
+    public void update(){
 		gravity();
 	}
 
 	@Override
-	public abstract byte getType(){
+	public byte getType(){
 		return ROCK;
 	}
 }

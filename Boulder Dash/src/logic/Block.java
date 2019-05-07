@@ -8,15 +8,15 @@ public abstract class Block {
 
 	//corrispondono ai valori di ritorno dei vari getType: essendo public, si possono usare all'esterno in modo simile a Color.RED
 	public static final byte EMPTY_BLOCK = 0;
-	public static final byte DIAMOND = 1;
-	public static final byte GROUND = 2;
-	public static final byte ROCK = 3;
+	public static final byte DIAMOND 	 = 1;
+	public static final byte GROUND 	 = 2;
+	public static final byte ROCK 		 = 3;
+	static Block mapRef[][] = null;
 	
-	private int x;
-	private int y;
 	protected Sprite spritesheet;
-	protected BufferedImage sprite;
-	private static Map mapRef = null;
+	protected BufferedImage sprite;	
+	protected int x;
+	protected int y;
 
 	public abstract byte getType(); //per distinguere i vari blocchi iterando su Map
 	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
@@ -43,9 +43,5 @@ public abstract class Block {
 
 	public void setY(int y) {
 		this.y = y;
-	}
-
-	public bool isEmpty() {
-		return mapRef == null;
 	}
 }

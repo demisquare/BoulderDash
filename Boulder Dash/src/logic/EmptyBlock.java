@@ -1,17 +1,17 @@
 package logic;
 
-public abstract class EmptyBlock extends Block {
+public class EmptyBlock extends Block {
 
     public EmptyBlock(){
-        super(-1, -1, null);
+        super(-1, -1);
     }
 
     //EmptyBlock è l'equivalente di un elemento vuoto, questo metodo non deve fare niente
     @Override
-    public abstract void update(){}
+    public void update(){}
 
     @Override
-	public abstract byte getType(){
+	public byte getType(){
 		return EMPTY_BLOCK;
 	}
 }

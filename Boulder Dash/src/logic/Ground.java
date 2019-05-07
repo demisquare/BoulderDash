@@ -8,7 +8,7 @@ public class Ground extends Block implements Destructible {
 	}
 
 	@Override
-	private void destroy(boolean condition) {
+	public void destroy(boolean condition) {
 		try{
 			if(condition)
 				mapRef[x][y] = emptyTile;
@@ -19,12 +19,12 @@ public class Ground extends Block implements Destructible {
 
 	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
 	@Override
- 	public abstract void update(){
+ 	public void update(){
 		destroy(false);
 	}
 
 	@Override
-	public abstract byte getType(){
+	public byte getType(){
 		return GROUND;
 	}
 }

@@ -12,7 +12,7 @@ public class Diamond extends Block implements Destructible, Gravity{
 	}
 
 	@Override
-	private void destroy(boolean condition){
+	public void destroy(boolean condition){
 		try{
 			if(condition)
 				mapRef[x][y] = emptyTile;
@@ -22,19 +22,19 @@ public class Diamond extends Block implements Destructible, Gravity{
 	}
 
 	@Override
-	private void gravity(){
+	public void gravity(){
 
 	}
 
 	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
 	@Override
-  	public abstract void update(){
+  	public void update(){
 		destroy(false);
 		gravity();
 	}
 
 	@Override
-	public abstract byte getType(){
+	public byte getType(){
 		return DIAMOND;
 	}
 }
