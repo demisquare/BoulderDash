@@ -9,8 +9,12 @@ public class Ground extends Block implements Destructible {
 
 	@Override
 	private void destroy(boolean condition) {
-		if(condition && mapRef != null)
-			mapRef[x][y] = emptyTile;
+		try{
+			if(condition)
+				mapRef[x][y] = emptyTile;
+		} catch(NullPointerException e){
+			e.printStackTrace();
+		}
 	}
 
 	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
