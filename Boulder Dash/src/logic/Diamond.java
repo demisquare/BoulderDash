@@ -15,7 +15,7 @@ public class Diamond extends Block implements Destructible, Gravity{
 	public void destroy(boolean condition){
 		try{
 			if(condition)
-				mapRef[x][y] = emptyTile;
+				map.set(x, y, emptyTile);
 		} catch(NullPointerException e){
 			e.printStackTrace();
 		}

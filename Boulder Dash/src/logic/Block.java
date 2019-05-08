@@ -11,7 +11,7 @@ public abstract class Block {
 	public static final byte DIAMOND 	 = 1;
 	public static final byte GROUND 	 = 2;
 	public static final byte ROCK 		 = 3;
-	static Block mapRef[][] = null;
+	static Map map = null;
 	
 	protected Sprite spritesheet;
 	protected BufferedImage sprite;	

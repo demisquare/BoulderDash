@@ -6,7 +6,7 @@ public class EmptyBlock extends Block {
         super(-1, -1);
     }
 
-    //EmptyBlock è l'equivalente di un elemento vuoto, questo metodo non deve fare niente
+    //EmptyBlock e' l'equivalente di un elemento vuoto, questo metodo non deve fare niente
     @Override
     public void update(){}
 

@@ -13,8 +13,17 @@ public class Map {
     public Map(String filename, int x, int y){
 
         map = new Block[x][y]; //dimensioni?
-        Block.mapRef = this.map;
+        Block.map = this;
         initialize(filename);
     }
 
+    public Block get(int x, int y) {
+    	
+    	return map[x][y];
+    }
+    
+    public void set(int x, int y, Block value) {
+    	
+    	map[x][y] = value;
+    }
 }
