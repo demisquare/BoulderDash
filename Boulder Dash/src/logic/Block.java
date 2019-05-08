@@ -13,7 +13,7 @@ public abstract class Block {
 	public static final byte ROCK 		 = 3;
 	static Map map = null;
 	
-	protected Sprite spritesheet;
+	static protected Sprite spritesheet;
 	protected BufferedImage sprite;	
 	protected int x;
 	protected int y;

@@ -15,7 +15,7 @@ interface Destructible {
 
 interface Gravity {
 
-	//definita per gli oggetti che cadono se il tile sottostante è vuoto
+	//definita per gli oggetti che cadono se il tile sottostante e' vuoto
 	//usata da: Rock, Diamond, Player
 	public abstract void gravity();
 }

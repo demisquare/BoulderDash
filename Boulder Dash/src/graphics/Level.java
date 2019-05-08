@@ -6,11 +6,13 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
+import logic.Player;
+
 public class Level extends JPanel implements KeyListener {
 	
 	private static final long serialVersionUID = -2545695383117923190L;
 
-	Living player;
+	Player player;
 
 	public Level() {
 		super();
@@ -26,7 +28,7 @@ public class Level extends JPanel implements KeyListener {
 		super.paintComponent(g);
 
 		// disegna lo sprite del player...
-		g.drawImage(player.getAnimation().getSprite(), player.x, player.y, null);
+		g.drawImage(player.ls.getAnimation().getSprite(), player.getX(), player.getY(), null);
 
 	}
 
@@ -44,71 +46,71 @@ public class Level extends JPanel implements KeyListener {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 			//System.out.println("left");
-			player.setDirection(Player.LEFT);
-			player.getAnimation().start();
+			player.ls.setDirection(Player.LEFT);
+			player.ls.getAnimation().start();
 			player.walk(Player.LEFT);
 			break;
 
 		case KeyEvent.VK_RIGHT:
 			//System.out.println("right");
-			player.setDirection(Player.RIGHT);
-			player.getAnimation().start();
+			player.ls.setDirection(Player.RIGHT);
+			player.ls.getAnimation().start();
 			player.walk(Player.RIGHT);
 			break;
 
 		case KeyEvent.VK_UP:
 			//System.out.println("up");
-			player.setDirection(Player.UP);
-			player.getAnimation().start();
+			player.ls.setDirection(Player.UP);
+			player.ls.getAnimation().start();
 			player.walk(Player.UP);
 			break;
 
 		case KeyEvent.VK_DOWN:
 			//System.out.println("down");
-			player.setDirection(Player.DOWN);
-			player.getAnimation().start();
+			player.ls.setDirection(Player.DOWN);
+			player.ls.getAnimation().start();
 			player.walk(Player.DOWN);
 			break;
 
 		}
 		
-		player.getAnimation().update();
+		player.ls.getAnimation().update();
 		repaint();
 
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		player.getAnimation().stop();
-		player.getAnimation().reset();
+		player.ls.getAnimation().stop();
+		player.ls.getAnimation().reset();
 		
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 			//System.out.println("left");
-			player.setStandPose(Player.LEFT);
-			player.getAnimation().start();
+			player.ls.setStandPose(Player.LEFT);
+			player.ls.getAnimation().start();
 			break;
 
 		case KeyEvent.VK_RIGHT:
 			//System.out.println("right");
-			player.setStandPose(Player.RIGHT);
-			player.getAnimation().start();
+			player.ls.setStandPose(Player.RIGHT);
+			player.ls.getAnimation().start();
 			break;
 
 		case KeyEvent.VK_UP:
 			//System.out.println("up");
-			player.setStandPose(Player.UP);
-			player.getAnimation().start();
+			player.ls.setStandPose(Player.UP);
+			player.ls.getAnimation().start();
 			break;
 
 		case KeyEvent.VK_DOWN:
 			//System.out.println("down");
-			player.setStandPose(Player.DOWN);
-			player.getAnimation().start();
+			player.ls.setStandPose(Player.DOWN);
+			player.ls.getAnimation().start();
 			break;
 
 		}
-		player.getAnimation().update();
+		player.ls.getAnimation().update();
 		repaint();
 	}
 }
