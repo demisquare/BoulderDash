@@ -6,6 +6,20 @@
  - EmbASP Framework
  
 ## History:
+#### 07-05-19:
+- Added error handling to destroy() methods
+- Added LivingSprite class
+
+#### 06-05-19:
+- Added EmptyBlock class
+- Added Block.update() abstract method
+- Added Block.getType() abstract method
+- Added Block.Blocks() enumerator
+- Aleaned up interfaces
+- Small enum cleanups
+- Initialized Map.map
+- Updated Destructible interface and its implementors
+
 #### 05-05-19:
 - Fixed Player Sprite direction
 
@@ -13,7 +27,7 @@
 - Added Sprite, Frame and Animation Classes
 - Added Living, Player and Enemy Classes
 - Added Player, Enemy and Block Spritesheets
-- Added sprites on Block-like classes
+- Added sprites on Block-like Classes
 
 #### 30-04-19:
 - Added Gravity interface
