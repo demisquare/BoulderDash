@@ -1,7 +1,5 @@
 package logic;
 
-import graphics.LivingSprite;
-
 public class Living {
 
 	public static final int DOWN = 0;
