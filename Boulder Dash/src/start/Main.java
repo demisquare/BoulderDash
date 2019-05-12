@@ -1,3 +1,5 @@
+package start;
+
 import java.awt.Color;
 
 import javax.swing.JFrame;
