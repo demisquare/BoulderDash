@@ -50,28 +50,28 @@ public class Level extends JPanel implements KeyListener {
 			//System.out.println("left");
 			player.ls.setDirection(Living.LEFT);
 			player.ls.getAnimation().start();
-			player.walk(Living.LEFT);
+			player.move(Living.LEFT);
 			break;
 
 		case KeyEvent.VK_RIGHT:
 			//System.out.println("right");
 			player.ls.setDirection(Living.RIGHT);
 			player.ls.getAnimation().start();
-			player.walk(Living.RIGHT);
+			player.move(Living.RIGHT);
 			break;
 
 		case KeyEvent.VK_UP:
 			//System.out.println("up");
 			player.ls.setDirection(Living.UP);
 			player.ls.getAnimation().start();
-			player.walk(Living.UP);
+			player.move(Living.UP);
 			break;
 
 		case KeyEvent.VK_DOWN:
 			//System.out.println("down");
 			player.ls.setDirection(Living.DOWN);
 			player.ls.getAnimation().start();
-			player.walk(Living.DOWN);
+			player.move(Living.DOWN);
 			break;
 
 		}

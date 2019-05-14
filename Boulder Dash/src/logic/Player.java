@@ -10,4 +10,10 @@ public class Player extends Living {
 		super(x, y, speed);
 		ls = new LivingSprite("playerSpriteSheet", speed);	
 	}
+
+	@Override
+	public void move(int dir) {
+		x += k[dir][0] * speed;
+		y += k[dir][1] * speed;	
+	}
 }

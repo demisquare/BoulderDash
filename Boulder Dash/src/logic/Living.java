@@ -1,6 +1,6 @@
 package logic;
 
-public class Living {
+public abstract class Living {
 
 	public static final int DOWN = 0;
 	public static final int LEFT = 1;
@@ -18,11 +18,7 @@ public class Living {
 		this.speed = speed;
 	}
 
-	public void walk(int dir) {
-		x += k[dir][0] * speed;
-		y += k[dir][1] * speed;
-	
-	}
+	public abstract void move(int dir);
 
 	public int getX() {
 		return x;
