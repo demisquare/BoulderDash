@@ -8,5 +8,6 @@ class Enemy extends Living {
 
 	@Override
 	public void move(int dir) {
+		
 	}
 }

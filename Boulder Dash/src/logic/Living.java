@@ -6,7 +6,8 @@ public abstract class Living {
 	public static final int LEFT = 1;
 	public static final int RIGHT = 2;
 	public static final int UP = 3;
-	static int k[][] = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
+	static int directions[][] = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
+	static Map map = null;
 	
 	int x;
 	int y;

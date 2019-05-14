@@ -13,7 +13,7 @@ public class Player extends Living {
 
 	@Override
 	public void move(int dir) {
-		x += k[dir][0] * speed;
-		y += k[dir][1] * speed;	
+		x += directions[dir][0] * speed;
+		y += directions[dir][1] * speed;	
 	}
 }

@@ -60,7 +60,7 @@ class Diamond extends Block implements Destructible, Gravity{
 	public void destroy(boolean condition){
 		try{
 			if(condition)
-				map.set(x, y, emptyTile);
+				map.setTile(x, y, emptyTile);
 		} catch(NullPointerException e){
 			e.printStackTrace();
 		}
@@ -111,7 +111,7 @@ class Ground extends Block implements Destructible {
 	public void destroy(boolean condition) {
 		try{
 			if(condition)
-				map.set(x, y, emptyTile);
+				map.setTile(x, y, emptyTile);
 		} catch(NullPointerException e){
 			e.printStackTrace();
 		}

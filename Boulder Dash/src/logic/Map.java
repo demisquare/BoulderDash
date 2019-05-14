@@ -9,7 +9,10 @@ import java.io.IOException;
 //definisce la mappa di gioco come matrice di blocchi
 public class Map {
 
-    private Block map[][]; //matrice per migliorare le prestazioni
+    private Block[][] map; //matrice per migliorare le prestazioni
+    private int[][][] k = new int[3][3][2];
+    private int dimX;
+    private int dimY;
 
     private void initialize(String filename) {
         
@@ -24,12 +27,18 @@ public class Map {
 		//se è inizializzato
 		if(bIn != null) {
 			try {
-				int dimX, dimY, x;
+				int x;
 				
 				//si leggono le dimensioni del livello
 				if(bIn.ready()) {
 					dimX = bIn.read();
 					dimY = bIn.read();
+
+					for(int i=0; i<3; ++i)
+					for(int j=0; j<3; ++i) {
+						k[i][j][0] = (dimX-1+j);
+						k[i][j][1] = (dimY-1+i);
+					}
 					
 					//si inizializza la matrice
 					map = new Block[dimX][dimY];
@@ -64,15 +73,16 @@ public class Map {
     public Map(String filename){
 
         Block.map = this;
+        Living.map = this;
         initialize(filename);
     }
 
-    public Block get(int x, int y) {
+    public Block getTile(int x, int y) {
     	
     	return map[x][y];
     }
     
-    public void set(int x, int y, Block value) {
+    public void setTile(int x, int y, Block value) {
     	
     	map[x][y] = value;
     }
