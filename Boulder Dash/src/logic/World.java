@@ -1,18 +1,20 @@
 package logic;
 
+import java.util.ArrayList;
 
 //classe che contiene sia il player che la mappa
 public class World {
 
 	Player player;
-	
+	ArrayList<Enemy> enemies;
 	Map map;
-
 	
 	// costruttore di default
 	public World() {
 		
+		//da definire la posizione di partenza (e il criterio di scelta)
 		player = new Player(10, 10, 3);
+		enemies = new ArrayList<Enemy>();
 		//sostituire con il filename
 		map= new Map("filename"); 
 	}
@@ -34,7 +36,4 @@ public class World {
 	public void setMap(Map map) {
 		this.map = map;
 	}
-	
-	
-		
 }

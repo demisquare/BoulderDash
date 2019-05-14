@@ -13,6 +13,7 @@ public class Level extends JPanel implements KeyListener {
 	
 	private static final long serialVersionUID = -2545695383117923190L;
 
+	//Questa classe farà da interfaccia a TUTTA la logica di un livello
 	World world;
 
 	public Level() {

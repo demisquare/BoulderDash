@@ -6,11 +6,12 @@ public abstract class Living {
 	public static final int LEFT = 1;
 	public static final int RIGHT = 2;
 	public static final int UP = 3;
-	static int directions[][] = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
+	static int dmap[][] = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
 	static Map map = null;
 	
 	int x;
 	int y;
+	//la gestione di speed andrebbe ripensata
 	int speed;
 
 	public Living(int x, int y, int speed) {
@@ -19,7 +20,7 @@ public abstract class Living {
 		this.speed = speed;
 	}
 
-	public abstract void move(int dir);
+	public abstract boolean move(int dir);
 
 	public int getX() {
 		return x;

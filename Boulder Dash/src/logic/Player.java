@@ -11,9 +11,18 @@ public class Player extends Living {
 		ls = new LivingSprite("playerSpriteSheet", speed);	
 	}
 
+	//le posizioni del player vengono aggiornate a seconda della direzione
+	//dopodichè vengono ridotte per evitare che sfori
+	//ATTENZIONE: in questo modo la mappa è chiusa in ogni direzione (toroidale)
 	@Override
-	public void move(int dir) {
-		x += directions[dir][0] * speed;
-		y += directions[dir][1] * speed;	
+	public boolean move(int dir) {
+		
+		x += dmap[dir][0] * speed;
+		x %= map.dimX;
+		
+		y += dmap[dir][1] * speed;
+		y %= map.dimY;
+		
+		return true;
 	}
 }
