@@ -1,7 +1,7 @@
 package logic;
 
 import java.awt.image.BufferedImage;
-
+import java.util.Random;
 import graphics.Sprite;
 
 public abstract class Block {
@@ -43,5 +43,113 @@ public abstract class Block {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+}
+
+
+class Diamond extends Block implements Destructible, Gravity{
+
+	private static Random r = new Random();	
+
+	public Diamond(int x, int y) {
+		super(x, y);
+		sprite = spritesheet.getSprite(3, r.nextInt(3));
+	}
+
+	@Override
+	public void destroy(boolean condition){
+		try{
+			if(condition)
+				map.set(x, y, emptyTile);
+		} catch(NullPointerException e){
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void gravity(){
+
+	}
+
+	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
+	@Override
+  	public void update(){
+		destroy(false);
+		gravity();
+	}
+
+	@Override
+	public byte getType(){
+		return DIAMOND;
+	}
+}
+
+class EmptyBlock extends Block {
+
+    public EmptyBlock(){
+        super(-1, -1);
+    }
+
+    //EmptyBlock e' l'equivalente di un elemento vuoto, questo metodo non deve fare niente
+    @Override
+    public void update(){}
+
+    @Override
+	public byte getType(){
+		return EMPTY_BLOCK;
+	}
+}
+
+class Ground extends Block implements Destructible {
+
+	public Ground(int x, int y) {
+		super(x, y);
+		sprite = spritesheet.getSprite(0, 0);	
+	}
+
+	@Override
+	public void destroy(boolean condition) {
+		try{
+			if(condition)
+				map.set(x, y, emptyTile);
+		} catch(NullPointerException e){
+			e.printStackTrace();
+		}
+	}
+
+	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
+	@Override
+ 	public void update(){
+		destroy(false);
+	}
+
+	@Override
+	public byte getType(){
+		return GROUND;
+	}
+}
+
+class Rock extends Block implements Gravity {
+
+	private static Random r = new Random();
+
+	public Rock(int x, int y) {
+		super(x, y);
+		sprite = spritesheet.getSprite(r.nextInt(3), r.nextInt(3));
+	}
+
+	@Override
+	public void gravity(){
+
+	}
+
+	@Override
+    public void update(){
+		gravity();
+	}
+
+	@Override
+	public byte getType(){
+		return ROCK;
 	}
 }

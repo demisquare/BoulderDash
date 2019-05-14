@@ -6,7 +6,9 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
+import logic.Living;
 import logic.Player;
+
 
 public class Level extends JPanel implements KeyListener {
 	
@@ -46,30 +48,30 @@ public class Level extends JPanel implements KeyListener {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 			//System.out.println("left");
-			player.ls.setDirection(Player.LEFT);
+			player.ls.setDirection(Living.LEFT);
 			player.ls.getAnimation().start();
-			player.walk(Player.LEFT);
+			player.walk(Living.LEFT);
 			break;
 
 		case KeyEvent.VK_RIGHT:
 			//System.out.println("right");
-			player.ls.setDirection(Player.RIGHT);
+			player.ls.setDirection(Living.RIGHT);
 			player.ls.getAnimation().start();
-			player.walk(Player.RIGHT);
+			player.walk(Living.RIGHT);
 			break;
 
 		case KeyEvent.VK_UP:
 			//System.out.println("up");
-			player.ls.setDirection(Player.UP);
+			player.ls.setDirection(Living.UP);
 			player.ls.getAnimation().start();
-			player.walk(Player.UP);
+			player.walk(Living.UP);
 			break;
 
 		case KeyEvent.VK_DOWN:
 			//System.out.println("down");
-			player.ls.setDirection(Player.DOWN);
+			player.ls.setDirection(Living.DOWN);
 			player.ls.getAnimation().start();
-			player.walk(Player.DOWN);
+			player.walk(Living.DOWN);
 			break;
 
 		}
@@ -87,25 +89,25 @@ public class Level extends JPanel implements KeyListener {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 			//System.out.println("left");
-			player.ls.setStandPose(Player.LEFT);
+			player.ls.setStandPose(Living.LEFT);
 			player.ls.getAnimation().start();
 			break;
 
 		case KeyEvent.VK_RIGHT:
 			//System.out.println("right");
-			player.ls.setStandPose(Player.RIGHT);
+			player.ls.setStandPose(Living.RIGHT);
 			player.ls.getAnimation().start();
 			break;
 
 		case KeyEvent.VK_UP:
 			//System.out.println("up");
-			player.ls.setStandPose(Player.UP);
+			player.ls.setStandPose(Living.UP);
 			player.ls.getAnimation().start();
 			break;
 
 		case KeyEvent.VK_DOWN:
 			//System.out.println("down");
-			player.ls.setStandPose(Player.DOWN);
+			player.ls.setStandPose(Living.DOWN);
 			player.ls.getAnimation().start();
 			break;
 

@@ -10,5 +10,4 @@ public class Player extends Living {
 		super(x, y, speed);
 		ls = new LivingSprite("playerSpriteSheet", speed);	
 	}
-
 }
