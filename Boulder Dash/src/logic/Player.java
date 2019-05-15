@@ -12,16 +12,16 @@ public class Player extends Living {
 	}
 
 	//le posizioni del player vengono aggiornate a seconda della direzione
-	//dopodichè vengono ridotte per evitare che sfori
-	//ATTENZIONE: in questo modo la mappa è chiusa in ogni direzione (toroidale)
+	//dopodichÃ© vengono ridotte per evitare che sfori
+	//ATTENZIONE: in questo modo la mappa Ã¨ chiusa in ogni direzione (toroidale)
 	@Override
 	public boolean move(int dir) {
 		
 		x += dmap[dir][0] * speed;
-		x %= map.dimX;
+		//x %= map.dimX;
 		
 		y += dmap[dir][1] * speed;
-		y %= map.dimY;
+		//y %= map.dimY;
 		
 		return true;
 	}

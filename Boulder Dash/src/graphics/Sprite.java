@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-/*Classe che gestisce lo spritesheet di un personggio*/
+/*Classe che gestisce lo spritesheet di un personaggio*/
 public class Sprite {
 
 	private BufferedImage spriteSheet;
@@ -16,7 +16,12 @@ public class Sprite {
 	public void loadSprite(String file) {
 
 		try {
-			spriteSheet = ImageIO.read(new File("." + File.separator + "src" +File.separator + "assets" + File.separator + file + ".png"));
+			spriteSheet = ImageIO.read
+					(new File("." + File.separator +
+							  "resources" + File.separator +
+							  "assets" + File.separator +
+							  file + ".png"));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -21,12 +21,12 @@ public class Map {
     	//tentativo di inizializzare il fileBuffer
         BufferedReader bIn = null;
 		try {
-			bIn = new BufferedReader(new FileReader("resources" + File.separator + filename));
+			bIn = new BufferedReader(new FileReader("." + File.separator + "resources" + File.separator + filename));
 		} catch (FileNotFoundException e) { //trovare una gestione migliore
 			e.printStackTrace();
 		}
 		
-		//se è inizializzato
+		//se Ã¨ inizializzato
 		if(bIn != null) {
 			try {
 				int x;
@@ -69,6 +69,10 @@ public class Map {
     public Map(String filename){
     	Block.map = this;
     	Living.map = this;
+    	
+    	dimX = 800;
+    	dimY = 600;
+    	
         initialize(filename);
     }
 
