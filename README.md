@@ -6,6 +6,20 @@
  - EmbASP Framework
  
 ## History:
+#### 15-05-19:
+- Started implementing the neighboorhood handling for the enemies
+- Implemented Enemy.move() - needs testing
+- Fixed player issues
+
+#### 14-05-19:
+- Re-organized the logic package
+- Added World class
+- Level fixes
+
+#### 12-05-19:
+- Added Implemented Map.initialize() method
+- Moved Main.java into start package
+
 #### 07-05-19:
 - Added error handling to destroy() methods
 - Added LivingSprite class
