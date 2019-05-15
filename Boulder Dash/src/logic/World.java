@@ -36,4 +36,10 @@ public class World {
 	public void setMap(Map map) {
 		this.map = map;
 	}
+	
+	//questa funzione dovrebbe in automatico aggiornare gli stati di 
+	//Player, Enemy, etc, ogni tick del timer
+	public void update() {
+		
+	}
 }

@@ -7,10 +7,10 @@ import graphics.Sprite;
 public abstract class Block {
 
 	//corrispondono ai valori di ritorno dei vari getType: essendo public, si possono usare all'esterno in modo simile a Color.RED
-	public static final int EMPTY_BLOCK = 0;
-	public static final int DIAMOND 	= 1;
-	public static final int GROUND 	 	= 2;
-	public static final int ROCK 		= 3;
+	public static final char EMPTY_BLOCK = 0;
+	public static final char DIAMOND 	 = 1;
+	public static final char GROUND 	 = 2;
+	public static final char ROCK 		 = 3;
 	static Map map = null;
 	
 	static protected Sprite spritesheet;

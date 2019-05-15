@@ -21,7 +21,7 @@ public class Map {
     	//tentativo di inizializzare il fileBuffer
         BufferedReader bIn = null;
 		try {
-			bIn = new BufferedReader(new FileReader("." + File.separator + "resources" + File.separator + filename));
+			bIn = new BufferedReader(new FileReader("." + File.separator + "resources" + File.separator + "maps" + File.separator + filename));
 		} catch (FileNotFoundException e) { //trovare una gestione migliore
 			e.printStackTrace();
 		}
@@ -33,8 +33,8 @@ public class Map {
 				
 				//si leggono le dimensioni del livello
 				if(bIn.ready()) {
-					dimX = bIn.read();
-					dimY = bIn.read();
+					dimX = Integer.parseInt(bIn.readLine());
+					dimY = Integer.parseInt(bIn.readLine());
 
 					//si inizializza la matrice
 					map = new Block[dimX][dimY];
@@ -63,6 +63,9 @@ public class Map {
 			} catch (IOException e) { //trovare una gestione migliore
 				e.printStackTrace();
 			}
+			
+			System.out.println(dimX);
+			System.out.println(dimY);
 		}
     }
 
@@ -70,10 +73,7 @@ public class Map {
     	Block.map = this;
     	Living.map = this;
 
-    	dimX = 800;
-    	dimY = 600;
-    	if(!filename.equals("filename"))
-    		initialize(filename);
+    	initialize(filename);
     }
 
     public Block getTile(int x, int y) {
