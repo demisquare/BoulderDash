@@ -6,7 +6,8 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
-import logic.*;
+import logic.World;
+import logic.Living;
 
 
 public class Level extends JPanel implements KeyListener {

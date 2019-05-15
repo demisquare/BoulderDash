@@ -13,7 +13,7 @@ public class Player extends Living {
 
 	//le posizioni del player vengono aggiornate a seconda della direzione
 	//dopodiché vengono ridotte per evitare che sfori
-	//ATTENZIONE: in questo modo la mappa è chiusa in ogni direzione (toroidale)
+	//ATTENZIONE: in questo modo la mappa e' chiusa in ogni direzione (toroidale)
 	@Override
 	public boolean move(int dir) {
 		

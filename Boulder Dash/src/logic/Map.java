@@ -72,8 +72,8 @@ public class Map {
 
     	dimX = 800;
     	dimY = 600;
-    	
-        initialize(filename);
+    	if(!filename.equals("filename"))
+    		initialize(filename);
     }
 
     public Block getTile(int x, int y) {
