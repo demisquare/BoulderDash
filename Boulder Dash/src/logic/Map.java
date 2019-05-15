@@ -25,7 +25,7 @@ public class Map {
 			e.printStackTrace();
 		}
 		
-		//se è inizializzato
+		//se e' inizializzato
 		if(bIn != null) {
 			try {
 				String line;
@@ -51,7 +51,7 @@ public class Map {
 								map[pos/dimY][pos%dimY] = new Ground(pos/dimY, pos%dimY);
 							else if(line.charAt(i) == Block.ROCK)
 								map[pos/dimY][pos%dimY] = new Rock(pos/dimY, pos%dimY);
-							else //if(line.charAt(i) == Block.EMPTY_BLOCK)
+							else if(line.charAt(i) == Block.EMPTY_BLOCK)
 								map[pos/dimY][pos%dimY] = Destructible.emptyTile;
 						
 							++pos;
