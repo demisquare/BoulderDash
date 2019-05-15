@@ -1,6 +1,8 @@
 package logic;
 
 import java.awt.image.BufferedImage;
+//non toglietelo
+import java.io.File;
 import java.util.Random;
 import graphics.Sprite;
 
@@ -18,7 +20,7 @@ public abstract class Block {
 	protected int x;
 	protected int y;
 
-	public abstract byte getType(); //per distinguere i vari blocchi iterando su Map
+	public abstract char getType(); //per distinguere i vari blocchi iterando su Map
 	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
 	public abstract void update();  //interfaccia per i metodi delle classi figlie
 
@@ -26,7 +28,8 @@ public abstract class Block {
 		super();
 		this.x = x;
 		this.y = y;
-		spritesheet.loadSprite("blockSpriteSheet");
+		//Va creata la risorsa blockSpriteSheets as soon as possible
+		//spritesheet.loadSprite("resources" + File.separator + "assets" + File.separator + "blockSpriteSheet");
 	}
 
 	public int getX() {
@@ -60,7 +63,7 @@ class Diamond extends Block implements Destructible, Gravity{
 	public void destroy(boolean condition){
 		try{
 			if(condition)
-				map.setTile(x, y, emptyTile);
+				map.setTile(x, y, Destructible.emptyTile);
 		} catch(NullPointerException e){
 			e.printStackTrace();
 		}
@@ -79,7 +82,7 @@ class Diamond extends Block implements Destructible, Gravity{
 	}
 
 	@Override
-	public byte getType(){
+	public char getType(){
 		return DIAMOND;
 	}
 }
@@ -95,7 +98,7 @@ class EmptyBlock extends Block {
     public void update(){}
 
     @Override
-	public byte getType(){
+	public char getType(){
 		return EMPTY_BLOCK;
 	}
 }
@@ -111,7 +114,7 @@ class Ground extends Block implements Destructible {
 	public void destroy(boolean condition) {
 		try{
 			if(condition)
-				map.setTile(x, y, emptyTile);
+				map.setTile(x, y, Destructible.emptyTile);
 		} catch(NullPointerException e){
 			e.printStackTrace();
 		}
@@ -124,7 +127,7 @@ class Ground extends Block implements Destructible {
 	}
 
 	@Override
-	public byte getType(){
+	public char getType(){
 		return GROUND;
 	}
 }
@@ -149,7 +152,7 @@ class Rock extends Block implements Gravity {
 	}
 
 	@Override
-	public byte getType(){
+	public char getType(){
 		return ROCK;
 	}
 }

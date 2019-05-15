@@ -9,9 +9,8 @@ import java.io.IOException;
 //definisce la mappa di gioco come matrice di blocchi
 public class Map {
 
-	public static int X = 0;
-	public static int Y = 1;
 	
+	private static String defaultPath = "." + File.separator + "resources" + File.separator + "maps" + File.separator;
     private Block[][] map; //matrice per migliorare le prestazioni
     int dimX;
     int dimY;
@@ -21,7 +20,7 @@ public class Map {
     	//tentativo di inizializzare il fileBuffer
         BufferedReader bIn = null;
 		try {
-			bIn = new BufferedReader(new FileReader("." + File.separator + "resources" + File.separator + "maps" + File.separator + filename));
+			bIn = new BufferedReader(new FileReader(defaultPath + filename));
 		} catch (FileNotFoundException e) { //trovare una gestione migliore
 			e.printStackTrace();
 		}
@@ -29,7 +28,7 @@ public class Map {
 		//se è inizializzato
 		if(bIn != null) {
 			try {
-				int x;
+				String line;
 				
 				//si leggono le dimensioni del livello
 				if(bIn.ready()) {
@@ -42,20 +41,23 @@ public class Map {
 					int pos = 0;
 					while(bIn.ready() && pos < dimX*dimY) {
 						//si legge la casella
-						x = bIn.read();
+						line = bIn.readLine();
 						
 						//gestione dei vari casi
-						if(x == Block.DIAMOND)
-							map[pos/dimY][pos%dimY] = new Diamond(pos/dimY, pos%dimY);
-						else if(x == Block.GROUND)
-							map[pos/dimY][pos%dimY] = new Ground(pos/dimY, pos%dimY);
-						else if(x == Block.ROCK)
-							map[pos/dimY][pos%dimY] = new Rock(pos/dimY, pos%dimY);
-						else if(x == Block.EMPTY_BLOCK)
-							map[pos/dimY][pos%dimY] = Destructible.emptyTile;
+						for(int i = 0; i < line.length(); ++i) {
+							if(line.charAt(i) == Block.DIAMOND)
+								map[pos/dimY][pos%dimY] = new Diamond(pos/dimY, pos%dimY);
+							else if(line.charAt(i) == Block.GROUND)
+								map[pos/dimY][pos%dimY] = new Ground(pos/dimY, pos%dimY);
+							else if(line.charAt(i) == Block.ROCK)
+								map[pos/dimY][pos%dimY] = new Rock(pos/dimY, pos%dimY);
+							else //if(line.charAt(i) == Block.EMPTY_BLOCK)
+								map[pos/dimY][pos%dimY] = Destructible.emptyTile;
 						
-						++pos;
+							++pos;
+						}
 					}
+					System.out.println(pos);
 				}
 			
 				bIn.close();
@@ -70,9 +72,8 @@ public class Map {
     }
 
     public Map(String filename){
-    	Block.map = this;
-    	Living.map = this;
-
+    	if(Block.map == null)	Block.map = this;
+    	if(Living.map == null)	Living.map = this;
     	initialize(filename);
     }
 

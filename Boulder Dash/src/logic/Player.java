@@ -17,12 +17,16 @@ public class Player extends Living {
 	@Override
 	public boolean move(int dir) {
 		
-		x += dmap[dir][0] * speed + map.dimX;
-		x %= map.dimX;
-
-		y += dmap[dir][1] * speed + map.dimY;
-		y %= map.dimY;
+		int i = (x + dmap[dir][0] * speed + map.dimX)%map.dimX;
+		int j = (y + dmap[dir][1] * speed + map.dimY)%map.dimY;
 		
-		return true;
+		if(map.getTile(i, j).getType() == Block.EMPTY_BLOCK) {
+			
+			x = i;
+			y = j;
+			
+			return true;
+		}
+		return false;
 	}
 }

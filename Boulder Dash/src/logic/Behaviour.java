@@ -9,7 +9,7 @@ interface Destructible {
 
 	//definita per gli oggetti che possono essere distrutti durante la partita
 	//usata da: Ground, Diamond
-	static final EmptyBlock emptyTile = new EmptyBlock();
+	public static EmptyBlock emptyTile = new EmptyBlock();
 	public abstract void destroy(boolean condition);
 }
 
