@@ -17,6 +17,7 @@ public abstract class Block {
 	
 	protected static Sprite spritesheet = new Sprite();
 	protected BufferedImage sprite;	
+
 	protected int x;
 	protected int y;
 
@@ -47,6 +48,13 @@ public abstract class Block {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	public BufferedImage getSprite() {
+		return sprite;
+	}
+	public void setSprite(BufferedImage sprite) {
+		this.sprite = sprite;
+	}
 }
 
 
@@ -56,7 +64,7 @@ class Diamond extends Block implements Destructible, Gravity{
 
 	public Diamond(int x, int y) {
 		super(x, y);
-		sprite = spritesheet.getSprite(2, r.nextInt(3));
+		sprite = spritesheet.getSprite(r.nextInt(3), 3);
 	}
 
 	@Override

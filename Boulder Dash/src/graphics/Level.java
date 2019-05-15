@@ -14,7 +14,7 @@ public class Level extends JPanel implements KeyListener {
 	
 	private static final long serialVersionUID = -2545695383117923190L;
 
-	//Questa classe farà da interfaccia a TUTTA la logica di un livello
+	//Questa classe farï¿½ da interfaccia a TUTTA la logica di un livello
 	World world;
 
 	public Level() {
@@ -31,7 +31,9 @@ public class Level extends JPanel implements KeyListener {
 		super.paintComponent(g);
 
 		// disegna lo sprite del player...
-		g.drawImage(world.getPlayer().ls.getAnimation().getSprite(), world.getPlayer().getX(), world.getPlayer().getY(), null);
+		//g.drawImage(world.getPlayer().ls.getAnimation().getSprite(), world.getPlayer().getX(), world.getPlayer().getY(), null);
+		
+		Renderer.render(g, world);
 
 	}
 
