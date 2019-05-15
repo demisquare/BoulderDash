@@ -69,6 +69,8 @@ public class Map {
     public Map(String filename){
     	Block.map = this;
     	Living.map = this;
+    	dimX = 800;
+    	dimY = 600;
         initialize(filename);
     }
 

@@ -17,10 +17,10 @@ public class Player extends Living {
 	@Override
 	public boolean move(int dir) {
 		
-		x += dmap[dir][0] * speed;
+		x += dmap[dir][0] * speed + map.dimX;
 		x %= map.dimX;
 		
-		y += dmap[dir][1] * speed;
+		y += dmap[dir][1] * speed + map.dimY;
 		y %= map.dimY;
 		
 		return true;
