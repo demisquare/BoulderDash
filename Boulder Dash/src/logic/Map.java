@@ -13,7 +13,7 @@ public class Map {
 	private static String defaultPath = "." + File.separator + "resources" + File.separator + "maps" + File.separator;
     private Block[][] map; //matrice per migliorare le prestazioni
     int dimX;
-    int dimY;
+	int dimY;
 
     private void initialize(String filename) {
         
@@ -76,6 +76,22 @@ public class Map {
     	if(Living.map == null)	Living.map = this;
     	initialize(filename);
     }
+    
+    public int getDimX() {
+		return dimX;
+	}
+
+	public void setDimX(int dimX) {
+		this.dimX = dimX;
+	}
+
+	public int getDimY() {
+		return dimY;
+	}
+
+	public void setDimY(int dimY) {
+		this.dimY = dimY;
+	}
 
     public Block getTile(int x, int y) {
     	
