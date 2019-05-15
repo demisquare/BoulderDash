@@ -9,13 +9,13 @@ import graphics.Sprite;
 public abstract class Block {
 
 	//corrispondono ai valori di ritorno dei vari getType: essendo public, si possono usare all'esterno in modo simile a Color.RED
-	public static final char EMPTY_BLOCK = 0;
-	public static final char DIAMOND 	 = 1;
-	public static final char GROUND 	 = 2;
-	public static final char ROCK 		 = 3;
+	public static final char EMPTY_BLOCK = '0';
+	public static final char DIAMOND 	 = '1';
+	public static final char GROUND 	 = '2';
+	public static final char ROCK 		 = '3';
 	static Map map = null;
 	
-	static protected Sprite spritesheet;
+	protected static Sprite spritesheet = new Sprite();
 	protected BufferedImage sprite;	
 	protected int x;
 	protected int y;
@@ -29,7 +29,7 @@ public abstract class Block {
 		this.x = x;
 		this.y = y;
 		//Va creata la risorsa blockSpriteSheets as soon as possible
-		//spritesheet.loadSprite("resources" + File.separator + "assets" + File.separator + "blockSpriteSheet");
+		spritesheet.loadSprite("rock");
 	}
 
 	public int getX() {
@@ -56,7 +56,7 @@ class Diamond extends Block implements Destructible, Gravity{
 
 	public Diamond(int x, int y) {
 		super(x, y);
-		sprite = spritesheet.getSprite(3, r.nextInt(3));
+		sprite = spritesheet.getSprite(2, r.nextInt(3));
 	}
 
 	@Override
