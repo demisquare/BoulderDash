@@ -13,6 +13,7 @@ public abstract class Living {
 	//per ora faremo map
 	int x;
 	int y;
+	int movecount;
 	//la gestione di speed andrebbe ripensata
 	int speed;
 
@@ -20,6 +21,7 @@ public abstract class Living {
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
+		movecount = 0;
 	}
 
 	public abstract boolean move(int dir);

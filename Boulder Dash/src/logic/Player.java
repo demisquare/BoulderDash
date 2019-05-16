@@ -21,13 +21,22 @@ public class Player extends Living {
 		
 		//int i = (x + dmap[dir][0] * speed + map.dimX*Sprite.TILE_SIZE)%(map.dimX*Sprite.TILE_SIZE);
 		//int j = (y + dmap[dir][1] * speed + map.dimY*Sprite.TILE_SIZE)%(map.dimY*Sprite.TILE_SIZE);
-		int i = (x + dmap[dir][0] * speed);
-		int j = (y + dmap[dir][1] * speed);
+		
+		int i = (x + dmap[dir][0]);
+		int j = (y + dmap[dir][1]);
+		
+		if((i < 0 || i >= map.dimX) || (j < 0 || j >= map.dimY))
+			return false;
+		
 		if(map.getTile(i, j).getType() == Block.EMPTY_BLOCK) {
 			
-			x = i%map.dimX;
-			y = j%map.dimY;
-			
+			if(movecount < speed)	
+				++movecount;
+			else {
+				movecount = 0;
+				x = i;
+				y = j;
+			}
 			return true;
 		}
 		return false;

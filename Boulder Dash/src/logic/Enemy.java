@@ -13,24 +13,25 @@ class Enemy extends Living {
 		//per pulizia rinomino i valori mappati per la direzione p
 		int i = dmap[p][0];
 		int j = dmap[p][1];
-		int x1 = (x+j)%map.dimX;
-		int x2 = (x-j)%map.dimX;
-		int y1 = (y+i)%map.dimY;
-		int y2 = (y-i)%map.dimY;
+		int x1 = (x+j) >= 0 && (x+j) < map.dimX ? (x+j) : -1;
+		int x2 = (x-j) >= 0 && (x-j) < map.dimX ? (x-j) : -1;
+		int y1 = (y+i) >= 0 && (y+i) < map.dimY ? (y+i) : -1;
+		int y2 = (y-i) >= 0 && (y-i) < map.dimY ? (y-i) : -1;
 		
-		if(map.getTile(i, j).getType() == Block.EMPTY_BLOCK) {
-			if((map.getTile(x1, y1).getType() != Block.EMPTY_BLOCK)||
-			   (map.getTile(x1, y2).getType() != Block.EMPTY_BLOCK)||
-			   (map.getTile(x2, y1).getType() != Block.EMPTY_BLOCK)||
-			   (map.getTile(x2, y2).getType() != Block.EMPTY_BLOCK)) {
+		if(map.getTile(x+i, y+j).getType() == Block.EMPTY_BLOCK) {
+			if((x1!=-1 && y1!=-1 && map.getTile(x1, y1).getType() != Block.EMPTY_BLOCK)||
+			   (x1!=-1 && y2!=-1 && map.getTile(x1, y2).getType() != Block.EMPTY_BLOCK)||
+			   (x2!=-1 && y1!=-1 && map.getTile(x2, y1).getType() != Block.EMPTY_BLOCK)||
+			   (x2!=-1 && y2!=-1 && map.getTile(x2, y2).getType() != Block.EMPTY_BLOCK)) {
 				
-				x += i * speed;
-				x %= map.dimX;
-				
-				y += j * speed;
-				y %= map.dimY;
-				
-				return true;
+				if(movecount < speed)
+					++movecount;
+				else {
+					movecount = 0;
+					x += i;
+					y += j;
+					return true;
+				}
 			}
 		}
 		return false;
