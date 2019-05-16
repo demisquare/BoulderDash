@@ -52,18 +52,18 @@ public class Map {
 							
 							switch(line.charAt(i))
 							{
-							case Block.DIAMOND:
-								map[pos/dimY][pos%dimY] = new Diamond(pos/dimY, pos%dimY);
-								break;
-							case Block.GROUND:
-								map[pos/dimY][pos%dimY] = new Ground(pos/dimY, pos%dimY);
-								break;
-							case Block.ROCK:
-								map[pos/dimY][pos%dimY] = new Rock(pos/dimY, pos%dimY);
-								break;
-							case Block.EMPTY_BLOCK:
-								map[pos/dimY][pos%dimY] = Destructible.emptyTile;
-								break;
+								case Block.DIAMOND:
+									map[pos/dimY][pos%dimY] = new Diamond(pos/dimY, pos%dimY);
+									break;
+								case Block.GROUND:
+									map[pos/dimY][pos%dimY] = new Ground(pos/dimY, pos%dimY);
+									break;
+								case Block.ROCK:
+									map[pos/dimY][pos%dimY] = new Rock(pos/dimY, pos%dimY);
+									break;
+								case Block.EMPTY_BLOCK:
+									map[pos/dimY][pos%dimY] = Destructible.emptyTile;
+									break;
 							}
 							
 							/*if(line.charAt(i) == Block.DIAMOND)
