@@ -1,6 +1,8 @@
 package logic;
 
 import graphics.LivingSprite;
+import graphics.Renderer;
+import graphics.Sprite;
 
 public class Player extends Living {
 
@@ -17,16 +19,17 @@ public class Player extends Living {
 	@Override
 	public boolean move(int dir) {
 		
-		int i = (x + dmap[dir][0] * speed + map.dimX)%map.dimX;
-		int j = (y + dmap[dir][1] * speed + map.dimY)%map.dimY;
-		
-		if(map.getTile(i, j).getType() == Block.EMPTY_BLOCK) {
+		//int i = (x + dmap[dir][0] * speed + map.dimX*Sprite.TILE_SIZE)%(map.dimX*Sprite.TILE_SIZE);
+		//int j = (y + dmap[dir][1] * speed + map.dimY*Sprite.TILE_SIZE)%(map.dimY*Sprite.TILE_SIZE);
+		int i = (x + dmap[dir][0] * speed)%Renderer.WINDOW_WIDTH;
+		int j = (y + dmap[dir][1] * speed)%Renderer.WINDOW_HEIGHT;
+		//if(map.getTile(i, j).getType() == Block.EMPTY_BLOCK) {
 			
 			x = i;
 			y = j;
 			
 			return true;
-		}
-		return false;
+		//}
+		//return false;
 	}
 }

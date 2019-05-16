@@ -15,7 +15,7 @@ public class World {
 		//sostituire con il filename
 		map= new Map("filename"); 
 		//da definire la posizione di partenza (e il criterio di scelta)
-		player = new Player(10, 10, 1);
+		player = new Player(100, 100, 3);
 		enemies = new ArrayList<Enemy>();
 	}
 	

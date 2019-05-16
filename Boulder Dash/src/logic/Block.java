@@ -30,7 +30,7 @@ public abstract class Block {
 		this.x = x;
 		this.y = y;
 		//Va creata la risorsa blockSpriteSheets as soon as possible
-		spritesheet.loadSprite("rock");
+		spritesheet.loadSprite("blockSpriteSheet");
 	}
 
 	public int getX() {
