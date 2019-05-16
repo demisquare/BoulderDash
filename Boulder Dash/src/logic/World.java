@@ -13,7 +13,7 @@ public class World {
 	public World() {
 
 		//sostituire con il filename
-		map= new Map("filename"); 
+		map= new Map("levelmap"); 
 		//da definire la posizione di partenza (e il criterio di scelta)
 		player = new Player(10, 10, 5);
 		enemies = new ArrayList<Enemy>();
