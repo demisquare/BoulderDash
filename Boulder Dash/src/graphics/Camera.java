@@ -1,7 +1,5 @@
 package graphics;
 
-import java.awt.Graphics;
-
 public class Camera {
 
 	public static int x = 0;
@@ -13,8 +11,8 @@ public class Camera {
 	public static int offsetMinX = 0;
 	public static int offsetMinY = 0;
 
-	static void set(Graphics g) {
-
+	static void set() {
+		// TODO: gestione hitbox camera...
 		if (x > offsetMaxX)
 			x = offsetMaxX;
 
@@ -26,8 +24,6 @@ public class Camera {
 
 		else if (y < offsetMinY)
 			y = offsetMinY;
-
-		g.translate(-x, -y);
 
 	}
 
