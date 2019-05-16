@@ -6,7 +6,15 @@
  - EmbASP Framework
  
 ## History:
+#### 16-05-19:
+- Added levelmap file
+- Added a new border condition for Player and Enemy
+- Living obj coordinates, x and y, now refers to their position in the logic matrix (Map)
+
 #### 15-05-19:
+- Added Renderer Class
+- Fixed Map.initialize() to read map settings from file
+- Fixed a NullPointerException due to an inexistent spritesheet
 - Started implementing the neighboorhood handling for the enemies
 - Implemented Enemy.move() - needs testing
 - Fixed player issues
