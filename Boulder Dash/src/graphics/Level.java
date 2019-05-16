@@ -22,6 +22,7 @@ public class Level extends JPanel implements KeyListener {
 
 		// crea un world...
 		world = new World();
+		Renderer.init(world);
 	}
 
 	@Override

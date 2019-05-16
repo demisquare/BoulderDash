@@ -37,6 +37,7 @@ public class Player extends Living {
 				x = i;
 				y = j;
 			}
+			
 			return true;
 		}
 		return false;
