@@ -7,6 +7,7 @@ class Enemy extends Living {
 	}
 
 	//verifica che le condizioni richieste siano soddisfatte per la direzione scelta
+	//Da rielaborare
 	@Override
 	public boolean move(int p) {
 		//per pulizia rinomino i valori mappati per la direzione p

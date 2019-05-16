@@ -18,7 +18,7 @@ public class Renderer {
 				g.drawImage(world.getMap().getTile(i, j).getSprite(), i*Sprite.TILE_SIZE, j*Sprite.TILE_SIZE, null);
 		
 		//disegna player...
-		g.drawImage(world.getPlayer().ls.getAnimation().getSprite(), world.getPlayer().getX(), world.getPlayer().getY(), null);
+		g.drawImage(world.getPlayer().ls.getAnimation().getSprite(), world.getPlayer().getX()*Sprite.TILE_SIZE, world.getPlayer().getY()*Sprite.TILE_SIZE, null);
 		
 	}
 	
