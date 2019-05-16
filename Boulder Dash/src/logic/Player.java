@@ -32,17 +32,17 @@ public class Player extends Living {
 		
 		if(map.getTile(i, j).getType() == Block.EMPTY_BLOCK) {
 			
-			if(movecount < speed && pastDir == dir)	
+			/*if(movecount < speed && pastDir == dir)	
 				++movecount;
 			else if(pastDir != dir) {
 				pastDir = dir;
 				movecount = 0;
 			}
 			else {
-				movecount = 0;
+				movecount = 0; */
 				x = i;
 				y = j;
-			}
+			//}
 			
 			return true;
 		}

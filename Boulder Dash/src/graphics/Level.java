@@ -3,6 +3,7 @@ package graphics;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.time.LocalTime;
 
 import javax.swing.JPanel;
 
@@ -16,12 +17,14 @@ public class Level extends JPanel implements KeyListener {
 
 	//Questa classe far� da interfaccia a TUTTA la logica di un livello
 	World world;
+	LocalTime lastTimePressed;
 
 	public Level() {
 		super();
 
 		// crea un world...
 		world = new World();
+		lastTimePressed=java.time.LocalTime.now();
 		Renderer.init(world);
 	}
 
@@ -48,6 +51,9 @@ public class Level extends JPanel implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if( (java.time.LocalTime.now().minusNanos(200000000)).compareTo(lastTimePressed) > 0 )
+		{
+			lastTimePressed=java.time.LocalTime.now();
 		// TODO Auto-generated method stub
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
@@ -82,7 +88,7 @@ public class Level extends JPanel implements KeyListener {
 		
 		world.getPlayer().ls.getAnimation().update();
 		repaint();
-
+		}
 	}
 
 	@Override
