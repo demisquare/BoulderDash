@@ -1,8 +1,6 @@
 package logic;
 
 import graphics.LivingSprite;
-import graphics.Renderer;
-import graphics.Sprite;
 
 public class Player extends Living {
 

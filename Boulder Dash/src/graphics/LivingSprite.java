@@ -37,7 +37,7 @@ public class LivingSprite {
 	private Sprite sprite;
 	
 	public LivingSprite(String file, int speed) {
-
+		
 		sprite = new Sprite();
 		sprite.loadSprite(file);
 
@@ -45,21 +45,25 @@ public class LivingSprite {
 		walkingDownSprites.add(sprite.getSprite(0, DOWN));
 		walkingDownSprites.add(sprite.getSprite(1, DOWN));
 		walkingDownSprites.add(sprite.getSprite(2, DOWN));
+		walkingDownSprites.add(sprite.getSprite(1, DOWN));
 
 		walkingLeftSprites = new ArrayList<BufferedImage>();
 		walkingLeftSprites.add(sprite.getSprite(0, LEFT));
 		walkingLeftSprites.add(sprite.getSprite(1, LEFT));
 		walkingLeftSprites.add(sprite.getSprite(2, LEFT));
+		walkingLeftSprites.add(sprite.getSprite(1, LEFT));
 
 		walkingRightSprites = new ArrayList<BufferedImage>();
 		walkingRightSprites.add(sprite.getSprite(0, RIGHT));
 		walkingRightSprites.add(sprite.getSprite(1, RIGHT));
 		walkingRightSprites.add(sprite.getSprite(2, RIGHT));
+		walkingRightSprites.add(sprite.getSprite(1, RIGHT));
 
 		walkingUpSprites = new ArrayList<BufferedImage>();
 		walkingUpSprites.add(sprite.getSprite(0, UP));
 		walkingUpSprites.add(sprite.getSprite(1, UP));
 		walkingUpSprites.add(sprite.getSprite(2, UP));
+		walkingUpSprites.add(sprite.getSprite(1, UP));
 
 		standingDownSprites = new ArrayList<BufferedImage>();
 		standingLeftSprites = new ArrayList<BufferedImage>();
