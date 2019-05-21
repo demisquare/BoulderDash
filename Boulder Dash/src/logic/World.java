@@ -26,7 +26,7 @@ public class World {
 		height = map.getDimY() * Sprite.TILE_SIZE;
 		
 		//da definire la posizione di partenza (e il criterio di scelta)
-		player = new Player(10, 10, 1);
+		player = new Player(15, 15, 1);
 		enemies = new ArrayList<Enemy>();
 		enemies.add(new Enemy(50, 50, 1));
 	}

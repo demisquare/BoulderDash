@@ -12,8 +12,8 @@ public class Renderer {
 
 	static void init(World world) {
 		// TODO: definire hitbox...
-		// Camera.offsetMaxX = world.getWidth() - WINDOW_WIDTH;
-		// Camera.offsetMaxY = world.getHeight() - WINDOW_HEIGHT;
+		 Camera.offsetMaxX = world.getWidth() - WINDOW_WIDTH;
+		 Camera.offsetMaxY = world.getHeight() - WINDOW_HEIGHT;
 	}
 
 	static void render(Graphics g, World world) {
@@ -22,7 +22,7 @@ public class Renderer {
 		Camera.y = world.getPlayer().getY() * Sprite.TILE_SIZE - (WINDOW_HEIGHT / 2);
 
 		// TODO: imposta hitbox camera...
-		// Camera.set();
+		Camera.set();
 
 		// muovi telecamera...
 		g.translate(-Camera.x, -Camera.y);

@@ -10,7 +10,7 @@ public class Camera {
 
 	public static int offsetMinX = 0;
 	public static int offsetMinY = 0;
-
+	
 	static void set() {
 		// TODO: gestione hitbox camera...
 		if (x > offsetMaxX)
