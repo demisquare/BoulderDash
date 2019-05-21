@@ -3,7 +3,6 @@ package graphics;
 import java.awt.Graphics;
 
 import logic.World;
-import logic.Enemy;
 
 public class Renderer {
 
@@ -19,8 +18,8 @@ public class Renderer {
 
 	static void render(Graphics g, World world) {
 		// imposta camera...
-		Camera.x = world.getPlayer().getX() * Sprite.TILE_SIZE - (WINDOW_WIDTH / 2);
-		Camera.y = world.getPlayer().getY() * Sprite.TILE_SIZE - (WINDOW_HEIGHT / 2);
+		Camera.x = world.getPlayer().getX() * Sprite.TILE_SIZE - (WINDOW_WIDTH / 2) + Sprite.TILE_SIZE;
+		Camera.y = world.getPlayer().getY() * Sprite.TILE_SIZE - (WINDOW_HEIGHT / 2) + Sprite.TILE_SIZE;
 
 		// TODO: imposta hitbox camera...
 		Camera.set();
