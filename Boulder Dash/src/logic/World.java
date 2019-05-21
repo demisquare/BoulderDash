@@ -28,6 +28,7 @@ public class World {
 		//da definire la posizione di partenza (e il criterio di scelta)
 		player = new Player(10, 10, 1);
 		enemies = new ArrayList<Enemy>();
+		enemies.add(new Enemy(50, 50, 1));
 	}
 	
 	// getter e setter
@@ -46,6 +47,10 @@ public class World {
 
 	public void setMap(Map map) {
 		this.map = map;
+	}
+	
+	public ArrayList<Enemy> getEnemies() {
+		return enemies;
 	}
 	
 	public int getWidth() {

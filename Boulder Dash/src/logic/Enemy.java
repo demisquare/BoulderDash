@@ -24,14 +24,9 @@ class Enemy extends Living {
 			   (x2!=-1 && y1!=-1 && map.getTile(x2, y1).getType() != Block.EMPTY_BLOCK)||
 			   (x2!=-1 && y2!=-1 && map.getTile(x2, y2).getType() != Block.EMPTY_BLOCK)) {
 				
-				if(movecount < speed)
-					++movecount;
-				else {
-					movecount = 0;
-					x += i;
-					y += j;
-					return true;
-				}
+				x += i;
+				y += j;
+				return true;
 			}
 		}
 		return false;

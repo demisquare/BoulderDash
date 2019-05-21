@@ -36,6 +36,9 @@ public class Renderer {
 		g.drawImage(world.getPlayer().ls.getAnimation().getSprite(), world.getPlayer().getX() * Sprite.TILE_SIZE,
 				world.getPlayer().getY() * Sprite.TILE_SIZE, null);
 
+		for(int i=0; i < world.getEnemies().size(); ++i) {
+		
+		}
 	}
 
 }

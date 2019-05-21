@@ -4,11 +4,12 @@ import graphics.LivingSprite;
 
 public class Player extends Living {
 
-	private int pastDir = -1;
+	private int diamondCount;
 	public LivingSprite ls;
 	
 	public Player(int x, int y, int speed) {
 		super(x, y, speed);
+		diamondCount = 0;
 		ls = new LivingSprite("playerSpriteSheet", speed);	
 	}
 
@@ -18,10 +19,6 @@ public class Player extends Living {
 	@Override
 	public boolean move(int dir) {
 		
-		if(pastDir == -1) pastDir = dir;
-		//int i = (x + dmap[dir][0] * speed + map.dimX*Sprite.TILE_SIZE)%(map.dimX*Sprite.TILE_SIZE);
-		//int j = (y + dmap[dir][1] * speed + map.dimY*Sprite.TILE_SIZE)%(map.dimY*Sprite.TILE_SIZE);
-		
 		int i = (x + dmap[dir][0]);
 		int j = (y + dmap[dir][1]);
 		
@@ -30,20 +27,22 @@ public class Player extends Living {
 		
 		if(map.getTile(i, j).getType() == Block.EMPTY_BLOCK) {
 			
-			/*if(movecount < speed && pastDir == dir)	
-				++movecount;
-			else if(pastDir != dir) {
-				pastDir = dir;
-				movecount = 0;
-			}
-			else {
-				movecount = 0; */
-				x = i;
-				y = j;
-			//}
+			x = i;
+			y = j;
+			
+			return true;
+		
+		} else if(map.getTile(i, j).getType() == Block.DIAMOND) {
+		
+			x = i;
+			y = j;
+			
+			map.getTile(i, j).update(true);
+			++diamondCount;
 			
 			return true;
 		}
+		
 		return false;
 	}
 }
