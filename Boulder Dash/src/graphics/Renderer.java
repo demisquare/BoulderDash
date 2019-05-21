@@ -3,6 +3,7 @@ package graphics;
 import java.awt.Graphics;
 
 import logic.World;
+import logic.Enemy;
 
 public class Renderer {
 
@@ -37,7 +38,9 @@ public class Renderer {
 				world.getPlayer().getY() * Sprite.TILE_SIZE, null);
 
 		for(int i=0; i < world.getEnemies().size(); ++i) {
-		
+			// disegna i nemici...
+			g.drawImage(world.getEnemies().get(i).ls.getAnimation().getSprite(), world.getEnemies().get(i).getX() * Sprite.TILE_SIZE,
+					world.getEnemies().get(i).getY() * Sprite.TILE_SIZE, null);
 		}
 	}
 

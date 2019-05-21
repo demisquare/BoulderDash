@@ -79,7 +79,12 @@ class Diamond extends Block implements Destructible, Gravity{
 
 	@Override
 	public void gravity(){
-
+		
+		if(y+1 < 0 || y+1 >= map.dimY) return;
+		
+		Block temp = map.getTile(x, y+1);
+		map.setTile(x, y+1, this);
+		map.setTile(x, y, temp);
 	}
 
 	//gli aggiornamenti previsti dalle varie interfacce vengnono 
@@ -87,7 +92,7 @@ class Diamond extends Block implements Destructible, Gravity{
 	@Override
   	public void update(boolean cond){
 		destroy(cond);
-		gravity();
+		//if(map.getTile(x, y).getType() != Block.EMPTY_BLOCK) gravity();
 	}
 
 	@Override
@@ -152,12 +157,17 @@ class Rock extends Block implements Gravity {
 
 	@Override
 	public void gravity(){
-
+		
+		if(y+1 < 0 || y+1 >= map.dimY) return;
+		
+		Block temp = map.getTile(x, y+1);
+		map.setTile(x, y+1, this);
+		map.setTile(x, y, temp);
 	}
 
 	@Override
     public void update(boolean cond){
-		gravity();
+		//if(map.getTile(x, y).getType() != Block.EMPTY_BLOCK) gravity();
 	}
 
 	@Override
