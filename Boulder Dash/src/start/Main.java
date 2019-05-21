@@ -12,6 +12,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		JFrame f = new JFrame("Boulder Dash");
 		f.setSize(800, 600);
+		f.setResizable(false);
 
 		// crea pannello di gioco...
 		Level p = new Level();
@@ -21,7 +22,7 @@ public class Main {
 
 		// imposta il focus sul pannello...
 		p.setFocusable(true);
-
+		
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 	}

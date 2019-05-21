@@ -14,17 +14,16 @@ public class Camera {
 	static void set() {
 		// TODO: gestione hitbox camera...
 		if (x > offsetMaxX + Sprite.TILE_SIZE) {
-			System.out.println("Collide");
-			x = offsetMaxX + Sprite.TILE_SIZE/2;
+			x = offsetMaxX+ Sprite.TILE_SIZE/2;
 			}
 
-		else if (x <= offsetMinX)
+		else if (x < offsetMinX)
 			x = offsetMinX;
 
-		if (y >= offsetMaxY + Sprite.TILE_SIZE)
-			y = offsetMaxY + Sprite.TILE_SIZE+5;
+		if (y > offsetMaxY + Sprite.TILE_SIZE)
+			y = offsetMaxY + Sprite.TILE_SIZE;
 
-		else if (y <= offsetMinY)
+		else if (y < offsetMinY)
 			y = offsetMinY;
 
 	}
