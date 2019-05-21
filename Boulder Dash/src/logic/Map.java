@@ -99,19 +99,13 @@ public class Map {
     }
     
     public int getDimX() {
-		return dimX;
-	}
-
-	public void setDimX(int dimX) {
-		this.dimX = dimX;
+		
+    	return dimX;
 	}
 
 	public int getDimY() {
+		
 		return dimY;
-	}
-
-	public void setDimY(int dimY) {
-		this.dimY = dimY;
 	}
 
     public Block getTile(int x, int y) {

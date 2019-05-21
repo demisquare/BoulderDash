@@ -28,7 +28,7 @@ public class World {
 		//da definire la posizione di partenza (e il criterio di scelta)
 		player = new Player(10, 10, 1);
 		enemies = new ArrayList<Enemy>();
-		enemies.add(new Enemy(50, 50, 1));
+		enemies.add(new Enemy(2, 10, 1));
 	}
 	
 	// getter e setter
@@ -65,5 +65,10 @@ public class World {
 	//Player, Enemy, etc, ogni tick del timer
 	public void update() {
 		
+		for(int i = 0; i < map.dimX; ++i)
+		for(int j = 0; j < map.dimY; ++j)
+			map.getTile(i, j).update(false);
+		for(int i = 0; i < enemies.size(); ++i)
+			enemies.get(i).move(Living.DOWN);
 	}
 }

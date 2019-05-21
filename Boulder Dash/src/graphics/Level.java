@@ -33,10 +33,10 @@ public class Level extends JPanel implements KeyListener {
 	// questo metodo viene invocato ogni volta che usiamo il metodo repaint().
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
+			
+		world.update();
 		// disegna lo sprite del player...
 		//g.drawImage(world.getPlayer().ls.getAnimation().getSprite(), world.getPlayer().getX(), world.getPlayer().getY(), null);
-		
 		Renderer.render(g, world);
 
 	}
@@ -51,7 +51,7 @@ public class Level extends JPanel implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if( (java.time.LocalTime.now().minusNanos(200000000)).compareTo(lastTimePressed) > 0 )
+		if( (java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0 )
 		{
 			lastTimePressed=java.time.LocalTime.now();
 		// TODO Auto-generated method stub
