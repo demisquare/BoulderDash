@@ -19,8 +19,12 @@ public class Map {
     int dimX;
 	int dimY;
 
+	//numero diamanti sulla mappa (per la condizione di vittoria)
+	int numDiamonds;
+	
     private void initialize(String filename) {
         
+    	numDiamonds = 0;
     	//tentativo di inizializzare il fileBuffer
         BufferedReader bIn = null;
 		try {
@@ -54,6 +58,7 @@ public class Map {
 							{
 								case Block.DIAMOND:
 									map[pos/dimY][pos%dimY] = new Diamond(pos/dimY, pos%dimY);
+									++numDiamonds;
 									break;
 								case Block.GROUND:
 									map[pos/dimY][pos%dimY] = new Ground(pos/dimY, pos%dimY);
@@ -95,6 +100,7 @@ public class Map {
     public Map(String filename){
     	if(Block.map == null)	Block.map = this;
     	if(Living.map == null)	Living.map = this;
+    	
     	initialize(filename);
     }
     

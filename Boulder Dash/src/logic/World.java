@@ -70,5 +70,7 @@ public class World {
 			map.getTile(i, j).update(false);
 		for(int i = 0; i < enemies.size(); ++i)
 			enemies.get(i).move(Living.DOWN);
+	
+		//flag di vittoria qui?
 	}
 }
