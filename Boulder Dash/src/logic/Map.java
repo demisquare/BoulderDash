@@ -63,6 +63,9 @@ public class Map {
 								case Block.GROUND:
 									map[pos/dimY][pos%dimY] = new Ground(pos/dimY, pos%dimY);
 									break;
+								case Block.WALL:
+									map[pos/dimY][pos%dimY] = new Wall(pos/dimY, pos%dimY);
+									break;
 								case Block.ROCK:
 									map[pos/dimY][pos%dimY] = new Rock(pos/dimY, pos%dimY);
 									break;

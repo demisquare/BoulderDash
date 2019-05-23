@@ -5,7 +5,6 @@ import graphics.LivingSprite;
 public class Player extends Living {
 
 	private int diamondCount;
-	public LivingSprite ls;
 	
 	public Player(int x, int y, int speed) {
 		super(x, y, speed);
@@ -32,13 +31,28 @@ public class Player extends Living {
 			
 			return true;
 		
-		} else if(map.getTile(i, j).getType() == Block.DIAMOND) {
+		}
+		
+		//raccogli diamanti...
+		else if(map.getTile(i, j).getType() == Block.DIAMOND) {
 		
 			x = i;
 			y = j;
 			
 			map.getTile(i, j).update(true);
 			++diamondCount;
+			
+			return true;
+			
+		}
+		
+		//scava la terra...
+		else if(map.getTile(i, j).getType() == Block.GROUND) {
+		
+			x = i;
+			y = j;
+			
+			map.getTile(i, j).update(true);
 			
 			return true;
 		}

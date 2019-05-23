@@ -85,7 +85,7 @@ public class LivingSprite {
 		standUp = new Animation(standingUpSprites, speed);
 		standDown = new Animation(standingDownSprites, speed);
 
-		setAnimation(standDown);
+		this.animation = standDown;
 
 	}
 
@@ -93,11 +93,7 @@ public class LivingSprite {
 		return animation;
 	}
 
-	public void setAnimation(Animation animation) {
-		this.animation = animation;
-	}
-
-	public void setDirection(int dir) {
+	private void setMovePose(int dir) {
 		switch (dir) {
 		case RIGHT:
 			// System.out.println("right");
@@ -125,7 +121,7 @@ public class LivingSprite {
 		}
 	}
 
-	public void setStandPose(int dir) {
+	private void setStandPose(int dir) {
 		switch (dir) {
 		case RIGHT:
 			// System.out.println("right");
@@ -151,5 +147,17 @@ public class LivingSprite {
 			break;
 
 		}
+	}
+	
+	public void movePose(int dir)
+	{
+		setMovePose(dir);
+		getAnimation().start();
+	}
+	
+	public void standPose(int dir)
+	{
+		setStandPose(dir);
+		getAnimation().start();
 	}
 }

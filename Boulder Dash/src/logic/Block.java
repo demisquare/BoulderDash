@@ -10,9 +10,10 @@ public abstract class Block {
 
 	//corrispondono ai valori di ritorno dei vari getType: essendo public, si possono usare all'esterno in modo simile a Color.RED
 	public static final char EMPTY_BLOCK = '0';
-	public static final char DIAMOND 	 = '1';
-	public static final char GROUND 	 = '2';
-	public static final char ROCK 		 = '3';
+	public static final char WALL	 	 = '1';
+	public static final char DIAMOND 	 = '2';
+	public static final char GROUND 	 = '3';
+	public static final char ROCK 		 = '4';
 	static Map map = null;
 	
 	protected static Sprite spritesheet = new Sprite();
@@ -64,7 +65,7 @@ class Diamond extends Block implements Destructible, Gravity{
 
 	public Diamond(int x, int y) {
 		super(x, y);
-		sprite = spritesheet.getSprite(r.nextInt(3), 3);
+		sprite = spritesheet.getSprite(r.nextInt(2), 3);
 	}
 
 	@Override
@@ -105,6 +106,7 @@ class EmptyBlock extends Block {
 
     public EmptyBlock(){
         super(-1, -1);
+        sprite = spritesheet.getSprite(1, 2);
     }
 
     //EmptyBlock e' l'equivalente di un elemento vuoto, questo metodo non deve fare niente
@@ -121,7 +123,7 @@ class Ground extends Block implements Destructible {
 
 	public Ground(int x, int y) {
 		super(x, y);
-		sprite = spritesheet.getSprite(0, 0);	
+		sprite = spritesheet.getSprite(0, 2);	
 	}
 
 	@Override
@@ -152,7 +154,7 @@ class Rock extends Block implements Gravity {
 
 	public Rock(int x, int y) {
 		super(x, y);
-		sprite = spritesheet.getSprite(r.nextInt(3), r.nextInt(3));
+		sprite = spritesheet.getSprite(r.nextInt(2), 0);
 	}
 
 	@Override
@@ -173,5 +175,33 @@ class Rock extends Block implements Gravity {
 	@Override
 	public char getType(){
 		return ROCK;
+	}
+}
+
+class Wall extends Block implements Gravity {
+
+	public Wall(int x, int y) {
+		super(x, y);
+		sprite = spritesheet.getSprite(0, 1);
+	}
+
+	@Override
+	public void gravity(){
+		
+		if(y+1 < 0 || y+1 >= map.dimY) return;
+		
+		Block temp = map.getTile(x, y+1);
+		map.setTile(x, y+1, this);
+		map.setTile(x, y, temp);
+	}
+
+	@Override
+    public void update(boolean cond){
+		//if(map.getTile(x, y).getType() != Block.EMPTY_BLOCK) gravity();
+	}
+
+	@Override
+	public char getType(){
+		return WALL;
 	}
 }

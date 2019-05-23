@@ -3,8 +3,6 @@ package logic;
 import graphics.LivingSprite;
 
 public class Enemy extends Living {
-
-	public LivingSprite ls;
 	
 	public Enemy(int x, int y, int speed) {
 		super(x, y, speed);

@@ -69,7 +69,13 @@ public class World {
 		for(int j = 0; j < map.dimY; ++j)
 			map.getTile(i, j).update(false);
 		for(int i = 0; i < enemies.size(); ++i)
+		{
+			enemies.get(i).ls.movePose(Living.DOWN);
 			enemies.get(i).move(Living.DOWN);
+			
+			enemies.get(i).ls.getAnimation().update();
+		}
+			
 	
 		//flag di vittoria qui?
 	}

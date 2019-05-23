@@ -42,5 +42,4 @@ public class Renderer {
 					world.getEnemies().get(i).getY() * Sprite.TILE_SIZE, null);
 		}
 	}
-
 }
