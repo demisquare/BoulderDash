@@ -6,6 +6,8 @@ import logic.World;
 
 public class Renderer {
 
+	private Renderer() {};
+	
 	// dimensioni viewport
 	public static final int WINDOW_WIDTH = 800;
 	public static final int WINDOW_HEIGHT = 600;

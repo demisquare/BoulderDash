@@ -11,7 +11,7 @@ public abstract class Living {
 	protected static int dmap[][] = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
 	static Map map = null;
 	
-	//� relativo alla map o ai pixel?
+	//e' relativo alla map o ai pixel?
 	//per ora faremo map
 	int x;
 	int y;
