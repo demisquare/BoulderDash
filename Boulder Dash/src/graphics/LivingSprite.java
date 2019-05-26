@@ -3,6 +3,8 @@ package graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import logic.Living;
+
 public class LivingSprite {
 
 	public static final int DOWN = 0;
@@ -35,8 +37,12 @@ public class LivingSprite {
 	private Animation animation;
 
 	private Sprite sprite;
+
+	Living logicObj;
 	
-	public LivingSprite(String file, int speed) {
+	public LivingSprite(String file, int speed, Living obj) {
+		
+		logicObj = obj;
 		
 		sprite = new Sprite();
 		sprite.loadSprite(file);

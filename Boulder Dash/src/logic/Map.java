@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import graphics.Sprite;
-
 //definisce la mappa di gioco come matrice di blocchi
 public class Map {
 

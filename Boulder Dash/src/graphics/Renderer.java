@@ -18,10 +18,10 @@ public class Renderer {
 		 Camera.offsetMaxY = world.getHeight() - WINDOW_HEIGHT;
 	}
 
-	static void render(Graphics g, World world) {
+	static void render(Graphics g, Level l) {
 		// imposta camera...
-		Camera.x = world.getPlayer().getX() * Sprite.TILE_SIZE - (WINDOW_WIDTH / 2) + Sprite.TILE_SIZE;
-		Camera.y = world.getPlayer().getY() * Sprite.TILE_SIZE - (WINDOW_HEIGHT / 2) + Sprite.TILE_SIZE;
+		Camera.x = l.world.getPlayer().getX() * Sprite.TILE_SIZE - (WINDOW_WIDTH / 2) + Sprite.TILE_SIZE;
+		Camera.y = l.world.getPlayer().getY() * Sprite.TILE_SIZE - (WINDOW_HEIGHT / 2) + Sprite.TILE_SIZE;
 
 		// TODO: imposta hitbox camera...
 		Camera.set();
@@ -30,18 +30,18 @@ public class Renderer {
 		g.translate(-Camera.x, -Camera.y);
 
 		// disegna mappa...
-		for (int i = 0; i < world.getMap().getDimX(); i++)
-			for (int j = 0; j < world.getMap().getDimY(); j++)
-				g.drawImage(world.getMap().getTile(i, j).getSprite(), i * Sprite.TILE_SIZE, j * Sprite.TILE_SIZE, null);
+		for (int i = 0; i < l.world.getMap().getDimX(); i++)
+			for (int j = 0; j < l.world.getMap().getDimY(); j++)
+				g.drawImage(l.world.getMap().getTile(i, j).getSprite(), i * Sprite.TILE_SIZE, j * Sprite.TILE_SIZE, null);
 
 		// disegna player...
-		g.drawImage(world.getPlayer().ls.getAnimation().getSprite(), world.getPlayer().getX() * Sprite.TILE_SIZE,
-				world.getPlayer().getY() * Sprite.TILE_SIZE, null);
+		g.drawImage(l.playerSprite.getAnimation().getSprite(), l.world.getPlayer().getX() * Sprite.TILE_SIZE,
+				l.world.getPlayer().getY() * Sprite.TILE_SIZE, null);
 
-		for(int i=0; i < world.getEnemies().size(); ++i) {
+		for(int i=0; i < l.world.getEnemies().size(); ++i) {
 			// disegna i nemici...
-			g.drawImage(world.getEnemies().get(i).ls.getAnimation().getSprite(), world.getEnemies().get(i).getX() * Sprite.TILE_SIZE,
-					world.getEnemies().get(i).getY() * Sprite.TILE_SIZE, null);
+			g.drawImage(l.enemySprites.get(i).getAnimation().getSprite(), l.world.getEnemies().get(i).getX() * Sprite.TILE_SIZE,
+					l.world.getEnemies().get(i).getY() * Sprite.TILE_SIZE, null);
 		}
 	}
 }

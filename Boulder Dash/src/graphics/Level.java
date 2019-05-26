@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JPanel;
 
@@ -14,16 +16,37 @@ import logic.Living;
 public class Level extends JPanel implements KeyListener {
 	
 	private static final long serialVersionUID = -2545695383117923190L;
-
+	private static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>(){
+		{
+			put(KeyEvent.VK_LEFT, Living.LEFT);
+			put(KeyEvent.VK_RIGHT, Living.RIGHT);
+			put(KeyEvent.VK_UP, Living.UP);
+			put(KeyEvent.VK_DOWN, Living.DOWN);
+		}
+	};
+	
 	//Questa classe far� da interfaccia a TUTTA la logica di un livello
 	World world;
 	LocalTime lastTimePressed;
+	//graphics for both Player and Enemies
+	LivingSprite playerSprite;
+	ArrayList<LivingSprite> enemySprites;
 
 	public Level() {
 		super();
 
 		// crea un world...
 		world = new World();
+		
+		//inizializza le animazioni del giocatore
+		playerSprite = new LivingSprite("playerSpriteSheet", world.getPlayer().getSpeed(), world.getPlayer());
+		
+		//inizializza le animazioni dei nemici
+		enemySprites = new ArrayList<LivingSprite>();
+		for(int i = 0; i < world.getEnemies().size(); ++i)
+			enemySprites.add(new LivingSprite("enemySpriteSheet", world.getEnemies().get(i).getSpeed(), world.getEnemies().get(i)));
+		
+		
 		lastTimePressed=java.time.LocalTime.now();
 		Renderer.init(world);
 	}
@@ -35,9 +58,15 @@ public class Level extends JPanel implements KeyListener {
 		super.paintComponent(g);
 			
 		world.update();
+		for(int i = 0; i < enemySprites.size(); ++i)
+		{
+			enemySprites.get(i).movePose(Living.DOWN);
+			enemySprites.get(i).getAnimation().update();
+		}
+		
 		// disegna lo sprite del player...
 		//g.drawImage(world.getPlayer().ls.getAnimation().getSprite(), world.getPlayer().getX(), world.getPlayer().getY(), null);
-		Renderer.render(g, world);
+		Renderer.render(g, this);
 
 	}
 
@@ -51,6 +80,37 @@ public class Level extends JPanel implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if( (java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0 ) {
+			
+			lastTimePressed = java.time.LocalTime.now();
+			
+			if(pgMove.containsKey(e.getKeyCode())) {
+				//a static map instead of a switch
+				playerSprite.movePose(pgMove.get(e.getKeyCode()));
+				world.getPlayer().move(pgMove.get(e.getKeyCode()));	
+			}
+		
+			playerSprite.getAnimation().update();
+			repaint();
+		}
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e) {
+		
+		playerSprite.getAnimation().stop();
+		playerSprite.getAnimation().reset();
+		//a static map instead of a switch
+		if(pgMove.containsKey(e.getKeyCode()))
+			playerSprite.standPose(pgMove.get(e.getKeyCode()));
+		
+		playerSprite.getAnimation().update();
+		repaint();	
+	}
+	
+/*	
+	@Override
+	public void keyPressed(KeyEvent e) {
 		if( (java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0 )
 		{
 			lastTimePressed=java.time.LocalTime.now();
@@ -58,63 +118,64 @@ public class Level extends JPanel implements KeyListener {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 			//System.out.println("left");
-			world.getPlayer().ls.movePose(Living.LEFT);
+			playerSprite.movePose(Living.LEFT);
 			world.getPlayer().move(Living.LEFT);
 			break;
 
 		case KeyEvent.VK_RIGHT:
 			//System.out.println("right");
-			world.getPlayer().ls.movePose(Living.RIGHT);
+			playerSprite.movePose(Living.RIGHT);
 			world.getPlayer().move(Living.RIGHT);
 			break;
 
 		case KeyEvent.VK_UP:
 			//System.out.println("up");
-			world.getPlayer().ls.movePose(Living.UP);
+			playerSprite.movePose(Living.UP);
 			world.getPlayer().move(Living.UP);
 			break;
 
 		case KeyEvent.VK_DOWN:
 			//System.out.println("down");
-			world.getPlayer().ls.movePose(Living.DOWN);
+			playerSprite.movePose(Living.DOWN);
 			world.getPlayer().move(Living.DOWN);
 			break;
 
 		}
 		
-		world.getPlayer().ls.getAnimation().update();
+		playerSprite.getAnimation().update();
 		repaint();
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		world.getPlayer().ls.getAnimation().stop();
-		world.getPlayer().ls.getAnimation().reset();
+		playerSprite.getAnimation().stop();
+		playerSprite.getAnimation().reset();
 		
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 			//System.out.println("left");
-			world.getPlayer().ls.standPose(Living.LEFT);
+			playerSprite.standPose(Living.LEFT);
 			break;
 
 		case KeyEvent.VK_RIGHT:
 			//System.out.println("right");
-			world.getPlayer().ls.standPose(Living.RIGHT);
+			playerSprite.standPose(Living.RIGHT);
 			break;
 
 		case KeyEvent.VK_UP:
 			//System.out.println("up");
-			world.getPlayer().ls.standPose(Living.UP);
+			playerSprite.standPose(Living.UP);
 			break;
 
 		case KeyEvent.VK_DOWN:
 			//System.out.println("down");
-			world.getPlayer().ls.standPose(Living.DOWN);
+			playerSprite.standPose(Living.DOWN);
 			break;
 
 		}
-		world.getPlayer().ls.getAnimation().update();
+		playerSprite.getAnimation().update();
 		repaint();
 	}
+*/
 }

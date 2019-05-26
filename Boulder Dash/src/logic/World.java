@@ -65,17 +65,14 @@ public class World {
 	//Player, Enemy, etc, ogni tick del timer
 	public void update() {
 		
+		//aggiorna gli stati di ogni casella
 		for(int i = 0; i < map.dimX; ++i)
 		for(int j = 0; j < map.dimY; ++j)
 			map.getTile(i, j).update(false);
+		
+		//aggiorna gli stati di ogni nemico
 		for(int i = 0; i < enemies.size(); ++i)
-		{
-			enemies.get(i).ls.movePose(Living.DOWN);
 			enemies.get(i).move(Living.DOWN);
-			
-			enemies.get(i).ls.getAnimation().update();
-		}
-			
 	
 		//flag di vittoria qui?
 	}

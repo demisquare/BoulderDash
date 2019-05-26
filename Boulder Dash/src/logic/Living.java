@@ -1,7 +1,5 @@
 package logic;
 
-import graphics.LivingSprite;
-
 public abstract class Living {
 
 	public static final int DOWN = 0;
@@ -18,7 +16,7 @@ public abstract class Living {
 	//la gestione di speed andrebbe ripensata
 	int speed;
 	
-	public LivingSprite ls;
+	//public LivingSprite ls;
 
 	public Living(int x, int y, int speed) {
 		this.x = x;

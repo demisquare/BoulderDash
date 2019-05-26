@@ -1,7 +1,5 @@
 package logic;
 
-import graphics.LivingSprite;
-
 public class Player extends Living {
 
 	private int diamondCount;
@@ -9,7 +7,6 @@ public class Player extends Living {
 	public Player(int x, int y, int speed) {
 		super(x, y, speed);
 		diamondCount = 0;
-		ls = new LivingSprite("playerSpriteSheet", speed);	
 	}
 
 	//le posizioni del player vengono aggiornate a seconda della direzione

@@ -2,7 +2,7 @@ package logic;
 
 import java.awt.image.BufferedImage;
 //non toglietelo
-import java.io.File;
+	import java.io.File;
 import java.util.Random;
 import graphics.Sprite;
 
@@ -59,6 +59,7 @@ public abstract class Block {
 }
 
 
+
 class Diamond extends Block implements Destructible, Gravity{
 
 	private static Random r = new Random();	
@@ -102,6 +103,8 @@ class Diamond extends Block implements Destructible, Gravity{
 	}
 }
 
+
+
 class EmptyBlock extends Block {
 
     public EmptyBlock(){
@@ -118,6 +121,8 @@ class EmptyBlock extends Block {
 		return EMPTY_BLOCK;
 	}
 }
+
+
 
 class Ground extends Block implements Destructible {
 
@@ -148,6 +153,8 @@ class Ground extends Block implements Destructible {
 	}
 }
 
+
+
 class Rock extends Block implements Gravity {
 
 	private static Random r = new Random();
@@ -177,6 +184,8 @@ class Rock extends Block implements Gravity {
 		return ROCK;
 	}
 }
+
+
 
 class Wall extends Block implements Gravity {
 

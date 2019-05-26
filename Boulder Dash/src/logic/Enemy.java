@@ -1,12 +1,9 @@
 package logic;
 
-import graphics.LivingSprite;
-
 public class Enemy extends Living {
 	
 	public Enemy(int x, int y, int speed) {
 		super(x, y, speed);
-		ls = new LivingSprite("enemySpriteSheet", speed);
 	}
 
 	//verifica che le condizioni richieste siano soddisfatte per la direzione scelta
