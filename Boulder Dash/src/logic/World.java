@@ -1,6 +1,9 @@
 package logic;
 
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import graphics.Sprite;
 
@@ -75,5 +78,75 @@ public class World {
 			enemies.get(i).move(Living.DOWN);
 	
 		//flag di vittoria qui?
+	}
+	
+	
+	public void dijkstra() {// maria è segz
+		
+		int s= (2*map.getDimX())+10; //omdat die de coördinaten zijn (perchè queste sono le coordinate nell'unico nemico che c'è)
+		int d=(15*map.getDimX())+15; //coördinaten van de speler (coordinate giocatore)
+		
+		HashMap<Integer, ArrayList<Integer>> graph= new HashMap<Integer, ArrayList<Integer>>();
+		for(int i=0; i<map.getDimX(); i++)
+			for(int j=0; j<map.getDimY(); j++)
+			{
+				if( map.getTile(i, j) instanceof EmptyBlock) {
+					ArrayList<Integer> a=new ArrayList<Integer>();
+					
+					if(i-1>=0 && map.getTile(i-1, j) instanceof EmptyBlock)
+						a.add( ((i-1)*map.getDimX())+j );
+					if(i+1<map.getDimY() && map.getTile(i+1, j) instanceof EmptyBlock)
+						a.add( ((i+1)*map.getDimX())+j );
+					if(j-1>=0 &&  map.getTile(i, j-1) instanceof EmptyBlock)
+						a.add( (i*map.getDimX())+j-1 );
+					if(j+1>=0 &&  map.getTile(i, j+1) instanceof EmptyBlock)
+						a.add( (i*map.getDimX())+j+1 );
+					
+					graph.put(i*map.getDimX()+j, a);
+				}
+					
+			}
+		
+		HashSet<Integer> w= new HashSet(); // nodi etichettati permanentemente
+		
+		int p[] = new int[map.getDimX()*map.getDimY()]; //pesi
+		
+		for(int i=0; i<p.length; i++) {
+			p[i]=map.getDimX()*map.getDimY()+1;
+		}
+		p[s]=0;
+		
+		int prec[] = new int[map.getDimX()*map.getDimY()]; //predecessore
+		for(int i=0; i<p.length; i++) {
+			p[i]=s;
+		}
+		
+		while(!w.contains(s)) {
+			//tra i nodi non etichettati prendi quello con il peso più basso
+			int pesomin=map.getDimX()*map.getDimY();
+			int wheremin=-1;
+			for(int i=0; i<p.length; i++) {
+				if( p[i]<pesomin && !w.contains(i)) {
+					pesomin=p[i];
+					wheremin=i;
+				}
+			}
+			
+			//lo si aggiunge a w
+			w.add(wheremin);
+			
+			ArrayList<Integer> current = graph.get(wheremin);
+			
+			for(int i=0; i<current.size(); i++) {
+				if( !w.contains(current.get(i)) && pesomin+1 < p[current.get(i)]) {
+					p[current.get(i)]=pesomin+1;
+					prec[current.get(i)]=wheremin;
+				}
+			}
+				
+		}
+		
+		//funz per far muovere il nemico
+		
 	}
 }
