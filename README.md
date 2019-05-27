@@ -6,6 +6,38 @@
  - EmbASP Framework
  
 ## History:
+#### 26-05-19:
+- Changed the LivingSprite <-> Living relationship to separate more fully the logic package from the graphic one
+- Changed some long switches in Level to a simple, static map
+
+#### 25-05-19:
+- Added a private constructor to Renderer class
+- minor typo correction in a Living comment
+
+#### 24-05-19:
+- Camera and assets bugfix
+
+#### 23-05-19:
+- Improved Block spritesheet
+- Added Ground, Wall and Door sprites
+- Added digging skill on Player
+- Fixed Enemy walking animation
+- Added ls.movePose() and ls.standPose()
+- Minor fixes on Level class
+
+#### 22-05-19:
+- Added a diamond counter to Map
+
+#### 21-05-19:
+- Added Diamond destruction upon collision with Player
+- Part of the Enemy movement now works
+- Added Gravity.gravity() implementation (doesn't work yet)
+- Camera class improvement
+- Lock of the camera on border improved and camera centered on the coordinates of the player
+
+#### 17-05-19:
+- Fixed Player animation and movement
+
 #### 16-05-19:
 - Added levelmap file
 - Added a new border condition for Player and Enemy
