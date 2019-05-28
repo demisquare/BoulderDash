@@ -6,6 +6,18 @@
  - EmbASP Framework
  
 ## History:
+#### 28-05-19:
+- New levelmap
+- Added Door class
+- Fixed levelmap reading verse
+- Fixed a minor issue with Map.initialize()
+- Used some instanceof operator instead of the getType mechanism
+- Fixed a bug of various gravity() implementations
+
+#### 27-05-19:
+- Improved level map loading from text file
+- Added _Algoritme van Dijkstra_ (Dijkstra's Algorithm) on enemies movement (not yet running)
+
 #### 26-05-19:
 - Changed the LivingSprite <-> Living relationship to separate more fully the logic package from the graphic one
 - Changed some long switches in Level to a simple, static map
