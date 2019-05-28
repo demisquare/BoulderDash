@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
+import java.util.function.Supplier;
+
+import org.jgrapht.*;
+import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.util.SupplierUtil;
 
 import graphics.Sprite;
 
@@ -18,6 +23,7 @@ public class World {
 	//dimensione grafica...
 	int width = 0;
 	int height = 0;
+	Graph<Integer, Integer> g= new SimpleGraph(int.class);
 	
 	// costruttore di default
 	public World() {
@@ -34,6 +40,7 @@ public class World {
 		enemies = new ArrayList<Enemy>();
 		enemies.add(new Enemy(7, 1, 1));
 		stack.add((2*map.getDimX())+10);
+		
 	}
 	
 	// getter e setter

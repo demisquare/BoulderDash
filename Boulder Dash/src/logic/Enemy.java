@@ -33,6 +33,6 @@ public class Enemy extends Living {
 		}
 		return false;
 		
-		
+	
 	}
 }
