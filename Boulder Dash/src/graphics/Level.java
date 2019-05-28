@@ -90,6 +90,9 @@ public class Level extends JPanel implements KeyListener {
 			}
 		
 			playerSprite.getAnimation().update();
+			
+			//world.dijkstra(); inefficient.
+			
 			repaint();
 		}
 	}

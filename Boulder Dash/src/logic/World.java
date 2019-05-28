@@ -4,6 +4,7 @@ package logic;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Stack;
 
 import graphics.Sprite;
 
@@ -13,7 +14,7 @@ public class World {
 	Player player;
 	ArrayList<Enemy> enemies;
 	Map map;	
-	
+	Stack<Integer> stack= new Stack<Integer>();
 	//dimensione grafica...
 	int width = 0;
 	int height = 0;
@@ -32,6 +33,7 @@ public class World {
 		player = new Player(15, 15, 1);
 		enemies = new ArrayList<Enemy>();
 		enemies.add(new Enemy(1, 10, 1));
+		stack.add((2*map.getDimX())+10);
 	}
 	
 	// getter e setter
@@ -76,15 +78,30 @@ public class World {
 		//aggiorna gli stati di ogni nemico
 		for(int i = 0; i < enemies.size(); ++i)
 			enemies.get(i).move(Living.DOWN);
-	
+			
+			/* scommentare nel caso di dijkstra
+		{
+			int dir=stack.pop();
+			int x=dir/map.dimX;
+			int y=dir%map.dimY;
+			if(enemies.get(i).y==y+1)
+				enemies.get(i).move(Living.UP);
+			else if(enemies.get(i).y==y-1)
+				enemies.get(i).move(Living.DOWN);
+			else if(enemies.get(i).x==x-1)
+				enemies.get(i).move(Living.LEFT);
+			else 
+				enemies.get(i).move(Living.RIGHT);
+		}
+		*/
 		//flag di vittoria qui?
 	}
 	
 	
 	public void dijkstra() {// maria è segz
 		
-		int s= (2*map.getDimX())+10; //omdat die de coördinaten zijn (perchè queste sono le coordinate nell'unico nemico che c'è)
-		int d=(15*map.getDimX())+15; //coördinaten van de speler (coordinate giocatore)
+		int s= (1*map.getDimY())+10; //omdat die de coördinaten zijn (perchè queste sono le coordinate nell'unico nemico che c'è)
+		int d=(15*map.getDimY())+15; //coördinaten van de speler (coordinate giocatore)
 		
 		HashMap<Integer, ArrayList<Integer>> graph= new HashMap<Integer, ArrayList<Integer>>();
 		for(int i=0; i<map.getDimX(); i++)
@@ -94,15 +111,15 @@ public class World {
 					ArrayList<Integer> a=new ArrayList<Integer>();
 					
 					if(i-1>=0 && map.getTile(i-1, j) instanceof EmptyBlock)
-						a.add( ((i-1)*map.getDimX())+j );
+						a.add( ((i-1)*map.getDimY())+j );
 					if(i+1<map.getDimY() && map.getTile(i+1, j) instanceof EmptyBlock)
-						a.add( ((i+1)*map.getDimX())+j );
+						a.add( ((i+1)*map.getDimY())+j );
 					if(j-1>=0 &&  map.getTile(i, j-1) instanceof EmptyBlock)
-						a.add( (i*map.getDimX())+j-1 );
-					if(j+1>=0 &&  map.getTile(i, j+1) instanceof EmptyBlock)
-						a.add( (i*map.getDimX())+j+1 );
+						a.add( (i*map.getDimY())+j-1 );
+					if(j+1<map.getDimX() &&  map.getTile(i, j+1) instanceof EmptyBlock)
+						a.add( (i*map.getDimY())+j+1 );
 					
-					graph.put(i*map.getDimX()+j, a);
+					graph.put(i*map.getDimY()+j, a);
 				}
 					
 			}
@@ -117,11 +134,11 @@ public class World {
 		p[s]=0;
 		
 		int prec[] = new int[map.getDimX()*map.getDimY()]; //predecessore
-		for(int i=0; i<p.length; i++) {
-			p[i]=s;
+		for(int i=0; i<prec.length; i++) {
+			prec[i]=s;
 		}
 		
-		while(!w.contains(s)) {
+		while(!w.contains(d)) {
 			//tra i nodi non etichettati prendi quello con il peso più basso
 			int pesomin=map.getDimX()*map.getDimY();
 			int wheremin=-1;
@@ -146,7 +163,15 @@ public class World {
 				
 		}
 		
+		
+		int current=d;
+		while (current!=s) {
+			stack.add(prec[d]);
+			current=prec[d];
+		}
 		//funz per far muovere il nemico
 		
 	}
+	
+	
 }
