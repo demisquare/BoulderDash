@@ -18,10 +18,8 @@ public class Map {
 	// numero diamanti sulla mappa (per la condizione di vittoria)
 	int numDiamonds;
 
-	private void initialize(String filename) {
-
-		numDiamonds = 0;
-
+	private char[][] load(String filename) {
+		
 		BufferedReader bIn = null;
 		try {
 			bIn = new BufferedReader(new FileReader(defaultPath + filename));
@@ -29,10 +27,11 @@ public class Map {
 			map = null;
 			dimX = -1;
 			dimY = -1;
-			return;
+			e.printStackTrace();
 		}
-
-		// se e' inizializzato
+		
+		char[][] ret = null;
+		
 		if (bIn != null) {
 			try {
 				String line;
@@ -42,43 +41,64 @@ public class Map {
 					dimX = Integer.parseInt(bIn.readLine());
 					dimY = Integer.parseInt(bIn.readLine());
 					
-					map = new Block[dimX][dimY];
+					ret = new char[dimY][dimX];
 
 					System.out.println(dimX);
 					System.out.println(dimY);
 
 					while (bIn.ready()) {
-						for (int x = 0; x < dimX; x++) {
+						for (int x = 0; x < dimY; x++) {
 							line = bIn.readLine();
-							for (int y = 0; y < dimY; y++) {
-								switch (line.charAt(y)) {
-									case Block.DIAMOND:
-										map[x][y] = new Diamond(x, y);
-										++numDiamonds;
-										break;
-									case Block.GROUND:
-										map[x][y] = new Ground(x, y);
-										break;
-									case Block.WALL:
-										map[x][y] = new Wall(x, y);
-										break;
-									case Block.ROCK:
-										map[x][y] = new Rock(x, y);
-										break;
-									case Block.EMPTY_BLOCK:
-										map[x][y] = Destructible.emptyTile;
-										break;
-								}
+							for (int y = 0; y < dimX; y++) {
+								ret[x][y] = line.charAt(y);
 							}
 						}
 					}
-					bIn.close();
 				}
-			} catch (Exception e) {
-				// TODO: handle exception
+				
+			} catch(Exception e) {
 				e.printStackTrace();
 			}
-		}			
+		}
+	
+		return ret;
+	}
+	
+	private void initialize(String filename) {
+
+		numDiamonds = 0;
+		
+		char[][] cfile = load(filename);
+		
+		map = new Block[dimX][dimY];
+		
+		for (int x = 0; x < dimX; x++) {
+			for (int y = 0; y < dimY; y++) {
+				switch (cfile[y][x]) {
+					
+					case Block.DIAMOND:
+						map[x][y] = new Diamond(x, y);
+						++numDiamonds;
+						break;
+					
+					case Block.GROUND:
+						map[x][y] = new Ground(x, y);
+						break;
+					
+					case Block.WALL:
+						map[x][y] = new Wall(x, y);
+						break;
+					
+					case Block.ROCK:
+						map[x][y] = new Rock(x, y);
+						break;
+					
+					case Block.EMPTY_BLOCK:
+						map[x][y] = Destructible.emptyTile;
+						break;
+				}
+			}
+		}
 	}
 
 	public Map(String filename) {

@@ -31,7 +31,7 @@ public class World {
 		//da definire la posizione di partenza (e il criterio di scelta)
 		player = new Player(15, 15, 1);
 		enemies = new ArrayList<Enemy>();
-		enemies.add(new Enemy(2, 10, 1));
+		enemies.add(new Enemy(1, 10, 1));
 	}
 	
 	// getter e setter
