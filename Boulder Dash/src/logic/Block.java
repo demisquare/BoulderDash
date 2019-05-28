@@ -1,8 +1,6 @@
 package logic;
 
 import java.awt.image.BufferedImage;
-//non toglietelo
-	import java.io.File;
 import java.util.Random;
 import graphics.Sprite;
 
@@ -74,7 +72,7 @@ class Diamond extends Block implements Destructible, Gravity {
 		try {
 			if(condition)
 				map.setTile(x, y, Destructible.emptyTile);
-		} catch(NullPointerException e){
+		} catch(NullPointerException e) {
 			e.printStackTrace();
 		}
 	}
@@ -84,23 +82,27 @@ class Diamond extends Block implements Destructible, Gravity {
 		
 		if(y+1 < 0 || y+1 >= map.dimY) return;
 		
-		if(map.getTile(x, y+1) instanceof EmptyBlock) {
-			map.setTile(x, y+1, this);
-			map.setTile(x, y, Destructible.emptyTile);
-			y += 1;
+		try {
+			if(map.getTile(x, y+1) instanceof EmptyBlock) {
+				map.setTile(x, y+1, this);
+				map.setTile(x, y, Destructible.emptyTile);
+				y += 1;
+			}
+		} catch(NullPointerException e) {
+			e.printStackTrace();
 		}
 	}
 
 	//gli aggiornamenti previsti dalle varie interfacce vengnono 
 	//richiamati tramite update, evitando di dover castare
 	@Override
-  	public void update(boolean cond){
+  	public void update(boolean cond) {
 		destroy(cond);
 		gravity();
 	}
 
 	@Override
-	public char getType(){
+	public char getType() {
 		return DIAMOND;
 	}
 }
@@ -109,17 +111,17 @@ class Diamond extends Block implements Destructible, Gravity {
 
 class EmptyBlock extends Block {
 
-    public EmptyBlock(){
+    public EmptyBlock() {
         super(-1, -1);
         sprite = spritesheet.getSprite(1, 2);
     }
 
     //EmptyBlock e' l'equivalente di un elemento vuoto, questo metodo non deve fare niente
     @Override
-    public void update(boolean cond){}
+    public void update(boolean cond) {}
 
     @Override
-	public char getType(){
+	public char getType() {
 		return EMPTY_BLOCK;
 	}
 }
@@ -135,22 +137,22 @@ class Ground extends Block implements Destructible {
 
 	@Override
 	public void destroy(boolean condition) {
-		try{
+		try {
 			if(condition)
 				map.setTile(x, y, Destructible.emptyTile);
-		} catch(NullPointerException e){
+		} catch(NullPointerException e) {
 			e.printStackTrace();
 		}
 	}
 
 	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
 	@Override
- 	public void update(boolean cond){
+ 	public void update(boolean cond) {
 		destroy(cond);
 	}
 
 	@Override
-	public char getType(){
+	public char getType() {
 		return GROUND;
 	}
 }
@@ -167,25 +169,28 @@ class Rock extends Block implements Gravity {
 	}
 
 	@Override
-	public void gravity(){
+	public void gravity() {
 		
 		if(y+1 < 0 || y+1 >= map.dimY) return;
 		
-		if(map.getTile(x, y+1) instanceof EmptyBlock) {
-			map.setTile(x, y+1, this);
-			map.setTile(x, y, Destructible.emptyTile);
-			y += 1;
+		try {
+			if(map.getTile(x, y+1) instanceof EmptyBlock) {
+				map.setTile(x, y+1, this);
+				map.setTile(x, y, Destructible.emptyTile);
+				y += 1;
+			}
+		} catch(NullPointerException e) {
+			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
-    public void update(boolean cond){
+    public void update(boolean cond) {
 		gravity();
 	}
 
 	@Override
-	public char getType(){
+	public char getType() {
 		return ROCK;
 	}
 }
@@ -200,11 +205,10 @@ class Wall extends Block {
 	}
 
 	@Override
-    public void update(boolean cond){
-	}
+    public void update(boolean cond) {}
 
 	@Override
-	public char getType(){
+	public char getType() {
 		return WALL;
 	}
 }
