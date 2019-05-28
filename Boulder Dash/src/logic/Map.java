@@ -92,6 +92,10 @@ public class Map {
 					case Block.ROCK:
 						map[x][y] = new Rock(x, y);
 						break;
+						
+					case Block.DOOR:
+						map[x][y] = new Door(x, y);
+						break;
 					
 					case Block.EMPTY_BLOCK:
 						map[x][y] = Destructible.emptyTile;

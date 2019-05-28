@@ -12,6 +12,7 @@ public abstract class Block {
 	public static final char DIAMOND 	 = '2';
 	public static final char GROUND 	 = '3';
 	public static final char ROCK 		 = '4';
+	public static final char DOOR 		 = '5';
 	static Map map = null;
 	
 	protected static Sprite spritesheet = new Sprite();
@@ -210,5 +211,21 @@ class Wall extends Block {
 	@Override
 	public char getType() {
 		return WALL;
+	}
+}
+
+class Door extends Block {
+
+	public Door(int x, int y) {
+		super(x, y);
+		sprite = spritesheet.getSprite(1, 1);
+	}
+
+	@Override
+    public void update(boolean cond) {}
+
+	@Override
+	public char getType() {
+		return DOOR;
 	}
 }

@@ -30,9 +30,9 @@ public class World {
 		height = map.getDimY() * Sprite.TILE_SIZE;
 		
 		//da definire la posizione di partenza (e il criterio di scelta)
-		player = new Player(15, 15, 1);
+		player = new Player(3, 2, 1);
 		enemies = new ArrayList<Enemy>();
-		enemies.add(new Enemy(1, 10, 1));
+		enemies.add(new Enemy(7, 1, 1));
 		stack.add((2*map.getDimX())+10);
 	}
 	
@@ -98,10 +98,10 @@ public class World {
 	}
 	
 	
-	public void dijkstra() {// maria è segz
+	public void dijkstra() {// maria ï¿½ segz
 		
-		int s= (1*map.getDimY())+10; //omdat die de coördinaten zijn (perchè queste sono le coordinate nell'unico nemico che c'è)
-		int d=(15*map.getDimY())+15; //coördinaten van de speler (coordinate giocatore)
+		int s= (1*map.getDimY())+10; //omdat die de coï¿½rdinaten zijn (perchï¿½ queste sono le coordinate nell'unico nemico che c'ï¿½)
+		int d=(15*map.getDimY())+15; //coï¿½rdinaten van de speler (coordinate giocatore)
 		
 		HashMap<Integer, ArrayList<Integer>> graph= new HashMap<Integer, ArrayList<Integer>>();
 		for(int i=0; i<map.getDimX(); i++)
@@ -139,7 +139,7 @@ public class World {
 		}
 		
 		while(!w.contains(d)) {
-			//tra i nodi non etichettati prendi quello con il peso più basso
+			//tra i nodi non etichettati prendi quello con il peso piï¿½ basso
 			int pesomin=map.getDimX()*map.getDimY();
 			int wheremin=-1;
 			for(int i=0; i<p.length; i++) {
