@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import logic.World;
 import logic.Living;
 
-
 public class Level extends JPanel implements KeyListener {
 	
 	private static final long serialVersionUID = -2545695383117923190L;

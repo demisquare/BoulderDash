@@ -107,7 +107,7 @@ public class World {
 					
 			}
 		
-		HashSet<Integer> w= new HashSet(); // nodi etichettati permanentemente
+		HashSet<Integer> w= new HashSet<Integer>(); // nodi etichettati permanentemente
 		
 		int p[] = new int[map.getDimX()*map.getDimY()]; //pesi
 		

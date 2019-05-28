@@ -21,7 +21,7 @@ public class Player extends Living {
 		if((i < 0 || i >= map.dimX) || (j < 0 || j >= map.dimY))
 			return false;
 		
-		if(map.getTile(i, j).getType() == Block.EMPTY_BLOCK) {
+		if(map.getTile(i, j) instanceof EmptyBlock) {
 			
 			x = i;
 			y = j;
@@ -31,7 +31,7 @@ public class Player extends Living {
 		}
 		
 		//raccogli diamanti...
-		else if(map.getTile(i, j).getType() == Block.DIAMOND) {
+		else if(map.getTile(i, j) instanceof Diamond) {
 		
 			x = i;
 			y = j;
@@ -44,7 +44,7 @@ public class Player extends Living {
 		}
 		
 		//scava la terra...
-		else if(map.getTile(i, j).getType() == Block.GROUND) {
+		else if(map.getTile(i, j) instanceof Ground) {
 		
 			x = i;
 			y = j;

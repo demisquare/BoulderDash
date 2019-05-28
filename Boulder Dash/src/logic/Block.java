@@ -30,7 +30,6 @@ public abstract class Block {
 		super();
 		this.x = x;
 		this.y = y;
-		//Va creata la risorsa blockSpriteSheets as soon as possible
 		spritesheet.loadSprite("blockSpriteSheet");
 	}
 
@@ -53,6 +52,7 @@ public abstract class Block {
 	public BufferedImage getSprite() {
 		return sprite;
 	}
+	
 	public void setSprite(BufferedImage sprite) {
 		this.sprite = sprite;
 	}
@@ -60,7 +60,7 @@ public abstract class Block {
 
 
 
-class Diamond extends Block implements Destructible, Gravity{
+class Diamond extends Block implements Destructible, Gravity {
 
 	private static Random r = new Random();	
 
@@ -70,8 +70,8 @@ class Diamond extends Block implements Destructible, Gravity{
 	}
 
 	@Override
-	public void destroy(boolean condition){
-		try{
+	public void destroy(boolean condition) {
+		try {
 			if(condition)
 				map.setTile(x, y, Destructible.emptyTile);
 		} catch(NullPointerException e){
@@ -80,13 +80,15 @@ class Diamond extends Block implements Destructible, Gravity{
 	}
 
 	@Override
-	public void gravity(){
+	public void gravity() {
 		
 		if(y+1 < 0 || y+1 >= map.dimY) return;
 		
-		Block temp = map.getTile(x, y+1);
-		map.setTile(x, y+1, this);
-		map.setTile(x, y, temp);
+		if(map.getTile(x, y+1) instanceof EmptyBlock) {
+			map.setTile(x, y+1, this);
+			map.setTile(x, y, Destructible.emptyTile);
+			y += 1;
+		}
 	}
 
 	//gli aggiornamenti previsti dalle varie interfacce vengnono 
@@ -94,7 +96,7 @@ class Diamond extends Block implements Destructible, Gravity{
 	@Override
   	public void update(boolean cond){
 		destroy(cond);
-		//if(map.getTile(x, y).getType() != Block.EMPTY_BLOCK) gravity();
+		gravity();
 	}
 
 	@Override
@@ -169,14 +171,17 @@ class Rock extends Block implements Gravity {
 		
 		if(y+1 < 0 || y+1 >= map.dimY) return;
 		
-		Block temp = map.getTile(x, y+1);
-		map.setTile(x, y+1, this);
-		map.setTile(x, y, temp);
+		if(map.getTile(x, y+1) instanceof EmptyBlock) {
+			map.setTile(x, y+1, this);
+			map.setTile(x, y, Destructible.emptyTile);
+			y += 1;
+		}
+		
 	}
 
 	@Override
     public void update(boolean cond){
-		//if(map.getTile(x, y).getType() != Block.EMPTY_BLOCK) gravity();
+		gravity();
 	}
 
 	@Override
@@ -187,7 +192,7 @@ class Rock extends Block implements Gravity {
 
 
 
-class Wall extends Block implements Gravity {
+class Wall extends Block {
 
 	public Wall(int x, int y) {
 		super(x, y);
@@ -195,18 +200,7 @@ class Wall extends Block implements Gravity {
 	}
 
 	@Override
-	public void gravity(){
-		
-		if(y+1 < 0 || y+1 >= map.dimY) return;
-		
-		Block temp = map.getTile(x, y+1);
-		map.setTile(x, y+1, this);
-		map.setTile(x, y, temp);
-	}
-
-	@Override
     public void update(boolean cond){
-		//if(map.getTile(x, y).getType() != Block.EMPTY_BLOCK) gravity();
 	}
 
 	@Override

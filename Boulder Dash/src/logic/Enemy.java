@@ -19,10 +19,10 @@ public class Enemy extends Living {
 		int y2 = (y-i) >= 0 && (y-i) < map.dimY ? (y-i) : -1;
 		
 		if(map.getTile(x+i, y+j).getType() == Block.EMPTY_BLOCK) {
-			if((x1!=-1 && y1!=-1 && map.getTile(x1, y1).getType() != Block.EMPTY_BLOCK)||
-			   (x1!=-1 && y2!=-1 && map.getTile(x1, y2).getType() != Block.EMPTY_BLOCK)||
-			   (x2!=-1 && y1!=-1 && map.getTile(x2, y1).getType() != Block.EMPTY_BLOCK)||
-			   (x2!=-1 && y2!=-1 && map.getTile(x2, y2).getType() != Block.EMPTY_BLOCK)) {
+			if((x1!=-1 && y1!=-1 && !(map.getTile(x1, y1) instanceof EmptyBlock))||
+			   (x1!=-1 && y2!=-1 && !(map.getTile(x1, y2) instanceof EmptyBlock))||
+			   (x2!=-1 && y1!=-1 && !(map.getTile(x2, y1) instanceof EmptyBlock))||
+			   (x2!=-1 && y2!=-1 && !(map.getTile(x2, y2) instanceof EmptyBlock))) {
 				
 				x += i;
 				y += j;
