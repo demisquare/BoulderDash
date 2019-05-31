@@ -21,7 +21,7 @@ public abstract class Block {
 	protected int x;
 	protected int y;
 
-	public abstract char getType(); //per distinguere i vari blocchi iterando su Map
+	//public abstract char getType(); //per distinguere i vari blocchi iterando su Map
 	//gli aggiornamenti previsti dalle varie interfacce vengnono richiamati tramite update, evitando di dover castare
 	public abstract void update(boolean cond);  //interfaccia per i metodi delle classi figlie
 
@@ -101,11 +101,12 @@ class Diamond extends Block implements Destructible, Gravity {
 		destroy(cond);
 		gravity();
 	}
-
+/*
 	@Override
 	public char getType() {
 		return DIAMOND;
 	}
+*/
 }
 
 
@@ -120,11 +121,12 @@ class EmptyBlock extends Block {
     //EmptyBlock e' l'equivalente di un elemento vuoto, questo metodo non deve fare niente
     @Override
     public void update(boolean cond) {}
-
+/*
     @Override
 	public char getType() {
 		return EMPTY_BLOCK;
 	}
+*/
 }
 
 
@@ -151,11 +153,12 @@ class Ground extends Block implements Destructible {
  	public void update(boolean cond) {
 		destroy(cond);
 	}
-
+/*
 	@Override
 	public char getType() {
 		return GROUND;
 	}
+*/
 }
 
 
@@ -189,11 +192,12 @@ class Rock extends Block implements Gravity {
     public void update(boolean cond) {
 		gravity();
 	}
-
+/*
 	@Override
 	public char getType() {
 		return ROCK;
 	}
+*/
 }
 
 
@@ -207,11 +211,12 @@ class Wall extends Block {
 
 	@Override
     public void update(boolean cond) {}
-
+/*
 	@Override
 	public char getType() {
 		return WALL;
 	}
+*/
 }
 
 class Door extends Block {
@@ -223,9 +228,10 @@ class Door extends Block {
 
 	@Override
     public void update(boolean cond) {}
-
+/*
 	@Override
 	public char getType() {
 		return DOOR;
 	}
+*/
 }

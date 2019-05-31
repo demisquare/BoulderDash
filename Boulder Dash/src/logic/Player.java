@@ -18,7 +18,7 @@ public class Player extends Living {
 		int i = (x + dmap[dir][0]);
 		int j = (y + dmap[dir][1]);
 		
-		if((i < 0 || i >= map.dimX) || (j < 0 || j >= map.dimY))
+		if( (i < 0 || i >= map.dimX) || (j < 0 || j >= map.dimY) )
 			return false;
 		
 		if(map.getTile(i, j) instanceof EmptyBlock) {
@@ -27,7 +27,6 @@ public class Player extends Living {
 			y = j;
 			
 			return true;
-		
 		}
 		
 		//raccogli diamanti...
@@ -40,7 +39,6 @@ public class Player extends Living {
 			++diamondCount;
 			
 			return true;
-			
 		}
 		
 		//scava la terra...

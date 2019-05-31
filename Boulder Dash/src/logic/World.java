@@ -1,6 +1,5 @@
 package logic;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,11 +18,12 @@ public class World {
 	Player player;
 	ArrayList<Enemy> enemies;
 	Map map;	
-	Stack<Integer> stack= new Stack<Integer>();
+	Stack<Integer> stack = new Stack<Integer>();
 	//dimensione grafica...
 	int width = 0;
+	
 	int height = 0;
-	Graph<Integer, Integer> g= new SimpleGraph(int.class);
+//	Graph<Integer, Integer> g= new SimpleGraph(int.class);
 	
 	// costruttore di default
 	public World() {
@@ -179,6 +179,4 @@ public class World {
 		//funz per far muovere il nemico
 		
 	}
-	
-	
 }

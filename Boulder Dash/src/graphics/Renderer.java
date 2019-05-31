@@ -35,7 +35,7 @@ public class Renderer {
 				g.drawImage(l.world.getMap().getTile(i, j).getSprite(), i * Sprite.TILE_SIZE, j * Sprite.TILE_SIZE, null);
 
 		// disegna player...
-		g.drawImage(l.playerSprite.getAnimation().getSprite(), l.world.getPlayer().getX() * Sprite.TILE_SIZE,
+		g.drawImage(l.playerSprites.get(0).getAnimation().getSprite(), l.world.getPlayer().getX() * Sprite.TILE_SIZE,
 				l.world.getPlayer().getY() * Sprite.TILE_SIZE, null);
 
 		for(int i=0; i < l.world.getEnemies().size(); ++i) {

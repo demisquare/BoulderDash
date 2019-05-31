@@ -15,7 +15,7 @@ import logic.Living;
 public class Level extends JPanel implements KeyListener {
 	
 	private static final long serialVersionUID = -2545695383117923190L;
-	private static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>(){
+	private static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>() {
 		{
 			put(KeyEvent.VK_LEFT, Living.LEFT);
 			put(KeyEvent.VK_RIGHT, Living.RIGHT);
@@ -28,7 +28,7 @@ public class Level extends JPanel implements KeyListener {
 	World world;
 	LocalTime lastTimePressed;
 	//graphics for both Player and Enemies
-	LivingSprite playerSprite;
+	ArrayList<LivingSprite> playerSprites;
 	ArrayList<LivingSprite> enemySprites;
 
 	public Level() {
@@ -38,7 +38,8 @@ public class Level extends JPanel implements KeyListener {
 		world = new World();
 		
 		//inizializza le animazioni del giocatore
-		playerSprite = new LivingSprite("playerSpriteSheet", world.getPlayer().getSpeed(), world.getPlayer());
+		playerSprites = new ArrayList<LivingSprite>();
+		playerSprites.add(new LivingSprite("playerSpriteSheet", world.getPlayer().getSpeed(), world.getPlayer()));
 		
 		//inizializza le animazioni dei nemici
 		enemySprites = new ArrayList<LivingSprite>();
@@ -85,11 +86,11 @@ public class Level extends JPanel implements KeyListener {
 			
 			if(pgMove.containsKey(e.getKeyCode())) {
 				//a static map instead of a switch
-				playerSprite.movePose(pgMove.get(e.getKeyCode()));
+				playerSprites.get(0).movePose(pgMove.get(e.getKeyCode()));
 				world.getPlayer().move(pgMove.get(e.getKeyCode()));	
 			}
 		
-			playerSprite.getAnimation().update();
+			playerSprites.get(0).getAnimation().update();
 			
 			//world.dijkstra(); inefficient.
 			
@@ -100,13 +101,13 @@ public class Level extends JPanel implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		
-		playerSprite.getAnimation().stop();
-		playerSprite.getAnimation().reset();
+		playerSprites.get(0).getAnimation().stop();
+		playerSprites.get(0).getAnimation().reset();
 		//a static map instead of a switch
 		if(pgMove.containsKey(e.getKeyCode()))
-			playerSprite.standPose(pgMove.get(e.getKeyCode()));
+			playerSprites.get(0).standPose(pgMove.get(e.getKeyCode()));
 		
-		playerSprite.getAnimation().update();
+		playerSprites.get(0).getAnimation().update();
 		repaint();	
 	}
 	

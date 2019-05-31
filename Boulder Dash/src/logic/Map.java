@@ -4,13 +4,17 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 //definisce la mappa di gioco come matrice di blocchi
 public class Map {
 
 	private static String defaultPath = "." + File.separator + "resources" + File.separator + "maps" + File.separator;
 	private Block[][] map; // matrice per migliorare le prestazioni
-
+	//
+	private ArrayList< HashMap<Integer, Block> > hashmap;
+	
 	// dimensione logica...
 	int dimX;
 	int dimY;

@@ -11,7 +11,6 @@ public class Enemy extends Living {
 	@Override
 	public boolean move(int p) {
 		
-		
 		//per pulizia rinomino i valori mappati per la direzione p
 		int i = dmap[p][0];
 		int j = dmap[p][1];
