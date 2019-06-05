@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 public class Sprite {
 
 	private BufferedImage spriteSheet;
-	public static final int TILE_SIZE = 32;
+	public static final int TILE_SIZE = 48;
 
 	public Sprite() {
 		spriteSheet = null;
@@ -24,6 +24,7 @@ public class Sprite {
 					(new File("." + File.separator +
 							  "resources" + File.separator +
 							  "assets" + File.separator +
+							  TILE_SIZE + File.separator +
 							  file + ".png"));
 			
 		} catch (IOException e) {

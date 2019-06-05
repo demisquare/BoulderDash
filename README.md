@@ -6,6 +6,9 @@
  - EmbASP Framework
  
 ## History:
+#### 05-06-19:
+- New assets dimensions (32px, 48px, 64px)
+
 #### 28-05-19:
 - New levelmap
 - Added Door class
