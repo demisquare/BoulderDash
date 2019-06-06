@@ -1,8 +1,8 @@
-package graphics;
+package view;
 
 import java.awt.Graphics;
 
-import logic.World;
+import model.World;
 
 public class Renderer {
 
@@ -30,10 +30,14 @@ public class Renderer {
 		g.translate(-Camera.x, -Camera.y);
 
 		// disegna mappa...
-		for (int i = 0; i < l.world.getMap().getDimX(); i++)
-			for (int j = 0; j < l.world.getMap().getDimY(); j++)
-				g.drawImage(l.world.getMap().getTile(i, j).getSprite(), i * Sprite.TILE_SIZE, j * Sprite.TILE_SIZE, null);
-
+		for(int i = 0; i < l.getBlockSprites().size(); ++i) {
+			
+			int x = l.getBlockSprites().get(i).getLogicObject().getX();
+			int y = l.getBlockSprites().get(i).getLogicObject().getY();
+			
+			g.drawImage(l.getBlockSprites().get(i).getImg(), x * Sprite.TILE_SIZE, y * Sprite.TILE_SIZE, null);
+		}
+		
 		// disegna player...
 		g.drawImage(l.playerSprites.get(0).getAnimation().getSprite(), l.world.getPlayer().getX() * Sprite.TILE_SIZE,
 				l.world.getPlayer().getY() * Sprite.TILE_SIZE, null);

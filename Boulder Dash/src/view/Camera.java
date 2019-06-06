@@ -1,4 +1,4 @@
-package graphics;
+package view;
 
 public class Camera {
 
