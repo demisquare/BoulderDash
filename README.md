@@ -6,6 +6,14 @@
  - EmbASP Framework
  
 ## History:
+#### 06-06-19:
+- Added Menu and Score class.
+- Block and Living merged into new class, GameObject
+- block sprites management moved to graphics.Level
+- New loading symbols: 'D' for Door, 'P' for Player, 'E' for Enemy
+- Rocks and diamonds now slide on each other when falling
+- Now player can push rocks (still testing)
+
 #### 05-06-19:
 - New assets dimensions (32px, 48px, 64px)
 
