@@ -7,7 +7,8 @@
  
 ## History:
 #### 06-06-19:
-- Added Menu and Score class.
+- Added Menu and Score class
+- Camera bugfix
 - Block and Living merged into new class, GameObject
 - block sprites management moved to graphics.Level
 - New loading symbols: 'D' for Door, 'P' for Player, 'E' for Enemy
