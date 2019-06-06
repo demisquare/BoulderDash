@@ -9,8 +9,8 @@ public class Renderer {
 	private Renderer() {};
 	
 	// dimensioni viewport
-	public static final int WINDOW_WIDTH = 800;
-	public static final int WINDOW_HEIGHT = 600;
+	public static final int WINDOW_WIDTH = 920;
+	public static final int WINDOW_HEIGHT = 720;
 
 	static void init(World world) {
 		// TODO: definire hitbox...

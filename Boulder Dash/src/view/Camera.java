@@ -13,15 +13,14 @@ public class Camera {
 	
 	static void set() {
 		// TODO: gestione hitbox camera...
-		if (x > offsetMaxX) {
-			x = offsetMaxX+6;
-			}
+		if (x > offsetMaxX)
+			x = offsetMaxX;
 
 		else if (x < offsetMinX)
 			x = offsetMinX;
 
-		if (y > offsetMaxY + Sprite.TILE_SIZE)
-			y = offsetMaxY + Sprite.TILE_SIZE-3;
+		if (y > offsetMaxY)
+			y = offsetMaxY;
 
 		else if (y < offsetMinY)
 			y = offsetMinY;
