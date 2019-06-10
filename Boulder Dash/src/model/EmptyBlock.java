@@ -1,7 +1,7 @@
 package model;
 
 //TODO
-public class EmptyBlock extends GameObject {
+public class EmptyBlock extends GameObject implements GameTraversable {
 	
 	public EmptyBlock(int x, int y) {
 		super(x, y);

@@ -26,6 +26,7 @@ public abstract class GameObject {
 	protected int x;
 	protected int y;
 	protected boolean processed;
+	protected boolean isFalling;
 	
 	public abstract boolean update();
 	public abstract boolean update(int dir);
@@ -46,7 +47,7 @@ public abstract class GameObject {
 		return false;
 	}
 	
-	private void swap(int i, int j) {
+	protected void swap(int i, int j) {
 		
 		GameObject temp = map.getTile(i, j);
 		
@@ -70,22 +71,25 @@ public abstract class GameObject {
 				if(map.getTile(x, y+1) instanceof EmptyBlock) {
 					
 					swap(x, y+1);
+					isFalling = true;
 					return true;
 				
-				} else if(map.getTile(x, y+1) instanceof Living) {
+				} else if(map.getTile(x, y+1) instanceof Living && isFalling) {
 					
-					//da implementare
+					//il Living muore
 					
 				}	else if(map.getTile(x, y+1) instanceof Sliding) {
 				
-					if(map.getTile(x+1, y+1) instanceof EmptyBlock) {
+					if(map.getTile(x+1, y+1) instanceof EmptyBlock && map.getTile(x+1, y) instanceof EmptyBlock) {
 						
 						swap(x+1, y+1);
+						isFalling = true;
 						return true;
 						
-					} else if(map.getTile(x-1, y+1) instanceof EmptyBlock) {
+					} else if(map.getTile(x-1, y+1) instanceof EmptyBlock && map.getTile(x-1, y) instanceof EmptyBlock) {
 						
 						swap(x-1, y+1);
+						isFalling = true;
 						return true;
 					}
 				}
@@ -94,6 +98,7 @@ public abstract class GameObject {
 			}
 		}
 		
+		isFalling = false;
 		return false;
 	}
 	
@@ -118,6 +123,7 @@ public abstract class GameObject {
 		this.x = x;
 		this.y = y;
 		processed = false;
+		isFalling = false;
 	}
 	
 	//uso non corretto di un hashCode?
