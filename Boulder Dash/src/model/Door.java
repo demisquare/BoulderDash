@@ -1,7 +1,7 @@
 package model;
 
 //TODO
-public class Door extends GameObject implements GameTraversable {
+public class Door extends GameObject  {
 	
 	public Door(int x, int y) {
 		super(x, y);
