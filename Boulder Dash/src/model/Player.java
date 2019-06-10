@@ -22,22 +22,24 @@ public class Player extends GameObject implements Living {
 		int i = (x + dmap[dir][0]);
 		int j = (y + dmap[dir][1]);
 		
-		if(map.getTile(i, j) instanceof Diamond) {
+		GameObject g = map.getTile(i, j);
+		
+		if(g instanceof Diamond) {
 			
 			++diamondCount;
-			if(map.getTile(i, j).destroy()) {
+			if(g.destroy()) {
 				return move(dir);
 			}
 		
-		} else if(map.getTile(i, j) instanceof Ground) {
+		} else if(g instanceof Ground) {
 			
-			if(map.getTile(i, j).destroy()) {
+			if(g.destroy()) {
 				return move(dir);
 			}
 		
-		} else if(map.getTile(i, j) instanceof Rock && (dir == LEFT || dir == RIGHT)) {
+		} else if(g instanceof Rock && (dir == LEFT || dir == RIGHT)) {
 			
-			if(map.getTile(i, j).move(dir)) {
+			if(g.move(dir)) {
 				return move(dir);
 			}
 		}

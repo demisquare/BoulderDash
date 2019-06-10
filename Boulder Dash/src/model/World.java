@@ -212,8 +212,8 @@ public class World implements Runnable {
 	@Override
 	public void run() {
 		while(true) {
-			if(!hasChanged) 
-				update();
+			//if(!hasChanged) 
+			update();
 			
 			try {
 				Thread.sleep(200);

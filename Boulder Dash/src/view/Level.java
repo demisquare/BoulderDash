@@ -26,6 +26,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		}
 	};
 	
+	private int FPS = 34;
 	private static Sprite spritesheet = new Sprite();
 	private static Random r = new Random();	
 	
@@ -102,7 +103,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		
 		Thread t = new Thread(this);
 		t.start();
-		world.reset();
+		//world.reset();
 	}
 
 	public ArrayList<BlockSprite> getBlockSprites() {
@@ -110,17 +111,25 @@ public class Level extends JPanel implements KeyListener, Runnable {
 	}
 	
 	public void updateGraphics() {
+		
 		//aggiorna la grafica
 		for(int i = 0; i < blockSprites.size(); ++i) {
 			
 			BlockSprite e = blockSprites.get(i);
+			
+			//se il blocco logico è cambiato nell'ultimo world.update()...
 			if(e.getLogicObject().hasChanged()) {
 				
 				int x = e.getLogicObject().getX();
 				int y = e.getLogicObject().getY();
 				
-				if(!(world.getMap().getTile(x, y).equals(e.getLogicObject()))) {
+				boolean ops  = false;
+				boolean ops2 = false;
+				
+				//questa cosa ha senso?
+				if( !(world.getMap().getTile(x, y).equals(e.getLogicObject())) ) {
 					
+					ops2 = true;
 					GameObject newObj = world.getMap().getTile(x, y);
 					
 					if(newObj instanceof EmptyBlock) {
@@ -147,12 +156,26 @@ public class Level extends JPanel implements KeyListener, Runnable {
 						BufferedImage img = spritesheet.getSprite(1, 1);
 						blockSprites.set(i, new BlockSprite(img, newObj));
 
+					} else {
+						ops = true;
+						System.out.println("Su consiglio di GM");
+					
 					}
 					
-					//System.out.println("GameObject in position [" + x + ", " + y + "] is getting updated...");
+					if(!ops) {
+						System.out.println("GameObject in position [" + x 
+								+ ", " + y + "] is getting updated...");
+					}
+					
+				}
+				
+				if(!ops2) {
+					System.out.println("Corrisponde [" + x + ", " + y + "]");
 				}
 			}
 		}
+		
+		System.out.println();
 	}
 	
 	@Override
@@ -165,8 +188,15 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		revalidate();
 		
 		for(int i = 0; i < enemySprites.size(); ++i) {
-			enemySprites.get(i).movePose(GameObject.DOWN);
-			enemySprites.get(i).getAnimation().update();
+			//per accelerare l'animazione dell'Enemy, aumentare la costante 1 
+			if(enemySprites.get(i).counter >= (125/(FPS*1))) {
+				enemySprites.get(i).movePose(GameObject.DOWN);
+				enemySprites.get(i).getAnimation().update();
+				enemySprites.get(i).counter = 0;
+			
+			} else {
+				enemySprites.get(i).counter += 1;
+			}
 		}
 		
 		// disegna lo sprite del player...
@@ -215,14 +245,12 @@ public class Level extends JPanel implements KeyListener, Runnable {
 	@Override
 	public void run() {
 		while(true) {
-			if(world.isHasChanged()) {
 				
-				world.reset();
-				repaint();
-			}
+			world.reset();
+			repaint();
 			
 			try {
-				Thread.sleep(34);
+				Thread.sleep(FPS);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

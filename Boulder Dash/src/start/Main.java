@@ -1,40 +1,44 @@
 package start;
 
-import java.awt.AWTException;
+
 import java.awt.Color;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
+
 import menu.Credits;
 import menu.Menu;
+import menu.Options;
 import view.*;
 
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
+		//__________FRAME INIT_____________
 		JFrame frame = new JFrame("Boulder Dash");
 		frame.setSize(1280, 749); // 1280x720 risoluzione gioco, 29px in pi� in altezza per la barra tel titolo
 								// della finestra.
-		frame.setResizable(false);
 
+		
+		
+		
+		//__________PANEL INIT_____________
 		Menu menu = new Menu();
-		frame.setContentPane(menu);
-		
-		Credits credits = new Credits();
-
-		Level level = new Level();
-		level.setBackground(Color.WHITE);
-		
+		frame.setContentPane(menu); //IMPOSTO IL MENU DI DEFAULT
+		Level level = new Level();	
 		Score score = new Score();
-		score.setBackground(Color.BLACK);
+		Credits credits = new Credits();
+		Options options = new Options();
 		
 		JSplitPane game = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, level, score);
 		game.setDividerLocation(920);
 		game.setDividerSize(0);
+		//_________________________________
+
 		
 
+		
+		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -43,18 +47,9 @@ public class Main {
 						frame.remove(menu);
 						frame.setContentPane(game);
 						level.addKeyListener(level);
-						level.setFocusable(true);
+						level.requestFocusInWindow();
 						frame.revalidate();
 						frame.repaint();
-						//________FOCUS SETTATO MANUALMENTE_______
-						try {
-							Robot r=new Robot();
-							r.keyPress(KeyEvent.VK_TAB);
-							r.keyRelease(KeyEvent.VK_TAB);
-						} catch (AWTException e1) {
-							e1.printStackTrace();
-						}
-						//____________________________________________
 						menu.start_selected=false;
 					}
 					if (menu.credits_selected) { //AVVIO DEI CREDITI
@@ -64,12 +59,33 @@ public class Main {
 						frame.repaint();
 						menu.credits_selected=false;
 					}
+					if (menu.options_selected) { //AVVIO DELLE OPZIONI
+						frame.remove(menu);
+						frame.setContentPane(options);
+						frame.revalidate();
+						frame.repaint();
+						menu.options_selected=false;
+					}
 					if (credits.turn_back) { //TORNO AL MENU DALLA SCHERMATA DEI CREDITI
 						frame.remove(credits);
 						frame.setContentPane(menu);
 						frame.revalidate();
 						frame.repaint();
 						credits.turn_back=false;
+					}
+					if (options.turn_back) { //TORNO AL MENU DALLA SCHERMATA DELLE OPZIONI
+						frame.remove(options);
+						frame.setContentPane(menu);
+						frame.revalidate();
+						frame.repaint();
+						options.turn_back=false;
+					}
+					if (score.turn_back) { //TORNO AL MENU DAL GIOCO
+						frame.remove(game);
+						frame.setContentPane(menu);
+						frame.revalidate();
+						frame.repaint();
+						score.turn_back=false;
 					}
 					try {
 						Thread.sleep(34);
@@ -79,13 +95,22 @@ public class Main {
 				}
 			}
 		}).start();
-//		
+
+		
+//		if(options.full_screen) {	
+//			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//			frame.setUndecorated(true);
+//		}
+//		else if(!options.full_screen) {
+//			frame.setUndecorated(false);
+//			frame.setSize(1280, 749);
+//		}
+
+			
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		
 	
-		
-		
 	}
 
 }

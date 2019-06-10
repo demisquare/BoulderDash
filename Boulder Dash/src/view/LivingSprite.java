@@ -14,6 +14,8 @@ public class LivingSprite {
 
 	// public static final int STANDING = 4;
 
+	int counter;
+	
 	private ArrayList<BufferedImage> walkingLeftSprites;
 	private ArrayList<BufferedImage> walkingRightSprites;
 	private ArrayList<BufferedImage> walkingUpSprites;
@@ -41,6 +43,8 @@ public class LivingSprite {
 	GameObject logicObj;
 	
 	public LivingSprite(String file, int speed, GameObject obj) {
+	
+		counter = 0;
 		
 		logicObj = obj;
 		

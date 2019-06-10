@@ -42,6 +42,7 @@ public class Menu extends JPanel {
 	
 	public boolean start_selected=false;
 	public boolean credits_selected=false;
+	public boolean options_selected=false;
 
 	public Menu() {
 
@@ -180,7 +181,7 @@ public class Menu extends JPanel {
 				
 				@Override
 				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
+					options_selected=true;
 					OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS));
 					revalidate();
 					repaint();

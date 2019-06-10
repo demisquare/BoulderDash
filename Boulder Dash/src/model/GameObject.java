@@ -35,7 +35,7 @@ public abstract class GameObject {
 		try {
 			map.setTile(x, y, new EmptyBlock(x, y));
 			processed = true;
-			map.getTile(x, y).processed = true;
+			map.getTile(x, y).processed = false;
 			return true;
 			
 		} catch(NullPointerException e) {
@@ -124,6 +124,11 @@ public abstract class GameObject {
 	@Override
 	public int hashCode() {
 		return x*map.dimX + y;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return obj.getClass().isInstance(this) && obj.hashCode() == hashCode();
 	}
 	
 	public int getX() 		{ return x; 	}	

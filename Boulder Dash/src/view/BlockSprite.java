@@ -31,7 +31,7 @@ public class BlockSprite {
 		return g;
 	}
 
-	public void setG(GameObject g) {
+	public void setLogicObject(GameObject g) {
 		this.g = g;
 	}
 	
