@@ -103,17 +103,19 @@ public class GameMap {
 						blocks.put(x*dimX+y, new Door(x, y));
 						break;
 						
-					case EMPTY_BLOCK:
-						blocks.put(x*dimX+y, new EmptyBlock(x, y));
-						break;
-						
 					case PLAYER:
 						player.add(new Player(x, y, 1));
+						blocks.put(x*dimX+y, new EmptyBlock(x, y));
 						break;
 					
 					case ENEMY:
 						enemy.add(new Enemy(x, y, 1));
+						blocks.put(x*dimX+y, new EmptyBlock(x, y));
 						break;	
+					
+					case EMPTY_BLOCK:
+						blocks.put(x*dimX+y, new EmptyBlock(x, y));
+						break;
 				}
 			}
 		}
@@ -147,9 +149,9 @@ public class GameMap {
 		return blocks.get(x*dimX+y);
 	}
 
-	public void setTile(int x, int y, GameObject value) {
+	public GameObject setTile(int x, int y, GameObject value) {
 
-		blocks.put(x*dimX+y, value);
+		return blocks.put(x*dimX+y, value);
 	}
 	
 	public GameObject getPlayer() {

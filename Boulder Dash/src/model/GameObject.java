@@ -16,16 +16,18 @@ public abstract class GameObject {
 	public static final int RIGHT = 2;
 	public static final int UP    = 3;
 	
-	static final int dmap[][] = {{ 0,  1}, 
-			                     {-1,  0}, 
-			                     { 1,  0}, 
-			                     { 0, -1}};
+	static final int dmap[][] = { { 0,  1},
+			                      {-1,  0},
+			                      { 1,  0},
+			                      { 0, -1} };
 	
 	static GameMap map = null;
 	
 	protected int x;
 	protected int y;
+	
 	protected boolean processed;
+	protected boolean dead;
 	protected boolean isFalling;
 	
 	public abstract boolean update();
@@ -36,12 +38,14 @@ public abstract class GameObject {
 		try {
 			map.setTile(x, y, new EmptyBlock(x, y));
 			processed = true;
-			map.getTile(x, y).processed = false;
+			dead = true;
+			map.getTile(x, y).processed = true;
 			return true;
 			
 		} catch(NullPointerException e) {
 			System.out.println("I'm in destroy()");
 			e.printStackTrace();
+		
 		}
 		
 		return false;
@@ -51,12 +55,24 @@ public abstract class GameObject {
 		
 		GameObject temp = map.getTile(i, j);
 		
+		if(!map.getTile(x, y).equals(this)) {
+			
+			System.out.println("MANNAJA");
+		}
+		
 		map.setTile(x, y, temp);
+		
 		temp.x = x;
 		temp.y = y;
 		temp.processed = true;
 		
+		if(!map.getTile(i, j).equals(temp)) {
+			
+			System.out.println("AJANNAM");
+		}
+		
 		map.setTile(i, j, this);
+		
 		x = i;
 		y = j;
 		processed = true;
@@ -69,28 +85,35 @@ public abstract class GameObject {
 			
 			try { 
 				if(map.getTile(x, y+1) instanceof EmptyBlock) {
-					
-					swap(x, y+1);
+
 					isFalling = true;
+					swap(x, y+1);
 					return true;
 				
 				} else if(map.getTile(x, y+1) instanceof Living && isFalling) {
 					
-					//il Living muore
+					if(!(this instanceof Diamond)) {
+						
+						map.getTile(x, y+1).destroy();
+						isFalling = false;
+						swap(x, y+1);
+						return true;
+					}
 					
-				}	else if(map.getTile(x, y+1) instanceof Sliding) {
+				} else if(map.getTile(x, y+1) instanceof Sliding) {
 				
 					if(map.getTile(x+1, y+1) instanceof EmptyBlock && map.getTile(x+1, y) instanceof EmptyBlock) {
-						
-						swap(x+1, y+1);
+
 						isFalling = true;
+						swap(x+1, y+1);
 						return true;
 						
 					} else if(map.getTile(x-1, y+1) instanceof EmptyBlock && map.getTile(x-1, y) instanceof EmptyBlock) {
-						
-						swap(x-1, y+1);
+
 						isFalling = true;
+						swap(x-1, y+1);
 						return true;
+					
 					}
 				}
 			} catch(NullPointerException e) {
@@ -124,6 +147,7 @@ public abstract class GameObject {
 		this.y = y;
 		processed = false;
 		isFalling = false;
+		dead = false;
 	}
 	
 	//uso non corretto di un hashCode?
@@ -134,14 +158,17 @@ public abstract class GameObject {
 	
 	@Override
 	public boolean equals(Object obj) {
-		return obj.getClass().isInstance(this) && obj.hashCode() == hashCode();
+		return obj.getClass().isInstance(this) && 
+				obj.hashCode() == hashCode();
 	}
 	
-	public int getX() 		{ return x; 	}	
-	public void setX(int x) { this.x = x; 	}
+	public int getX() 		{ return x;   }	
+	public void setX(int x) { this.x = x; }
 	
-	public int getY() 		{ return y; 	}
-	public void setY(int y) { this.y = y; 	}	
+	public int getY() 		{ return y;   }
+	public void setY(int y) { this.y = y; }	
 	
 	public boolean hasChanged()  { return processed; }
+	
+	public boolean isDead() { return dead; }
 }

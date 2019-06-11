@@ -111,7 +111,7 @@ public class World implements Runnable {
 		
 		//aggiorna gli stati di ogni nemico
 		for(int i = 0; i < getEnemies().size(); ++i)
-			if(getEnemies().get(i).move(GameObject.DOWN))
+			if(!getEnemies().get(i).dead && getEnemies().get(i).move(GameObject.DOWN))
 				hasChanged = true;
 		
 		/* scommentare nel caso di dijkstra

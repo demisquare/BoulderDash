@@ -118,7 +118,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 			BlockSprite e = blockSprites.get(i);
 			
 			//se il blocco logico è cambiato nell'ultimo world.update()...
-			if(e.getLogicObject().hasChanged()) {
+			if(e.getLogicObject().isDead()) {
 				
 				int x = e.getLogicObject().getX();
 				int y = e.getLogicObject().getY();
@@ -126,81 +126,80 @@ public class Level extends JPanel implements KeyListener, Runnable {
 				boolean ops  = false;
 				boolean ops2 = false;
 				
-				//questa cosa ha senso?
-				if( !(world.getMap().getTile(x, y).equals(e.getLogicObject())) ) {
+				ops2 = true;
+				GameObject newObj = world.getMap().getTile(x, y);
 					
-					ops2 = true;
-					GameObject newObj = world.getMap().getTile(x, y);
-					
-					if(newObj instanceof EmptyBlock) {
-						BufferedImage img = spritesheet.getSprite(1, 2);
-						blockSprites.set(i, new BlockSprite(img, newObj));
-					
-					} else if(newObj instanceof Wall) {
-						BufferedImage img = spritesheet.getSprite(0, 1);
-						blockSprites.set(i, new BlockSprite(img, newObj));
-					
-					} else if(newObj instanceof Diamond) {
-						BufferedImage img = spritesheet.getSprite(r.nextInt(2), 3);
-						blockSprites.set(i, new BlockSprite(img, newObj));
-						
-					} else if(newObj instanceof Ground) {
-						BufferedImage img = spritesheet.getSprite(0, 2);
-						blockSprites.set(i, new BlockSprite(img, newObj));
-					
-					} else if(newObj instanceof Rock) {
-						BufferedImage img = spritesheet.getSprite(r.nextInt(2), 0);
-						blockSprites.set(i, new BlockSprite(img, newObj));
-						
-					} else if(newObj instanceof Door) {
-						BufferedImage img = spritesheet.getSprite(1, 1);
-						blockSprites.set(i, new BlockSprite(img, newObj));
-
-					} else {
-						ops = true;
-						System.out.println("Su consiglio di GM");
-					
-					}
-					
-					if(!ops) {
-						System.out.println("GameObject in position [" + x 
-								+ ", " + y + "] is getting updated...");
-					}
-					
-				}
+				if(newObj instanceof EmptyBlock) {
+					BufferedImage img = spritesheet.getSprite(1, 2);
+					blockSprites.set(i, new BlockSprite(img, newObj));
 				
+				} else if(newObj instanceof Wall) {
+					BufferedImage img = spritesheet.getSprite(0, 1);
+					blockSprites.set(i, new BlockSprite(img, newObj));
+					
+				} else if(newObj instanceof Diamond) {
+					BufferedImage img = spritesheet.getSprite(r.nextInt(2), 3);
+					blockSprites.set(i, new BlockSprite(img, newObj));
+						
+				} else if(newObj instanceof Ground) {
+					BufferedImage img = spritesheet.getSprite(0, 2);
+					blockSprites.set(i, new BlockSprite(img, newObj));
+					
+				} else if(newObj instanceof Rock) {
+					BufferedImage img = spritesheet.getSprite(r.nextInt(2), 0);
+					blockSprites.set(i, new BlockSprite(img, newObj));
+					
+				} else if(newObj instanceof Door) {
+					BufferedImage img = spritesheet.getSprite(1, 1);
+					blockSprites.set(i, new BlockSprite(img, newObj));
+
+				} else {
+					ops = true;
+					System.out.println("GameObject in position [" + x 
+							+ ", " + y + "] is undefined...");
+					
+				}					
+				
+				if(!ops) {
+					//System.out.println("GameObject in position [" + x 
+					//		+ ", " + y + "] is getting updated...");
+				}
+			
 				if(!ops2) {
-					System.out.println("Corrisponde [" + x + ", " + y + "]");
+					//System.out.println("Corrisponde [" + x + ", " + y + "]");
 				}
 			}
 		}
-		
-		System.out.println();
+		//System.out.println();
 	}
-	
+
 	@Override
 	// permette di ridefinire i componenti del pannello di default.
 	// questo metodo viene invocato ogni volta che usiamo il metodo repaint().
 	protected void paintComponent(Graphics g) {
+		
 		super.paintComponent(g);
 		
 		updateGraphics();
 		revalidate();
 		
 		for(int i = 0; i < enemySprites.size(); ++i) {
-			//per accelerare l'animazione dell'Enemy, aumentare la costante 1 
-			if(enemySprites.get(i).counter >= (125/(FPS*1))) {
-				enemySprites.get(i).movePose(GameObject.DOWN);
-				enemySprites.get(i).getAnimation().update();
-				enemySprites.get(i).counter = 0;
 			
-			} else {
-				enemySprites.get(i).counter += 1;
+			if(!enemySprites.get(i).logicObj.isDead()) {
+				
+				//per accelerare l'animazione dell'Enemy, aumentare la costante 1 	
+				if(enemySprites.get(i).counter >= (125/(FPS*1))) {
+				
+					enemySprites.get(i).movePose(GameObject.DOWN);
+					enemySprites.get(i).getAnimation().update();
+					enemySprites.get(i).counter = 0;
+			
+				} else {
+					enemySprites.get(i).counter += 1;
+				}
 			}
 		}
 		
-		// disegna lo sprite del player...
-		//g.drawImage(world.getPlayer().ls.getAnimation().getSprite(), world.getPlayer().getX(), world.getPlayer().getY(), null);
 		Renderer.render(g, this);
 	}
 
@@ -214,40 +213,52 @@ public class Level extends JPanel implements KeyListener, Runnable {
 			
 			lastTimePressed = java.time.LocalTime.now();
 			
-			if(pgMove.containsKey(e.getKeyCode())) {
-				//a static map instead of a switch
-				playerSprites.get(0).movePose(pgMove.get(e.getKeyCode()));
-				world.getPlayer().update(pgMove.get(e.getKeyCode()));	
+			if(!world.getPlayer().isDead()) {
+				
+				if(pgMove.containsKey(e.getKeyCode())) {
+					
+					//a static map instead of a switch
+					playerSprites.get(0).movePose(pgMove.get(e.getKeyCode()));
+					world.getPlayer().update(pgMove.get(e.getKeyCode()));	
+				
+				}
+			
+				playerSprites.get(0).getAnimation().update();
+				
 			}
 		
-			playerSprites.get(0).getAnimation().update();
-			
 			//world.dijkstra(); inefficient.
 			
 			repaint();
+			world.reset();
 		}
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
 		
-		playerSprites.get(0).getAnimation().stop();
-		playerSprites.get(0).getAnimation().reset();
-		//a static map instead of a switch
-		if(pgMove.containsKey(e.getKeyCode()))
-			playerSprites.get(0).standPose(pgMove.get(e.getKeyCode()));
+		if(!world.getPlayer().isDead()) {
+			
+			playerSprites.get(0).getAnimation().stop();
+			playerSprites.get(0).getAnimation().reset();
+			//a static map instead of a switch
+			if(pgMove.containsKey(e.getKeyCode()))
+				playerSprites.get(0).standPose(pgMove.get(e.getKeyCode()));
 		
-		playerSprites.get(0).getAnimation().update();
+			playerSprites.get(0).getAnimation().update();
+		}
+		
+		repaint();
+		world.reset();
 
-		repaint();	
 	}
 
 	@Override
 	public void run() {
 		while(true) {
-				
-			world.reset();
+			
 			repaint();
+			world.reset();
 			
 			try {
 				Thread.sleep(FPS);
@@ -256,75 +267,4 @@ public class Level extends JPanel implements KeyListener, Runnable {
 			}
 		}		
 	}
-	
-/*	
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if( (java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0 )
-		{
-			lastTimePressed=java.time.LocalTime.now();
-		// TODO Auto-generated method stub
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_LEFT:
-			//System.out.println("left");
-			playerSprite.movePose(Living.LEFT);
-			world.getPlayer().move(Living.LEFT);
-			break;
-
-		case KeyEvent.VK_RIGHT:
-			//System.out.println("right");
-			playerSprite.movePose(Living.RIGHT);
-			world.getPlayer().move(Living.RIGHT);
-			break;
-
-		case KeyEvent.VK_UP:
-			//System.out.println("up");
-			playerSprite.movePose(Living.UP);
-			world.getPlayer().move(Living.UP);
-			break;
-
-		case KeyEvent.VK_DOWN:
-			//System.out.println("down");
-			playerSprite.movePose(Living.DOWN);
-			world.getPlayer().move(Living.DOWN);
-			break;
-
-		}
-		
-		playerSprite.getAnimation().update();
-		repaint();
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		playerSprite.getAnimation().stop();
-		playerSprite.getAnimation().reset();
-		
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_LEFT:
-			//System.out.println("left");
-			playerSprite.standPose(Living.LEFT);
-			break;
-
-		case KeyEvent.VK_RIGHT:
-			//System.out.println("right");
-			playerSprite.standPose(Living.RIGHT);
-			break;
-
-		case KeyEvent.VK_UP:
-			//System.out.println("up");
-			playerSprite.standPose(Living.UP);
-			break;
-
-		case KeyEvent.VK_DOWN:
-			//System.out.println("down");
-			playerSprite.standPose(Living.DOWN);
-			break;
-
-		}
-		playerSprite.getAnimation().update();
-		repaint();
-	}
-*/
 }
