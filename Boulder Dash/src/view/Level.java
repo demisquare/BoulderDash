@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
+import audio.AudioPlayer;
 import model.*;
 
 public class Level extends JPanel implements KeyListener, Runnable {
@@ -29,6 +31,12 @@ public class Level extends JPanel implements KeyListener, Runnable {
 	private int FPS = 34;
 	private static Sprite spritesheet = new Sprite();
 	private static Random r = new Random();	
+	
+	AudioPlayer menu_song= new AudioPlayer("." + File.separator +
+			  "resources" + File.separator +
+			  "assets" + File.separator +
+			  "music" + File.separator +
+			   "menu_song"+ ".wav");
 	
 	//Questa classe far� da interfaccia a TUTTA la logica di un livello
 	World world;
@@ -81,6 +89,11 @@ public class Level extends JPanel implements KeyListener, Runnable {
 					blockSprites.add(new BlockSprite(img, g));
 					
 				}
+			}
+			
+			if(menu_song.isPlaying()==false)
+			{
+				menu_song.loop();
 			}
 		}
 		
