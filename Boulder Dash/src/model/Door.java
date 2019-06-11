@@ -1,6 +1,5 @@
 package model;
 
-//TODO
 public class Door extends GameObject {
 	
 	public Door(int x, int y) {

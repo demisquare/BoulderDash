@@ -1,10 +1,6 @@
 package start;
 
-
-import java.awt.Color;
 import javax.swing.JFrame;
-import javax.swing.JSplitPane;
-
 import menu.Credits;
 import menu.Menu;
 import menu.Options;
@@ -25,19 +21,10 @@ public class Main {
 		//__________PANEL INIT_____________
 		Menu menu = new Menu();
 		frame.setContentPane(menu); //IMPOSTO IL MENU DI DEFAULT
-		Level level = new Level();	
-		Score score = new Score();
+		Game game = new Game();
 		Credits credits = new Credits();
 		Options options = new Options();
-		
-		JSplitPane game = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, level, score);
-		game.setDividerLocation(920);
-		game.setDividerSize(0);
 		//_________________________________
-
-		
-
-		
 		
 		new Thread(new Runnable() {
 			@Override
@@ -46,8 +33,7 @@ public class Main {
 					if (menu.start_selected) { //AVVIO DEL GIOCO
 						frame.remove(menu);
 						frame.setContentPane(game);
-						level.addKeyListener(level);
-						level.requestFocusInWindow();
+						game.level.requestFocusInWindow();
 						frame.revalidate();
 						frame.repaint();
 						menu.start_selected=false;
@@ -80,12 +66,12 @@ public class Main {
 						frame.repaint();
 						options.turn_back=false;
 					}
-					if (score.turn_back) { //TORNO AL MENU DAL GIOCO
+					if (game.score.turn_back) { //TORNO AL MENU DAL GIOCO
 						frame.remove(game);
 						frame.setContentPane(menu);
 						frame.revalidate();
 						frame.repaint();
-						score.turn_back=false;
+						game.score.turn_back=false;
 					}
 					try {
 						Thread.sleep(34);
@@ -106,7 +92,7 @@ public class Main {
 //			frame.setSize(1280, 749);
 //		}
 
-			
+	
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);

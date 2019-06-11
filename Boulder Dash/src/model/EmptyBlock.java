@@ -1,6 +1,5 @@
 package model;
 
-//TODO
 public class EmptyBlock extends GameObject {
 	
 	public EmptyBlock(int x, int y) {
