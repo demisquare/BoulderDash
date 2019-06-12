@@ -29,7 +29,7 @@ public class Main {
 			@Override
 			public void run() {
 				while (true) {
-					
+
 					Music.start(options.music);
 
 					if (menu.start_selected) { // AVVIO DEL GIOCO
@@ -42,7 +42,7 @@ public class Main {
 						menu.start_selected = false;
 					}
 					if (menu.credits_selected) { // AVVIO DEI CREDITI
-						//Music.setSong(Music.creditsSong);
+						Music.setSong(Music.creditsSong);
 						frame.remove(menu);
 						frame.setContentPane(credits);
 						frame.revalidate();
@@ -57,7 +57,7 @@ public class Main {
 						menu.options_selected = false;
 					}
 					if (credits.turn_back) { // TORNO AL MENU DALLA SCHERMATA DEI CREDITI
-						//Music.setSong(Music.menuSong);
+						Music.setSong(Music.menuSong);
 						frame.remove(credits);
 						frame.setContentPane(menu);
 						frame.revalidate();

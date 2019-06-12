@@ -17,12 +17,12 @@ public class Music{
 			"music" + File.separator +
 			"game_song" + ".wav");
 	
-	/*public static final AudioPlayer creditsSong = new AudioPlayer(
+	public static final AudioPlayer creditsSong = new AudioPlayer(
 			"." + File.separator +
 			"resources" + File.separator +
 			"assets" + File.separator +
 			"music" + File.separator +
-			"credits_song" + ".wav");*/
+			"credits_song" + ".wav");
 	
 	public static void setSong(AudioPlayer song)
 	{
