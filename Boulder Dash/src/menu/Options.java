@@ -391,11 +391,11 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mousePressed(MouseEvent e) {
-					if(music==true) {
+					if(music) {
 						music=false;
 						MUSIC_check.setIcon(new ImageIcon (music_unchecked));
 					}
-					else if(music==false){
+					else if(!music){
 						music=true;
 						MUSIC_check.setIcon(new ImageIcon (music_checked));
 						}

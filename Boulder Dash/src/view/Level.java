@@ -16,10 +16,15 @@ import audio.AudioPlayer;
 import model.*;
 
 public class Level extends JPanel implements KeyListener, Runnable {
-		
+
+	private static final long serialVersionUID = 1L;
+
 	//mappa che collega ogni pressione di tastiera al movimento corrispondente
 	//nello specifico: enumeratore Awt di pressione tasto , enumeratore logico di direzione
 	private static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>() {
+
+		private static final long serialVersionUID = 1L;
+
 		{
 			put(KeyEvent.VK_LEFT, GameObject.LEFT);
 			put(KeyEvent.VK_RIGHT, GameObject.RIGHT);
@@ -32,11 +37,11 @@ public class Level extends JPanel implements KeyListener, Runnable {
 	private static Sprite spritesheet = new Sprite();
 	private static Random r = new Random();	
 	
-	AudioPlayer menu_song= new AudioPlayer("." + File.separator +
+	/*AudioPlayer game_song = new AudioPlayer("." + File.separator +
 			  "resources" + File.separator +
 			  "assets" + File.separator +
 			  "music" + File.separator +
-			   "menu_song"+ ".wav");
+			   "game_song"+ ".wav");*/
 	
 	//Questa classe farï¿½ da interfaccia a TUTTA la logica di un livello
 	World world;
@@ -91,10 +96,10 @@ public class Level extends JPanel implements KeyListener, Runnable {
 				}
 			}
 			
-			if(menu_song.isPlaying()==false)
+			/*if(game_song.isPlaying()==false)
 			{
-				menu_song.loop();
-			}
+				game_song.loop();
+			}*/
 		}
 		
 		//inizializza le animazioni del giocatore
@@ -130,7 +135,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 			
 			BlockSprite e = blockSprites.get(i);
 			
-			//se il blocco logico è cambiato nell'ultimo world.update()...
+			//se il blocco logico ï¿½ cambiato nell'ultimo world.update()...
 			if(e.getLogicObject().isDead()) {
 				
 				int x = e.getLogicObject().getX();
