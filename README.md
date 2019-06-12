@@ -6,6 +6,19 @@
  - EmbASP Framework
  
 ## History:
+#### 12-06-19:
+- Now music can be deactivated by options flag
+
+#### 11-06-19:
+- Added Audio folder and Music handler classes
+- Now, any Living implementors will die if a rock falls over them vertically
+  while in motion (moving under a rock will not result in the Living object dying)
+
+#### 10-06-19:
+- Added Options panel and "turn_back" button in the Score panel
+- Now rocks fall only if there's enough space
+- Code improvements
+
 #### 06-06-19:
 - Added Menu and Score class
 - Camera bugfix
