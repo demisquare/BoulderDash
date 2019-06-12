@@ -48,7 +48,7 @@ public class Menu extends JPanel{
 
 	public Menu() {
 		
-		Music.currentSong = Music.menuSong;
+		Music.backgroundMusic = Music.menuSong;
 		
 		try {
 			background = ImageIO.read(

@@ -29,17 +29,11 @@ public class Main {
 			@Override
 			public void run() {
 				while (true) {
-
-					if (options.music) {
-						if (!Music.currentSong.isPlaying()) {
-							Music.currentSong.loop();
-						}
-					} else {
-						Music.currentSong.stop();
-						Music.currentSong.rewind();
-					}
+					
+					Music.start(options.music);
 
 					if (menu.start_selected) { // AVVIO DEL GIOCO
+						Music.setSong(Music.gameSong);
 						frame.remove(menu);
 						frame.setContentPane(game);
 						game.level.requestFocusInWindow();
@@ -48,6 +42,7 @@ public class Main {
 						menu.start_selected = false;
 					}
 					if (menu.credits_selected) { // AVVIO DEI CREDITI
+						//Music.setSong(Music.creditsSong);
 						frame.remove(menu);
 						frame.setContentPane(credits);
 						frame.revalidate();
@@ -62,6 +57,7 @@ public class Main {
 						menu.options_selected = false;
 					}
 					if (credits.turn_back) { // TORNO AL MENU DALLA SCHERMATA DEI CREDITI
+						//Music.setSong(Music.menuSong);
 						frame.remove(credits);
 						frame.setContentPane(menu);
 						frame.revalidate();
@@ -76,6 +72,7 @@ public class Main {
 						options.turn_back = false;
 					}
 					if (game.score.turn_back) { // TORNO AL MENU DAL GIOCO
+						Music.setSong(Music.menuSong);
 						frame.remove(game);
 						frame.setContentPane(menu);
 						frame.revalidate();
