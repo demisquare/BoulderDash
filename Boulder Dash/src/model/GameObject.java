@@ -90,16 +90,6 @@ public abstract class GameObject {
 					swap(x, y+1);
 					return true;
 				
-				} else if(map.getTile(x, y+1) instanceof Living && isFalling) {
-					
-					if(!(this instanceof Diamond)) {
-						
-						map.getTile(x, y+1).destroy();
-						isFalling = false;
-						swap(x, y+1);
-						return true;
-					}
-					
 				} else if(map.getTile(x, y+1) instanceof Sliding) {
 				
 					if(map.getTile(x+1, y+1) instanceof EmptyBlock && map.getTile(x+1, y) instanceof EmptyBlock) {
