@@ -212,7 +212,7 @@ public class World implements Runnable {
 	@Override
 	public void run() {
 		while(true) {
-			//if(!hasChanged) 
+			
 			update();
 			
 			try {

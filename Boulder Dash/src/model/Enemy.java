@@ -6,11 +6,25 @@ public class Enemy extends GameObject implements Living {
 	private int speed;
 	
 	public Enemy(int x, int y, int s) {
+		
 		super(x, y);
 		speed = s;
-
 	}
 
+	@Override
+	protected boolean move(int dir) {
+		
+		int i = (x + dmap[dir][0]);
+		int j = (y + dmap[dir][1]);
+		
+		if(!(i < 0 || i >= map.dimX) && !(j < 0 || j >= map.dimY)) {
+		
+			//???
+		}
+		
+		return super.move(dir);
+	}
+	
 	@Override
 	public boolean update() {
 		

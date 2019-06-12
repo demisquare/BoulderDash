@@ -36,47 +36,56 @@ public abstract class GameObject {
 	protected boolean destroy() {
 	
 		try {
-			map.setTile(x, y, new EmptyBlock(x, y));
-			processed = true;
-			dead = true;
-			map.getTile(x, y).processed = true;
-			return true;
+			if(processed == false) {
+				
+				GameObject temp = new EmptyBlock(x, y);
+			
+				map.setTile(x, y, temp);
+				temp.processed = true;
+			
+				processed = true;
+				dead = true;
+			
+				return true;
+			}
 			
 		} catch(NullPointerException e) {
 			System.out.println("I'm in destroy()");
 			e.printStackTrace();
-		
 		}
 		
 		return false;
 	}
 	
+	//probabilmente questo è il problema?
 	protected void swap(int i, int j) {
 		
 		GameObject temp = map.getTile(i, j);
 		
-		if(!map.getTile(x, y).equals(this)) {
+		if(temp.processed == false) {
 			
-			System.out.println("MANNAJA");
-		}
-		
-		map.setTile(x, y, temp);
-		
-		temp.x = x;
-		temp.y = y;
-		temp.processed = true;
-		
-		if(!map.getTile(i, j).equals(temp)) {
+			if(!map.getTile(x, y).equals(this)) {
 			
-			System.out.println("AJANNAM");
+				System.out.println("MANNAJA");
+			}
+		
+			map.setTile(x, y, temp);
+		
+			temp.x = x;
+			temp.y = y;
+			temp.processed = true;
+		
+			if(!map.getTile(i, j).equals(temp)) {
+			
+				System.out.println("AJANNAM");
+			}
+		
+			map.setTile(i, j, this);
+		
+			x = i;
+			y = j;
+			processed = true;
 		}
-		
-		map.setTile(i, j, this);
-		
-		x = i;
-		y = j;
-		processed = true;
-		
 	}
 	
 	protected boolean fall() {
@@ -90,21 +99,6 @@ public abstract class GameObject {
 					swap(x, y+1);
 					return true;
 				
-				} else if(map.getTile(x, y+1) instanceof Sliding) {
-				
-					if(map.getTile(x+1, y+1) instanceof EmptyBlock && map.getTile(x+1, y) instanceof EmptyBlock) {
-
-						isFalling = true;
-						swap(x+1, y+1);
-						return true;
-						
-					} else if(map.getTile(x-1, y+1) instanceof EmptyBlock && map.getTile(x-1, y) instanceof EmptyBlock) {
-
-						isFalling = true;
-						swap(x-1, y+1);
-						return true;
-					
-					}
 				}
 			} catch(NullPointerException e) {
 				e.printStackTrace();
@@ -133,6 +127,7 @@ public abstract class GameObject {
 	}
 
 	public GameObject(int x, int y) {
+		
 		this.x = x;
 		this.y = y;
 		processed = false;

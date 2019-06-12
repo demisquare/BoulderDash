@@ -133,18 +133,14 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		//aggiorna la grafica
 		for(int i = 0; i < blockSprites.size(); ++i) {
 			
-			BlockSprite e = blockSprites.get(i);
-			
 			//se il blocco logico � cambiato nell'ultimo world.update()...
-			if(e.getLogicObject().isDead()) {
+			if(blockSprites.get(i).getLogicObject().isDead()) {
 				
-				int x = e.getLogicObject().getX();
-				int y = e.getLogicObject().getY();
+				int x = blockSprites.get(i).getLogicObject().getX();
+				int y = blockSprites.get(i).getLogicObject().getY();
 				
 				boolean ops  = false;
-				boolean ops2 = false;
 				
-				ops2 = true;
 				GameObject newObj = world.getMap().getTile(x, y);
 					
 				if(newObj instanceof EmptyBlock) {
@@ -182,18 +178,15 @@ public class Level extends JPanel implements KeyListener, Runnable {
 					//System.out.println("GameObject in position [" + x 
 					//		+ ", " + y + "] is getting updated...");
 				}
-			
-				if(!ops2) {
-					//System.out.println("Corrisponde [" + x + ", " + y + "]");
-				}
 			}
 		}
 		//System.out.println();
 	}
 
-	@Override
+	
 	// permette di ridefinire i componenti del pannello di default.
 	// questo metodo viene invocato ogni volta che usiamo il metodo repaint().
+	@Override
 	protected void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);

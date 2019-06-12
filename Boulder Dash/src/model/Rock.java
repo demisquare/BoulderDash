@@ -16,17 +16,33 @@ public class Rock extends GameObject implements Sliding {
 				
 				if(isFalling) {
 					
-					map.getTile(x, y+1).destroy();
+					map.getTile(x, y+1).dead = true;
 					isFalling = false;
-					swap(x, y+1);
 					return true;
 				
 				} else if(map.getTile(x, y-1) instanceof Rock) {
 					
-					map.getTile(x, y+1).destroy();
-					swap(x, y+1);
+					map.getTile(x, y+1).dead = true;
 					return true;
 					
+				}
+			}  else if(map.getTile(x, y+1) instanceof Sliding) {
+				
+				if(map.getTile(x+1, y+1) instanceof EmptyBlock
+						&& (map.getTile(x+1, y) instanceof EmptyBlock 
+								|| map.getTile(x+1, y) instanceof Living)) {
+
+					isFalling = true;
+					swap(x+1, y+1);
+					return true;
+					
+				} else if(map.getTile(x-1, y+1) instanceof EmptyBlock 
+						&& (map.getTile(x-1, y) instanceof EmptyBlock
+								|| map.getTile(x-1, y) instanceof Living)) {
+
+					isFalling = true;
+					swap(x-1, y+1);
+					return true;
 				}
 			}
 			
