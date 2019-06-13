@@ -13,6 +13,7 @@ import java.util.Random;
 import javax.swing.JPanel;
 
 import audio.AudioPlayer;
+import audio.Music;
 import model.*;
 
 public class Level extends JPanel implements KeyListener, Runnable {
@@ -95,11 +96,6 @@ public class Level extends JPanel implements KeyListener, Runnable {
 					
 				}
 			}
-			
-			/*if(game_song.isPlaying()==false)
-			{
-				game_song.loop();
-			}*/
 		}
 		
 		//inizializza le animazioni del giocatore
