@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
@@ -80,15 +81,24 @@ public class World implements Runnable {
 	public void reset() {
 
 		Collection<GameObject> temp = map.getBlocks().values();
-		for(GameObject e : temp) {
+		for(GameObject e : temp)
 			e.processed = false;
-		}
-		map.getPlayer().processed = false;
-		for(GameObject e : map.getEnemies()) {
-			e.processed = false;
-		}
 		
-		hasChanged = false;
+		temp = map.getDiamondsMap().values();
+		for(GameObject e : temp)
+			e.processed = false;
+		
+		temp = map.getEmptyBlocksMap().values();
+		for(GameObject e : temp)
+			e.processed = false;
+		
+		temp = map.getGroundMap().values();
+		for(GameObject e : temp)
+			e.processed = false;
+		
+		temp = map.getRocksMap().values();
+		for(GameObject e : temp)
+			e.processed = false;
 	}
 
 	//questa funzione dovrebbe in automatico aggiornare gli stati di 
@@ -96,24 +106,47 @@ public class World implements Runnable {
 	public void update() {
 		
 		//aggiorna gli stati di ogni casella
-		Collection<GameObject> temp = map.getBlocks().values();
-		for(GameObject e : temp) {
-			try {
-				if(e.processed == false && e.update())
-					hasChanged = true;
-					
-			} catch(NullPointerException e1) {
-				System.out.println(e.getX() + " " + e.getY());
-				e1.printStackTrace();
-				
-			}	
+		try {
+			Collection<GameObject> temp = map.getBlocks().values();
+			for(GameObject e : temp)
+				if(e.processed == false)
+					e.update();
+			
+			temp = map.getDiamondsMap().values();
+			for(GameObject e : temp)
+				if(e.processed == false)
+					e.update();
+			
+			temp = map.getEmptyBlocksMap().values();
+			for(GameObject e : temp)
+				if(e.processed == false)
+					e.update();
+			
+			temp = map.getGroundMap().values();
+			for(GameObject e : temp)
+				if(e.processed == false)
+					e.update();
+			
+			temp = map.getRocksMap().values();
+			for(GameObject e : temp)
+				if(e.processed == false)
+					e.update();
+			
+		} catch(ConcurrentModificationException e1) {
+			e1.printStackTrace();
+			
 		}
 		
 		//aggiorna gli stati di ogni nemico
-		for(int i = 0; i < getEnemies().size(); ++i)
-			if(!getEnemies().get(i).dead && getEnemies().get(i).move(GameObject.DOWN))
-				hasChanged = true;
-		
+		try {
+			for(int i = 0; i < getEnemies().size(); ++i)
+				if(!getEnemies().get(i).dead)
+					getEnemies().get(i).move(GameObject.DOWN);
+			
+		} catch(ConcurrentModificationException e2) {
+			e2.printStackTrace();
+		}
+			
 		/* scommentare nel caso di dijkstra
 		{
 			int dir=stack.pop();
@@ -132,8 +165,7 @@ public class World implements Runnable {
 		//flag di vittoria qui?
 
 	}
-	
-	
+		
 	public void dijkstra() {
 		
 		int s= (1*map.getDimY())+10;  //omdat die de co�rdinaten zijn (perch� queste sono le coordinate nell'unico nemico che c'�)

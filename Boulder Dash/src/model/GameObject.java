@@ -30,43 +30,51 @@ public abstract class GameObject {
 	protected boolean dead;
 	protected boolean isFalling;
 	
+	protected GameObject successor;
+	
 	public abstract boolean update();
 	public abstract boolean update(int dir);
 	
 	protected boolean destroy() {
 	
 		try {
-			if(processed == false) {
+				successor = new EmptyBlock(x, y);
 				
-				GameObject temp = new EmptyBlock(x, y);
-			
-				map.setTile(x, y, temp);
-				temp.processed = true;
+				map.setTile(x, y, successor);
+				
+				successor.processed = false;
 			
 				processed = true;
 				dead = true;
-			
+				
+				if(map.containsKey(x*map.dimX+y) && map.getTile(x, y).equals(successor)) {
+					System.out.println("viene distrutto... " + this);
+				
+				} else {
+					throw new NullPointerException();
+				}
+				
 				return true;
-			}
 			
 		} catch(NullPointerException e) {
-			System.out.println("I'm in destroy()");
+			System.out.println("I'm in destroy(): " + this.getClass().getCanonicalName() + " " + x + " " + y);
 			e.printStackTrace();
 		}
 		
 		return false;
 	}
 	
-	//probabilmente questo è il problema?
 	protected void swap(int i, int j) {
 		
 		GameObject temp = map.getTile(i, j);
+		boolean error = false;
 		
 		if(temp.processed == false) {
 			
 			if(!map.getTile(x, y).equals(this)) {
 			
-				System.out.println("MANNAJA");
+				System.out.println("in model.GameObject.swap(): " + this + " != " + map.getTile(x, y));
+				error = true;
 			}
 		
 			map.setTile(x, y, temp);
@@ -74,17 +82,21 @@ public abstract class GameObject {
 			temp.x = x;
 			temp.y = y;
 			temp.processed = true;
-		
+	
 			if(!map.getTile(i, j).equals(temp)) {
-			
+		
 				System.out.println("AJANNAM");
+				error = true;
 			}
-		
+	
 			map.setTile(i, j, this);
-		
+	
 			x = i;
 			y = j;
 			processed = true;
+			
+			if(!error)
+				System.out.println("scambia i tiles...");
 		}
 	}
 	
@@ -133,6 +145,8 @@ public abstract class GameObject {
 		processed = false;
 		isFalling = false;
 		dead = false;
+		
+		successor = null;
 	}
 	
 	//uso non corretto di un hashCode?
@@ -147,6 +161,11 @@ public abstract class GameObject {
 				obj.hashCode() == hashCode();
 	}
 	
+	@Override
+	public String toString() {
+		return this.getClass().getCanonicalName() + ".[" + x + ", " + y + "]";
+	}
+	
 	public int getX() 		{ return x;   }	
 	public void setX(int x) { this.x = x; }
 	
@@ -156,4 +175,6 @@ public abstract class GameObject {
 	public boolean hasChanged()  { return processed; }
 	
 	public boolean isDead() { return dead; }
+	
+	public GameObject getSuccessor() { return successor; }
 }

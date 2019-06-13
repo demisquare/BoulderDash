@@ -133,54 +133,19 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		//aggiorna la grafica
 		for(int i = 0; i < blockSprites.size(); ++i) {
 			
-			//se il blocco logico � cambiato nell'ultimo world.update()...
+			//se il blocco logico e' cambiato nell'ultimo world.update()...
+			try {
 			if(blockSprites.get(i).getLogicObject().isDead()) {
-				
-				int x = blockSprites.get(i).getLogicObject().getX();
-				int y = blockSprites.get(i).getLogicObject().getY();
-				
-				boolean ops  = false;
-				
-				GameObject newObj = world.getMap().getTile(x, y);
+												
+					GameObject newObj = blockSprites.get(i).getLogicObject().getSuccessor();
 					
-				if(newObj instanceof EmptyBlock) {
 					BufferedImage img = spritesheet.getSprite(1, 2);
-					blockSprites.set(i, new BlockSprite(img, newObj));
-				
-				} else if(newObj instanceof Wall) {
-					BufferedImage img = spritesheet.getSprite(0, 1);
-					blockSprites.set(i, new BlockSprite(img, newObj));
-					
-				} else if(newObj instanceof Diamond) {
-					BufferedImage img = spritesheet.getSprite(r.nextInt(2), 3);
-					blockSprites.set(i, new BlockSprite(img, newObj));
-						
-				} else if(newObj instanceof Ground) {
-					BufferedImage img = spritesheet.getSprite(0, 2);
-					blockSprites.set(i, new BlockSprite(img, newObj));
-					
-				} else if(newObj instanceof Rock) {
-					BufferedImage img = spritesheet.getSprite(r.nextInt(2), 0);
-					blockSprites.set(i, new BlockSprite(img, newObj));
-					
-				} else if(newObj instanceof Door) {
-					BufferedImage img = spritesheet.getSprite(1, 1);
-					blockSprites.set(i, new BlockSprite(img, newObj));
-
-				} else {
-					ops = true;
-					System.out.println("GameObject in position [" + x 
-							+ ", " + y + "] is undefined...");
-					
-				}					
-				
-				if(!ops) {
-					//System.out.println("GameObject in position [" + x 
-					//		+ ", " + y + "] is getting updated...");
+					blockSprites.set(i, new BlockSprite(img, newObj));	
 				}
+			} catch(NullPointerException e) {
+				e.printStackTrace();
 			}
 		}
-		//System.out.println();
 	}
 
 	

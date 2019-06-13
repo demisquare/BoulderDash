@@ -25,6 +25,7 @@ public class Player extends GameObject implements Living {
 		
 			if(map.getTile(i, j) instanceof EmptyBlock) {
 				
+				System.out.println("si muove...");
 				swap(i, j);
 				return true;
 			
@@ -59,6 +60,7 @@ public class Player extends GameObject implements Living {
 		
 		} else if(g instanceof Ground) {
 			
+			System.out.println("scava...");
 			if(g.destroy()) {
 				return move(dir);
 			}
