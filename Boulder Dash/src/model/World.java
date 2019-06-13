@@ -3,22 +3,13 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Stack;
-import java.util.function.Supplier;
-
-import org.jgrapht.*;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.util.SupplierUtil;
-
 import view.Sprite;
 
 //classe che contiene sia il player che la mappa
 public class World implements Runnable {
 
 	GameMap map;	
-	Stack<Integer> stack = new Stack<Integer>();
+	//Stack<Integer> stack = new Stack<Integer>();
 	
 	//true se il world è stato aggiornato
 	boolean hasChanged;
@@ -42,7 +33,7 @@ public class World implements Runnable {
 		height = map.getDimY() * Sprite.TILE_SIZE;
 		
 		//da definire la posizione di partenza (e il criterio di scelta)
-		stack.add((2*map.getDimX())+10);
+		//stack.add((2*map.getDimX())+10);
 		
 		Thread t = new Thread(this);
 		t.start();
@@ -165,7 +156,7 @@ public class World implements Runnable {
 		//flag di vittoria qui?
 
 	}
-		
+/*		
 	public void dijkstra() {
 		
 		int s= (1*map.getDimY())+10;  //omdat die de coï¿½rdinaten zijn (perchï¿½ queste sono le coordinate nell'unico nemico che c'ï¿½)
@@ -240,7 +231,8 @@ public class World implements Runnable {
 		//da fare
 		
 	}
-
+*/
+	
 	@Override
 	public void run() {
 		while(true) {

@@ -57,7 +57,7 @@ public abstract class GameObject {
 				return true;
 			
 		} catch(NullPointerException e) {
-			System.out.println("I'm in destroy(): " + this.getClass().getCanonicalName() + " " + x + " " + y);
+			System.out.println("I'm in destroy(): " + this);
 			e.printStackTrace();
 		}
 		

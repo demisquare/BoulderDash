@@ -170,7 +170,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 				//per accelerare l'animazione dell'Enemy, aumentare la costante 1 	
 				if(enemySprites.get(i).counter >= (125/(FPS*1))) {
 				
-					enemySprites.get(i).movePose(GameObject.DOWN);
+					enemySprites.get(i).movePose(((Enemy) enemySprites.get(i).logicObj).getLastDir());
 					enemySprites.get(i).getAnimation().update();
 					enemySprites.get(i).counter = 0;
 			
