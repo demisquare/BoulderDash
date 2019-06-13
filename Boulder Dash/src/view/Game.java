@@ -1,8 +1,10 @@
 package view;
 
+import java.io.Serializable;
+
 import javax.swing.JSplitPane;
 
-public class Game extends JSplitPane{
+public class Game extends JSplitPane implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 

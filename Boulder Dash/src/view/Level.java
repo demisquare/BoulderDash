@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,8 +11,6 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
-import audio.AudioPlayer;
-import audio.Music;
 import model.*;
 
 public class Level extends JPanel implements KeyListener, Runnable {
@@ -122,6 +119,17 @@ public class Level extends JPanel implements KeyListener, Runnable {
 
 	public ArrayList<BlockSprite> getBlockSprites() {
 		return blockSprites;
+	}
+	
+	public World getWorld() {
+		// TODO Auto-generated method stub
+		return world;
+	}
+
+	public void setWorld(World world) {
+		// TODO Auto-generated method stub
+		this.world = world;
+		
 	}
 	
 	public void updateGraphics() {
