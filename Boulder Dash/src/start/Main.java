@@ -3,9 +3,8 @@ package start;
 import javax.swing.JFrame;
 
 import audio.Music;
-import menu.Credits;
-import menu.Menu;
-import menu.Options;
+import menu.*;
+import network.*;
 import view.*;
 
 public class Main {
@@ -23,8 +22,9 @@ public class Main {
 		Game game = new Game();
 		Credits credits = new Credits();
 		Options options = new Options();
+		Multiplayer multi = new Multiplayer();
 		// _________________________________
-
+		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -41,6 +41,26 @@ public class Main {
 						frame.repaint();
 						menu.start_selected = false;
 					}
+					if (multi.server_selected) { // AVVIO DEL GIOCO SERVER
+						SocketServer socketServer = new SocketServer(game);
+						socketServer.connect();
+						frame.remove(multi);
+						frame.setContentPane(game);
+						game.level.requestFocusInWindow();
+						frame.revalidate();
+						frame.repaint();
+						multi.server_selected = false;
+					}
+					if (multi.client_selected) { // AVVIO DEL GIOCO CLIENT
+						SocketClient socketClient = new SocketClient(game);
+						socketClient.connect();
+						frame.remove(multi);
+						frame.setContentPane(game);
+						game.level.requestFocusInWindow();
+						frame.revalidate();
+						frame.repaint();
+						multi.client_selected = false;
+					}
 					if (menu.credits_selected) { // AVVIO DEI CREDITI
 						Music.setSong(Music.creditsSong);
 						frame.remove(menu);
@@ -56,6 +76,13 @@ public class Main {
 						frame.repaint();
 						menu.options_selected = false;
 					}
+					if (menu.multi_selected) { // AVVIO DEL MULTIPLAYER
+						frame.remove(menu);
+						frame.setContentPane(multi);
+						frame.revalidate();
+						frame.repaint();
+						menu.multi_selected = false;
+					}
 					if (credits.turn_back) { // TORNO AL MENU DALLA SCHERMATA DEI CREDITI
 						Music.setSong(Music.menuSong);
 						frame.remove(credits);
@@ -70,6 +97,13 @@ public class Main {
 						frame.revalidate();
 						frame.repaint();
 						options.turn_back = false;
+					}
+					if (multi.turn_back) { // TORNO AL MENU DALLA SCHERMATA DEL MULTIPLAYER
+						frame.remove(multi);
+						frame.setContentPane(menu);
+						frame.revalidate();
+						frame.repaint();
+						multi.turn_back = false;
 					}
 					if (game.score.turn_back) { // TORNO AL MENU DAL GIOCO
 						Music.setSong(Music.menuSong);

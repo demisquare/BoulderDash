@@ -7,28 +7,41 @@ import java.net.Socket;
 
 import view.Game;
 
-public class Client extends Game implements Runnable {
-
-	private static final long serialVersionUID = 1L;
+public class SocketClient implements Runnable {
 
 	private static int PORT = 8000;
 	private Socket socket;
 	OutputStream outputStream;
 	ObjectOutputStream objectOutputStream;
+	Game game;
 
-	public Client(String serverAddress) {
+	public SocketClient(Game game) {
 
 		// Setup networking
-		super();
+		game = new Game();
+	}
+	
+	public void connect() {
 		try {
 			socket = new Socket("localhost", PORT);
 			System.out.println("Connected!");
 			outputStream = socket.getOutputStream();
 			objectOutputStream = new ObjectOutputStream(outputStream);
+			new Thread(this).start();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+	}
+	
+	public void close() {
+		System.out.println("Closing socket and terminating program.");
+		try {
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -36,12 +49,9 @@ public class Client extends Game implements Runnable {
 		while (true) {
 			try {
 				System.out.println("Sending messages to the ServerSocket");
-				objectOutputStream.writeObject(level.getWorld());
+				objectOutputStream.writeObject(game.level.getWorld());
 				
-				super.level.run();
-				
-				System.out.println("Closing socket and terminating program.");
-				socket.close();
+				game.level.run();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
