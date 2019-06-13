@@ -12,6 +12,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import audio.Music;
+
 public class Options extends JPanel{
 
 	private static final long serialVersionUID = 1L;
@@ -42,7 +44,7 @@ public class Options extends JPanel{
 	
 	public boolean turn_back=false;
 	public boolean full_screen=false;
-	public boolean music=true;
+	public static boolean music=true;
 	enum Difficulty {paradiso, purgatorio, inferno;}
 	public Difficulty difficulty = Difficulty.purgatorio;
 	
@@ -131,6 +133,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					turn_back = true;
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
@@ -146,6 +149,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back_SELECTED));
 					revalidate();
 					repaint();
@@ -168,6 +172,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					if(difficulty!=Difficulty.paradiso) {
 						difficulty=Difficulty.paradiso;
 						PARADISO_scaled.setIcon(new ImageIcon (paradiso_SELECTED));
@@ -189,6 +194,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					if(difficulty!=Difficulty.paradiso) {
 						PARADISO_scaled.setIcon(new ImageIcon (paradiso_SELECTED));
 						revalidate();
@@ -213,6 +219,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					if(difficulty!=Difficulty.purgatorio) {
 						difficulty=Difficulty.purgatorio;
 						PARADISO_scaled.setIcon(new ImageIcon (paradiso));
@@ -234,6 +241,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					if(difficulty!=Difficulty.purgatorio) {
 						PURGATORIO_scaled.setIcon(new ImageIcon (purgatorio_SELECTED));
 						revalidate();
@@ -258,6 +266,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					if(difficulty!=Difficulty.inferno) {
 						difficulty=Difficulty.inferno;
 						PARADISO_scaled.setIcon(new ImageIcon (paradiso));
@@ -279,6 +288,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					if(difficulty!=Difficulty.inferno) {
 						INFERNO_scaled.setIcon(new ImageIcon (inferno_SELECTED));
 						revalidate();
@@ -303,6 +313,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					if(full_screen) {
 						full_screen=false;
 						FULLSCREEN_scaled.setIcon(new ImageIcon (fullscreen));
@@ -323,6 +334,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					if(full_screen) {
 						WINDOWED_scaled.setIcon(new ImageIcon (windowed_SELECTED));
 						revalidate();
@@ -347,6 +359,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					if(!full_screen) {
 						full_screen=true;
 						FULLSCREEN_scaled.setIcon(new ImageIcon (fullscreen_SELECTED));
@@ -367,6 +380,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					if(!full_screen) {
 						FULLSCREEN_scaled.setIcon(new ImageIcon (fullscreen_SELECTED));
 						revalidate();
@@ -391,6 +405,7 @@ public class Options extends JPanel{
 				
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					if(music) {
 						music=false;
 						MUSIC_check.setIcon(new ImageIcon (music_unchecked));

@@ -12,6 +12,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import audio.Music;
+
 public class Multiplayer extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -81,6 +83,7 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					turn_back = true;
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
@@ -89,6 +92,7 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mouseExited(MouseEvent e) {
+					Music.playTone("hover");
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
 					repaint();
@@ -117,6 +121,7 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					server_selected = true;
 					CREATE_GAME_scaled.setIcon(new ImageIcon(create_game));
 					revalidate();
@@ -132,6 +137,7 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					CREATE_GAME_scaled.setIcon(new ImageIcon(create_game_SELECTED));
 					revalidate();
 					repaint();
@@ -153,6 +159,7 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					server_selected = true;
 					JOIN_GAME_scaled.setIcon(new ImageIcon(join_game));
 					revalidate();
@@ -168,6 +175,7 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					JOIN_GAME_scaled.setIcon(new ImageIcon(join_game_SELECTED));
 					revalidate();
 					repaint();

@@ -30,7 +30,7 @@ public class Main {
 			public void run() {
 				while (true) {
 
-					Music.start(options.music);
+					Music.start();
 
 					if (menu.start_selected) { // AVVIO DEL GIOCO
 						Music.setSong(Music.gameSong);

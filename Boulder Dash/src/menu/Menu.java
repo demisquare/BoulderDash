@@ -121,6 +121,7 @@ public class Menu extends JPanel{
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					START_scaled.setIcon(new ImageIcon(START_SELECTED));
 					revalidate();
 					repaint();
@@ -135,6 +136,7 @@ public class Menu extends JPanel{
 
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					start_selected = true;
 					START_scaled.setIcon(new ImageIcon(START));
 					revalidate();
@@ -158,6 +160,7 @@ public class Menu extends JPanel{
 				@Override
 				public void mousePressed(MouseEvent e) {
 					// TODO Auto-generated method stub
+					Music.playTone("select");
 					multi_selected = true;
 					MULTI_scaled.setIcon(new ImageIcon(MULTI));
 					revalidate();
@@ -173,6 +176,7 @@ public class Menu extends JPanel{
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					MULTI_scaled.setIcon(new ImageIcon(MULTI_SELECTED));
 					revalidate();
 					repaint();
@@ -195,6 +199,7 @@ public class Menu extends JPanel{
 
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					options_selected = true;
 					OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS));
 					revalidate();
@@ -210,6 +215,7 @@ public class Menu extends JPanel{
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS_SELECTED));
 					revalidate();
 					repaint();
@@ -232,6 +238,7 @@ public class Menu extends JPanel{
 
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					credits_selected = true;
 					CREDITS_scaled.setIcon(new ImageIcon(CREDITS));
 					revalidate();
@@ -247,6 +254,7 @@ public class Menu extends JPanel{
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					CREDITS_scaled.setIcon(new ImageIcon(CREDITS_SELECTED));
 					revalidate();
 					repaint();
@@ -268,6 +276,7 @@ public class Menu extends JPanel{
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					EXIT_scaled.setIcon(new ImageIcon(EXIT_SELECTED));
 					revalidate();
 					repaint();
@@ -282,6 +291,7 @@ public class Menu extends JPanel{
 
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					System.exit(0);
 				}
 

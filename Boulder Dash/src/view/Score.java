@@ -11,6 +11,9 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import audio.Music;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -56,6 +59,7 @@ public class Score extends JPanel{
 				
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					turn_back = true;
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
@@ -71,6 +75,7 @@ public class Score extends JPanel{
 				
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back_SELECTED));
 					revalidate();
 					repaint();

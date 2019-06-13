@@ -12,6 +12,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import audio.Music;
+
 public class Credits extends JPanel{
 
 	private static final long serialVersionUID = 1L;
@@ -49,6 +51,7 @@ public class Credits extends JPanel{
 				
 				@Override
 				public void mousePressed(MouseEvent e) {
+					Music.playTone("select");
 					turn_back = true;
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
@@ -64,6 +67,7 @@ public class Credits extends JPanel{
 				
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back_SELECTED));
 					revalidate();
 					repaint();
