@@ -160,7 +160,7 @@ public class Multiplayer extends JPanel {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					server_selected = true;
+					client_selected = true;
 					JOIN_GAME_scaled.setIcon(new ImageIcon(join_game));
 					revalidate();
 					repaint();
