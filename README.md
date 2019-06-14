@@ -6,8 +6,27 @@
  - EmbASP Framework
  
 ## History:
+#### 14-06-19:
+- Multiplayer fixes
+
+#### 13-06-19:
+- Added network package
+- Added Multiplayer panel.
+- Added a new menu song and Credits song
+- Added sfx on menu labels.
+- Improved Music handler class
+- Solved a bug concerning the sprite update
+- Now Enemy and Player have the correct background sprites
+- Swapped HashMap with ConcurrentHashMap in GameMap for consistency
+- Started implementing the AI package (still work in progess)
+- Added separate maps for different kinds of blocks (will be useful when implementing AI algorithms)
+- Now Enemy object have their own basic AI (direction chosen randomly)
+
 #### 12-06-19:
 - Now music can be deactivated by options flag
+- Now, if the player digs under two or more rocks, it dies
+- Fixed a synchronization problem with GameObject.swap() and GameObject.destroy() methods
+- Now the update process should be nearly serial
 
 #### 11-06-19:
 - Added Audio folder and Music handler classes
