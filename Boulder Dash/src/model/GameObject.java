@@ -16,6 +16,12 @@ public abstract class GameObject {
 	public static final int RIGHT = 2;
 	public static final int UP    = 3;
 	
+	public static final int IS_FALLING 	= 0;
+	public static final int IS_MOVING 	= 1;
+	public static final int HAS_HIT 	= 2;
+	public static final int IS_DEAD 	= 3;
+	public static final int HAS_DUG		= 4;
+	
 	static final int dmap[][] = { { 0,  1},
 			                      {-1,  0},
 			                      { 1,  0},
@@ -35,7 +41,13 @@ public abstract class GameObject {
 	public abstract boolean update();
 	public abstract boolean update(int dir);
 	
-	protected boolean destroy() {
+	/*
+	 * Primo metodo fondamentale: gestisce la distruzione di un oggetto
+	 * (diamanti, terreno, nemici...) sostituendolo nella map con un EmptyBlock,
+	 * conservato in successor per facilità di recupero nella fase
+	 * di aggiornamento della grafica ( si veda Level.updateGraphics() )
+	 * */
+	protected final boolean destroy() {
 	
 		try {
 				successor = new EmptyBlock(x, y);
@@ -64,7 +76,12 @@ public abstract class GameObject {
 		return false;
 	}
 	
-	protected void swap(int i, int j) {
+	/*
+	 * Secondo metodo fondamentale: gestisce il movimento di oggetti tramite lo
+	 * "swap" (scambio) delle posizioni in termini di coordinate sulla mappa logica,
+	 * garantendo che i dati di ogni oggetto siano coerenti in ogni fase di esecuzione.
+	 * */
+	protected final void swap(int i, int j) {
 		
 		GameObject temp = map.getTile(i, j);
 		boolean error = false;
@@ -163,7 +180,7 @@ public abstract class GameObject {
 	
 	@Override
 	public String toString() {
-		return this.getClass().getCanonicalName() + ".[" + x + ", " + y + "]";
+		return this.getClass().getCanonicalName() + " at [" + x + ", " + y + "]";
 	}
 	
 	public int getX() 		{ return x;   }	
