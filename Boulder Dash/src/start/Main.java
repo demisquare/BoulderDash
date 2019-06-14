@@ -109,7 +109,7 @@ public class Main {
 						multi.turn_back = false;
 					}
 					if (game.score.turn_back) { // TORNO AL MENU DAL GIOCO
-						socketServer.close();
+						//socketServer.close();
 						//socketClient.close();
 						Music.setSong(Music.menuSong);
 						frame.remove(game);
