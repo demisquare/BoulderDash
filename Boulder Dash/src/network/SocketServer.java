@@ -1,72 +1,62 @@
 package network;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import model.World;
 import view.Game;
 
-public class SocketServer extends Game implements Runnable {
+public class SocketServer implements Runnable {
 
-	private static final long serialVersionUID = 1L;
-
-	private static int PORT = 8000;
-	ServerSocket ss;
-	private Socket socket;
-	InputStream inputStream;
-	ObjectInputStream objectInputStream;
-	Game game;
+	private ServerSocket server;
+	private Socket socket = null;
+	private Game game;
 
 	public SocketServer(Game game) {
-
-		// Setup networking
-		game = new Game();
+		this.game = game;
 	}
-	
+
 	public void connect() {
 		try {
-			ss = new ServerSocket(PORT);
-			System.out.println("ServerSocket awaiting connections...");
-			Socket socket = ss.accept();
-			System.out.println("Connection from " + socket + "!");
-	        inputStream = socket.getInputStream();
-	        objectInputStream = new ObjectInputStream(inputStream);
-	        new Thread(this).start();
-			
-		} catch (Exception e) {
+			server = new ServerSocket(8000);
+			System.out.println("[SERVER] Server attivo. In attesa di connessioni...");
+			socket = server.accept();
+			System.out.println("[SERVER] Connessione stabilita con " + socket.getInetAddress() + ":" + socket.getLocalPort());
+			new Thread(this).start();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void close() {
-		System.out.println("Closing sockets.");
 		try {
-			ss.close();
-			socket.close();
+			server.close();
+			if(socket != null)
+				socket.close();
+			
+			System.out.println("[SERVER] Server chiuso.");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
 
+	}
+	
 	@Override
 	public void run() {
-		while (true) {
-			try {
-				System.out.println("Reading messages from the Client");
-				game.level.setWorld((World) objectInputStream.readObject());
-				
-				game.level.run();
-		
-			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-				
+		try {
+			OutputStream outputStream = socket.getOutputStream();
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+			while (socket.isConnected()) {
+				 System.out.println("[SERVER] Invio il world al client...");
+				 objectOutputStream.writeObject(game.level.getWorld());
 			}
 
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
-
 }

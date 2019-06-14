@@ -23,6 +23,9 @@ public class Main {
 		Credits credits = new Credits();
 		Options options = new Options();
 		Multiplayer multi = new Multiplayer();
+		
+		SocketServer socketServer = new SocketServer(game);
+		SocketClient socketClient = new SocketClient(game);
 		// _________________________________
 		
 		new Thread(new Runnable() {
@@ -42,7 +45,7 @@ public class Main {
 						menu.start_selected = false;
 					}
 					if (multi.server_selected) { // AVVIO DEL GIOCO SERVER
-						SocketServer socketServer = new SocketServer(game);
+						Music.setSong(Music.gameSong);
 						socketServer.connect();
 						frame.remove(multi);
 						frame.setContentPane(game);
@@ -52,7 +55,7 @@ public class Main {
 						multi.server_selected = false;
 					}
 					if (multi.client_selected) { // AVVIO DEL GIOCO CLIENT
-						SocketClient socketClient = new SocketClient(game);
+						Music.setSong(Music.gameSong);
 						socketClient.connect();
 						frame.remove(multi);
 						frame.setContentPane(game);
@@ -106,6 +109,8 @@ public class Main {
 						multi.turn_back = false;
 					}
 					if (game.score.turn_back) { // TORNO AL MENU DAL GIOCO
+						socketServer.close();
+						//socketClient.close();
 						Music.setSong(Music.menuSong);
 						frame.remove(game);
 						frame.setContentPane(menu);

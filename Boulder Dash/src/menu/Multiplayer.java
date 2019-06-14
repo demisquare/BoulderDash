@@ -52,22 +52,22 @@ public class Multiplayer extends JPanel {
 			create_game = ImageIO
 					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
 							+ "Menu" + File.separator + "MultiPage" + File.separator + "create_game.png"))
-					.getScaledInstance(297, 61, Image.SCALE_SMOOTH);
+					.getScaledInstance(698, 79, Image.SCALE_SMOOTH);
 
 			create_game_SELECTED = ImageIO
 					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
 							+ "Menu" + File.separator + "MultiPage" + File.separator + "create_game_SELECTED.png"))
-					.getScaledInstance(297, 61, Image.SCALE_SMOOTH);
+					.getScaledInstance(698, 79, Image.SCALE_SMOOTH);
 
 			join_game = ImageIO
 					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
 							+ "Menu" + File.separator + "MultiPage" + File.separator + "join_game.png"))
-					.getScaledInstance(313, 61, Image.SCALE_SMOOTH);
+					.getScaledInstance(540, 79, Image.SCALE_SMOOTH);
 
 			join_game_SELECTED = ImageIO
 					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
 							+ "Menu" + File.separator + "MultiPage" + File.separator + "join_game_SELECTED.png"))
-					.getScaledInstance(313, 61, Image.SCALE_SMOOTH);
+					.getScaledInstance(540, 79, Image.SCALE_SMOOTH);
 
 			ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
 			CREATE_GAME_scaled = new JLabel(new ImageIcon(create_game));
@@ -91,8 +91,7 @@ public class Multiplayer extends JPanel {
 				}
 
 				@Override
-				public void mouseExited(MouseEvent e) {
-					Music.playTone("hover");
+				public void mouseExited(MouseEvent e) {					
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
 					repaint();
@@ -100,6 +99,7 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
+					Music.playTone("hover");
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back_SELECTED));
 					revalidate();
 					repaint();
@@ -192,9 +192,9 @@ public class Multiplayer extends JPanel {
 			this.add(ARROW_BACK_scaled);
 			this.add(CREATE_GAME_scaled);
 			this.add(JOIN_GAME_scaled);
-			ARROW_BACK_scaled.setBounds(100, 90, 350, 150);;
 			ARROW_BACK_scaled.setBounds(5, 5, 146, 97);
-			ARROW_BACK_scaled.setBounds(5, 5, 146, 97);
+			CREATE_GAME_scaled.setBounds(300, 200, 698, 79);
+			JOIN_GAME_scaled.setBounds(300, 400, 540, 79);
 
 		} catch (IOException e) {
 			e.printStackTrace();

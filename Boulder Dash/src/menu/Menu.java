@@ -148,7 +148,6 @@ public class Menu extends JPanel{
 					// TODO Auto-generated method stub
 				}
 			});
-
 			MULTI_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -188,7 +187,6 @@ public class Menu extends JPanel{
 
 				}
 			});
-
 			OPTIONS_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -227,7 +225,6 @@ public class Menu extends JPanel{
 
 				}
 			});
-
 			CREDITS_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -266,7 +263,6 @@ public class Menu extends JPanel{
 
 				}
 			});
-
 			EXIT_scaled.addMouseListener(new MouseListener() {
 
 				@Override

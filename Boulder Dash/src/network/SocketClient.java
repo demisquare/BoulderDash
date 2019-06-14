@@ -1,41 +1,38 @@
 package network;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 
+import model.World;
 import view.Game;
 
 public class SocketClient implements Runnable {
 
-	private static int PORT = 8000;
-	private Socket socket;
-	OutputStream outputStream;
-	ObjectOutputStream objectOutputStream;
+	private Socket socket = null;
 	Game game;
 
 	public SocketClient(Game game) {
 
 		// Setup networking
-		game = new Game();
+		this.game = game;
 	}
-	
+
 	public void connect() {
 		try {
-			socket = new Socket("localhost", PORT);
-			System.out.println("Connected!");
-			outputStream = socket.getOutputStream();
-			objectOutputStream = new ObjectOutputStream(outputStream);
+			System.out.println("[CLIENT] Connessione al server...");
+			socket = new Socket("localhost", 8000);
+			System.out.println("[CLIENT] Connesso!");
 			new Thread(this).start();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void close() {
-		System.out.println("Closing socket and terminating program.");
+		System.out.println("[CLIENT] Socket chiuso.");
 		try {
 			socket.close();
 		} catch (IOException e) {
@@ -46,17 +43,17 @@ public class SocketClient implements Runnable {
 
 	@Override
 	public void run() {
-		while (true) {
-			try {
-				System.out.println("Sending messages to the ServerSocket");
-				objectOutputStream.writeObject(game.level.getWorld());
-				
-				game.level.run();
-			} catch (IOException e) {
-				e.printStackTrace();
+		try {
+			InputStream inputStream = socket.getInputStream();
+			ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+			while (socket.isConnected()) {
+				System.out.println("[CLIENT] Ricevo il world dal server...");
+				game.level.setWorld((World) objectInputStream.readObject());
 			}
 
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
-
 }
