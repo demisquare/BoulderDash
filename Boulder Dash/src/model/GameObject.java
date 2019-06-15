@@ -40,7 +40,6 @@ public abstract class GameObject {
 	
 	public abstract boolean update();
 	public abstract boolean update(int dir);
-	
 	/*
 	 * Primo metodo fondamentale: gestisce la distruzione di un oggetto
 	 * (diamanti, terreno, nemici...) sostituendolo nella map con un EmptyBlock,
@@ -75,7 +74,6 @@ public abstract class GameObject {
 		
 		return false;
 	}
-	
 	/*
 	 * Secondo metodo fondamentale: gestisce il movimento di oggetti tramite lo
 	 * "swap" (scambio) delle posizioni in termini di coordinate sulla mappa logica,
@@ -102,7 +100,7 @@ public abstract class GameObject {
 	
 			if(!map.getTile(i, j).equals(temp)) {
 		
-				System.out.println("AJANNAM");
+				System.out.println("in model.GameObject.swap(): " + temp + " != " + map.getTile(i, j));
 				error = true;
 			}
 	
@@ -166,7 +164,6 @@ public abstract class GameObject {
 		successor = null;
 	}
 	
-	//uso non corretto di un hashCode?
 	@Override
 	public int hashCode() {
 		return x*map.dimX + y;

@@ -1,13 +1,23 @@
 package model;
 
 public class Player extends GameObject implements Living {
-
+	
+	//metodo semplice per aggiungere un delay al movimento
+	//ATTENZIONE: è dipendente dal framerate (non dovrebbe)
+	private int movingCounter;
+	//metodo semplice per aggiungere un delay sulla spinta delle rocce
+	//ATTENZIONE: è dipendente dal framerate (non dovrebbe)
+	private int pushRockCounter;
+	//conta il numero di diamanti raccolti
 	private int diamondCount;
+	//variabile inutile, viene usata per le animazioni ma si può sostituire
 	private int speed;
 	
 	public Player(int x, int y, int s) {
 		super(x, y);
 		diamondCount = 0;
+		pushRockCounter = 0;
+		movingCounter = 0;
 		speed = s;
 	}
 	
@@ -54,30 +64,71 @@ public class Player extends GameObject implements Living {
 		if(g instanceof Diamond) {
 			
 			++diamondCount;
-			if(g.destroy()) {
-				return move(dir);
+			++movingCounter;
+			pushRockCounter = 0;
+			
+			if(movingCounter == 4) {
+				
+				movingCounter = 0;
+				if(g.destroy()) {
+					return move(dir);
+				}
 			}
+			return false;
 		
 		} else if(g instanceof Ground) {
 			
 			System.out.println("scava...");
-			if(g.destroy()) {
-				return move(dir);
+			++movingCounter;
+			pushRockCounter = 0;
+			
+			if(movingCounter == 4) {
+				
+				movingCounter = 0;
+				if(g.destroy()) {
+					return move(dir);
+				}
 			}
+			return false;
 		
 		} else if(g instanceof Rock && (dir == LEFT || dir == RIGHT)) {
 			
-			if(g.move(dir)) {
-				return move(dir);
+			++pushRockCounter;
+			movingCounter = 0;
+			
+			if(pushRockCounter == 12) {
+				
+				pushRockCounter = 0;
+				movingCounter = 3;
+				if(g.move(dir)) {
+					return move(dir);
+				}
 			}
-		
+			return false;
+			
 			//variare il parametro da 1 in su per semplificare (meno diamanti da raccogliere)
 		} else if(g instanceof Door && diamondCount == map.numDiamonds/1) {
 			
-			return move(dir);
+			++movingCounter;
+			pushRockCounter = 0;
+			
+			if(movingCounter == 4) {
+				
+				movingCounter = 0;
+				return move(dir);
+			}
+			return false;
 		}
+
+		++movingCounter;
+		pushRockCounter = 0;
 		
-		return super.move(dir);
+		if(movingCounter == 4) {
+			
+			movingCounter = 0;
+			return super.move(dir);
+		}
+		return false;
 	}
 
 	public int getSpeed() { return speed; }
