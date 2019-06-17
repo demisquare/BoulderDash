@@ -84,7 +84,7 @@ public abstract class GameObject {
 		GameObject temp = map.getTile(i, j);
 		boolean error = false;
 		
-		if(temp.processed == false) {
+		//if(temp.processed == false) {
 			
 			if(!map.getTile(x, y).equals(this)) {
 			
@@ -112,7 +112,7 @@ public abstract class GameObject {
 			
 			if(!error)
 				System.out.println("scambia i tiles...");
-		}
+		//}
 	}
 	
 	protected boolean fall() {
@@ -191,4 +191,8 @@ public abstract class GameObject {
 	public boolean isDead() { return dead; }
 	
 	public GameObject getSuccessor() { return successor; }
+	
+	public void setDead(boolean x) {
+		dead=x;
+	}
 }
