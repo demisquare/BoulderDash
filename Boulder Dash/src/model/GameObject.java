@@ -177,4 +177,8 @@ public abstract class GameObject {
 	public boolean isDead() { return dead; }
 	
 	public GameObject getSuccessor() { return successor; }
+	
+	public void setDead(boolean x) {
+		dead=x;
+	}
 }
