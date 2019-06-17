@@ -2,7 +2,10 @@ package audio;
 
 import java.io.File;
 
+import menu.Options;
+
 public class Music{
+		
 	public static final AudioPlayer menuSong = new AudioPlayer(
 			"." + File.separator +
 			"resources" + File.separator +
@@ -31,15 +34,32 @@ public class Music{
 		Music.backgroundMusic = song;
 	}
 	
-	public static void start(boolean isOn)
+	public static void start()
 	{
-		if (isOn) {
+		if (Options.music) {
 			if (!Music.backgroundMusic.isPlaying()) {
 				Music.backgroundMusic.loop();
 			}
 		} else {
 			Music.backgroundMusic.stop();
 			Music.backgroundMusic.rewind();
+		}
+	}
+	
+	public static void playTone(String name)
+	{
+		AudioPlayer tone = new AudioPlayer(
+				"." + File.separator +
+				"resources" + File.separator +
+				"assets" + File.separator +
+				"music" + File.separator +
+				"sfx" + File.separator +
+				name + ".wav");
+		
+		if (Options.music) {
+			if (!tone.isPlaying()) {
+				tone.play();
+			}
 		}
 	}
 	

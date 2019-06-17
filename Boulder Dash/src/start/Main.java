@@ -3,9 +3,8 @@ package start;
 import javax.swing.JFrame;
 
 import audio.Music;
-import menu.Credits;
-import menu.Menu;
-import menu.Options;
+import menu.*;
+import network.*;
 import view.*;
 
 public class Main {
@@ -23,14 +22,18 @@ public class Main {
 		Game game = new Game();
 		Credits credits = new Credits();
 		Options options = new Options();
+		Multiplayer multi = new Multiplayer();
+		
+		SocketServer socketServer = new SocketServer(game);
+		SocketClient socketClient = new SocketClient(game);
 		// _________________________________
-
+		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while (true) {
 
-					Music.start(options.music);
+					Music.start();
 
 					if (menu.start_selected) { // AVVIO DEL GIOCO
 						Music.setSong(Music.gameSong);
@@ -40,6 +43,26 @@ public class Main {
 						frame.revalidate();
 						frame.repaint();
 						menu.start_selected = false;
+					}
+					if (multi.server_selected) { // AVVIO DEL GIOCO SERVER
+						Music.setSong(Music.gameSong);
+						socketServer.connect();
+						frame.remove(multi);
+						frame.setContentPane(game);
+						game.level.requestFocusInWindow();
+						frame.revalidate();
+						frame.repaint();
+						multi.server_selected = false;
+					}
+					if (multi.client_selected) { // AVVIO DEL GIOCO CLIENT
+						Music.setSong(Music.gameSong);
+						socketClient.connect();
+						frame.remove(multi);
+						frame.setContentPane(game);
+						game.level.requestFocusInWindow();
+						frame.revalidate();
+						frame.repaint();
+						multi.client_selected = false;
 					}
 					if (menu.credits_selected) { // AVVIO DEI CREDITI
 						Music.setSong(Music.creditsSong);
@@ -56,6 +79,13 @@ public class Main {
 						frame.repaint();
 						menu.options_selected = false;
 					}
+					if (menu.multi_selected) { // AVVIO DEL MULTIPLAYER
+						frame.remove(menu);
+						frame.setContentPane(multi);
+						frame.revalidate();
+						frame.repaint();
+						menu.multi_selected = false;
+					}
 					if (credits.turn_back) { // TORNO AL MENU DALLA SCHERMATA DEI CREDITI
 						Music.setSong(Music.menuSong);
 						frame.remove(credits);
@@ -71,7 +101,16 @@ public class Main {
 						frame.repaint();
 						options.turn_back = false;
 					}
+					if (multi.turn_back) { // TORNO AL MENU DALLA SCHERMATA DEL MULTIPLAYER
+						frame.remove(multi);
+						frame.setContentPane(menu);
+						frame.revalidate();
+						frame.repaint();
+						multi.turn_back = false;
+					}
 					if (game.score.turn_back) { // TORNO AL MENU DAL GIOCO
+						//socketServer.close();
+						//socketClient.close();
 						Music.setSong(Music.menuSong);
 						frame.remove(game);
 						game.reset();

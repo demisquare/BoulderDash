@@ -5,6 +5,8 @@ import java.util.Random;
 //TODO
 public class Enemy extends GameObject implements Living {
 	
+	//manca anche qui un delay sul movimento: con un counter oppure usando ScheduledExecutorService?
+	
 	protected Random r;
 	protected int speed;
 	protected int lastDir;
