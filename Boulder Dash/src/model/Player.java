@@ -41,11 +41,16 @@ public class Player extends GameObject implements Living {
 			
 			} else if(map.getTile(i, j) instanceof Door) {
 				
-				map.setTile(x, y, new EmptyBlock(x, y));
+				successor = new EmptyBlock(x, y);
+				map.setTile(x, y, successor);
+				
+				successor.processed = false;
+				
+				processed = true;
+				
+				map.setTile(i, j, this);
 				x = i;
 				y = j;
-				map.setTile(x, y, this);
-				
 			}
 			
 		}
@@ -67,7 +72,7 @@ public class Player extends GameObject implements Living {
 			++movingCounter;
 			pushRockCounter = 0;
 			
-			if(movingCounter == 4) {
+			if(movingCounter == 2) {
 				
 				movingCounter = 0;
 				if(g.destroy()) {
@@ -82,7 +87,7 @@ public class Player extends GameObject implements Living {
 			++movingCounter;
 			pushRockCounter = 0;
 			
-			if(movingCounter == 4) {
+			if(movingCounter == 2) {
 				
 				movingCounter = 0;
 				if(g.destroy()) {
@@ -99,7 +104,7 @@ public class Player extends GameObject implements Living {
 			if(pushRockCounter == 12) {
 				
 				pushRockCounter = 0;
-				movingCounter = 3;
+				movingCounter = 1;
 				if(g.move(dir)) {
 					return move(dir);
 				}
@@ -112,7 +117,7 @@ public class Player extends GameObject implements Living {
 			++movingCounter;
 			pushRockCounter = 0;
 			
-			if(movingCounter == 4) {
+			if(movingCounter == 2) {
 				
 				movingCounter = 0;
 				return move(dir);
@@ -123,7 +128,7 @@ public class Player extends GameObject implements Living {
 		++movingCounter;
 		pushRockCounter = 0;
 		
-		if(movingCounter == 4) {
+		if(movingCounter == 2) {
 			
 			movingCounter = 0;
 			return super.move(dir);
