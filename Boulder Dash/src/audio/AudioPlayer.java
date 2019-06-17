@@ -48,9 +48,8 @@ public class AudioPlayer {
 		if (clip == null)
 			return;
 		stop();
-		if (clip.getFramePosition() == clip.getFrameLength())
-			clip.setFramePosition(0);
-		clip.start();
+		clip.setFramePosition(0);
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
 		isOn = true;
 	}
 
