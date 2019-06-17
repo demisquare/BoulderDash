@@ -21,7 +21,7 @@ public class World implements Runnable {
 	
 	// costruttore di default
 	public World() {
-
+		
 		//sostituire con il filename
 		map = new GameMap("levelmap");
 		

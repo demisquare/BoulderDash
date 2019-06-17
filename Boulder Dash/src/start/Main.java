@@ -113,6 +113,8 @@ public class Main {
 						//socketClient.close();
 						Music.setSong(Music.menuSong);
 						frame.remove(game);
+						game.reset();
+						game.level.getWorld().getPlayer().setDead(true);
 						frame.setContentPane(menu);
 						frame.revalidate();
 						frame.repaint();
