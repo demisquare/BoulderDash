@@ -15,7 +15,7 @@ public class Player extends GameObject implements Living {
 	
 	public Player(int x, int y, int s) {
 		super(x, y);
-		diamondCount = 0;
+		diamondCount = map.numDiamonds;
 		pushRockCounter = 0;
 		movingCounter = 0;
 		speed = s;
@@ -41,16 +41,12 @@ public class Player extends GameObject implements Living {
 			
 			} else if(map.getTile(i, j) instanceof Door) {
 				
-				successor = new EmptyBlock(x, y);
-				map.setTile(x, y, successor);
+				System.out.println("VITTORIA");
 				
-				successor.processed = false;
+				swap(i, j);
+				processed = false;
 				
-				processed = true;
-				
-				map.setTile(i, j, this);
-				x = i;
-				y = j;
+				return true;
 			}
 			
 		}
@@ -101,7 +97,7 @@ public class Player extends GameObject implements Living {
 			++pushRockCounter;
 			movingCounter = 0;
 			
-			if(pushRockCounter == 12) {
+			if(pushRockCounter == 10) {
 				
 				pushRockCounter = 0;
 				movingCounter = 1;
@@ -112,7 +108,7 @@ public class Player extends GameObject implements Living {
 			return false;
 			
 			//variare il parametro da 1 in su per semplificare (meno diamanti da raccogliere)
-		} else if(g instanceof Door && diamondCount == map.numDiamonds/1) {
+		} else if(g instanceof Door && diamondCount >= map.numDiamonds/1) {
 			
 			++movingCounter;
 			pushRockCounter = 0;
@@ -124,7 +120,9 @@ public class Player extends GameObject implements Living {
 			}
 			return false;
 		}
-
+		
+		//this is for EmptyBlock
+		
 		++movingCounter;
 		pushRockCounter = 0;
 		

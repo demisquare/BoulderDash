@@ -156,8 +156,14 @@ public class Options extends JPanel {
 			INFERNO_scaled = new JLabel(new ImageIcon(inferno));
 			WINDOWED_scaled = new JLabel(new ImageIcon(windowed_SELECTED));
 			FULLSCREEN_scaled = new JLabel(new ImageIcon(fullscreen));
-			MUSIC_check = new JLabel(new ImageIcon(music_checked));
-
+			
+			if(music) {
+				MUSIC_check = new JLabel(new ImageIcon(music_checked));
+			} else {
+				MUSIC_check = new JLabel(new ImageIcon(music_unchecked));
+			}
+			
+			
 			ARROW_BACK_scaled.addMouseListener(new MouseListener() {
 
 				@Override
