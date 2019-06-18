@@ -9,10 +9,12 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import audio.Music;
+import menu.Menu;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -36,8 +38,19 @@ public class Score extends JPanel{
 	JLabel time_left;
 	JLabel Lives;
 	
+	private void turn_back(JFrame frame, Menu menu, Game game) {
+		//socketServer.close();
+		//socketClient.close();
+		Music.setSong(Music.menuSong);
+		frame.remove(game);
+		game.reset(frame, menu);
+		game.level.getWorld().getPlayer().setDead(true);
+		frame.setContentPane(menu);
+		frame.revalidate();
+		frame.repaint();
+	}
 	
-	public Score() {
+	public Score(JFrame frame, Menu menu, Game game) {
 		try {
 			Font eightBit = Font.createFont(Font.TRUETYPE_FONT, new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "8BITFONT.TTF")).deriveFont(80f);
 			
@@ -74,7 +87,7 @@ public class Score extends JPanel{
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					turn_back = true;
+					turn_back(frame, menu, game);
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
 					repaint();

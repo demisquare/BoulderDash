@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -22,9 +23,16 @@ public class Credits extends JPanel{
 	Image arrow_back;
 	Image arrow_back_SELECTED;
 	JLabel ARROW_BACK_scaled;
-	public boolean turn_back=false;
+
+	public void turn_back(JFrame frame, Menu menu) {
+		Music.setSong(Music.menuSong);
+		frame.remove(this);
+		frame.setContentPane(menu);
+		frame.revalidate();
+		frame.repaint();
+	}
 	
-	public Credits() {
+	public Credits(JFrame frame, Menu menu) {
 		try {
 			background = ImageIO.read(
 					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "Menu"
@@ -52,7 +60,7 @@ public class Credits extends JPanel{
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					turn_back = true;
+					turn_back(frame, menu);
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
 					repaint();
@@ -92,6 +100,6 @@ public class Credits extends JPanel{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(background, 0, 0, 1280, 720, null);
+		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 }

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -42,9 +43,31 @@ public class Options extends JPanel {
 	JLabel FULLSCREEN_scaled;
 	JLabel MUSIC_check;
 
-	public boolean turn_back = false;
-	public boolean full_screen = false;
+	private void turn_back(JFrame frame, Menu menu) {
+		frame.remove(this);
+		frame.setContentPane(menu);
+		frame.revalidate();
+		frame.repaint();
+	}
+	private void full_screen(JFrame frame) {
+		frame.dispose();
+		if (!frame.isUndecorated())
+			frame.setUndecorated(true);
+		frame.setVisible(true);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	}
+	
+	private void windowed(JFrame frame) {
+		frame.dispose();
+		if (frame.isUndecorated())
+			frame.setUndecorated(false);
+		frame.setVisible(true);
+		frame.setSize(1280, 749);
+	}
+	
 	public static boolean music = true;
+	private static boolean full_screen = false;
+	
 
 	enum Difficulty {
 		paradiso, purgatorio, inferno;
@@ -52,7 +75,7 @@ public class Options extends JPanel {
 
 	public Difficulty difficulty = Difficulty.purgatorio;
 
-	public Options() {
+	public Options(JFrame frame, Menu menu) {
 		try {
 			background = ImageIO.read(new File("." + File.separator + "resources" + File.separator + "assets"
 					+ File.separator + "Menu" + File.separator + "OptionsPage" + File.separator + "background.png"));
@@ -146,7 +169,7 @@ public class Options extends JPanel {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					turn_back = true;
+					turn_back(frame, menu);
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
 					repaint();
@@ -322,13 +345,12 @@ public class Options extends JPanel {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					if (full_screen) {
-						full_screen = false;
-						FULLSCREEN_scaled.setIcon(new ImageIcon(fullscreen));
-						WINDOWED_scaled.setIcon(new ImageIcon(windowed_SELECTED));
-						revalidate();
-						repaint();
-					}
+					windowed(frame);
+					FULLSCREEN_scaled.setIcon(new ImageIcon(fullscreen));
+					WINDOWED_scaled.setIcon(new ImageIcon(windowed_SELECTED));
+					revalidate();
+					repaint();
+					full_screen = false;
 				}
 
 				@Override
@@ -367,13 +389,13 @@ public class Options extends JPanel {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					if (!full_screen) {
-						full_screen = true;
-						FULLSCREEN_scaled.setIcon(new ImageIcon(fullscreen_SELECTED));
-						WINDOWED_scaled.setIcon(new ImageIcon(windowed));
-						revalidate();
-						repaint();
-					}
+					full_screen(frame);
+					FULLSCREEN_scaled.setIcon(new ImageIcon(fullscreen_SELECTED));
+					WINDOWED_scaled.setIcon(new ImageIcon(windowed));
+					revalidate();
+					repaint();
+					full_screen=true;
+
 				}
 
 				@Override
@@ -450,7 +472,7 @@ public class Options extends JPanel {
 			this.add(WINDOWED_scaled);
 			this.add(FULLSCREEN_scaled);
 			this.add(MUSIC_check);
-			
+
 			ARROW_BACK_scaled.setBounds(5, 5, 146, 97);
 			PARADISO_scaled.setBounds(100, 90, 350, 150);
 			PURGATORIO_scaled.setBounds(460, 90, 350, 150);
@@ -467,6 +489,6 @@ public class Options extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(background, 0, 0, 1280, 720, null);
+		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 }

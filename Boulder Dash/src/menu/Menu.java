@@ -11,15 +11,16 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import audio.Music;
+import view.Game;
 
-public class Menu extends JPanel{
+public class Menu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	Long en = 2L;
 	BufferedImage background;
 
 	Image START;
@@ -41,15 +42,49 @@ public class Menu extends JPanel{
 	JLabel EXIT_scaled;
 
 	JPanel menu_choices;
+	
+	Game game;
+	Multiplayer multi;
+	Options options;
+	Credits credits;
 
-	public boolean start_selected = false;
-	public boolean credits_selected = false;
-	public boolean options_selected = false;
-	public boolean multi_selected = false;
+	private void start_selected(JFrame frame, Game game) {
+		Music.setSong(Music.gameSong);
+		frame.remove(this);
+		frame.setContentPane(game);
+		game.level.requestFocusInWindow();
+		frame.revalidate();
+		frame.repaint();
+	}
+	private void options_selected(JFrame frame, Options options) {
+		frame.remove(this);
+		frame.setContentPane(options);
+		frame.revalidate();
+		frame.repaint();
+	}
+	private void multi_selected(JFrame frame, Multiplayer multi) {
+		frame.remove(this);
+		frame.setContentPane(multi);
+		frame.revalidate();
+		frame.repaint();
+	}
+	private void credits_selected(JFrame frame, Credits credits) {
+		Music.setSong(Music.creditsSong);
+		frame.remove(this);
+		frame.setContentPane(credits);
+		frame.revalidate();
+		frame.repaint();
+	}
 
-	public Menu() {
+	public Menu(JFrame frame) {
 		
 		Music.backgroundMusic = Music.menuSong;
+
+		options = new Options(frame, this); //fatto
+		credits = new Credits(frame, this); //fatto
+		multi = new Multiplayer(frame, game, this); //fatto
+		game = new Game(); //fatto
+		game.score_init(frame, this);
 		
 		try {
 			background = ImageIO.read(
@@ -137,7 +172,7 @@ public class Menu extends JPanel{
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					start_selected = true;
+					start_selected(frame, game);
 					START_scaled.setIcon(new ImageIcon(START));
 					revalidate();
 					repaint();
@@ -160,7 +195,7 @@ public class Menu extends JPanel{
 				public void mousePressed(MouseEvent e) {
 					// TODO Auto-generated method stub
 					Music.playTone("select");
-					multi_selected = true;
+					multi_selected(frame, multi);
 					MULTI_scaled.setIcon(new ImageIcon(MULTI));
 					revalidate();
 					repaint();
@@ -198,7 +233,7 @@ public class Menu extends JPanel{
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					options_selected = true;
+					options_selected(frame, options);
 					OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS));
 					revalidate();
 					repaint();
@@ -236,7 +271,7 @@ public class Menu extends JPanel{
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					credits_selected = true;
+					credits_selected(frame, credits);
 					CREDITS_scaled.setIcon(new ImageIcon(CREDITS));
 					revalidate();
 					repaint();
@@ -319,6 +354,7 @@ public class Menu extends JPanel{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(background, 0, 0, 1280, 720, null);
+		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
+
 	}
 }

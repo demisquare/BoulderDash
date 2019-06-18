@@ -9,10 +9,14 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import audio.Music;
+import network.SocketClient;
+import network.SocketServer;
+import view.Game;
 
 public class Multiplayer extends JPanel {
 
@@ -30,11 +34,37 @@ public class Multiplayer extends JPanel {
 	JLabel CREATE_GAME_scaled;
 	JLabel JOIN_GAME_scaled;
 
-	public boolean turn_back = false;
-	public boolean client_selected = false;
-	public boolean server_selected = false;
+	private SocketServer socketServer;
+	private SocketClient socketClient;
 
-	public Multiplayer() {
+	private void turn_back(JFrame frame, Menu menu) {
+		frame.remove(this);
+		frame.setContentPane(menu);
+		frame.revalidate();
+		frame.repaint();
+	}
+	private void client_selected(JFrame frame, Menu menu, Game game) {
+		Music.setSong(Music.gameSong);
+		socketClient = new SocketClient(game);
+		socketClient.connect();
+		frame.remove(this);
+		frame.setContentPane(game);
+		game.level.requestFocusInWindow();
+		frame.revalidate();
+		frame.repaint();
+	}
+	private void server_selected(JFrame frame, Menu menu, Game game) {
+		Music.setSong(Music.gameSong);
+		socketServer = new SocketServer(game);
+		socketServer.connect();
+		frame.remove(this);
+		frame.setContentPane(game);
+		game.level.requestFocusInWindow();
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	public Multiplayer(JFrame frame, Game game, Menu menu) {
 		try {
 			background = ImageIO.read(new File("." + File.separator + "resources" + File.separator + "assets"
 					+ File.separator + "Menu" + File.separator + "MultiPage" + File.separator + "background.png"));
@@ -84,14 +114,14 @@ public class Multiplayer extends JPanel {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					turn_back = true;
+					turn_back(frame, menu);
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
 					repaint();
 				}
 
 				@Override
-				public void mouseExited(MouseEvent e) {					
+				public void mouseExited(MouseEvent e) {
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
 					repaint();
@@ -122,7 +152,7 @@ public class Multiplayer extends JPanel {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					server_selected = true;
+					server_selected(frame, menu, game);
 					CREATE_GAME_scaled.setIcon(new ImageIcon(create_game));
 					revalidate();
 					repaint();
@@ -160,7 +190,7 @@ public class Multiplayer extends JPanel {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					client_selected = true;
+					client_selected(frame, menu, game);
 					JOIN_GAME_scaled.setIcon(new ImageIcon(join_game));
 					revalidate();
 					repaint();
