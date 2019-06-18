@@ -39,12 +39,16 @@ public class Renderer {
 		}
 		
 		// disegna player...
-		g.drawImage(l.playerSprites.get(0).getAnimation().getSprite(), l.world.getPlayer().getX() * Sprite.TILE_SIZE,
+		for(int i = 0; i < l.playerSprites.size(); ++i) {
+			
+			g.drawImage(l.playerSprites.get(i).getAnimation().getSprite(), l.world.getPlayer().getX() * Sprite.TILE_SIZE,
 				l.world.getPlayer().getY() * Sprite.TILE_SIZE, null);
-
-		for(int i=0; i < l.world.getEnemies().size(); ++i) {
+		}
+		
+		for(int i = 0; i < l.enemySprites.size(); ++i) {
 			// disegna i nemici...
-			g.drawImage(l.enemySprites.get(i).getAnimation().getSprite(), l.world.getEnemies().get(i).getX() * Sprite.TILE_SIZE,
+			g.drawImage(l.enemySprites.get(i).getAnimation().getSprite(), 
+					l.world.getEnemies().get(i).getX() * Sprite.TILE_SIZE,
 					l.world.getEnemies().get(i).getY() * Sprite.TILE_SIZE, null);
 		}
 	}

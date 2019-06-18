@@ -15,13 +15,7 @@ public abstract class GameObject {
 	public static final int LEFT  = 1;
 	public static final int RIGHT = 2;
 	public static final int UP    = 3;
-	
-	public static final int IS_FALLING 	= 0;
-	public static final int IS_MOVING 	= 1;
-	public static final int HAS_HIT 	= 2;
-	public static final int IS_DEAD 	= 3;
-	public static final int HAS_DUG		= 4;
-	
+		
 	static final int dmap[][] = { { 0,  1},
 			                      {-1,  0},
 			                      { 1,  0},

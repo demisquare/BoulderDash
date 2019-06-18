@@ -16,13 +16,13 @@ public class Rock extends GameObject implements Sliding {
 				
 				if(isFalling) {
 					
-					map.getTile(x, y+1).dead = true;
+					map.getTile(x, y+1).destroy();
 					isFalling = false;
 					return true;
 				
 				} else if(map.getTile(x, y-1) instanceof Rock) {
 					
-					map.getTile(x, y+1).dead = true;
+					map.getTile(x, y+1).destroy();
 					return true;
 					
 				}
@@ -33,6 +33,11 @@ public class Rock extends GameObject implements Sliding {
 								|| map.getTile(x+1, y) instanceof Living)) {
 
 					isFalling = true;
+					
+					if(map.getTile(x+1, y) instanceof Living) {
+						map.getTile(x+1, y).destroy();
+					}
+					
 					swap(x+1, y+1);
 					return true;
 					
@@ -41,6 +46,11 @@ public class Rock extends GameObject implements Sliding {
 								|| map.getTile(x-1, y) instanceof Living)) {
 
 					isFalling = true;
+					
+					if(map.getTile(x+1, y) instanceof Living) {
+						map.getTile(x+1, y).destroy();
+					}
+					
 					swap(x-1, y+1);
 					return true;
 				}

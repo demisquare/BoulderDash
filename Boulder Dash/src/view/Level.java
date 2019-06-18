@@ -139,13 +139,59 @@ public class Level extends JPanel implements KeyListener, Runnable {
 			
 			//se il blocco logico e' cambiato nell'ultimo world.update()...
 			try {
-			if(blockSprites.get(i).getLogicObject().isDead()) {
+				if(blockSprites.get(i).getLogicObject().isDead()) {
 												
-					GameObject newObj = blockSprites.get(i).getLogicObject().getSuccessor();
+					if(blockSprites.get(i).getLogicObject().getSuccessor() != null) {
+						GameObject newObj = blockSprites.get(i).getLogicObject().getSuccessor();
 					
-					BufferedImage img = spritesheet.getSprite(1, 2);
-					blockSprites.set(i, new BlockSprite(img, newObj));	
+						BufferedImage img = spritesheet.getSprite(1, 2);
+						blockSprites.set(i, new BlockSprite(img, newObj));	
+					}
 				}
+			} catch(NullPointerException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		for(int i = 0; i < playerSprites.size(); ++i) {
+			
+			try {
+				if(playerSprites.get(i).logicObj.isDead()) {
+					
+					if(playerSprites.get(i).logicObj.getSuccessor() != null) {
+						
+						GameObject newObj = playerSprites.get(i).logicObj.getSuccessor();
+					
+						BufferedImage img = spritesheet.getSprite(1, 2);
+						blockSprites.add(new BlockSprite(img, newObj));	
+						
+						playerSprites.remove(i);
+						System.out.println("PLAYER REMOVED");
+					}
+				}
+				
+			} catch(NullPointerException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		for(int i = 0; i < enemySprites.size(); ++i) {
+			
+			try {
+				if(enemySprites.get(i).logicObj.isDead()) {
+					
+					if(enemySprites.get(i).logicObj.getSuccessor() != null) {
+						
+						GameObject newObj = enemySprites.get(i).logicObj.getSuccessor();
+					
+						BufferedImage img = spritesheet.getSprite(1, 2);
+						blockSprites.add(new BlockSprite(img, newObj));	
+					
+						enemySprites.remove(i);
+						System.out.println("ENEMY REMOVED");
+					}
+				}
+				
 			} catch(NullPointerException e) {
 				e.printStackTrace();
 			}
@@ -165,12 +211,14 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		
 		for(int i = 0; i < enemySprites.size(); ++i) {
 			
-			if(!enemySprites.get(i).logicObj.isDead()) {
+			Enemy e = (Enemy) enemySprites.get(i).logicObj; 
+			
+			if(!e.isDead()) {
 				
 				//per accelerare l'animazione dell'Enemy, aumentare la costante 1 	
 				if(enemySprites.get(i).counter >= (125/(FPS*1))) {
 				
-					enemySprites.get(i).movePose(((Enemy) enemySprites.get(i).logicObj).getLastDir());
+					enemySprites.get(i).movePose(e.getLastDir());
 					enemySprites.get(i).getAnimation().update();
 					enemySprites.get(i).counter = 0;
 			
