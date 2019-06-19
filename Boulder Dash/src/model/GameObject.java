@@ -32,6 +32,49 @@ public abstract class GameObject {
 	
 	protected GameObject successor;
 	
+	public GameObject(int x, int y) {
+		
+		this.x = x;
+		this.y = y;
+		processed = false;
+		isFalling = false;
+		dead = false;
+		
+		successor = null;
+	}
+	
+	@Override
+	public int hashCode() {
+		return x*map.dimX + y;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return obj.getClass().isInstance(this) && 
+				obj.hashCode() == hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getCanonicalName() + " at [" + x + ", " + y + "]";
+	}
+	
+	public int getX() 		{ return x;   }	
+	public void setX(int x) { this.x = x; }
+	
+	public int getY() 		{ return y;   }
+	public void setY(int y) { this.y = y; }	
+	
+	public boolean hasChanged()  { return processed; }
+	
+	public boolean isDead() { return dead; }
+	
+	public GameObject getSuccessor() { return successor; }
+	
+	public void setDead(boolean x) {
+		dead = x;
+	}
+	
 	public abstract boolean update();
 	public abstract boolean update(int dir);
 	/*
@@ -145,48 +188,5 @@ public abstract class GameObject {
 		}
 		
 		return false;
-	}
-
-	public GameObject(int x, int y) {
-		
-		this.x = x;
-		this.y = y;
-		processed = false;
-		isFalling = false;
-		dead = false;
-		
-		successor = null;
-	}
-	
-	@Override
-	public int hashCode() {
-		return x*map.dimX + y;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return obj.getClass().isInstance(this) && 
-				obj.hashCode() == hashCode();
-	}
-	
-	@Override
-	public String toString() {
-		return this.getClass().getCanonicalName() + " at [" + x + ", " + y + "]";
-	}
-	
-	public int getX() 		{ return x;   }	
-	public void setX(int x) { this.x = x; }
-	
-	public int getY() 		{ return y;   }
-	public void setY(int y) { this.y = y; }	
-	
-	public boolean hasChanged()  { return processed; }
-	
-	public boolean isDead() { return dead; }
-	
-	public GameObject getSuccessor() { return successor; }
-	
-	public void setDead(boolean x) {
-		dead=x;
 	}
 }

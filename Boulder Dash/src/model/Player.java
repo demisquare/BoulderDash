@@ -43,8 +43,7 @@ public class Player extends GameObject implements Living {
 				
 				System.out.println("VITTORIA");
 				
-				swap(i, j);
-				processed = false;
+				destroy();
 				
 				return true;
 			}
@@ -97,7 +96,7 @@ public class Player extends GameObject implements Living {
 			++pushRockCounter;
 			movingCounter = 0;
 			
-			if(pushRockCounter == 10) {
+			if(pushRockCounter == 6) {
 				
 				pushRockCounter = 0;
 				movingCounter = 1;

@@ -34,9 +34,6 @@ public class World implements Runnable {
 		
 		//da definire la posizione di partenza (e il criterio di scelta)
 		//stack.add((2*map.getDimX())+10);
-		
-		Thread t = new Thread(this);
-		t.start();
 	}
 	
 	// getter e setter
@@ -127,16 +124,6 @@ public class World implements Runnable {
 			e1.printStackTrace();
 			
 		}
-		
-		//aggiorna gli stati di ogni nemico
-		try {
-			for(int i = 0; i < getEnemies().size(); ++i)
-				if(!getEnemies().get(i).dead)
-					getEnemies().get(i).move(GameObject.DOWN);
-			
-		} catch(ConcurrentModificationException e2) {
-			e2.printStackTrace();
-		}
 			
 		/* scommentare nel caso di dijkstra
 		{
@@ -155,6 +142,20 @@ public class World implements Runnable {
 		*/
 		//flag di vittoria qui?
 
+	}
+	
+	@Override
+	public void run() {
+		while(true) {
+			
+			update();
+			
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 /*		
 	public void dijkstra() {
@@ -232,18 +233,4 @@ public class World implements Runnable {
 		
 	}
 */
-	
-	@Override
-	public void run() {
-		while(true) {
-			
-			update();
-			
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }

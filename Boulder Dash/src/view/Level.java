@@ -24,10 +24,24 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		private static final long serialVersionUID = 1L;
 
 		{
-			put(KeyEvent.VK_LEFT, GameObject.LEFT);
-			put(KeyEvent.VK_RIGHT, GameObject.RIGHT);
-			put(KeyEvent.VK_UP, GameObject.UP);
-			put(KeyEvent.VK_DOWN, GameObject.DOWN);
+			put(KeyEvent.VK_LEFT, 	GameObject.LEFT);
+			put(KeyEvent.VK_RIGHT, 	GameObject.RIGHT);
+			put(KeyEvent.VK_UP, 	GameObject.UP);
+			put(KeyEvent.VK_DOWN,	GameObject.DOWN);
+		}
+	};
+	
+	private static final HashMap<String, Integer[]> blocks = new HashMap<String, Integer[]>() {
+		
+		private static final long serialVersionUID = 1L;
+		
+		{
+			put(EmptyBlock.class.getCanonicalName(), 	new Integer[]{1, 2});
+			put(Wall.class.getCanonicalName(), 			new Integer[]{0, 1});
+			put(Ground.class.getCanonicalName(), 		new Integer[]{0, 2});
+			put(Door.class.getCanonicalName(), 			new Integer[]{1, 1});
+			put(Diamond.class.getCanonicalName(), 		new Integer[]{2, 3});
+			put(Rock.class.getCanonicalName(), 			new Integer[]{2, 0});
 		}
 	};
 	
@@ -51,70 +65,66 @@ public class Level extends JPanel implements KeyListener, Runnable {
 	ArrayList<LivingSprite> playerSprites;
 	ArrayList<LivingSprite> enemySprites;
 
-	public Level() {
-		super();
+	private void initGraphics() {
 		
 		spritesheet.loadSprite("blockSpriteSheet");
 		
-		// crea un world...
-		world = new World();
-		
 		//inizializza le sprites dei blocchi
 		blockSprites = new ArrayList<BlockSprite>();
-		
+				
 		for(int i = 0; i < world.getMap().getDimX(); ++i) {
 			for(int j = 0; j < world.getMap().getDimY(); ++j) {
-				
+						
 				GameObject g = world.getMap().getTile(i, j);
-				
-				if(world.getMap().getTile(i, j) instanceof EmptyBlock) {
-					BufferedImage img = spritesheet.getSprite(1, 2);
+						
+				BufferedImage img = null;
+				if(blocks.containsKey(g.getClass().getCanonicalName())) {
+							
+					Integer[] temp = blocks.get(g.getClass().getCanonicalName());
+							
+					if(g instanceof Diamond || g instanceof Rock) {
+						img = spritesheet.getSprite(r.nextInt(temp[0]), temp[1]);
+					} else {
+						img = spritesheet.getSprite(temp[0], temp[1]);
+					}
+				}
+						
+				if(img != null) {
 					blockSprites.add(new BlockSprite(img, g));
-				
-				} else if(world.getMap().getTile(i, j) instanceof Wall) {
-					BufferedImage img = spritesheet.getSprite(0, 1);
-					blockSprites.add(new BlockSprite(img, g));
-					
-				} else if(world.getMap().getTile(i, j) instanceof Diamond) {
-					BufferedImage img = spritesheet.getSprite(r.nextInt(2), 3);
-					blockSprites.add(new BlockSprite(img, g));
-					
-				} else if(world.getMap().getTile(i, j) instanceof Ground) {
-					BufferedImage img = spritesheet.getSprite(0, 2);
-					blockSprites.add(new BlockSprite(img, g));
-					
-				} else if(world.getMap().getTile(i, j) instanceof Rock) {
-					BufferedImage img = spritesheet.getSprite(r.nextInt(2), 0);
-					blockSprites.add(new BlockSprite(img, g));
-					
-				} else if(world.getMap().getTile(i, j) instanceof Door) {
-					BufferedImage img = spritesheet.getSprite(1, 1);
-					blockSprites.add(new BlockSprite(img, g));
-					
 				}
 			}
 		}
-		
+				
 		//inizializza le animazioni del giocatore
 		playerSprites = new ArrayList<LivingSprite>();
-		
+				
 		Player p = (Player) world.getPlayer();
 		playerSprites.add(new LivingSprite("playerSpriteSheet", p.getSpeed(), p));
-		
+				
 		//inizializza le animazioni dei nemici
 		enemySprites = new ArrayList<LivingSprite>();
-		
+				
 		for(int i = 0; i < world.getEnemies().size(); ++i) {
 			Enemy e = (Enemy) world.getEnemies().get(i);
 			enemySprites.add(new LivingSprite("enemySpriteSheet", e.getSpeed(), e));
 		}
+	}
+	
+	public Level() {
+		super();
 		
-		lastTimePressed=java.time.LocalTime.now();
+		// crea un world...
+		world = new World();
+		
+		initGraphics();
+		
+		lastTimePressed = java.time.LocalTime.now();
 		Renderer.init(world);
 		
 		Thread t = new Thread(this);
+		Thread t2 = new Thread(world);
 		t.start();
-		//world.reset();
+		t2.start();
 	}
 
 	public ArrayList<BlockSprite> getBlockSprites() {
@@ -122,78 +132,77 @@ public class Level extends JPanel implements KeyListener, Runnable {
 	}
 	
 	public World getWorld() {
-		// TODO Auto-generated method stub
 		return world;
 	}
 
 	public void setWorld(World world) {
-		// TODO Auto-generated method stub
 		this.world = world;
-		
 	}
 	
-	public void updateGraphics() {
-		
-		//aggiorna la grafica
+	//sincronizza la grafica con la logica
+	public void updateGraphics() throws NullPointerException {
+		//aggiorna i blocchi
 		for(int i = 0; i < blockSprites.size(); ++i) {
-			
 			//se il blocco logico e' cambiato nell'ultimo world.update()...
-			try {
-				if(blockSprites.get(i).getLogicObject().isDead()) {
+			if(blockSprites.get(i).getLogicObject().isDead()) {
 												
-					if(blockSprites.get(i).getLogicObject().getSuccessor() != null) {
-						GameObject newObj = blockSprites.get(i).getLogicObject().getSuccessor();
+				if(blockSprites.get(i).getLogicObject().getSuccessor() != null) {
+					GameObject newObj = blockSprites.get(i).getLogicObject().getSuccessor();
 					
-						BufferedImage img = spritesheet.getSprite(1, 2);
-						blockSprites.set(i, new BlockSprite(img, newObj));	
-					}
+					BufferedImage img = spritesheet.getSprite(1, 2);
+					blockSprites.set(i, new BlockSprite(img, newObj));	
 				}
-			} catch(NullPointerException e) {
-				e.printStackTrace();
 			}
 		}
-		
+		//aggiorna i players
 		for(int i = 0; i < playerSprites.size(); ++i) {
 			
-			try {
-				if(playerSprites.get(i).logicObj.isDead()) {
-					
-					if(playerSprites.get(i).logicObj.getSuccessor() != null) {
+			Player p = (Player) playerSprites.get(i).logicObj;
+			
+			if(p.isDead()) {
 						
-						GameObject newObj = playerSprites.get(i).logicObj.getSuccessor();
+				GameObject newObj = p.getSuccessor();
 					
-						BufferedImage img = spritesheet.getSprite(1, 2);
-						blockSprites.add(new BlockSprite(img, newObj));	
+				BufferedImage img = spritesheet.getSprite(1, 2);
+				blockSprites.add(new BlockSprite(img, newObj));	
 						
-						playerSprites.remove(i);
-						System.out.println("PLAYER REMOVED");
-					}
-				}
-				
-			} catch(NullPointerException e) {
-				e.printStackTrace();
+				playerSprites.remove(i);
+				System.out.println("PLAYER REMOVED");
 			}
 		}
-		
+		//aggiorna gli enemies
 		for(int i = 0; i < enemySprites.size(); ++i) {
 			
-			try {
-				if(enemySprites.get(i).logicObj.isDead()) {
-					
-					if(enemySprites.get(i).logicObj.getSuccessor() != null) {
+			Enemy e = (Enemy) enemySprites.get(i).logicObj; 
+			
+			if(e.isDead()) {
 						
-						GameObject newObj = enemySprites.get(i).logicObj.getSuccessor();
+				GameObject newObj = e.getSuccessor();
 					
-						BufferedImage img = spritesheet.getSprite(1, 2);
-						blockSprites.add(new BlockSprite(img, newObj));	
-					
-						enemySprites.remove(i);
-						System.out.println("ENEMY REMOVED");
-					}
-				}
+				BufferedImage img = spritesheet.getSprite(1, 2);
+				blockSprites.add(new BlockSprite(img, newObj));	
 				
-			} catch(NullPointerException e) {
-				e.printStackTrace();
+				enemySprites.remove(i);
+				System.out.println("ENEMY REMOVED");
+			}
+		}
+		//aggiorna gli enemies pt.2
+		for(int i = 0; i < enemySprites.size(); ++i) {
+			
+			Enemy e = (Enemy) enemySprites.get(i).logicObj; 
+			
+			if(!e.isDead()) {
+				
+				//per accelerare l'animazione dell'Enemy, aumentare la costante 1 	
+				if(enemySprites.get(i).counter >= (125/(FPS*1))) {
+	
+					enemySprites.get(i).movePose(e.getLastDir());
+					enemySprites.get(i).getAnimation().update();
+					enemySprites.get(i).counter = 0;
+				
+				} else {
+					enemySprites.get(i).counter += 1;
+				}
 			}
 		}
 	}
@@ -206,27 +215,13 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		
 		super.paintComponent(g);
 		
-		updateGraphics();
-		revalidate();
-		
-		for(int i = 0; i < enemySprites.size(); ++i) {
-			
-			Enemy e = (Enemy) enemySprites.get(i).logicObj; 
-			
-			if(!e.isDead()) {
-				
-				//per accelerare l'animazione dell'Enemy, aumentare la costante 1 	
-				if(enemySprites.get(i).counter >= (125/(FPS*1))) {
-				
-					enemySprites.get(i).movePose(e.getLastDir());
-					enemySprites.get(i).getAnimation().update();
-					enemySprites.get(i).counter = 0;
-			
-				} else {
-					enemySprites.get(i).counter += 1;
-				}
-			}
+		try {
+			updateGraphics();
+		} catch(NullPointerException e) {
+			e.printStackTrace();
 		}
+			
+			revalidate();
 		
 		Renderer.render(g, this);
 	}
@@ -237,6 +232,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
 		if( (java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0 ) {
 			
 			lastTimePressed = java.time.LocalTime.now();
