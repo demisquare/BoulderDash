@@ -147,8 +147,8 @@ public abstract class GameObject {
 			y = j;
 			processed = true;
 			
-			if(!error)
-				System.out.println("scambia i tiles...");
+			/*if(!error)
+				System.out.println("scambia i tiles...");*/
 		//}
 	}
 	

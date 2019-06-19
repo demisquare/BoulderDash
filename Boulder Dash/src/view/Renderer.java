@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Graphics;
+import java.awt.Toolkit;
 
 import model.World;
 
@@ -8,14 +9,17 @@ public class Renderer {
 
 	private Renderer() {};
 	
+	Toolkit tk = Toolkit.getDefaultToolkit();
+	double xSize = tk.getScreenSize().getWidth();
+	double ySize = tk.getScreenSize().getHeight();
+	
 	// dimensioni viewport
-	public static final int WINDOW_WIDTH = 920;
-	public static final int WINDOW_HEIGHT = 720;
+	public static int WINDOW_WIDTH = 920;
+	public static int WINDOW_HEIGHT = 720;
 
 	static void init(World world) {
-		// TODO: definire hitbox...
-		 Camera.offsetMaxX = world.getWidth() - WINDOW_WIDTH;
-		 Camera.offsetMaxY = world.getHeight() - WINDOW_HEIGHT;
+		Camera.offsetMaxX = world.getWidth() - WINDOW_WIDTH;
+		Camera.offsetMaxY = world.getHeight() - WINDOW_HEIGHT;
 	}
 
 	static void render(Graphics g, Level l) {
@@ -23,7 +27,6 @@ public class Renderer {
 		Camera.x = l.world.getPlayer().getX() * Sprite.TILE_SIZE - (WINDOW_WIDTH / 2) + Sprite.TILE_SIZE;
 		Camera.y = l.world.getPlayer().getY() * Sprite.TILE_SIZE - (WINDOW_HEIGHT / 2) + Sprite.TILE_SIZE;
 
-		// TODO: imposta hitbox camera...
 		Camera.set();
 
 		// muovi telecamera...

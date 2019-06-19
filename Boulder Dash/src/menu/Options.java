@@ -482,8 +482,8 @@ public class Options extends JPanel {
 
 			
 			Toolkit tk = Toolkit.getDefaultToolkit();
-			int xSize = ((int) tk.getScreenSize().getWidth());
-			int ySize = ((int) tk.getScreenSize().getHeight());
+			double xSize = tk.getScreenSize().getWidth();
+			double ySize = tk.getScreenSize().getHeight();
 			
 			new Thread(new Runnable() {
 				@Override
@@ -499,13 +499,13 @@ public class Options extends JPanel {
 							MUSIC_check.setBounds(720, 430, 50, 50);
 						}
 						else if(full_screen) {
-							ARROW_BACK_scaled.setBounds(5+(xSize-1280)/3, 5+(ySize-720)/3, 146, 97);
-							PARADISO_scaled.setBounds(100+(xSize-1280)/3, 90+(ySize-720)/3, 350, 150);
-							PURGATORIO_scaled.setBounds(460+(xSize-1280)/3, 90+(ySize-720)/3, 350, 150);
-							INFERNO_scaled.setBounds(800+(xSize-1280)/3, 90+(ySize-720)/3, 350, 150);
-							WINDOWED_scaled.setBounds(280+(xSize-1280)/3, 280+(ySize-720)/3, 350, 150);
-							FULLSCREEN_scaled.setBounds(620+(xSize-1280)/3, 280+(ySize-720)/3, 350, 150);
-							MUSIC_check.setBounds(720+(xSize-1280)/3, 430+(ySize-720)/3, 50, 50);
+							ARROW_BACK_scaled.setBounds((int)(5*(xSize/1280)), (int)(5*(ySize/720)), 146, 97);
+							PARADISO_scaled.setBounds((int)(100*(xSize/1280)), (int)(90*(ySize/720)), 350, 150);
+							PURGATORIO_scaled.setBounds((int)(460*(xSize/1280)), (int)(90*(ySize/720)), 350, 150);
+							INFERNO_scaled.setBounds((int)(800*(xSize/1280)), (int)(90*(ySize/720)), 350, 150);
+							WINDOWED_scaled.setBounds((int)(280*(xSize/1280)), (int)(280*(ySize/720)), 350, 150);
+							FULLSCREEN_scaled.setBounds((int)(620*(xSize/1280)), (int)(280*(ySize/720)), 350, 150);
+							MUSIC_check.setBounds((int)(720*(xSize/1280)), (int)(430*(ySize/720)), 50, 50);
 						}
 							
 						try {

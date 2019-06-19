@@ -18,6 +18,7 @@ public class Main {
 		Menu menu = new Menu(frame);
 		// _________________________________
 		
+		Music.backgroundMusic = Music.menuSong;
 		
 		//__________AUDIO ENGINE____________
 		new Thread(new Runnable() {

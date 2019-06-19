@@ -78,9 +78,6 @@ public class Menu extends JPanel {
 	}
 
 	public Menu(JFrame frame) {
-		
-		Music.backgroundMusic = Music.menuSong;
-
 		options = new Options(frame, this);
 		credits = new Credits(frame, this);
 		multi = new Multiplayer(frame, game, this);
@@ -348,8 +345,8 @@ public class Menu extends JPanel {
 			menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
 
 			Toolkit tk = Toolkit.getDefaultToolkit();
-			int xSize = ((int) tk.getScreenSize().getWidth());
-			int ySize = ((int) tk.getScreenSize().getHeight());
+			double xSize = tk.getScreenSize().getWidth();
+			double ySize = tk.getScreenSize().getHeight();
 			
 			new Thread(new Runnable() {
 				@Override
@@ -358,7 +355,7 @@ public class Menu extends JPanel {
 						if(!options.full_screen)
 							menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
 						else if(options.full_screen)
-							menu_choices.setBounds((1280 / 2 - 430 / 2)+((xSize-1280)/3), 250+((ySize-720)/3), 430, 300);
+							menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 430, 300);
 						try {
 							Thread.sleep(34);
 						} catch (InterruptedException e) {

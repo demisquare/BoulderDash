@@ -232,15 +232,15 @@ public class Multiplayer extends JPanel {
 				@Override
 				public void run() {
 					while (true) {
-						if(!menu.options.full_screen) {
+						if(!Options.full_screen) {
 							ARROW_BACK_scaled.setBounds(5, 5, 146, 97);
 							CREATE_GAME_scaled.setBounds(300, 200, 698, 79);
 							JOIN_GAME_scaled.setBounds(300, 400, 540, 79);
 						}
-						else if(menu.options.full_screen) {
-							ARROW_BACK_scaled.setBounds((int)(5*(1280/xSize)), (int)(5*(720/ySize)), 146, 97);
-							CREATE_GAME_scaled.setBounds((int)(300*(1280/xSize)), (int)(200*(720/ySize)), 698, 79);
-							JOIN_GAME_scaled.setBounds((int)(300*(1280/xSize)), (int)(400*(720/ySize)), 540, 79);
+						else if(Options.full_screen) {
+							ARROW_BACK_scaled.setBounds((int)(5*(xSize/1280)), (int)(5*(ySize/720)), 146, 97);
+							CREATE_GAME_scaled.setBounds((int)(300*(xSize/1280)), (int)(200*(ySize/720)), 698, 79);
+							JOIN_GAME_scaled.setBounds((int)(300*(xSize/1280)), (int)(400*(ySize/720)), 540, 79);
 						}
 						try {
 							Thread.sleep(34);

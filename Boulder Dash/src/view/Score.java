@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import audio.Music;
 import menu.Menu;
+import menu.Options;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -122,22 +123,22 @@ public class Score extends JPanel{
 			time_left.setFont(eightBit);
 			
 			Toolkit tk = Toolkit.getDefaultToolkit();
-			int xSize = ((int) tk.getScreenSize().getWidth());
-			int ySize = ((int) tk.getScreenSize().getHeight());
+			double xSize = tk.getScreenSize().getWidth();
+			double ySize = tk.getScreenSize().getHeight();
 			
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					while (true) {
-						if(!menu.options.full_screen) {
+						if(!Options.full_screen) {
 							ARROW_BACK_scaled.setBounds(230, 640, 146, 97);
-							Lives.setBounds(23, 440, 305, 94);
-							time_left.setBounds(6, 580, 350, 100);
+							Lives.setBounds(32, 440, 305, 94);
+							time_left.setBounds(16, 580, 350, 100);
 						}
-						else if(menu.options.full_screen) {
-							ARROW_BACK_scaled.setBounds(230+((xSize-960)-360), 640+((ySize-720)/2), 146, 97);
-							Lives.setBounds(23+((xSize-960)-360), 440+((ySize-720)/2), 305, 94);
-							time_left.setBounds(6+((xSize-960)-360), 580+((ySize-720)/2), 350, 100);
+						else if(Options.full_screen) {
+							ARROW_BACK_scaled.setBounds((int)(230*(xSize/1280)), (int)(640*(ySize/720)), 146, 97);
+							Lives.setBounds((int)(32*(xSize/1280)), (int)(440*(ySize/720)), 305, 94);
+							time_left.setBounds((int)(16*(xSize/1280)), (int)(580*(ySize/720)), 350, 100);
 						}
 						try {
 							Thread.sleep(34);
