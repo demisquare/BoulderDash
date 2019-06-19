@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -50,7 +51,7 @@ public class Score extends JPanel{
 		frame.repaint();
 	}
 	
-	public Score(JFrame frame, Menu menu, Game game) {
+	public Score(JFrame frame, Menu menu, Game game) { //Default Score resolution: 360x720
 		try {
 			Font eightBit = Font.createFont(Font.TRUETYPE_FONT, new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "8BITFONT.TTF")).deriveFont(80f);
 			
@@ -115,13 +116,37 @@ public class Score extends JPanel{
 				}
 			});
 			
-			ARROW_BACK_scaled.setBounds(230, 640, 146, 97);
-			Lives.setBounds(23, 440, 305, 94);
-			
+
 			time_left=new JLabel("" + remaining_time, JLabel.CENTER);
 			time_left.setForeground(Color.WHITE);
 			time_left.setFont(eightBit);
-			time_left.setBounds(6, 580, 350, 100);
+			
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			int xSize = ((int) tk.getScreenSize().getWidth());
+			int ySize = ((int) tk.getScreenSize().getHeight());
+			
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while (true) {
+						if(!menu.options.full_screen) {
+							ARROW_BACK_scaled.setBounds(230, 640, 146, 97);
+							Lives.setBounds(23, 440, 305, 94);
+							time_left.setBounds(6, 580, 350, 100);
+						}
+						else if(menu.options.full_screen) {
+							ARROW_BACK_scaled.setBounds(230+((xSize-960)-360), 640+((ySize-720)/2), 146, 97);
+							Lives.setBounds(23+((xSize-960)-360), 440+((ySize-720)/2), 305, 94);
+							time_left.setBounds(6+((xSize-960)-360), 580+((ySize-720)/2), 350, 100);
+						}
+						try {
+							Thread.sleep(34);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}).start();
 			
 			this.add(Lives);
 			this.setLayout(null); //se non settiamo a null non possiamo usare il setBounds.
@@ -141,7 +166,7 @@ public class Score extends JPanel{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		g.drawImage(Background, 0, 0, 360, 720, null);
+		g.drawImage(Background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 
 }

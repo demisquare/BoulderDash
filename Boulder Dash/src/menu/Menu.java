@@ -3,6 +3,7 @@ package menu;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -45,7 +46,7 @@ public class Menu extends JPanel {
 	
 	Game game;
 	Multiplayer multi;
-	Options options;
+	public Options options;
 	Credits credits;
 
 	private void start_selected(JFrame frame, Game game) {
@@ -80,10 +81,10 @@ public class Menu extends JPanel {
 		
 		Music.backgroundMusic = Music.menuSong;
 
-		options = new Options(frame, this); //fatto
-		credits = new Credits(frame, this); //fatto
-		multi = new Multiplayer(frame, game, this); //fatto
-		game = new Game(); //fatto
+		options = new Options(frame, this);
+		credits = new Credits(frame, this);
+		multi = new Multiplayer(frame, game, this);
+		game = new Game();
 		game.score_init(frame, this);
 		
 		try {
@@ -346,6 +347,27 @@ public class Menu extends JPanel {
 			menu_choices.setBackground(new Color(0, 0, 0, 0));
 			menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
 
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			int xSize = ((int) tk.getScreenSize().getWidth());
+			int ySize = ((int) tk.getScreenSize().getHeight());
+			
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while (true) {
+						if(!options.full_screen)
+							menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
+						else if(options.full_screen)
+							menu_choices.setBounds((1280 / 2 - 430 / 2)+((xSize-1280)/3), 250+((ySize-720)/3), 430, 300);
+						try {
+							Thread.sleep(34);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}).start();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

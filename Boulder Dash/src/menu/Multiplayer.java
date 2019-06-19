@@ -2,6 +2,7 @@ package menu;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -222,10 +223,34 @@ public class Multiplayer extends JPanel {
 			this.add(ARROW_BACK_scaled);
 			this.add(CREATE_GAME_scaled);
 			this.add(JOIN_GAME_scaled);
-			ARROW_BACK_scaled.setBounds(5, 5, 146, 97);
-			CREATE_GAME_scaled.setBounds(300, 200, 698, 79);
-			JOIN_GAME_scaled.setBounds(300, 400, 540, 79);
-
+			
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			double xSize = tk.getScreenSize().getWidth();
+			double ySize = tk.getScreenSize().getHeight();
+			
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while (true) {
+						if(!menu.options.full_screen) {
+							ARROW_BACK_scaled.setBounds(5, 5, 146, 97);
+							CREATE_GAME_scaled.setBounds(300, 200, 698, 79);
+							JOIN_GAME_scaled.setBounds(300, 400, 540, 79);
+						}
+						else if(menu.options.full_screen) {
+							ARROW_BACK_scaled.setBounds((int)(5*(1280/xSize)), (int)(5*(720/ySize)), 146, 97);
+							CREATE_GAME_scaled.setBounds((int)(300*(1280/xSize)), (int)(200*(720/ySize)), 698, 79);
+							JOIN_GAME_scaled.setBounds((int)(300*(1280/xSize)), (int)(400*(720/ySize)), 540, 79);
+						}
+						try {
+							Thread.sleep(34);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}).start();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -234,6 +259,6 @@ public class Multiplayer extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(background, 0, 0, 1280, 720, null);
+		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 }

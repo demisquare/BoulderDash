@@ -2,6 +2,7 @@ package menu;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -66,7 +67,7 @@ public class Options extends JPanel {
 	}
 	
 	public static boolean music = true;
-	private static boolean full_screen = false;
+	public static boolean full_screen = false;
 	
 
 	enum Difficulty {
@@ -479,13 +480,43 @@ public class Options extends JPanel {
 			this.add(FULLSCREEN_scaled);
 			this.add(MUSIC_check);
 
-			ARROW_BACK_scaled.setBounds(5, 5, 146, 97);
-			PARADISO_scaled.setBounds(100, 90, 350, 150);
-			PURGATORIO_scaled.setBounds(460, 90, 350, 150);
-			INFERNO_scaled.setBounds(800, 90, 350, 150);
-			WINDOWED_scaled.setBounds(280, 280, 350, 150);
-			FULLSCREEN_scaled.setBounds(620, 280, 350, 150);
-			MUSIC_check.setBounds(720, 430, 50, 50);
+			
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			int xSize = ((int) tk.getScreenSize().getWidth());
+			int ySize = ((int) tk.getScreenSize().getHeight());
+			
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while (true) {
+						if(!full_screen) {
+							ARROW_BACK_scaled.setBounds(5, 5, 146, 97);
+							PARADISO_scaled.setBounds(100, 90, 350, 150);
+							PURGATORIO_scaled.setBounds(460, 90, 350, 150);
+							INFERNO_scaled.setBounds(800, 90, 350, 150);
+							WINDOWED_scaled.setBounds(280, 280, 350, 150);
+							FULLSCREEN_scaled.setBounds(620, 280, 350, 150);
+							MUSIC_check.setBounds(720, 430, 50, 50);
+						}
+						else if(full_screen) {
+							ARROW_BACK_scaled.setBounds(5+(xSize-1280)/3, 5+(ySize-720)/3, 146, 97);
+							PARADISO_scaled.setBounds(100+(xSize-1280)/3, 90+(ySize-720)/3, 350, 150);
+							PURGATORIO_scaled.setBounds(460+(xSize-1280)/3, 90+(ySize-720)/3, 350, 150);
+							INFERNO_scaled.setBounds(800+(xSize-1280)/3, 90+(ySize-720)/3, 350, 150);
+							WINDOWED_scaled.setBounds(280+(xSize-1280)/3, 280+(ySize-720)/3, 350, 150);
+							FULLSCREEN_scaled.setBounds(620+(xSize-1280)/3, 280+(ySize-720)/3, 350, 150);
+							MUSIC_check.setBounds(720+(xSize-1280)/3, 430+(ySize-720)/3, 50, 50);
+						}
+							
+						try {
+							Thread.sleep(34);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}).start();
+
 
 		} catch (IOException e) {
 			e.printStackTrace();
