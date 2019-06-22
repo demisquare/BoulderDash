@@ -9,15 +9,16 @@ import javax.swing.JSplitPane;
 import menu.Menu;
 import menu.Options;
 
-public class Game extends JSplitPane implements Serializable {
+public class Game extends JSplitPane implements Runnable, Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3366963664175197486L;
 	
-	private Thread t1;
-	private Thread t2;
+	public static int FPS = 34;
+	
+	private Thread t;
 	
 	public Level level;
 	public Score score;
@@ -35,10 +36,9 @@ public class Game extends JSplitPane implements Serializable {
 		level = new Level();
 		level.addKeyListener(level);
 		
-		t2 = new Thread(level);
-		t1 = new Thread(level.getWorld());
-		t1.start();
-		t2.start();
+		t = new Thread(this);
+		
+		t.start();
 	}
 	
 	public void score_init(JFrame frame, Menu menu) {
@@ -75,31 +75,46 @@ public class Game extends JSplitPane implements Serializable {
 	
 	public void reset(JFrame frame, Menu menu) {
 		
+		t.interrupt();
+		
 		level = new Level();
 		level.addKeyListener(level);
 		
-		t1.interrupt();
+		t = new Thread(this);
 		
-		if(t1.isInterrupted()) {
-			t1 = new Thread(level.getWorld());
-			t1.start();
-			
-		} else {
-			System.out.println("Non rilancia il level");
-		}
-		
-		t2.interrupt();
-		
-		if(t2.isInterrupted()) {
-			t2 = new Thread(level);
-			t2.start();
-			
-		} else {
-			System.out.println("Non rilancia il world");
-		}
+		t.start();
 		
 		score = new Score(frame, menu, this);
 		
 		isReset = true;
+	}
+
+	@Override
+	public void run() {
+		try {
+			
+			int counter = 0; 
+			
+			while(true) {
+				
+				++counter;
+				if(counter == 200/FPS) {
+					
+					counter = 0;
+					level.getWorld().update();
+				}
+				
+				revalidate();
+				repaint();
+				level.getWorld().reset();
+				
+				Thread.sleep(FPS);
+				
+			}
+			
+		}catch(InterruptedException e) {
+			e.printStackTrace();
+			return;
+		}	
 	}
 }

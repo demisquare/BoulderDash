@@ -287,6 +287,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 
 	@Override
 	public void run() {
+/*	
 		while(true) {
 			try {
 				
@@ -299,5 +300,6 @@ public class Level extends JPanel implements KeyListener, Runnable {
 				return;
 			}
 		}		
+*/	
 	}
 }

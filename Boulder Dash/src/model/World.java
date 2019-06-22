@@ -146,6 +146,7 @@ public class World implements Runnable {
 	
 	@Override
 	public void run() {
+/*		
 		while(true) {
 			try {
 				
@@ -156,6 +157,7 @@ public class World implements Runnable {
 				return;
 			}
 		}
+*/	
 	}
 /*		
 	public void dijkstra() {
