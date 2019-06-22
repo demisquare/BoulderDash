@@ -28,6 +28,10 @@ public class Game extends JSplitPane implements Serializable {
 		
 		isReset = false;
 		
+		setVisible(true);
+		setFocusable(true);
+		setEnabled(true);
+		
 		level = new Level();
 		level.addKeyListener(level);
 		

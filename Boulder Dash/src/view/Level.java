@@ -15,13 +15,19 @@ import model.*;
 
 public class Level extends JPanel implements KeyListener, Runnable {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9009048960794622320L;
 
 	//mappa che collega ogni pressione di tastiera al movimento corrispondente
 	//nello specifico: enumeratore Awt di pressione tasto , enumeratore logico di direzione
 	private static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>() {
 
-		private static final long serialVersionUID = 1L;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -6595629016610529055L;
 
 		{
 			put(KeyEvent.VK_LEFT, 	GameObject.LEFT);
@@ -33,8 +39,11 @@ public class Level extends JPanel implements KeyListener, Runnable {
 	
 	private static final HashMap<String, Integer[]> blocks = new HashMap<String, Integer[]>() {
 		
-		private static final long serialVersionUID = 1L;
-		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 7591763942826182803L;
+
 		{
 			put(EmptyBlock.class.getCanonicalName(), 	new Integer[]{1, 2});
 			put(Wall.class.getCanonicalName(), 			new Integer[]{0, 1});
@@ -81,7 +90,8 @@ public class Level extends JPanel implements KeyListener, Runnable {
 				if(blocks.containsKey(g.getClass().getCanonicalName())) {
 							
 					Integer[] temp = blocks.get(g.getClass().getCanonicalName());
-							
+					
+					//a static map instead of a switch
 					if(g instanceof Diamond || g instanceof Rock) {
 						img = spritesheet.getSprite(r.nextInt(temp[0]), temp[1]);
 					} else {
