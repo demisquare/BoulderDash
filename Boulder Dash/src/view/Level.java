@@ -113,6 +113,10 @@ public class Level extends JPanel implements KeyListener, Runnable {
 	public Level() {
 		super();
 		
+		setFocusable(true);
+		setVisible(true);
+		setEnabled(true);
+		
 		// crea un world...
 		world = new World();
 		
@@ -120,11 +124,6 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		
 		lastTimePressed = java.time.LocalTime.now();
 		Renderer.init(world);
-		
-		Thread t = new Thread(this);
-		Thread t2 = new Thread(world);
-		t.start();
-		t2.start();
 	}
 
 	public ArrayList<BlockSprite> getBlockSprites() {
@@ -147,6 +146,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 			if(blockSprites.get(i).getLogicObject().isDead()) {
 												
 				if(blockSprites.get(i).getLogicObject().getSuccessor() != null) {
+					
 					GameObject newObj = blockSprites.get(i).getLogicObject().getSuccessor();
 					
 					BufferedImage img = spritesheet.getSprite(1, 2);
@@ -220,9 +220,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		} catch(NullPointerException e) {
 			e.printStackTrace();
 		}
-			
-			revalidate();
-		
+
 		Renderer.render(g, this);
 	}
 
@@ -252,7 +250,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 			}
 		
 			//world.dijkstra(); inefficient.
-			
+			revalidate();
 			repaint();
 			world.reset();
 		}
@@ -272,22 +270,23 @@ public class Level extends JPanel implements KeyListener, Runnable {
 			playerSprites.get(0).getAnimation().update();
 		}
 		
+		revalidate();
 		repaint();
 		world.reset();
-
 	}
 
 	@Override
 	public void run() {
 		while(true) {
-			
-			repaint();
-			world.reset();
-			
 			try {
+				
+				revalidate();
+				repaint();
+				world.reset();
 				Thread.sleep(FPS);
+				
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				return;
 			}
 		}		
 	}

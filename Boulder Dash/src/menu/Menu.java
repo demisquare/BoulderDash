@@ -49,32 +49,47 @@ public class Menu extends JPanel {
 	public Options options;
 	Credits credits;
 
-	private void start_selected(JFrame frame, Game game) {
-		Music.setSong(Music.gameSong);
+	private void start_selected(JFrame frame) throws Exception {
+		
 		frame.remove(this);
+		
+		if(!game.isReset) {
+			throw new Exception();
+		}
+
 		frame.setContentPane(game);
-		game.level.requestFocusInWindow();
+		
+		if(!game.level.requestFocusInWindow()) {
+			throw new Exception();
+		}
+		
+		game.isReset = false;
+		
 		frame.revalidate();
 		frame.repaint();
+		Music.setSong(Music.gameSong);
 	}
+	
 	private void options_selected(JFrame frame, Options options) {
 		frame.remove(this);
 		frame.setContentPane(options);
 		frame.revalidate();
 		frame.repaint();
 	}
+	
 	private void multi_selected(JFrame frame, Multiplayer multi) {
 		frame.remove(this);
 		frame.setContentPane(multi);
 		frame.revalidate();
 		frame.repaint();
 	}
+	
 	private void credits_selected(JFrame frame, Credits credits) {
-		Music.setSong(Music.creditsSong);
 		frame.remove(this);
 		frame.setContentPane(credits);
 		frame.revalidate();
 		frame.repaint();
+		Music.setSong(Music.creditsSong);
 	}
 
 	public Menu(JFrame frame) {
@@ -82,6 +97,7 @@ public class Menu extends JPanel {
 		credits = new Credits(frame, this);
 		multi = new Multiplayer(frame, game, this);
 		game = new Game();
+		game.isReset = true;
 		game.score_init(frame, this);
 		
 		try {
@@ -89,13 +105,13 @@ public class Menu extends JPanel {
 					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "Menu"
 							+ File.separator + "MainMenuPage" + File.separator + "MainMenuPage_Background.png"));
 
-			START = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
+			START = ImageIO.read(
+					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
 							+ "Menu" + File.separator + "MainMenuPage" + File.separator + "MainMenuPage_START.png"))
 					.getScaledInstance(191, 55, Image.SCALE_SMOOTH);
 
-			MULTI = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
+			MULTI = ImageIO.read(
+					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
 							+ "Menu" + File.separator + "MainMenuPage" + File.separator + "MainMenuPage_MULTI.png"))
 					.getScaledInstance(423, 55, Image.SCALE_SMOOTH);
 
@@ -104,13 +120,13 @@ public class Menu extends JPanel {
 							+ "Menu" + File.separator + "MainMenuPage" + File.separator + "MainMenuPage_OPTIONS.png"))
 					.getScaledInstance(272, 54, Image.SCALE_SMOOTH);
 
-			CREDITS = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
+			CREDITS = ImageIO.read(
+					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
 							+ "Menu" + File.separator + "MainMenuPage" + File.separator + "MainMenuPage_CREDITS.png"))
 					.getScaledInstance(267, 55, Image.SCALE_SMOOTH);
 
-			EXIT = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
+			EXIT = ImageIO.read(
+					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
 							+ "Menu" + File.separator + "MainMenuPage" + File.separator + "MainMenuPage_EXIT.png"))
 					.getScaledInstance(141, 50, Image.SCALE_SMOOTH);
 
@@ -170,7 +186,13 @@ public class Menu extends JPanel {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					start_selected(frame, game);
+					
+					try {
+						start_selected(frame);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					
 					START_scaled.setIcon(new ImageIcon(START));
 					revalidate();
 					repaint();
@@ -352,9 +374,9 @@ public class Menu extends JPanel {
 				@Override
 				public void run() {
 					while (true) {
-						if(!options.full_screen)
+						if(!Options.full_screen)
 							menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
-						else if(options.full_screen)
+						else if(Options.full_screen)
 							menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 430, 300);
 						try {
 							Thread.sleep(34);

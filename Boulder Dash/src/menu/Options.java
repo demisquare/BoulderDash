@@ -66,7 +66,7 @@ public class Options extends JPanel {
 		frame.setSize(1280, 749);
 	}
 	
-	public static boolean music = true;
+	public static boolean music = false;
 	public static boolean full_screen = false;
 	
 

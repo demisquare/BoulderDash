@@ -147,13 +147,13 @@ public class World implements Runnable {
 	@Override
 	public void run() {
 		while(true) {
-			
-			update();
-			
 			try {
+				
+				update();
 				Thread.sleep(200);
+				
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				return;
 			}
 		}
 	}

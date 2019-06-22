@@ -6,8 +6,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 //definisce la mappa di gioco come matrice di blocchi
@@ -78,6 +78,12 @@ public class GameMap {
 				e.printStackTrace();
 			}
 		}
+		
+		try {
+			bIn.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	
 		return ret;
 	}
@@ -134,8 +140,8 @@ public class GameMap {
 	}
 
 	public GameMap(String filename) {
-		if(GameObject.map == null) 
-			GameObject.map = this;
+		
+		GameObject.map = this;
 
 		blocks = new ConcurrentHashMap<Integer, GameObject>(dimX*dimY, 1);
 		emptyBlocksMap = new ConcurrentHashMap<Integer, GameObject>(dimX*dimY, 1);
