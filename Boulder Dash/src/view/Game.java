@@ -77,6 +77,8 @@ public class Game extends JSplitPane implements Runnable, Serializable {
 		
 		t.interrupt();
 		
+		while(!t.isInterrupted()) {}
+		
 		level = new Level();
 		level.addKeyListener(level);
 		

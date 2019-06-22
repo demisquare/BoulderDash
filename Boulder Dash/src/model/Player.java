@@ -9,7 +9,7 @@ public class Player extends GameObject implements Living {
 	//ATTENZIONE: è dipendente dal framerate (non dovrebbe)
 	private int pushRockCounter;
 	//conta il numero di diamanti raccolti
-	private int diamondCount;
+	int diamondCount;
 	//variabile inutile, viene usata per le animazioni ma si può sostituire
 	private int speed;
 	

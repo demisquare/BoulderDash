@@ -9,6 +9,8 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -19,9 +21,21 @@ import javax.swing.JPanel;
 import audio.Music;
 import view.Game;
 
-public class Menu extends JPanel {
+public class Menu extends JPanel implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5844904387077358595L;
+	private static final String MainMenuPage =
+			"." + File.separator + "resources" 
+			+ File.separator + "assets" 
+			+ File.separator + "Menu"
+			+ File.separator + "MainMenuPage" 
+			+ File.separator;
+	
+	
 	BufferedImage background;
 
 	Image START;
@@ -101,58 +115,36 @@ public class Menu extends JPanel {
 		game.score_init(frame, this);
 		
 		try {
-			background = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "Menu"
-							+ File.separator + "MainMenuPage" + File.separator + "MainMenuPage_Background.png"));
+			background = ImageIO.read(new File(MainMenuPage + "MainMenuPage_Background.png"));
 
-			START = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "MainMenuPage" + File.separator + "MainMenuPage_START.png"))
+			START = ImageIO.read(new File(MainMenuPage + "MainMenuPage_START.png"))
 					.getScaledInstance(191, 55, Image.SCALE_SMOOTH);
 
-			MULTI = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "MainMenuPage" + File.separator + "MainMenuPage_MULTI.png"))
+			MULTI = ImageIO.read(new File(MainMenuPage + "MainMenuPage_MULTI.png"))
 					.getScaledInstance(423, 55, Image.SCALE_SMOOTH);
 
-			OPTIONS = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "MainMenuPage" + File.separator + "MainMenuPage_OPTIONS.png"))
+			OPTIONS = ImageIO.read(new File(MainMenuPage + "MainMenuPage_OPTIONS.png"))
 					.getScaledInstance(272, 54, Image.SCALE_SMOOTH);
 
-			CREDITS = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "MainMenuPage" + File.separator + "MainMenuPage_CREDITS.png"))
+			CREDITS = ImageIO.read(new File(MainMenuPage + "MainMenuPage_CREDITS.png"))
 					.getScaledInstance(267, 55, Image.SCALE_SMOOTH);
 
-			EXIT = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "MainMenuPage" + File.separator + "MainMenuPage_EXIT.png"))
+			EXIT = ImageIO.read(new File(MainMenuPage + "MainMenuPage_EXIT.png"))
 					.getScaledInstance(141, 50, Image.SCALE_SMOOTH);
 
-			START_SELECTED = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "Menu"
-							+ File.separator + "MainMenuPage" + File.separator + "MainMenuPage_START_SELECTED.png"))
+			START_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_START_SELECTED.png"))
 					.getScaledInstance(191, 55, Image.SCALE_SMOOTH);
 
-			MULTI_SELECTED = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "Menu"
-							+ File.separator + "MainMenuPage" + File.separator + "MainMenuPage_MULTI_SELECTED.png"))
+			MULTI_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_MULTI_SELECTED.png"))
 					.getScaledInstance(423, 55, Image.SCALE_SMOOTH);
 
-			OPTIONS_SELECTED = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "Menu"
-							+ File.separator + "MainMenuPage" + File.separator + "MainMenuPage_OPTIONS_SELECTED.png"))
+			OPTIONS_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_OPTIONS_SELECTED.png"))
 					.getScaledInstance(272, 54, Image.SCALE_SMOOTH);
 
-			CREDITS_SELECTED = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "Menu"
-							+ File.separator + "MainMenuPage" + File.separator + "MainMenuPage_CREDITS_SELECTED.png"))
+			CREDITS_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_CREDITS_SELECTED.png"))
 					.getScaledInstance(267, 55, Image.SCALE_SMOOTH);
 
-			EXIT_SELECTED = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "Menu"
-							+ File.separator + "MainMenuPage" + File.separator + "MainMenuPage_EXIT_SELECTED.png"))
+			EXIT_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_EXIT_SELECTED.png"))
 					.getScaledInstance(141, 50, Image.SCALE_SMOOTH);
 
 			START_scaled = new JLabel(new ImageIcon(START));
