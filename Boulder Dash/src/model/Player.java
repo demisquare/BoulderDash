@@ -9,7 +9,7 @@ public class Player extends GameObject implements Living {
 	//ATTENZIONE: è dipendente dal framerate (non dovrebbe)
 	private int pushRockCounter;
 	//conta il numero di diamanti raccolti
-	private int diamondCount;
+	int diamondCount;
 	//variabile inutile, viene usata per le animazioni ma si può sostituire
 	private int speed;
 	
@@ -28,8 +28,8 @@ public class Player extends GameObject implements Living {
 
 	@Override
 	protected boolean move(int dir) {
-		int i = (x + dmap[dir][0]);
-		int j = (y + dmap[dir][1]);
+		int i = x + dmap[dir][0];
+		int j = y + dmap[dir][1];
 		
 		if(!(i < 0 || i >= map.dimX) && !(j < 0 || j >= map.dimY)) {
 		
@@ -42,6 +42,12 @@ public class Player extends GameObject implements Living {
 			} else if(map.getTile(i, j) instanceof Door) {
 				
 				System.out.println("VITTORIA");
+				
+				destroy();
+				
+				return true;
+			
+			} else if(map.getTile(i, j) instanceof Enemy) {
 				
 				destroy();
 				

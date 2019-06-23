@@ -6,6 +6,34 @@
  - EmbASP Framework
  
 ## History:
+#### 22-06-19:
+- New AudioPlayer(solves OpenJDK problems)
+- Added some exception handling for the menu-level interaction problem, just for debug purposes
+- Now any collision between an Enemy object and a Player object result in a call to the destroy() method of the Player object.
+- Now both old Level and World tasks run in a single Game task
+- Minor bugfixes
+
+#### 19-06-19:
+- Jlabel position fixed in full screen
+- Minor audio improvements
+- Minor bugfixes
+
+#### 18-06-19:
+- Fixed full screen mode
+- Fixed main class
+- Controller improved
+- Fixed the enemy not dying after a Rock falls on him
+- Fixed some synchronization issues between graphic and logic (tied to the above error)
+- Fixed some typos in the Renderer class
+
+#### 17-06-19:
+- Now the Player moves 2x faster, it should feel more natural
+- Added Hearts in the Score Panel
+- Now music loops correctly
+
+#### 15-06-19:
+- Tentative implementation of a "delay" on some player actions (like moving, pushing rocks etc.)
+
 #### 14-06-19:
 - Multiplayer fixes
 

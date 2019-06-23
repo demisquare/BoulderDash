@@ -8,6 +8,8 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -22,9 +24,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 
-public class Score extends JPanel{
+public class Score extends JPanel implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -48116048080203555L;
 	
 	BufferedImage Background;
 	Image arrow_back;
@@ -34,7 +39,7 @@ public class Score extends JPanel{
 	Image lives_1;
 	
 	public static int remaining_time = 150; //150 secondi per livello
-	public boolean turn_back=false;
+	public boolean turn_back = false;
 	
 	JLabel ARROW_BACK_scaled;
 	JLabel time_left;
@@ -43,13 +48,18 @@ public class Score extends JPanel{
 	private void turn_back(JFrame frame, Menu menu, Game game) {
 		//socketServer.close();
 		//socketClient.close();
-		Music.setSong(Music.menuSong);
-		frame.remove(game);
-		game.reset(frame, menu);
-		game.level.getWorld().getPlayer().setDead(true);
-		frame.setContentPane(menu);
-		frame.revalidate();
-		frame.repaint();
+		try{
+			game.isReset = false;
+			frame.remove(game);
+			frame.setContentPane(menu);
+			frame.revalidate();
+			frame.repaint();
+			Music.setSong(Music.menuSong);
+			
+		} catch(NullPointerException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public Score(JFrame frame, Menu menu, Game game) { //Default Score resolution: 360x720
@@ -74,9 +84,9 @@ public class Score extends JPanel{
 			lives_1 = ImageIO.read(
 					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "ScoreTab" + File.separator + "1_Hearts.png")).getScaledInstance(240, 73, Image.SCALE_SMOOTH);
 			
-			Lives = new JLabel(new ImageIcon (lives_3));
+			Lives = new JLabel(new ImageIcon(lives_3));
 			
-			ARROW_BACK_scaled = new JLabel(new ImageIcon (arrow_back));
+			ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
 			
 			ARROW_BACK_scaled.addMouseListener(new MouseListener() {
 				
@@ -118,7 +128,7 @@ public class Score extends JPanel{
 			});
 			
 
-			time_left=new JLabel("" + remaining_time, JLabel.CENTER);
+			time_left = new JLabel("" + remaining_time, JLabel.CENTER);
 			time_left.setForeground(Color.WHITE);
 			time_left.setFont(eightBit);
 			
@@ -136,6 +146,7 @@ public class Score extends JPanel{
 							time_left.setBounds(16, 580, 350, 100);
 						}
 						else if(Options.full_screen) {
+							//ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back.getScaledInstance((int)(80*(xSize/1280)), (int)(50*(ySize/720)), Image.SCALE_SMOOTH)));
 							ARROW_BACK_scaled.setBounds((int)(230*(xSize/1280)), (int)(640*(ySize/720)), 146, 97);
 							Lives.setBounds((int)(32*(xSize/1280)), (int)(440*(ySize/720)), 305, 94);
 							time_left.setBounds((int)(16*(xSize/1280)), (int)(580*(ySize/720)), 350, 100);

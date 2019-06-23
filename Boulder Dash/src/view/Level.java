@@ -15,13 +15,19 @@ import model.*;
 
 public class Level extends JPanel implements KeyListener, Runnable {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9009048960794622320L;
 
 	//mappa che collega ogni pressione di tastiera al movimento corrispondente
 	//nello specifico: enumeratore Awt di pressione tasto , enumeratore logico di direzione
 	private static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>() {
 
-		private static final long serialVersionUID = 1L;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -6595629016610529055L;
 
 		{
 			put(KeyEvent.VK_LEFT, 	GameObject.LEFT);
@@ -33,8 +39,11 @@ public class Level extends JPanel implements KeyListener, Runnable {
 	
 	private static final HashMap<String, Integer[]> blocks = new HashMap<String, Integer[]>() {
 		
-		private static final long serialVersionUID = 1L;
-		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 7591763942826182803L;
+
 		{
 			put(EmptyBlock.class.getCanonicalName(), 	new Integer[]{1, 2});
 			put(Wall.class.getCanonicalName(), 			new Integer[]{0, 1});
@@ -81,7 +90,8 @@ public class Level extends JPanel implements KeyListener, Runnable {
 				if(blocks.containsKey(g.getClass().getCanonicalName())) {
 							
 					Integer[] temp = blocks.get(g.getClass().getCanonicalName());
-							
+					
+					//a static map instead of a switch
 					if(g instanceof Diamond || g instanceof Rock) {
 						img = spritesheet.getSprite(r.nextInt(temp[0]), temp[1]);
 					} else {
@@ -113,6 +123,10 @@ public class Level extends JPanel implements KeyListener, Runnable {
 	public Level() {
 		super();
 		
+		setFocusable(true);
+		setVisible(true);
+		setEnabled(true);
+		
 		// crea un world...
 		world = new World();
 		
@@ -120,11 +134,6 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		
 		lastTimePressed = java.time.LocalTime.now();
 		Renderer.init(world);
-		
-		Thread t = new Thread(this);
-		Thread t2 = new Thread(world);
-		t.start();
-		t2.start();
 	}
 
 	public ArrayList<BlockSprite> getBlockSprites() {
@@ -147,6 +156,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 			if(blockSprites.get(i).getLogicObject().isDead()) {
 												
 				if(blockSprites.get(i).getLogicObject().getSuccessor() != null) {
+					
 					GameObject newObj = blockSprites.get(i).getLogicObject().getSuccessor();
 					
 					BufferedImage img = spritesheet.getSprite(1, 2);
@@ -220,9 +230,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		} catch(NullPointerException e) {
 			e.printStackTrace();
 		}
-			
-			revalidate();
-		
+
 		Renderer.render(g, this);
 	}
 
@@ -252,7 +260,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 			}
 		
 			//world.dijkstra(); inefficient.
-			
+			revalidate();
 			repaint();
 			world.reset();
 		}
@@ -272,23 +280,26 @@ public class Level extends JPanel implements KeyListener, Runnable {
 			playerSprites.get(0).getAnimation().update();
 		}
 		
+		revalidate();
 		repaint();
 		world.reset();
-
 	}
 
 	@Override
 	public void run() {
+/*	
 		while(true) {
-			
-			repaint();
-			world.reset();
-			
 			try {
+				
+				revalidate();
+				repaint();
+				world.reset();
 				Thread.sleep(FPS);
+				
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				return;
 			}
 		}		
+*/	
 	}
 }

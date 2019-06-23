@@ -9,38 +9,46 @@ public class AudioPlayer {
 
 	private boolean isOn;
 	Clip clip;
-	Mixer mixer;
-	Mixer.Info[] mixInfo;
-	DataLine.Info dataInfo;
+	DataLine.Info info;
 	URL soundURL;
+	AudioInputStream inputStream;
+	AudioFormat format;
 
 	public AudioPlayer(String s) {
-
-		mixInfo = AudioSystem.getMixerInfo();
-
-		mixer = AudioSystem.getMixer(mixInfo[0]);
-
-		dataInfo = new DataLine.Info(Clip.class, null);
-
-		try {
-			clip = (Clip) mixer.getLine(dataInfo);
-
-		} catch (LineUnavailableException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			// soundURL=AudioPlayer.class.getResource(s);
+		
+		try 
+        {   
 			soundURL = new URL("file:" + s);
-			AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundURL);
-			clip.open(audioStream);
-		} catch (LineUnavailableException e) {
-			e.printStackTrace();
-		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+            inputStream = AudioSystem.getAudioInputStream(soundURL);
+            format = inputStream.getFormat();
+            info = new DataLine.Info(Clip.class, format);
+            clip = (Clip)AudioSystem.getLine(info);
+            clip.open(inputStream);
+        }
+
+    catch (IOException | LineUnavailableException | UnsupportedAudioFileException e)
+        {
+            e.printStackTrace();
+        }
+
+		/*
+		 * mixInfo = AudioSystem.getMixerInfo();
+		 * 
+		 * mixer = AudioSystem.getMixer(mixInfo[0]);
+		 * 
+		 * dataInfo = new DataLine.Info(Clip.class, null);
+		 * 
+		 * try { clip = (Clip) mixer.getLine(dataInfo);
+		 * 
+		 * } catch (LineUnavailableException e) { e.printStackTrace(); }
+		 * 
+		 * try { // soundURL=AudioPlayer.class.getResource(s); soundURL = new
+		 * URL("file:" + s); AudioInputStream audioStream =
+		 * AudioSystem.getAudioInputStream(soundURL); clip.open(audioStream); } catch
+		 * (LineUnavailableException e) { e.printStackTrace(); } catch
+		 * (UnsupportedAudioFileException e) { e.printStackTrace(); } catch (IOException
+		 * e) { e.printStackTrace(); }
+		 */
 
 	}
 
