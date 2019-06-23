@@ -19,6 +19,13 @@ import audio.Music;
 public class Options extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final String OptionsPagePath =
+			"." + File.separator + 
+			"resources" + File.separator + 
+			"assets" + File.separator
+			+ "Menu" + File.separator + 
+			"OptionsPage" + File.separator;
 
 	BufferedImage background;
 	Image arrow_back;
@@ -78,78 +85,36 @@ public class Options extends JPanel {
 
 	public Options(JFrame frame, Menu menu) {
 		try {
-			background = ImageIO.read(new File("." + File.separator + "resources" + File.separator + "assets"
-					+ File.separator + "Menu" + File.separator + "OptionsPage" + File.separator + "background.png"));
+			
+			background = ImageIO.read(new File(OptionsPagePath + "background.png"));
 
-			arrow_back = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "arrow_back.png"))
-					.getScaledInstance(120, 80, Image.SCALE_SMOOTH);
+			arrow_back = ImageIO.read(new File(OptionsPagePath + "arrow_back.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
 
-			paradiso = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "Paradiso.png"))
-					.getScaledInstance(297, 61, Image.SCALE_SMOOTH);
+			paradiso = ImageIO.read(new File(OptionsPagePath + "Paradiso.png")).getScaledInstance(297, 61, Image.SCALE_SMOOTH);
 
-			purgatorio = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "Purgatorio.png"))
-					.getScaledInstance(313, 61, Image.SCALE_SMOOTH);
+			purgatorio = ImageIO.read(new File(OptionsPagePath + "Purgatorio.png")).getScaledInstance(313, 61, Image.SCALE_SMOOTH);
 
-			inferno = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "Inferno.png"))
-					.getScaledInstance(235, 61, Image.SCALE_SMOOTH);
+			inferno = ImageIO.read(new File(OptionsPagePath + "Inferno.png")).getScaledInstance(235, 61, Image.SCALE_SMOOTH);
 
-			windowed = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "Windowed.png"))
-					.getScaledInstance(265, 41, Image.SCALE_SMOOTH);
+			windowed = ImageIO.read(new File(OptionsPagePath + "Windowed.png")).getScaledInstance(265, 41, Image.SCALE_SMOOTH);
 
-			fullscreen = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "FullScreen.png"))
-					.getScaledInstance(305, 41, Image.SCALE_SMOOTH);
+			fullscreen = ImageIO.read(new File(OptionsPagePath + "FullScreen.png")).getScaledInstance(305, 41, Image.SCALE_SMOOTH);
 
-			arrow_back_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "arrow_back_SELECTED.png"))
-					.getScaledInstance(120, 80, Image.SCALE_SMOOTH);
+			arrow_back_SELECTED = ImageIO.read(new File(OptionsPagePath + "arrow_back_SELECTED.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
 
-			paradiso_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "Paradiso_SELECTED.png"))
-					.getScaledInstance(297, 61, Image.SCALE_SMOOTH);
+			paradiso_SELECTED = ImageIO.read(new File(OptionsPagePath + "Paradiso_SELECTED.png")).getScaledInstance(297, 61, Image.SCALE_SMOOTH);
 
-			purgatorio_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "Purgatorio_SELECTED.png"))
-					.getScaledInstance(313, 61, Image.SCALE_SMOOTH);
+			purgatorio_SELECTED = ImageIO.read(new File(OptionsPagePath + "Purgatorio_SELECTED.png")).getScaledInstance(313, 61, Image.SCALE_SMOOTH);
 
-			inferno_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "Inferno_SELECTED.png"))
-					.getScaledInstance(235, 61, Image.SCALE_SMOOTH);
+			inferno_SELECTED = ImageIO.read(new File(OptionsPagePath + "Inferno_SELECTED.png")).getScaledInstance(235, 61, Image.SCALE_SMOOTH);
 
-			windowed_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "Windowed_SELECTED.png"))
-					.getScaledInstance(265, 41, Image.SCALE_SMOOTH);
+			windowed_SELECTED = ImageIO.read(new File(OptionsPagePath + "Windowed_SELECTED.png")).getScaledInstance(265, 41, Image.SCALE_SMOOTH);
 
-			fullscreen_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "FullScreen_SELECTED.png"))
-					.getScaledInstance(305, 41, Image.SCALE_SMOOTH);
+			fullscreen_SELECTED = ImageIO.read(new File(OptionsPagePath + "FullScreen_SELECTED.png")).getScaledInstance(305, 41, Image.SCALE_SMOOTH);
 
-			music_unchecked = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "unchecked.png"))
-					.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			music_unchecked = ImageIO.read(new File(OptionsPagePath + "unchecked.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 
-			music_checked = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "OptionsPage" + File.separator + "checked.png"))
-					.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			music_checked = ImageIO.read(new File(OptionsPagePath + "checked.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 
 			ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
 			PARADISO_scaled = new JLabel(new ImageIcon(paradiso));

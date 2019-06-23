@@ -15,7 +15,8 @@ public class Player extends GameObject implements Living {
 	
 	public Player(int x, int y, int s) {
 		super(x, y);
-		diamondCount = map.numDiamonds;
+		
+		diamondCount = 0;
 		pushRockCounter = 0;
 		movingCounter = 0;
 		speed = s;
