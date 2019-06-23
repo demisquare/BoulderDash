@@ -61,6 +61,7 @@ public class Menu extends JPanel implements Serializable {
 	Multiplayer multi;
 	public Options options;
 	Credits credits;
+	You_Lose youlose;
 
 	private void start_selected(JFrame frame) throws Exception {
 		
@@ -92,8 +93,7 @@ public class Menu extends JPanel implements Serializable {
 		frame.revalidate();
 		frame.repaint();
 	}
-	
-	private void multi_selected(JFrame frame, Multiplayer multi) {
+	private void multi_selected(JFrame frame, Multiplayer multi, You_Lose youlose) {
 		frame.remove(this);
 		frame.setContentPane(multi);
 		frame.revalidate();
@@ -209,7 +209,7 @@ public class Menu extends JPanel implements Serializable {
 				public void mousePressed(MouseEvent e) {
 					// TODO Auto-generated method stub
 					Music.playTone("select");
-					multi_selected(frame, multi);
+					multi_selected(frame, multi, youlose);
 					MULTI_scaled.setIcon(new ImageIcon(MULTI));
 					revalidate();
 					repaint();
