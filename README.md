@@ -6,13 +6,17 @@
  - EmbASP Framework
  
 ## History:
-#### 20-06-19:
+#### 22-06-19:
 - New AudioPlayer(solves OpenJDK problems)
+- Added some exception handling for the menu-level interaction problem, just for debug purposes
+- Now any collision between an Enemy object and a Player object result in a call to the destroy() method of the Player object.
+- Now both old Level and World tasks run in a single Game task
+- Minor bugfixes
 
 #### 19-06-19:
 - Jlabel position fixed in full screen
 - Minor audio improvements
-- Minor bugfix
+- Minor bugfixes
 
 #### 18-06-19:
 - Fixed full screen mode
