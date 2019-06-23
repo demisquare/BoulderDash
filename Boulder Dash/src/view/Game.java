@@ -88,6 +88,9 @@ public class Game extends JSplitPane implements Runnable, Serializable {
 		
 		score = new Score(frame, menu, this);
 		
+		this.setLeftComponent(level);
+		this.setRightComponent(score);
+		
 		isReset = true;
 	}
 
@@ -115,7 +118,6 @@ public class Game extends JSplitPane implements Runnable, Serializable {
 			}
 			
 		}catch(InterruptedException e) {
-			e.printStackTrace();
 			return;
 		}	
 	}

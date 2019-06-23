@@ -23,7 +23,6 @@ import view.Game;
 
 public class Menu extends JPanel implements Serializable {
 
-	
 	/**
 	 * 
 	 */
@@ -68,19 +67,22 @@ public class Menu extends JPanel implements Serializable {
 		frame.remove(this);
 		
 		if(!game.isReset) {
+			game.reset(frame, this);
+		}
+		
+		frame.setContentPane(game);
+		
+		if(!frame.isAncestorOf(game)) {
 			throw new Exception();
 		}
-
-		frame.setContentPane(game);
 		
 		if(!game.level.requestFocusInWindow()) {
 			throw new Exception();
 		}
 		
-		game.isReset = false;
-		
 		frame.revalidate();
 		frame.repaint();
+		
 		Music.setSong(Music.gameSong);
 	}
 	

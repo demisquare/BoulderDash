@@ -49,9 +49,8 @@ public class Score extends JPanel implements Serializable {
 		//socketServer.close();
 		//socketClient.close();
 		try{
+			game.isReset = false;
 			frame.remove(game);
-			game.reset(frame, menu);
-			//game.level.getWorld().getPlayer().setDead(false);
 			frame.setContentPane(menu);
 			frame.revalidate();
 			frame.repaint();
@@ -147,6 +146,7 @@ public class Score extends JPanel implements Serializable {
 							time_left.setBounds(16, 580, 350, 100);
 						}
 						else if(Options.full_screen) {
+							//ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back.getScaledInstance((int)(80*(xSize/1280)), (int)(50*(ySize/720)), Image.SCALE_SMOOTH)));
 							ARROW_BACK_scaled.setBounds((int)(230*(xSize/1280)), (int)(640*(ySize/720)), 146, 97);
 							Lives.setBounds((int)(32*(xSize/1280)), (int)(440*(ySize/720)), 305, 94);
 							time_left.setBounds((int)(16*(xSize/1280)), (int)(580*(ySize/720)), 350, 100);
