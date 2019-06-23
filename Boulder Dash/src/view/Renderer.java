@@ -16,8 +16,12 @@ public class Renderer {
 	public static int WINDOW_HEIGHT = 720;
 
 	static void init(World world) {
-		Camera.offsetMaxX = world.getWidth() - WINDOW_WIDTH;
-		Camera.offsetMaxY = world.getHeight() - WINDOW_HEIGHT;
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		double xSize = tk.getScreenSize().getWidth();
+		double ySize = tk.getScreenSize().getHeight();
+		
+		Camera.offsetMaxX = world.getWidth() - (int)((WINDOW_WIDTH*xSize)/1280);
+		Camera.offsetMaxY = world.getHeight() - (int)((WINDOW_HEIGHT*ySize)/720);
 	}
 
 	static void render(Graphics g, Level l) {
