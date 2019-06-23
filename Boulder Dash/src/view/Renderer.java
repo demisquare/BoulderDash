@@ -9,9 +9,7 @@ public class Renderer {
 
 	private Renderer() {};
 	
-	Toolkit tk = Toolkit.getDefaultToolkit();
-	double xSize = tk.getScreenSize().getWidth();
-	double ySize = tk.getScreenSize().getHeight();
+	
 	
 	// dimensioni viewport
 	public static int WINDOW_WIDTH = 920;
@@ -23,9 +21,14 @@ public class Renderer {
 	}
 
 	static void render(Graphics g, Level l) {
+		
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		double xSize = tk.getScreenSize().getWidth();
+		double ySize = tk.getScreenSize().getHeight();
+		
 		// imposta camera...
-		Camera.x = l.world.getPlayer().getX() * Sprite.TILE_SIZE - (WINDOW_WIDTH / 2) + Sprite.TILE_SIZE;
-		Camera.y = l.world.getPlayer().getY() * Sprite.TILE_SIZE - (WINDOW_HEIGHT / 2) + Sprite.TILE_SIZE;
+		Camera.x = l.world.getPlayer().getX() * Sprite.TILE_SIZE - (int)(((WINDOW_WIDTH*xSize)/1280) / 2) + Sprite.TILE_SIZE;
+		Camera.y = l.world.getPlayer().getY() * Sprite.TILE_SIZE - (int)(((WINDOW_HEIGHT*ySize)/720) / 2) + Sprite.TILE_SIZE;
 
 		Camera.set();
 

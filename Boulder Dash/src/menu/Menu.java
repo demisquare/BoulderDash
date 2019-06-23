@@ -48,6 +48,7 @@ public class Menu extends JPanel {
 	Multiplayer multi;
 	public Options options;
 	Credits credits;
+	You_Lose youlose;
 
 	private void start_selected(JFrame frame, Game game) {
 		Music.setSong(Music.gameSong);
@@ -63,7 +64,7 @@ public class Menu extends JPanel {
 		frame.revalidate();
 		frame.repaint();
 	}
-	private void multi_selected(JFrame frame, Multiplayer multi) {
+	private void multi_selected(JFrame frame, Multiplayer multi, You_Lose youlose) {
 		frame.remove(this);
 		frame.setContentPane(multi);
 		frame.revalidate();
@@ -193,7 +194,7 @@ public class Menu extends JPanel {
 				public void mousePressed(MouseEvent e) {
 					// TODO Auto-generated method stub
 					Music.playTone("select");
-					multi_selected(frame, multi);
+					multi_selected(frame, multi, youlose);
 					MULTI_scaled.setIcon(new ImageIcon(MULTI));
 					revalidate();
 					repaint();
@@ -352,9 +353,9 @@ public class Menu extends JPanel {
 				@Override
 				public void run() {
 					while (true) {
-						if(!options.full_screen)
+						if(!Options.full_screen)
 							menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
-						else if(options.full_screen)
+						else if(Options.full_screen)
 							menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 430, 300);
 						try {
 							Thread.sleep(34);
