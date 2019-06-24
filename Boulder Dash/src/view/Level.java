@@ -4,16 +4,18 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import model.*;
 
-public class Level extends JPanel implements KeyListener, Runnable {
+public class Level extends JPanel implements KeyListener {
 
 	/**
 	 * 
@@ -64,10 +66,12 @@ public class Level extends JPanel implements KeyListener, Runnable {
 			  "music" + File.separator +
 			   "game_song"+ ".wav");*/
 	
+	private Thread t;
+	
 	//Questa classe far� da interfaccia a TUTTA la logica di un livello
 	World world;
 	LocalTime lastTimePressed;
-	
+	 
 	//graphics for blocks
 	ArrayList<BlockSprite> blockSprites;
 	//graphics for both Player and Enemies
@@ -128,7 +132,10 @@ public class Level extends JPanel implements KeyListener, Runnable {
 		setEnabled(true);
 		
 		// crea un world...
-		world = new World();
+		world = new World(FPS);
+		
+		t = new Thread(world);
+		t.start();
 		
 		initGraphics();
 		
@@ -150,6 +157,7 @@ public class Level extends JPanel implements KeyListener, Runnable {
 	
 	//sincronizza la grafica con la logica
 	public void updateGraphics() throws NullPointerException {
+		
 		//aggiorna i blocchi
 		for(int i = 0; i < blockSprites.size(); ++i) {
 			//se il blocco logico e' cambiato nell'ultimo world.update()...
@@ -251,7 +259,9 @@ public class Level extends JPanel implements KeyListener, Runnable {
 					
 					//a static map instead of a switch
 					playerSprites.get(0).movePose(pgMove.get(e.getKeyCode()));
-					world.getPlayer().update(pgMove.get(e.getKeyCode()));	
+					synchronized(this) {
+						world.getPlayer().update(pgMove.get(e.getKeyCode()));	
+					}
 				
 				}
 			
@@ -259,7 +269,6 @@ public class Level extends JPanel implements KeyListener, Runnable {
 				
 			}
 		
-			//world.dijkstra(); inefficient.
 			revalidate();
 			repaint();
 			world.reset();
@@ -278,28 +287,12 @@ public class Level extends JPanel implements KeyListener, Runnable {
 				playerSprites.get(0).standPose(pgMove.get(e.getKeyCode()));
 		
 			playerSprites.get(0).getAnimation().update();
-		}
 		
-		revalidate();
-		repaint();
-		world.reset();
+			revalidate();
+			repaint();
+			world.reset();
+		}
 	}
-
-	@Override
-	public void run() {
-/*	
-		while(true) {
-			try {
-				
-				revalidate();
-				repaint();
-				world.reset();
-				Thread.sleep(FPS);
-				
-			} catch (InterruptedException e) {
-				return;
-			}
-		}		
-*/	
-	}
+	
+	public synchronized void closeThread() { t.interrupt(); }
 }

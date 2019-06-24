@@ -2,14 +2,16 @@ package view;
 
 import java.awt.Toolkit;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 
 import menu.Menu;
 import menu.Options;
 
-public class Game extends JSplitPane implements Runnable, Serializable {
+public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 
 	/**
 	 * 
@@ -18,7 +20,6 @@ public class Game extends JSplitPane implements Runnable, Serializable {
 	
 	public static int FPS = 34;
 	
-	private Thread t;
 	private Thread t2;
 	
 	public Level level;
@@ -71,26 +72,15 @@ public class Game extends JSplitPane implements Runnable, Serializable {
 		
 		level = new Level();
 		level.addKeyListener(level);
-		
-		t = new Thread(this);
-		
-		t.start();
-		
+			
 		score_init(frame, menu);
 	}
 	
 	public void reset(JFrame frame, Menu menu) {
 		
-		t.interrupt();
-		
-		while(!t.isInterrupted()) {}
-		
+		level.closeThread();
 		level = new Level();
 		level.addKeyListener(level);
-		
-		t = new Thread(this);
-		
-		t.start();
 		
 		score.closeThread();
 		score = new Score(frame, menu, this);
@@ -101,37 +91,48 @@ public class Game extends JSplitPane implements Runnable, Serializable {
 		isReset = true;
 	}
 
-	@Override
-	public void run() {
-			
-		int counter = 0; 
-			
-		while(true) {
-				
-			++counter;
-			if(counter == 200/FPS) {
-					
-				counter = 0;
-				level.getWorld().update();
-			}
-				
-			revalidate();
-			repaint();
-			level.getWorld().reset();
-				
-			try {
-				Thread.sleep(FPS);
-			
-			}catch(InterruptedException e) {
-				return;
-			
-			}
-		}	
-	}
+//	@Override
+//	public void run() {
+//			
+//		int counter = 0; 
+//			
+//		while(true) {
+//				
+//			++counter;
+//			if(counter == 200/FPS) {
+//					
+//				counter = 0;
+//				level.getWorld().update();
+//			}
+//				
+//			try {
+//				SwingUtilities.invokeAndWait(new Runnable() {
+//					@Override
+//					public void run() {
+//						level.revalidate();
+//						level.repaint();
+//					}
+//				});
+//			
+//			} catch (InvocationTargetException | InterruptedException e1) {
+//				e1.printStackTrace();
+//			}
+//			
+//			level.getWorld().reset();
+//				
+//			try {
+//				Thread.sleep(FPS);
+//			
+//			}catch(InterruptedException e) {
+//				return;
+//			
+//			}
+//		}	
+//	}
 	
 	public synchronized void closeThread() {
-		t.interrupt();
 		t2.interrupt();
+		level.closeThread();
 		score.closeThread();
 	}
 	
