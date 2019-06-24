@@ -53,12 +53,17 @@ public class Options extends JPanel {
 	JLabel FULLSCREEN_scaled;
 	JLabel MUSIC_check;
 
-	private void turn_back(JFrame frame, Menu menu) {
+	private void turn_back(JFrame frame, Menu menu) throws InterruptedException {
+		
 		frame.remove(this);
 		frame.setContentPane(menu);
 		frame.revalidate();
 		frame.repaint();
+	
+		//stopThread();
+		//menu.wakeThread();
 	}
+	
 	private void full_screen(JFrame frame) {
 		frame.dispose();
 		if (!frame.isUndecorated())
@@ -124,8 +129,17 @@ public class Options extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
-					turn_back(frame, menu);
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
+					try {
+						turn_back(frame, menu);
+					} catch (InterruptedException e1) {	
+						e1.printStackTrace();
+					}
+					
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
 					repaint();
@@ -140,7 +154,11 @@ public class Options extends JPanel {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back_SELECTED));
 					revalidate();
 					repaint();
@@ -152,6 +170,7 @@ public class Options extends JPanel {
 
 				}
 			});
+			
 			PARADISO_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -162,7 +181,11 @@ public class Options extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
 					if (difficulty != Difficulty.paradiso) {
 						difficulty = Difficulty.paradiso;
 						PARADISO_scaled.setIcon(new ImageIcon(paradiso_SELECTED));
@@ -184,7 +207,11 @@ public class Options extends JPanel {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					if (difficulty != Difficulty.paradiso) {
 						PARADISO_scaled.setIcon(new ImageIcon(paradiso_SELECTED));
 						revalidate();
@@ -198,6 +225,7 @@ public class Options extends JPanel {
 
 				}
 			});
+			
 			PURGATORIO_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -208,7 +236,11 @@ public class Options extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
 					if (difficulty != Difficulty.purgatorio) {
 						difficulty = Difficulty.purgatorio;
 						PARADISO_scaled.setIcon(new ImageIcon(paradiso));
@@ -230,7 +262,11 @@ public class Options extends JPanel {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					if (difficulty != Difficulty.purgatorio) {
 						PURGATORIO_scaled.setIcon(new ImageIcon(purgatorio_SELECTED));
 						revalidate();
@@ -244,6 +280,7 @@ public class Options extends JPanel {
 
 				}
 			});
+			
 			INFERNO_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -254,7 +291,11 @@ public class Options extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
 					if (difficulty != Difficulty.inferno) {
 						difficulty = Difficulty.inferno;
 						PARADISO_scaled.setIcon(new ImageIcon(paradiso));
@@ -276,7 +317,11 @@ public class Options extends JPanel {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					if (difficulty != Difficulty.inferno) {
 						INFERNO_scaled.setIcon(new ImageIcon(inferno_SELECTED));
 						revalidate();
@@ -290,6 +335,7 @@ public class Options extends JPanel {
 
 				}
 			});
+			
 			WINDOWED_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -300,7 +346,11 @@ public class Options extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
 					windowed(frame);
 					FULLSCREEN_scaled.setIcon(new ImageIcon(fullscreen));
 					WINDOWED_scaled.setIcon(new ImageIcon(windowed_SELECTED));
@@ -320,7 +370,11 @@ public class Options extends JPanel {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					if (full_screen) {
 						WINDOWED_scaled.setIcon(new ImageIcon(windowed_SELECTED));
 						revalidate();
@@ -334,6 +388,7 @@ public class Options extends JPanel {
 
 				}
 			});
+			
 			FULLSCREEN_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -344,7 +399,11 @@ public class Options extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
 					full_screen(frame);
 					FULLSCREEN_scaled.setIcon(new ImageIcon(fullscreen_SELECTED));
 					WINDOWED_scaled.setIcon(new ImageIcon(windowed));
@@ -365,7 +424,11 @@ public class Options extends JPanel {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					if (!full_screen) {
 						FULLSCREEN_scaled.setIcon(new ImageIcon(fullscreen_SELECTED));
 						revalidate();
@@ -379,6 +442,7 @@ public class Options extends JPanel {
 
 				}
 			});
+			
 			MUSIC_check.addMouseListener(new MouseListener() {
 
 				@Override
@@ -389,7 +453,11 @@ public class Options extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
 					if (music) {
 						music = false;
 						MUSIC_check.setIcon(new ImageIcon(music_unchecked));
@@ -479,7 +547,9 @@ public class Options extends JPanel {
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 	
-	public void closeThread() {
-		t.interrupt();
-	}
+	public synchronized void closeThread() { t.interrupt(); }
+	
+//	public synchronized void wakeThread() { t.notify(); }
+//	
+//	public synchronized void stopThread() throws InterruptedException { t.wait(); }
 }

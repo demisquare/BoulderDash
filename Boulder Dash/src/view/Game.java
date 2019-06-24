@@ -92,6 +92,7 @@ public class Game extends JSplitPane implements Runnable, Serializable {
 		
 		t.start();
 		
+		score.closeThread();
 		score = new Score(frame, menu, this);
 		
 		this.setLeftComponent(level);
@@ -102,34 +103,47 @@ public class Game extends JSplitPane implements Runnable, Serializable {
 
 	@Override
 	public void run() {
-		try {
 			
-			int counter = 0; 
+		int counter = 0; 
 			
-			while(true) {
+		while(true) {
 				
-				++counter;
-				if(counter == 200/FPS) {
+			++counter;
+			if(counter == 200/FPS) {
 					
-					counter = 0;
-					level.getWorld().update();
-				}
-				
-				revalidate();
-				repaint();
-				level.getWorld().reset();
-				
-				Thread.sleep(FPS);
-				
+				counter = 0;
+				level.getWorld().update();
 			}
+				
+			revalidate();
+			repaint();
+			level.getWorld().reset();
+				
+			try {
+				Thread.sleep(FPS);
 			
-		}catch(InterruptedException e) {
-			return;
+			}catch(InterruptedException e) {
+				return;
+			
+			}
 		}	
 	}
 	
-	public void closeThread() {
+	public synchronized void closeThread() {
 		t.interrupt();
 		t2.interrupt();
+		score.closeThread();
 	}
+	
+//	public synchronized void wakeThread() { 
+//		t.notify();
+//		t2.notify();
+//		score.wakeThread();
+//	}
+	
+//	public synchronized void stopThread() throws InterruptedException { 
+//		t.wait();
+//		t2.wait();
+//		score.stopThread();
+//	}
 }

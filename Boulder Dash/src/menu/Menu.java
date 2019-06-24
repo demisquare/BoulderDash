@@ -65,50 +65,74 @@ public class Menu extends JPanel implements Serializable {
 	Credits credits;
 	You_Lose youlose;
 
-	private void start_selected(JFrame frame) throws Exception {
+	private void start_selected(JFrame frame) throws InterruptedException {
 		
 		frame.remove(this);
 		
-		if(!game.isReset) { game.reset(frame, this); }
+		if(!game.isReset) { 
+			game.reset(frame, this); 
+		}
 		
 		frame.setContentPane(game);
 		
-		if(!frame.isAncestorOf(game)) { throw new Exception(); }
+		if(!frame.isAncestorOf(game)) { 
+			throw new InterruptedException();
+		}
 		
-		if(!game.level.requestFocusInWindow()) { throw new Exception(); }
+		if(!game.level.requestFocusInWindow()) { 
+			throw new InterruptedException(); 
+		}
 		
 		frame.revalidate();
 		frame.repaint();
 		
-		Music.setSong(Music.gameSong);
+		synchronized(this) {
+			Music.setSong(Music.gameSong);
+		}
+		//stopThread();
+		//game.wakeThread();
 	}
 	
-	private void options_selected(JFrame frame, Options options) {
+	private void options_selected(JFrame frame, Options options) throws InterruptedException {
+		
 		frame.remove(this);
 		frame.setContentPane(options);
 		frame.revalidate();
 		frame.repaint();
+	
+		//stopThread();
+		//options.wakeThread();
 	}
-	private void multi_selected(JFrame frame, Multiplayer multi, You_Lose youlose) {
+	private void multi_selected(JFrame frame, Multiplayer multi, You_Lose youlose) throws InterruptedException {
+	
 		frame.remove(this);
 		frame.setContentPane(multi);
 		frame.revalidate();
 		frame.repaint();
+		
+		//stopThread();
+		//multi.wakeThread();
 	}
 	
-	private void credits_selected(JFrame frame, Credits credits) {
+	private void credits_selected(JFrame frame, Credits credits) throws InterruptedException {
+	
 		frame.remove(this);
 		frame.setContentPane(credits);
 		frame.revalidate();
 		frame.repaint();
-		Music.setSong(Music.creditsSong);
+		
+		synchronized(this) {
+			Music.setSong(Music.creditsSong);
+		}
+		
+		//stopThread();
 	}
 
 	public Menu(JFrame frame) {
-		options = new Options(frame, this);
-		credits = new Credits(frame, this);
-		multi = new Multiplayer(frame, game, this);
-		game = new Game(frame, this);
+		options  = new Options(frame, this);
+		credits  = new Credits(frame, this);
+		multi	 = new Multiplayer(frame, game, this);
+		game 	 = new Game(frame, this);
 		game.isReset = true;
 		
 		try {
@@ -140,7 +164,9 @@ public class Menu extends JPanel implements Serializable {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					synchronized(this) {
+						Music.playTone("hover");
+					}
 					START_scaled.setIcon(new ImageIcon(START_SELECTED));
 					revalidate();
 					repaint();
@@ -155,7 +181,10 @@ public class Menu extends JPanel implements Serializable {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
 					
 					try {
 						start_selected(frame);
@@ -173,6 +202,7 @@ public class Menu extends JPanel implements Serializable {
 					// TODO Auto-generated method stub
 				}
 			});
+			
 			MULTI_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -183,9 +213,17 @@ public class Menu extends JPanel implements Serializable {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
-					Music.playTone("select");
-					multi_selected(frame, multi, youlose);
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
+					try {
+						multi_selected(frame, multi, youlose);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					
 					MULTI_scaled.setIcon(new ImageIcon(MULTI));
 					revalidate();
 					repaint();
@@ -200,7 +238,11 @@ public class Menu extends JPanel implements Serializable {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					MULTI_scaled.setIcon(new ImageIcon(MULTI_SELECTED));
 					revalidate();
 					repaint();
@@ -212,6 +254,7 @@ public class Menu extends JPanel implements Serializable {
 
 				}
 			});
+			
 			OPTIONS_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -222,8 +265,17 @@ public class Menu extends JPanel implements Serializable {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
-					options_selected(frame, options);
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
+					try {
+						options_selected(frame, options);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					
 					OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS));
 					revalidate();
 					repaint();
@@ -238,7 +290,11 @@ public class Menu extends JPanel implements Serializable {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS_SELECTED));
 					revalidate();
 					repaint();
@@ -250,6 +306,7 @@ public class Menu extends JPanel implements Serializable {
 
 				}
 			});
+			
 			CREDITS_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -260,8 +317,17 @@ public class Menu extends JPanel implements Serializable {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
-					credits_selected(frame, credits);
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
+					try {
+						credits_selected(frame, credits);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					
 					CREDITS_scaled.setIcon(new ImageIcon(CREDITS));
 					revalidate();
 					repaint();
@@ -276,7 +342,11 @@ public class Menu extends JPanel implements Serializable {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					CREDITS_scaled.setIcon(new ImageIcon(CREDITS_SELECTED));
 					revalidate();
 					repaint();
@@ -288,6 +358,7 @@ public class Menu extends JPanel implements Serializable {
 
 				}
 			});
+			
 			EXIT_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -297,7 +368,11 @@ public class Menu extends JPanel implements Serializable {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					EXIT_scaled.setIcon(new ImageIcon(EXIT_SELECTED));
 					revalidate();
 					repaint();
@@ -312,7 +387,11 @@ public class Menu extends JPanel implements Serializable {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
 					System.exit(0);
 				}
 
@@ -373,11 +452,15 @@ public class Menu extends JPanel implements Serializable {
 
 	}
 	
-	public void closeThread() {
+	public synchronized void closeThread() {
 		
 		t.interrupt();
 		multi.closeThread();
 		options.closeThread();
 		game.closeThread();
 	}
+//	
+//	public synchronized void wakeThread() { t.notify(); }
+//	
+//	public synchronized void stopThread() throws InterruptedException { t.wait(); }
 }

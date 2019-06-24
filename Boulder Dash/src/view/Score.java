@@ -30,12 +30,13 @@ public class Score extends JPanel implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -48116048080203555L;
-	
 	private static final String ScoreTabPath =
 			"." + File.separator + 
 			"resources" + File.separator + 
 			"assets" + File.separator + 
 			"ScoreTab" + File.separator;
+	
+	private Thread t;
 	
 	BufferedImage Background;
 	Image arrow_back;
@@ -51,7 +52,7 @@ public class Score extends JPanel implements Serializable {
 	JLabel time_left;
 	JLabel Lives;
 	
-	private void turn_back(JFrame frame, Menu menu, Game game) {
+	private void turn_back(JFrame frame, Menu menu, Game game) throws InterruptedException {
 		//socketServer.close();
 		//socketClient.close();
 		try{
@@ -61,6 +62,9 @@ public class Score extends JPanel implements Serializable {
 			frame.revalidate();
 			frame.repaint();
 			Music.setSong(Music.menuSong);
+			
+			//game.stopThread();
+			//menu.wakeThread();
 			
 		} catch(NullPointerException e) {
 			e.printStackTrace();
@@ -74,15 +78,10 @@ public class Score extends JPanel implements Serializable {
 			Font eightBit = Font.createFont(Font.TRUETYPE_FONT, new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "8BITFONT.TTF")).deriveFont(80f);
 			
 			Background = ImageIO.read(new File(ScoreTabPath + "score_background.png"));
-		
 			arrow_back = ImageIO.read(new File(ScoreTabPath + "arrow_back.png")).getScaledInstance(80, 50, Image.SCALE_SMOOTH);
-			
 			arrow_back_SELECTED = ImageIO.read(new File(ScoreTabPath + "arrow_back_SELECTED.png")).getScaledInstance(80, 50, Image.SCALE_SMOOTH);
-			
 			lives_3 = ImageIO.read(new File(ScoreTabPath + "3_Hearts.png")).getScaledInstance(240, 73, Image.SCALE_SMOOTH);
-			
 			lives_2 = ImageIO.read(new File(ScoreTabPath + "2_Hearts.png")).getScaledInstance(240, 73, Image.SCALE_SMOOTH);
-			
 			lives_1 = ImageIO.read(new File(ScoreTabPath + "1_Hearts.png")).getScaledInstance(240, 73, Image.SCALE_SMOOTH);
 			
 			Lives = new JLabel(new ImageIcon(lives_3));
@@ -100,7 +99,13 @@ public class Score extends JPanel implements Serializable {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					turn_back(frame, menu, game);
+					
+					try {
+						turn_back(frame, menu, game);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
 					repaint();
@@ -137,7 +142,7 @@ public class Score extends JPanel implements Serializable {
 			double xSize = tk.getScreenSize().getWidth();
 			double ySize = tk.getScreenSize().getHeight();
 			
-			new Thread(new Runnable() {
+			t = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					while (true) {
@@ -155,18 +160,18 @@ public class Score extends JPanel implements Serializable {
 						try {
 							Thread.sleep(34);
 						} catch (InterruptedException e) {
-							e.printStackTrace();
+							return;
 						}
 					}
 				}
-			}).start();
+			});
+			
+			t.start();
 			
 			this.add(Lives);
 			this.setLayout(null); //se non settiamo a null non possiamo usare il setBounds.
 			this.add(ARROW_BACK_scaled);
 			this.add(time_left);
-			
-
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -182,4 +187,9 @@ public class Score extends JPanel implements Serializable {
 		g.drawImage(Background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 
+	public synchronized void closeThread() { t.interrupt(); }
+	
+//	public synchronized void wakeThread() { t.notify(); }
+//	
+//	public synchronized void stopThread() throws InterruptedException { t.wait(); }
 }

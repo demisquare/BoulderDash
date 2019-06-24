@@ -4,7 +4,7 @@ import java.io.File;
 
 import menu.Options;
 
-public class Music{
+public class Music {
 		
 	public static final AudioPlayer menuSong = new AudioPlayer(
 			"." + File.separator +

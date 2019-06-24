@@ -1,68 +1,83 @@
 package start;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 import audio.Music;
 import menu.*;
 
-public class Main {
-	
-	Long en = 2L;
+//import java.awt.event.WindowEvent;
+//import java.awt.event.WindowListener;
 
+public class Main implements Runnable/*, WindowListener*/ {
+	
+	static JFrame frame = null;
+	static Menu menu 	= null;
+	static Thread t 	= null;
+	
+	private Main() {}
+	
 	public static void main(String[] args) {
 
+		Main m = new Main();
+		
+		try {
+			SwingUtilities.invokeAndWait(m);
+		} catch (InvocationTargetException | InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void run() {
+		
 		// _____________INIT________________
-		
-		JFrame frame = new JFrame("Boulder Dash");
-		frame.setSize(1280, 749); // 1280x720 risoluzione gioco, 29px in pi� in altezza per la barra tel titolo
-									// della finestra.
-		
-		Menu menu = new Menu(frame);
-		
-		// _________________________________
-		
-		Music.backgroundMusic = Music.menuSong;
-		
+		frame = new JFrame("Boulder Dash");
+		frame.setSize(1280, 749); // 1280x720 risoluzione gioco, 29px in pi� in altezza per la barra tel titolo della finestra.		
+		menu = new Menu(frame);
+		frame.setContentPane(menu); // IMPOSTO IL MENU DI DEFAULT
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);	
+	
 		//__________AUDIO ENGINE____________
-		
-		Thread t = new Thread(new Runnable() {
+		Music.backgroundMusic = Music.menuSong;	
+		t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				
+						
 				while (true) {
-					Music.start();
 					
+					synchronized(this) {
+						Music.start();
+					}
+							
 					try {
 						Thread.sleep(34);
 					} catch (InterruptedException e) {
 						return;
 					}
 				}
-	
 			}
 		});
-		
-		t.start();
-		
-		frame.addWindowListener(new WindowListener() {
-			
-			@Override public void windowOpened(WindowEvent e) 		{}
-			@Override public void windowIconified(WindowEvent e) 	{}
-			@Override public void windowDeiconified(WindowEvent e) 	{}
-			@Override public void windowDeactivated(WindowEvent e) 	{}
-			@Override public void windowActivated(WindowEvent e) 	{}
-			@Override public void windowClosing(WindowEvent e) 		{ t.interrupt(); menu.closeThread(); }	
-			@Override public void windowClosed(WindowEvent e) 		{ t.interrupt(); menu.closeThread(); }
-		});
-		
-		//__________________________________		
-		
-		frame.setContentPane(menu); // IMPOSTO IL MENU DI DEFAULT
-		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		t.start();		
+//		frame.addWindowListener(this);	
 	}
-
+	
+//	@Override public void windowOpened(WindowEvent e) 		{}
+//	@Override public void windowIconified(WindowEvent e) 	{}
+//	@Override public void windowDeiconified(WindowEvent e) 	{}
+//	@Override public void windowDeactivated(WindowEvent e) 	{}
+//	@Override public void windowActivated(WindowEvent e) 	{}
+//	@Override public void windowClosing(WindowEvent e) 		{ 
+//		t.interrupt(); 
+//		menu.closeThread(); 
+//	}	
+//	@Override public void windowClosed(WindowEvent e) 		{ 
+//		t.interrupt(); 
+//		menu.closeThread(); 
+//	}
 }

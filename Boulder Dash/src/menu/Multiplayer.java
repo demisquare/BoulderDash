@@ -46,14 +46,23 @@ public class Multiplayer extends JPanel {
 	private SocketServer socketServer;
 	private SocketClient socketClient;
 
-	private void turn_back(JFrame frame, Menu menu) {
+	private void turn_back(JFrame frame, Menu menu) throws InterruptedException {
+		
 		frame.remove(this);
 		frame.setContentPane(menu);
 		frame.revalidate();
 		frame.repaint();
+		
+		//stopThread();
+		//menu.wakeThread();
 	}
-	private void client_selected(JFrame frame, Menu menu, Game game) {
-		Music.setSong(Music.gameSong);
+	
+	private void client_selected(JFrame frame, Menu menu, Game game) throws InterruptedException {
+		
+		synchronized(this) {
+			Music.setSong(Music.gameSong);
+		}
+		
 		socketClient = new SocketClient(game);
 		socketClient.connect();
 		frame.remove(this);
@@ -61,9 +70,17 @@ public class Multiplayer extends JPanel {
 		game.level.requestFocusInWindow();
 		frame.revalidate();
 		frame.repaint();
+		
+		//stopThread();
+		//game.wakeThread();
 	}
-	private void server_selected(JFrame frame, Menu menu, Game game) {
-		Music.setSong(Music.gameSong);
+	
+	private void server_selected(JFrame frame, Menu menu, Game game) throws InterruptedException {
+		
+		synchronized(this) {
+			Music.setSong(Music.gameSong);
+		}
+		
 		socketServer = new SocketServer(game);
 		socketServer.connect();
 		frame.remove(this);
@@ -71,6 +88,9 @@ public class Multiplayer extends JPanel {
 		game.level.requestFocusInWindow();
 		frame.revalidate();
 		frame.repaint();
+	
+		//stopThread();
+		//game.wakeThread();
 	}
 
 	public Multiplayer(JFrame frame, Game game, Menu menu) {
@@ -99,8 +119,17 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
-					turn_back(frame, menu);
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
+					try {
+						turn_back(frame, menu);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
 					revalidate();
 					repaint();
@@ -115,7 +144,11 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back_SELECTED));
 					revalidate();
 					repaint();
@@ -137,8 +170,17 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
-					server_selected(frame, menu, game);
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
+					try {
+						server_selected(frame, menu, game);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					
 					CREATE_GAME_scaled.setIcon(new ImageIcon(create_game));
 					revalidate();
 					repaint();
@@ -153,7 +195,11 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					CREATE_GAME_scaled.setIcon(new ImageIcon(create_game_SELECTED));
 					revalidate();
 					repaint();
@@ -175,8 +221,17 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
-					client_selected(frame, menu, game);
+					
+					synchronized(this) {
+						Music.playTone("select");
+					}
+					
+					try {
+						client_selected(frame, menu, game);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					
 					JOIN_GAME_scaled.setIcon(new ImageIcon(join_game));
 					revalidate();
 					repaint();
@@ -191,7 +246,11 @@ public class Multiplayer extends JPanel {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
+					
+					synchronized(this) {
+						Music.playTone("hover");
+					}
+					
 					JOIN_GAME_scaled.setIcon(new ImageIcon(join_game_SELECTED));
 					revalidate();
 					repaint();
@@ -249,5 +308,9 @@ public class Multiplayer extends JPanel {
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 	
-	public void closeThread() { t.interrupt(); }
+	public synchronized void closeThread() { t.interrupt(); }
+	
+//	public synchronized void wakeThread() { t.notify(); }
+//	
+//	public synchronized void stopThread() throws InterruptedException { t.wait(); }
 }
