@@ -44,7 +44,6 @@ public class Score extends JPanel implements Serializable {
 	Image lives_2;
 	Image lives_1;
 	
-	int lifes;
 	public static int remaining_time = 150; //150 secondi per livello
 	public boolean turn_back = false;
 	
@@ -70,8 +69,6 @@ public class Score extends JPanel implements Serializable {
 	}
 	
 	public Score(JFrame frame, Menu menu, Game game) { //Default Score resolution: 360x720
-		
-		lifes = 3;
 		
 		try {
 			Font eightBit = Font.createFont(Font.TRUETYPE_FONT, new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "8BITFONT.TTF")).deriveFont(80f);

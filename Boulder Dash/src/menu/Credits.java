@@ -18,6 +18,12 @@ import audio.Music;
 public class Credits extends JPanel{
 
 	private static final long serialVersionUID = 1L;
+	private static final String CreditsPagePath =
+			"." + File.separator + 
+			"resources" + File.separator + 
+			"assets" + File.separator + 
+			"Menu" + File.separator + 
+			"CreditsPage" + File.separator;
 
 	BufferedImage background;
 	Image arrow_back;
@@ -34,21 +40,13 @@ public class Credits extends JPanel{
 	
 	public Credits(JFrame frame, Menu menu) {
 		try {
-			background = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "Menu"
-							+ File.separator + "CreditsPage" + File.separator + "background.png"));
 			
-			arrow_back = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "Menu"
-							+ File.separator + "CreditsPage" + File.separator + "arrow_back.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
-			
-			arrow_back_SELECTED = ImageIO.read(
-					new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "Menu"
-							+ File.separator + "CreditsPage" + File.separator + "arrow_back_SELECTED.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
-			
-			ARROW_BACK_scaled = new JLabel(new ImageIcon (arrow_back));
-			
-			
+			background = ImageIO.read(new File(CreditsPagePath + "background.png"));
+			arrow_back = ImageIO.read(new File(CreditsPagePath + "arrow_back.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
+			arrow_back_SELECTED = ImageIO.read(new File(CreditsPagePath + "arrow_back_SELECTED.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
+	
+			ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
+					
 			ARROW_BACK_scaled.addMouseListener(new MouseListener() {
 				
 				@Override

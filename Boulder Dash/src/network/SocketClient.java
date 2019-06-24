@@ -9,14 +9,19 @@ import model.World;
 import view.Game;
 
 public class SocketClient implements Runnable {
-
-	private Socket socket = null;
+	
+	private Thread t;
+	private boolean closeRun; 
+	private Socket socket;
 	Game game;
 
 	public SocketClient(Game game) {
 
 		// Setup networking
 		this.game = game;
+		socket = null;
+		closeRun = false;
+		t = null;
 	}
 
 	public void connect() {
@@ -24,7 +29,8 @@ public class SocketClient implements Runnable {
 			System.out.println("[CLIENT] Connessione al server...");
 			socket = new Socket("localhost", 8000);
 			System.out.println("[CLIENT] Connesso!");
-			new Thread(this).start();
+			t = new Thread(this);
+			t.start();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -38,6 +44,8 @@ public class SocketClient implements Runnable {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			closeRun = true;
 		}
 	}
 
@@ -47,12 +55,17 @@ public class SocketClient implements Runnable {
 			InputStream inputStream = socket.getInputStream();
 			ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
-			while (socket.isConnected()) {
+			while (socket.isConnected() && !socket.isClosed()) {
+				
 				System.out.println("[CLIENT] Ricevo il world dal server...");
-				game.level.setWorld((World) objectInputStream.readObject());
+				
+				//MARIA deve preparare i pacchetti
+				//game.level.setWorld((World) objectInputStream.readObject());
+			
+				if(closeRun) return;
 			}
 
-		} catch (IOException | ClassNotFoundException e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}

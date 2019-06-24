@@ -19,13 +19,49 @@ public class Game extends JSplitPane implements Runnable, Serializable {
 	public static int FPS = 34;
 	
 	private Thread t;
+	private Thread t2;
 	
 	public Level level;
 	public Score score;
 	
 	public boolean isReset;
 	
-	public Game() {
+	private void score_init(JFrame frame, Menu menu) {
+		
+		score = new Score(frame, menu, this);
+		
+		this.setLeftComponent(level);
+		this.setRightComponent(score);
+		setDividerLocation(920);
+		setDividerSize(0);
+		
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		double xSize = tk.getScreenSize().getWidth();
+		
+		t2 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					if(!Options.full_screen) {
+						setDividerLocation(920);
+					}
+					else if(Options.full_screen) {
+						setDividerLocation((int)(920*(xSize/1280)));
+					}
+					
+					try {
+						Thread.sleep(34);
+					} catch (InterruptedException e) {
+						return;
+					}
+				}
+			}
+		});
+		
+		t2.start();
+	}
+	
+	public Game(JFrame frame, Menu menu) {
 		
 		isReset = false;
 		
@@ -39,38 +75,8 @@ public class Game extends JSplitPane implements Runnable, Serializable {
 		t = new Thread(this);
 		
 		t.start();
-	}
-	
-	public void score_init(JFrame frame, Menu menu) {
 		
-		score = new Score(frame, menu, this);
-		
-		this.setLeftComponent(level);
-		this.setRightComponent(score);
-		setDividerLocation(920);
-		setDividerSize(0);
-		
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		double xSize = tk.getScreenSize().getWidth();
-		
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					if(!Options.full_screen) {
-						setDividerLocation(920);
-					}
-					else if(Options.full_screen) {
-						setDividerLocation((int)(920*(xSize/1280)));
-					}
-					try {
-						Thread.sleep(34);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}).start();
+		score_init(frame, menu);
 	}
 	
 	public void reset(JFrame frame, Menu menu) {
@@ -120,5 +126,10 @@ public class Game extends JSplitPane implements Runnable, Serializable {
 		}catch(InterruptedException e) {
 			return;
 		}	
+	}
+	
+	public void closeThread() {
+		t.interrupt();
+		t2.interrupt();
 	}
 }

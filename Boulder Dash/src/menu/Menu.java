@@ -27,6 +27,7 @@ public class Menu extends JPanel implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5844904387077358595L;
+	
 	private static final String MainMenuPage =
 			"." + File.separator + "resources" 
 			+ File.separator + "assets" 
@@ -34,6 +35,7 @@ public class Menu extends JPanel implements Serializable {
 			+ File.separator + "MainMenuPage" 
 			+ File.separator;
 	
+	private Thread t;
 	
 	BufferedImage background;
 
@@ -67,19 +69,13 @@ public class Menu extends JPanel implements Serializable {
 		
 		frame.remove(this);
 		
-		if(!game.isReset) {
-			game.reset(frame, this);
-		}
+		if(!game.isReset) { game.reset(frame, this); }
 		
 		frame.setContentPane(game);
 		
-		if(!frame.isAncestorOf(game)) {
-			throw new Exception();
-		}
+		if(!frame.isAncestorOf(game)) { throw new Exception(); }
 		
-		if(!game.level.requestFocusInWindow()) {
-			throw new Exception();
-		}
+		if(!game.level.requestFocusInWindow()) { throw new Exception(); }
 		
 		frame.revalidate();
 		frame.repaint();
@@ -112,42 +108,22 @@ public class Menu extends JPanel implements Serializable {
 		options = new Options(frame, this);
 		credits = new Credits(frame, this);
 		multi = new Multiplayer(frame, game, this);
-		game = new Game();
+		game = new Game(frame, this);
 		game.isReset = true;
-		game.score_init(frame, this);
 		
 		try {
 			background = ImageIO.read(new File(MainMenuPage + "MainMenuPage_Background.png"));
 
-			START = ImageIO.read(new File(MainMenuPage + "MainMenuPage_START.png"))
-					.getScaledInstance(191, 55, Image.SCALE_SMOOTH);
-
-			MULTI = ImageIO.read(new File(MainMenuPage + "MainMenuPage_MULTI.png"))
-					.getScaledInstance(423, 55, Image.SCALE_SMOOTH);
-
-			OPTIONS = ImageIO.read(new File(MainMenuPage + "MainMenuPage_OPTIONS.png"))
-					.getScaledInstance(272, 54, Image.SCALE_SMOOTH);
-
-			CREDITS = ImageIO.read(new File(MainMenuPage + "MainMenuPage_CREDITS.png"))
-					.getScaledInstance(267, 55, Image.SCALE_SMOOTH);
-
-			EXIT = ImageIO.read(new File(MainMenuPage + "MainMenuPage_EXIT.png"))
-					.getScaledInstance(141, 50, Image.SCALE_SMOOTH);
-
-			START_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_START_SELECTED.png"))
-					.getScaledInstance(191, 55, Image.SCALE_SMOOTH);
-
-			MULTI_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_MULTI_SELECTED.png"))
-					.getScaledInstance(423, 55, Image.SCALE_SMOOTH);
-
-			OPTIONS_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_OPTIONS_SELECTED.png"))
-					.getScaledInstance(272, 54, Image.SCALE_SMOOTH);
-
-			CREDITS_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_CREDITS_SELECTED.png"))
-					.getScaledInstance(267, 55, Image.SCALE_SMOOTH);
-
-			EXIT_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_EXIT_SELECTED.png"))
-					.getScaledInstance(141, 50, Image.SCALE_SMOOTH);
+			START = ImageIO.read(new File(MainMenuPage + "MainMenuPage_START.png")).getScaledInstance(191, 55, Image.SCALE_SMOOTH);
+			MULTI = ImageIO.read(new File(MainMenuPage + "MainMenuPage_MULTI.png")).getScaledInstance(423, 55, Image.SCALE_SMOOTH);
+			OPTIONS = ImageIO.read(new File(MainMenuPage + "MainMenuPage_OPTIONS.png")).getScaledInstance(272, 54, Image.SCALE_SMOOTH);
+			CREDITS = ImageIO.read(new File(MainMenuPage + "MainMenuPage_CREDITS.png")).getScaledInstance(267, 55, Image.SCALE_SMOOTH);
+			EXIT = ImageIO.read(new File(MainMenuPage + "MainMenuPage_EXIT.png")).getScaledInstance(141, 50, Image.SCALE_SMOOTH);
+			START_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_START_SELECTED.png")).getScaledInstance(191, 55, Image.SCALE_SMOOTH);
+			MULTI_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_MULTI_SELECTED.png")).getScaledInstance(423, 55, Image.SCALE_SMOOTH);
+			OPTIONS_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_OPTIONS_SELECTED.png")).getScaledInstance(272, 54, Image.SCALE_SMOOTH);
+			CREDITS_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_CREDITS_SELECTED.png")).getScaledInstance(267, 55, Image.SCALE_SMOOTH);
+			EXIT_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_EXIT_SELECTED.png")).getScaledInstance(141, 50, Image.SCALE_SMOOTH);
 
 			START_scaled = new JLabel(new ImageIcon(START));
 			MULTI_scaled = new JLabel(new ImageIcon(MULTI));
@@ -364,22 +340,26 @@ public class Menu extends JPanel implements Serializable {
 			double xSize = tk.getScreenSize().getWidth();
 			double ySize = tk.getScreenSize().getHeight();
 			
-			new Thread(new Runnable() {
+			t = new Thread(new Runnable(){
 				@Override
 				public void run() {
 					while (true) {
+						
 						if(!Options.full_screen)
 							menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
 						else if(Options.full_screen)
 							menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 430, 300);
+						
 						try {
 							Thread.sleep(34);
 						} catch (InterruptedException e) {
-							e.printStackTrace();
+							return;
 						}
 					}
 				}
-			}).start();
+			});
+			
+			t.start();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -391,5 +371,13 @@ public class Menu extends JPanel implements Serializable {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 
+	}
+	
+	public void closeThread() {
+		
+		t.interrupt();
+		multi.closeThread();
+		options.closeThread();
+		game.closeThread();
 	}
 }

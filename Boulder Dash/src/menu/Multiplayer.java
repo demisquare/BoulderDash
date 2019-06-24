@@ -22,7 +22,15 @@ import view.Game;
 public class Multiplayer extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private static final String MultiPagePath =
+			"." + File.separator + 
+			"resources" + File.separator + 
+			"assets" + File.separator + 
+			"Menu" + File.separator + 
+			"MultiPage" + File.separator;
 
+	private Thread t;
+	
 	BufferedImage background;
 	Image arrow_back;
 	Image arrow_back_SELECTED;
@@ -66,39 +74,16 @@ public class Multiplayer extends JPanel {
 	}
 
 	public Multiplayer(JFrame frame, Game game, Menu menu) {
+		
 		try {
-			background = ImageIO.read(new File("." + File.separator + "resources" + File.separator + "assets"
-					+ File.separator + "Menu" + File.separator + "MultiPage" + File.separator + "background.png"));
-
-			arrow_back = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "MultiPage" + File.separator + "arrow_back.png"))
-					.getScaledInstance(120, 80, Image.SCALE_SMOOTH);
-
-			arrow_back_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "MultiPage" + File.separator + "arrow_back_SELECTED.png"))
-					.getScaledInstance(120, 80, Image.SCALE_SMOOTH);
-
-			create_game = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "MultiPage" + File.separator + "create_game.png"))
-					.getScaledInstance(698, 79, Image.SCALE_SMOOTH);
-
-			create_game_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "MultiPage" + File.separator + "create_game_SELECTED.png"))
-					.getScaledInstance(698, 79, Image.SCALE_SMOOTH);
-
-			join_game = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "MultiPage" + File.separator + "join_game.png"))
-					.getScaledInstance(540, 79, Image.SCALE_SMOOTH);
-
-			join_game_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "MultiPage" + File.separator + "join_game_SELECTED.png"))
-					.getScaledInstance(540, 79, Image.SCALE_SMOOTH);
+			
+			background = ImageIO.read(new File(MultiPagePath + "background.png"));
+			arrow_back = ImageIO.read(new File(MultiPagePath + "arrow_back.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
+			arrow_back_SELECTED = ImageIO.read(new File(MultiPagePath + "arrow_back_SELECTED.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
+			create_game = ImageIO.read(new File(MultiPagePath + "create_game.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
+			create_game_SELECTED = ImageIO.read(new File(MultiPagePath + "create_game_SELECTED.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
+			join_game = ImageIO.read(new File(MultiPagePath + "join_game.png")).getScaledInstance(540, 79, Image.SCALE_SMOOTH);
+			join_game_SELECTED = ImageIO.read(new File(MultiPagePath + "join_game_SELECTED.png")).getScaledInstance(540, 79, Image.SCALE_SMOOTH);
 
 			ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
 			CREATE_GAME_scaled = new JLabel(new ImageIcon(create_game));
@@ -228,7 +213,7 @@ public class Multiplayer extends JPanel {
 			double xSize = tk.getScreenSize().getWidth();
 			double ySize = tk.getScreenSize().getHeight();
 			
-			new Thread(new Runnable() {
+			t = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					while (true) {
@@ -245,11 +230,13 @@ public class Multiplayer extends JPanel {
 						try {
 							Thread.sleep(34);
 						} catch (InterruptedException e) {
-							e.printStackTrace();
+							return;
 						}
 					}
 				}
-			}).start();
+			});
+			
+			t.start();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -261,4 +248,6 @@ public class Multiplayer extends JPanel {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
+	
+	public void closeThread() { t.interrupt(); }
 }

@@ -26,6 +26,8 @@ public class Options extends JPanel {
 			"assets" + File.separator
 			+ "Menu" + File.separator + 
 			"OptionsPage" + File.separator;
+	
+	private Thread t;
 
 	BufferedImage background;
 	Image arrow_back;
@@ -73,7 +75,7 @@ public class Options extends JPanel {
 		frame.setSize(1280, 749);
 	}
 	
-	public static boolean music = false;
+	public static boolean music = true;
 	public static boolean full_screen = false;
 	
 
@@ -87,33 +89,19 @@ public class Options extends JPanel {
 		try {
 			
 			background = ImageIO.read(new File(OptionsPagePath + "background.png"));
-
 			arrow_back = ImageIO.read(new File(OptionsPagePath + "arrow_back.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
-
 			paradiso = ImageIO.read(new File(OptionsPagePath + "Paradiso.png")).getScaledInstance(297, 61, Image.SCALE_SMOOTH);
-
 			purgatorio = ImageIO.read(new File(OptionsPagePath + "Purgatorio.png")).getScaledInstance(313, 61, Image.SCALE_SMOOTH);
-
 			inferno = ImageIO.read(new File(OptionsPagePath + "Inferno.png")).getScaledInstance(235, 61, Image.SCALE_SMOOTH);
-
 			windowed = ImageIO.read(new File(OptionsPagePath + "Windowed.png")).getScaledInstance(265, 41, Image.SCALE_SMOOTH);
-
 			fullscreen = ImageIO.read(new File(OptionsPagePath + "FullScreen.png")).getScaledInstance(305, 41, Image.SCALE_SMOOTH);
-
 			arrow_back_SELECTED = ImageIO.read(new File(OptionsPagePath + "arrow_back_SELECTED.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
-
 			paradiso_SELECTED = ImageIO.read(new File(OptionsPagePath + "Paradiso_SELECTED.png")).getScaledInstance(297, 61, Image.SCALE_SMOOTH);
-
 			purgatorio_SELECTED = ImageIO.read(new File(OptionsPagePath + "Purgatorio_SELECTED.png")).getScaledInstance(313, 61, Image.SCALE_SMOOTH);
-
 			inferno_SELECTED = ImageIO.read(new File(OptionsPagePath + "Inferno_SELECTED.png")).getScaledInstance(235, 61, Image.SCALE_SMOOTH);
-
 			windowed_SELECTED = ImageIO.read(new File(OptionsPagePath + "Windowed_SELECTED.png")).getScaledInstance(265, 41, Image.SCALE_SMOOTH);
-
 			fullscreen_SELECTED = ImageIO.read(new File(OptionsPagePath + "FullScreen_SELECTED.png")).getScaledInstance(305, 41, Image.SCALE_SMOOTH);
-
 			music_unchecked = ImageIO.read(new File(OptionsPagePath + "unchecked.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-
 			music_checked = ImageIO.read(new File(OptionsPagePath + "checked.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 
 			ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
@@ -123,12 +111,8 @@ public class Options extends JPanel {
 			WINDOWED_scaled = new JLabel(new ImageIcon(windowed_SELECTED));
 			FULLSCREEN_scaled = new JLabel(new ImageIcon(fullscreen));
 			
-			if(music) {
-				MUSIC_check = new JLabel(new ImageIcon(music_checked));
-			} else {
-				MUSIC_check = new JLabel(new ImageIcon(music_unchecked));
-			}
-			
+			if(music)	MUSIC_check = new JLabel(new ImageIcon(music_checked));
+			else 		MUSIC_check = new JLabel(new ImageIcon(music_unchecked));
 			
 			ARROW_BACK_scaled.addMouseListener(new MouseListener() {
 
@@ -450,7 +434,7 @@ public class Options extends JPanel {
 			double xSize = tk.getScreenSize().getWidth();
 			double ySize = tk.getScreenSize().getHeight();
 			
-			new Thread(new Runnable() {
+			t = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					while (true) {
@@ -476,12 +460,13 @@ public class Options extends JPanel {
 						try {
 							Thread.sleep(34);
 						} catch (InterruptedException e) {
-							e.printStackTrace();
+							return;
 						}
 					}
 				}
-			}).start();
+			});
 
+			t.start();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -492,5 +477,9 @@ public class Options extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
+	}
+	
+	public void closeThread() {
+		t.interrupt();
 	}
 }
