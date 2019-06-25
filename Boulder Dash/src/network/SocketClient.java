@@ -3,18 +3,17 @@ package network;
 import java.io.IOException;
 import java.net.Socket;
 
+import network.packet.PacketMove;
 import view.Game;
 
 public class SocketClient implements Runnable {
-	
+
 	private Thread t;
-	private boolean closeRun; 
+	private boolean closeRun;
 	private Socket socket;
 	Game game;
 
 	public SocketClient(Game game) {
-
-		// Setup networking
 		this.game = game;
 		socket = null;
 		closeRun = false;
@@ -26,6 +25,7 @@ public class SocketClient implements Runnable {
 			System.out.println("[CLIENT] Connessione al server...");
 			socket = new Socket("localhost", 8000);
 			System.out.println("[CLIENT] Connesso!");
+			MessageHandler.setSocket(socket);
 			t = new Thread(this);
 			t.start();
 
@@ -49,8 +49,22 @@ public class SocketClient implements Runnable {
 	@Override
 	public void run() {
 		while (socket.isConnected() && !socket.isClosed()) {
+			
 			Object obj = MessageHandler.receiveObject();
-			System.out.println("[CLIENT] ricevo variazioni dal server: " + obj.toString());
+			
+			if(obj!=null)
+				System.out.println("[CLIENT] ricevo dal server: " + obj.toString());
+			
+			PacketMove move = new PacketMove(0, 0, 0, 0);
+			MessageHandler.sendObject(move);
+			System.out.println("[CLIENT] Invio al server: " + move.toString());
+			
+			try {
+				Thread.sleep(34);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			if (closeRun)
 				return;

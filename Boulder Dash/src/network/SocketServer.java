@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import network.packet.*;
+import network.packet.PacketMove;
 import view.Game;
 
 public class SocketServer implements Runnable {
@@ -28,7 +28,8 @@ public class SocketServer implements Runnable {
 			System.out.println("[SERVER] Server attivo. In attesa di connessioni...");
 			socket = listener.accept();
 			MessageHandler.setSocket(socket);
-			System.out.println("[SERVER] Connessione stabilita con " + socket.getInetAddress() + ":" + socket.getLocalPort());
+			System.out.println(
+					"[SERVER] Connessione stabilita con " + socket.getInetAddress() + ":" + socket.getLocalPort());
 			t = new Thread(this);
 			t.start();
 		} catch (IOException e) {
@@ -40,8 +41,10 @@ public class SocketServer implements Runnable {
 		try {
 
 			listener.close();
-			if (socket != null)
+			if (socket != null) {
 				socket.close();
+
+			}
 
 			System.out.println("[SERVER] Server chiuso.");
 
@@ -57,10 +60,27 @@ public class SocketServer implements Runnable {
 
 	@Override
 	public void run() {
-		while (socket.isConnected() && !socket.isClosed()) {
-			MessageHandler.sendObject(new PacketMove(0, 0, 0, 0));
-			System.out.println("[SERVER] Invio variazioni al client...");
+		if (socket.isConnected() && !socket.isClosed()) {
+			PacketMove first = new PacketMove(0, 0, 0, 0);
+			MessageHandler.sendObject(first);
+			System.out.println("[SERVER] Invio al client: " + first.toString());
+		}
 
+		while (socket.isConnected() && !socket.isClosed()) {
+			Object obj = MessageHandler.receiveObject();
+
+			if (obj != null) {
+				System.out.println("[SERVER] ricevo dal client: " + obj.toString());
+				PacketMove move = new PacketMove(0, 0, 0, 0);
+				MessageHandler.sendObject(move);
+				System.out.println("[SERVER] Invio al client: " + move.toString());
+			}
+			try {
+				Thread.sleep(34);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (closeRun)
 				return;
 		}

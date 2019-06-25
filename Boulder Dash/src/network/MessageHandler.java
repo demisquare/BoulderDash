@@ -1,31 +1,25 @@
 package network;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 
 import network.packet.*;
 
 public class MessageHandler {
+
 	private static Socket socket;
-	
-	public static void setSocket(Socket socket) {
-		if (socket.isConnected())
-			MessageHandler.socket = socket;
+	public static void setSocket(Socket socket) throws IOException {
+		MessageHandler.socket = socket;
 	}
 
-	public static void sendObject(Object obj) {
-		OutputStream outputStream;
-		ObjectOutputStream objectOutputStream;
-		try {
-			outputStream = socket.getOutputStream();
-			objectOutputStream = new ObjectOutputStream(outputStream);
 
-			objectOutputStream.writeObject(obj);
-			objectOutputStream.close();
+	public static void sendObject(Object obj) {
+		try {
+			ObjectOutputStream write = new ObjectOutputStream(socket.getOutputStream());
+			write.writeObject(obj);
+			write.flush();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -33,16 +27,10 @@ public class MessageHandler {
 	}
 
 	public static Object receiveObject() {
-		InputStream inputStream;
-		ObjectInputStream objectInputStream;
-
 		Object obj = new Object();
 		try {
-			inputStream = socket.getInputStream();
-			objectInputStream = new ObjectInputStream(inputStream);
-
-			obj = objectInputStream.readObject();
-			objectInputStream.close();
+			ObjectInputStream read = new ObjectInputStream(socket.getInputStream());
+			obj = read.readObject();
 
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
