@@ -1,11 +1,8 @@
 package network;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.net.Socket;
 
-import model.World;
 import view.Game;
 
 public class SocketClient implements Runnable {
@@ -51,22 +48,12 @@ public class SocketClient implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			InputStream inputStream = socket.getInputStream();
-			ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+		while (socket.isConnected() && !socket.isClosed()) {
+			Object obj = MessageHandler.receiveObject();
+			System.out.println("[CLIENT] ricevo variazioni dal server: " + obj.toString());
 
-			while (socket.isConnected() && !socket.isClosed()) {
-				
-				System.out.println("[CLIENT] Ricevo il world dal server...");
-				
-				//MARIA deve preparare i pacchetti
-				//game.level.setWorld((World) objectInputStream.readObject());
-			
-				if(closeRun) return;
-			}
-
-		} catch(IOException e) {
-			e.printStackTrace();
+			if (closeRun)
+				return;
 		}
 	}
 }

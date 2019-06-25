@@ -3,36 +3,61 @@ package network;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
-import model.World;
-import view.Game;
+import network.packet.*;
 
-public class MessageHandler implements Runnable {
-	private Socket socket;
-	private Game game;
-
-	public MessageHandler(Socket socket, Game game) {
-		this.socket = socket;
-		this.game = game;
+public class MessageHandler {
+	private static Socket socket;
+	
+	public static void setSocket(Socket socket) {
+		if (socket.isConnected())
+			MessageHandler.socket = socket;
 	}
 
-	@Override
-	public void run() {
+	public static void sendObject(Object obj) {
+		OutputStream outputStream;
+		ObjectOutputStream objectOutputStream;
 		try {
-			// get the input stream from the connected socket
-			InputStream inputStream = socket.getInputStream();
-			// create a DataInputStream so we can read data from it.
-			ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+			outputStream = socket.getOutputStream();
+			objectOutputStream = new ObjectOutputStream(outputStream);
 
-			while (true) {
-				{
-					game.level.setWorld((World) objectInputStream.readObject());
-				}
-			}
+			objectOutputStream.writeObject(obj);
+			objectOutputStream.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Object receiveObject() {
+		InputStream inputStream;
+		ObjectInputStream objectInputStream;
+
+		Object obj = new Object();
+		try {
+			inputStream = socket.getInputStream();
+			objectInputStream = new ObjectInputStream(inputStream);
+
+			obj = objectInputStream.readObject();
+			objectInputStream.close();
+
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
-			return;
+		}
+		return obj;
+	}
+
+	public void HandlePacket(Object pkg) {
+
+		if (pkg instanceof PacketMove) {
+			// TODO: operazioni per muovere player/nemici...
+		}
+
+		else if (pkg instanceof PacketDie) {
+			// TODO: operazioni per uccidere player/nemici...
 		}
 	}
 }
