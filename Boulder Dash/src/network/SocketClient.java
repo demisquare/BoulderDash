@@ -3,6 +3,8 @@ package network;
 import java.io.IOException;
 import java.net.Socket;
 
+import menu.Options;
+import model.Player;
 import network.packet.PacketMove;
 import view.Game;
 
@@ -11,13 +13,14 @@ public class SocketClient implements Runnable {
 	private Thread t;
 	private boolean closeRun;
 	private Socket socket;
-	Game game;
+	Player host;
 
 	public SocketClient(Game game) {
-		this.game = game;
+		host = (Player) game.level.getWorld().getPlayer();
 		socket = null;
 		closeRun = false;
 		t = null;
+		Options.multiplayer = true;
 	}
 
 	public void connect() {

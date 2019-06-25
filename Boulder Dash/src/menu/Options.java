@@ -55,6 +55,7 @@ public class Options extends JPanel {
 	
 	public static boolean music = false;
 	public static boolean full_screen = false;	
+	public static boolean multiplayer = false;
 
 	enum Difficulty {
 		paradiso, purgatorio, inferno;

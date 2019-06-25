@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import menu.Options;
+import model.Player;
 import network.packet.PacketMove;
 import view.Game;
 
@@ -13,13 +15,14 @@ public class SocketServer implements Runnable {
 	private boolean closeRun;
 	private ServerSocket listener;
 	private Socket socket;
-	private Game game;
+	Player main;
 
 	public SocketServer(Game game) {
-		this.game = game;
+		main = (Player) game.level.getWorld().getPlayer();
 		socket = null;
 		t = null;
 		closeRun = false;
+		Options.multiplayer = true;
 	}
 
 	public void connect() {
@@ -29,7 +32,7 @@ public class SocketServer implements Runnable {
 			socket = listener.accept();
 			MessageHandler.setSocket(socket);
 			System.out.println(
-					"[SERVER] Connessione stabilita con " + socket.getInetAddress() + ":" + socket.getLocalPort());
+					"[SERVER] Connessione stabilita con " + socket.getInetAddress().getHostAddress() + ":" + socket.getLocalPort());
 			t = new Thread(this);
 			t.start();
 		} catch (IOException e) {

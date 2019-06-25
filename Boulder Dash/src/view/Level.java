@@ -13,7 +13,10 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
+import menu.Options;
 import model.*;
+import network.*;
+import network.packet.*;
 
 public class Level extends JPanel implements KeyListener {
 
@@ -183,7 +186,7 @@ public class Level extends JPanel implements KeyListener {
 					
 				BufferedImage img = spritesheet.getSprite(1, 2);
 				blockSprites.add(new BlockSprite(img, newObj));	
-						
+				
 				playerSprites.remove(i);
 				System.out.println("PLAYER REMOVED");
 			}
@@ -251,7 +254,8 @@ public class Level extends JPanel implements KeyListener {
 				//a static map instead of a switch
 				playerSprites.get(0).movePose(pgMove.get(dir));
 				synchronized(this) {
-					world.getPlayer().update(pgMove.get(dir));	
+					world.getPlayer().update(pgMove.get(dir));
+					
 				}
 			
 			}

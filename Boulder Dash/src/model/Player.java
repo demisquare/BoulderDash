@@ -1,5 +1,10 @@
 package model;
 
+import menu.Options;
+import network.MessageHandler;
+import network.packet.PacketDie;
+import network.packet.PacketMove;
+
 public class Player extends GameObject implements Living {
 	
 	//metodo semplice per aggiungere un delay al movimento
@@ -38,6 +43,10 @@ public class Player extends GameObject implements Living {
 				
 				System.out.println("si muove...");
 				swap(i, j);
+				
+				if(Options.multiplayer)
+					MessageHandler.sendObject(new PacketMove(this.hashCode(), x, y, dir));
+				
 				return true;
 			
 			} else if(map.getTile(i, j) instanceof Door) {
@@ -51,6 +60,9 @@ public class Player extends GameObject implements Living {
 			} else if(map.getTile(i, j) instanceof Enemy) {
 				
 				destroy();
+				
+				if(Options.multiplayer)
+					MessageHandler.sendObject(new PacketDie(this.hashCode(), x, y));
 				
 				return true;
 			}
