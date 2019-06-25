@@ -26,6 +26,7 @@ public class Multiplayer extends JPanel {
 			+ File.separator + "Menu" + File.separator + "MultiPage" + File.separator;
 
 	private Thread t;
+	Game game;
 
 	BufferedImage background;
 	Image arrow_back;
@@ -56,30 +57,17 @@ public class Multiplayer extends JPanel {
 		socketClient = new SocketClient(game);
 		socketClient.connect();
 
-		frame.remove(this);
-
-		if (!game.isReset) {
-			game.reset(frame, menu);
-		}
-
-		frame.setContentPane(game);
-
-		if (!frame.isAncestorOf(game)) {
-			throw new InterruptedException();
-		}
-
-		if (!game.level.requestFocusInWindow()) {
-			throw new InterruptedException();
-		}
-
-		frame.revalidate();
-		frame.repaint();
-
-		synchronized (this) {
+		synchronized(this) {
 			Music.setSong(Music.gameSong);
 		}
-		// stopThread();
-		// game.wakeThread();
+		
+		closeThread();
+		frame.remove(this);
+		game.reset(frame, menu);
+		frame.setContentPane(game);
+		game.level.requestFocusInWindow();
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	private void server_selected(JFrame frame, Menu menu, Game game) throws InterruptedException {
@@ -87,34 +75,22 @@ public class Multiplayer extends JPanel {
 		socketServer = new SocketServer(game);
 		socketServer.connect();
 
-		frame.remove(this);
-
-		if (!game.isReset) {
-			game.reset(frame, menu);
-		}
-
-		frame.setContentPane(game);
-
-		if (!frame.isAncestorOf(game)) {
-			throw new InterruptedException();
-		}
-
-		if (!game.level.requestFocusInWindow()) {
-			throw new InterruptedException();
-		}
-
-		frame.revalidate();
-		frame.repaint();
-
-		synchronized (this) {
+		synchronized(this) {
 			Music.setSong(Music.gameSong);
 		}
-		// stopThread();
-		// game.wakeThread();
+		
+		closeThread();
+		frame.remove(this);
+		game.reset(frame, menu);
+		frame.setContentPane(game);
+		game.level.requestFocusInWindow();
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	public Multiplayer(JFrame frame, Game game, Menu menu) {
 
+		this.game = game;
 		try {
 
 			background = ImageIO.read(new File(MultiPagePath + "background.png"));
