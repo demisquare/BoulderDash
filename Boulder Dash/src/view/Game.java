@@ -2,11 +2,9 @@ package view;
 
 import java.awt.Toolkit;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
-import javax.swing.SwingUtilities;
 
 import menu.Menu;
 import menu.Options;
@@ -91,7 +89,9 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		isReset = true;
 	}
 
-	public synchronized void launchThread() { t2.start(); 	 }
+	public synchronized void launchThread() { 
+		t2.start(); 	 
+	}
 	
 	public synchronized void closeThread() {
 		t2.interrupt();

@@ -52,9 +52,19 @@ public class Options extends JPanel {
 	JLabel WINDOWED_scaled;
 	JLabel FULLSCREEN_scaled;
 	JLabel MUSIC_check;
+	
+	public static boolean music = false;
+	public static boolean full_screen = false;	
 
+	enum Difficulty {
+		paradiso, purgatorio, inferno;
+	}
+
+	public Difficulty difficulty = Difficulty.purgatorio;
+	
 	private void turn_back(JFrame frame, Menu menu) throws InterruptedException {
 		
+		menu.launchThread();
 		frame.remove(this);
 		frame.setContentPane(menu);
 		frame.revalidate();
@@ -76,16 +86,6 @@ public class Options extends JPanel {
 		frame.setVisible(true);
 		frame.setSize(1280, 749);
 	}
-	
-	public static boolean music = true;
-	public static boolean full_screen = false;
-	
-
-	enum Difficulty {
-		paradiso, purgatorio, inferno;
-	}
-
-	public Difficulty difficulty = Difficulty.purgatorio;
 
 	public Options(JFrame frame, Menu menu) {
 		try {
@@ -525,6 +525,11 @@ public class Options extends JPanel {
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 	
-	public synchronized void launchThread() { t.start(); 	 }
-	public synchronized void closeThread() 	{ t.interrupt(); }
+	public synchronized void launchThread() { 
+		t.start(); 	 
+	}
+	
+	public synchronized void closeThread() 	{ 
+		t.interrupt(); 
+	}
 }

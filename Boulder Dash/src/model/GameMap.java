@@ -7,28 +7,32 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 //definisce la mappa di gioco come matrice di blocchi
 public class GameMap {
 	
-	private static String defaultPath = "." + File.separator + "resources" + File.separator + "maps" + File.separator;
+	private static String defaultPath = 
+			"." + File.separator + 
+			"resources" + File.separator + 
+			"maps" + File.separator;
 	
 	//mappe separate per ogni tipologia di blocco:
-		//contiene Player, Enemy, Wall, Door
+	//contiene Player, Enemy, Wall, Door
 	private ConcurrentHashMap<Integer, GameObject> blocks;
-		//contiene EmptyBlock
+	//contiene EmptyBlock
 	private ConcurrentHashMap<Integer, GameObject> emptyBlocksMap;
-		//contiene Rock
+	//contiene Rock
 	private ConcurrentHashMap<Integer, GameObject> rocksMap;
-		//contiene Diamond
+	//contiene Diamond
 	private ConcurrentHashMap<Integer, GameObject> diamondsMap;
-		//contiene Ground
+	//contiene Ground
 	private ConcurrentHashMap<Integer, GameObject> groundMap;
-		//shortcut per i vari oggetti Player
+	//shortcut per i vari oggetti Player
 	private ArrayList<GameObject> player;
-		//shortcut per i vari oggetti Enemy
+	//shortcut per i vari oggetti Enemy
 	private ArrayList<GameObject> enemy;
 	
 	// dimensione logica...
@@ -139,7 +143,7 @@ public class GameMap {
 		}
 	}
 
-	public GameMap(String filename) {
+	public GameMap(String filename/*, Mode m*/) {
 		
 		GameObject.map = this;
 
@@ -155,6 +159,7 @@ public class GameMap {
 		initialize(filename);
 	}
 	
+	//restituisce il tile nella posizione <x, y>
 	public GameObject getTile(int x, int y) {
 
 		GameObject ret = blocks.get(x*dimX+y);
@@ -167,6 +172,7 @@ public class GameMap {
 		return ret;
 	}
 
+	//aggiunge il GameObject in posizione <x, y> e si assiura che nessun altro oggetto abbia le stesse coordinate
 	public GameObject setTile(int x, int y, GameObject value) {
 		
 		GameObject ret = getTile(x, y);
@@ -214,9 +220,15 @@ public class GameMap {
 		return groundMap;
 	}
 
+	//probabilmente dovrò deprecarla
 	public GameObject getPlayer() {
 		
 		return player.get(0);
+	}
+	
+	public GameObject getPlayer(int i) {
+		
+		return player.get(i);
 	}
 	
 	public ArrayList<GameObject> getEnemies() {
@@ -224,6 +236,7 @@ public class GameMap {
 		return enemy;
 	}
 
+	//verifica se il valore i è contenuto nella matrice (conviene sostituirlo con due param?)
 	public boolean containsKey(int i) {
 		
 		return 

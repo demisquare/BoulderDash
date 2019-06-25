@@ -31,6 +31,8 @@ public class Credits extends JPanel{
 	JLabel ARROW_BACK_scaled;
 
 	public void turn_back(JFrame frame, Menu menu) {
+		
+		menu.launchThread();
 		frame.remove(this);
 		frame.setContentPane(menu);
 		frame.revalidate();
