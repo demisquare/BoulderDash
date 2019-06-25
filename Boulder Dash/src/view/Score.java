@@ -89,13 +89,7 @@ public class Score extends JPanel implements Serializable {
 			ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
 			
 			ARROW_BACK_scaled.addMouseListener(new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
 					
-				}
-				
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
@@ -126,11 +120,8 @@ public class Score extends JPanel implements Serializable {
 					repaint();
 				}
 				
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				@Override public void mouseClicked(MouseEvent e) {}
+				@Override public void mouseReleased(MouseEvent e) {}
 			});
 			
 
@@ -166,7 +157,7 @@ public class Score extends JPanel implements Serializable {
 				}
 			});
 			
-			t.start();
+			launchThread();
 			
 			this.add(Lives);
 			this.setLayout(null); //se non settiamo a null non possiamo usare il setBounds.
@@ -187,9 +178,7 @@ public class Score extends JPanel implements Serializable {
 		g.drawImage(Background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 
-	public synchronized void closeThread() { t.interrupt(); }
+	public synchronized void launchThread() { t.start(); 	 }
 	
-//	public synchronized void wakeThread() { t.notify(); }
-//	
-//	public synchronized void stopThread() throws InterruptedException { t.wait(); }
+	public synchronized void closeThread() 	{ t.interrupt(); }
 }

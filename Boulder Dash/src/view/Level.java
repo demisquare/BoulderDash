@@ -4,14 +4,14 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
+
 import java.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import model.*;
 
@@ -242,10 +242,39 @@ public class Level extends JPanel implements KeyListener {
 		Renderer.render(g, this);
 	}
 
+	public void updatePlayerOnPressing(int dir) {
+		
+		if(!world.getPlayer().isDead()) {
+			
+			if(pgMove.containsKey(dir)) {
+				
+				//a static map instead of a switch
+				playerSprites.get(0).movePose(pgMove.get(dir));
+				synchronized(this) {
+					world.getPlayer().update(pgMove.get(dir));	
+				}
+			
+			}
+		
+			playerSprites.get(0).getAnimation().update();	
+		}
+	}
+	
+	public void updatePlayerOnRelease(int dir) {
+		
+		if(!world.getPlayer().isDead()) {
+			
+			playerSprites.get(0).getAnimation().stop();
+			playerSprites.get(0).getAnimation().reset();
+			//a static map instead of a switch
+			if(pgMove.containsKey(dir))
+				playerSprites.get(0).standPose(pgMove.get(dir));
+		
+			playerSprites.get(0).getAnimation().update();
+		}
+	}
+	
 	// eventi di movimento da tastiera del player...
-
-	@Override public void keyTyped(KeyEvent e) {}
-
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
@@ -253,24 +282,11 @@ public class Level extends JPanel implements KeyListener {
 			
 			lastTimePressed = java.time.LocalTime.now();
 			
-			if(!world.getPlayer().isDead()) {
-				
-				if(pgMove.containsKey(e.getKeyCode())) {
-					
-					//a static map instead of a switch
-					playerSprites.get(0).movePose(pgMove.get(e.getKeyCode()));
-					synchronized(this) {
-						world.getPlayer().update(pgMove.get(e.getKeyCode()));	
-					}
-				
-				}
-			
-				playerSprites.get(0).getAnimation().update();
-				
-			}
+			updatePlayerOnPressing(e.getKeyCode());
 		
 			revalidate();
 			repaint();
+			
 			world.reset();
 		}
 	}
@@ -278,21 +294,20 @@ public class Level extends JPanel implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		
-		if(!world.getPlayer().isDead()) {
+		if( (java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0 ) {
 			
-			playerSprites.get(0).getAnimation().stop();
-			playerSprites.get(0).getAnimation().reset();
-			//a static map instead of a switch
-			if(pgMove.containsKey(e.getKeyCode()))
-				playerSprites.get(0).standPose(pgMove.get(e.getKeyCode()));
+			lastTimePressed = java.time.LocalTime.now();
 		
-			playerSprites.get(0).getAnimation().update();
+			updatePlayerOnRelease(e.getKeyCode());
 		
 			revalidate();
 			repaint();
+			
 			world.reset();
 		}
 	}
 	
 	public synchronized void closeThread() { t.interrupt(); }
+
+	@Override public void keyTyped(KeyEvent e) {}
 }

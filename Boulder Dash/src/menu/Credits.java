@@ -31,6 +31,8 @@ public class Credits extends JPanel{
 	JLabel ARROW_BACK_scaled;
 
 	public void turn_back(JFrame frame, Menu menu) {
+		
+		menu.launchThread();
 		frame.remove(this);
 		frame.setContentPane(menu);
 		frame.revalidate();
@@ -39,7 +41,6 @@ public class Credits extends JPanel{
 		synchronized(this) {
 			Music.setSong(Music.menuSong);
 		}
-		//menu.wakeThread();
 	}
 	
 	public Credits(JFrame frame, Menu menu) {
@@ -52,13 +53,7 @@ public class Credits extends JPanel{
 			ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
 					
 			ARROW_BACK_scaled.addMouseListener(new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
+								
 				@Override
 				public void mousePressed(MouseEvent e) {
 					synchronized(this) {
@@ -87,11 +82,8 @@ public class Credits extends JPanel{
 					repaint();
 				}
 				
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				@Override public void mouseClicked(MouseEvent e) 	{}
+				@Override public void mouseReleased(MouseEvent e) 	{}
 			});
 			
 			this.setLayout(null);

@@ -3,40 +3,35 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
+
 import view.Sprite;
 
 //classe che contiene sia il player che la mappa
 public class World implements Runnable {
 
+	//contiene la "matrice logica" del gioco (l'implementazione non è una matrice)
 	GameMap map;	
-	//Stack<Integer> stack = new Stack<Integer>();
-	
 	//true se il world è stato aggiornato
 	private boolean hasChanged;
-
 	//dimensione grafica...
-	int width  = 0;	
-	int height = 0;
-	//	Graph<Integer, Integer> g= new SimpleGraph(int.class);
-
+	private int width  = 0;	
+	private int height = 0;
 	private int FPS;
 	
+	public static enum Mode { Single, Multi }
+	
 	// costruttore di default
-	public World(int FPS) {
+	public World(int FPS/*, Mode m*/) {
 		
 		//sostituire con il filename
-		map = new GameMap("levelmap");
-		
-		this.FPS = FPS;
-		//default a true (per evitare un aggiornamento immediato)
-		hasChanged = true;
-		
+		map = new GameMap("levelmap"/*, m*/);
+		//FPS per l'aggiornamento
+		this.FPS = FPS;		
 		//dimensione grafica...
 		width = map.getDimX() * Sprite.TILE_SIZE;
 		height = map.getDimY() * Sprite.TILE_SIZE;
-		
-		//da definire la posizione di partenza (e il criterio di scelta)
-		//stack.add((2*map.getDimX())+10);
+		//default a true (per evitare un aggiornamento immediato)
+		hasChanged = true;
 	}
 	
 	// getter e setter

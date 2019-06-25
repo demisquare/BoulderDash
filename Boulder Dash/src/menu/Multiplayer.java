@@ -43,14 +43,12 @@ public class Multiplayer extends JPanel {
 	private SocketClient socketClient;
 
 	private void turn_back(JFrame frame, Menu menu) throws InterruptedException {
-
+		
+		menu.launchThread();
 		frame.remove(this);
 		frame.setContentPane(menu);
 		frame.revalidate();
 		frame.repaint();
-
-		// stopThread();
-		// menu.wakeThread();
 	}
 
 	private void client_selected(JFrame frame, Menu menu, Game game) throws InterruptedException {
@@ -140,12 +138,6 @@ public class Multiplayer extends JPanel {
 			ARROW_BACK_scaled.addMouseListener(new MouseListener() {
 
 				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
 				public void mousePressed(MouseEvent e) {
 
 					synchronized (this) {
@@ -182,19 +174,11 @@ public class Multiplayer extends JPanel {
 					repaint();
 				}
 
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
+				@Override public void mouseClicked(MouseEvent e) 	{}
+				@Override public void mouseReleased(MouseEvent e) 	{}
 			});
+			
 			CREATE_GAME_scaled.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
 
 				@Override
 				public void mousePressed(MouseEvent e) {
@@ -233,19 +217,11 @@ public class Multiplayer extends JPanel {
 					repaint();
 				}
 
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
+				@Override public void mouseClicked(MouseEvent e) 	{}
+				@Override public void mouseReleased(MouseEvent e) 	{}
 			});
+			
 			JOIN_GAME_scaled.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
 
 				@Override
 				public void mousePressed(MouseEvent e) {
@@ -284,11 +260,8 @@ public class Multiplayer extends JPanel {
 					repaint();
 				}
 
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
+				@Override public void mouseClicked(MouseEvent e) 	{}
+				@Override public void mouseReleased(MouseEvent e) 	{}
 			});
 
 			this.setLayout(null);
@@ -323,9 +296,9 @@ public class Multiplayer extends JPanel {
 					}
 				}
 			});
-
-			t.start();
-
+			
+			launchThread();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -336,12 +309,7 @@ public class Multiplayer extends JPanel {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
-
-	public synchronized void closeThread() {
-		t.interrupt();
-	}
-
-//	public synchronized void wakeThread() { t.notify(); }
-//	
-//	public synchronized void stopThread() throws InterruptedException { t.wait(); }
+	
+	public synchronized void launchThread() { t.start(); 	 }
+	public synchronized void closeThread() 	{ t.interrupt(); }
 }

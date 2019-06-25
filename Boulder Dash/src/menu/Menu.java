@@ -7,11 +7,13 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
 import javax.imageio.ImageIO;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -19,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import audio.Music;
+
 import view.Game;
 
 public class Menu extends JPanel implements Serializable {
@@ -36,6 +39,7 @@ public class Menu extends JPanel implements Serializable {
 			+ File.separator;
 	
 	private Thread t;
+	private final Runnable r;
 	
 	BufferedImage background;
 
@@ -67,68 +71,74 @@ public class Menu extends JPanel implements Serializable {
 
 	private void start_selected(JFrame frame) throws InterruptedException {
 		
-		frame.remove(this);
-		
-		if(!game.isReset) { 
-			game.reset(frame, this); 
-		}
-		
-		frame.setContentPane(game);
-		
-		if(!frame.isAncestorOf(game)) { 
-			throw new InterruptedException();
-		}
-		
-		if(!game.level.requestFocusInWindow()) { 
-			throw new InterruptedException(); 
-		}
-		
-		frame.revalidate();
-		frame.repaint();
-		
 		synchronized(this) {
 			Music.setSong(Music.gameSong);
 		}
-		//stopThread();
-		//game.wakeThread();
+		
+		closeThread();
+		frame.remove(this);
+		game.reset(frame, this);
+		frame.setContentPane(game);
+		game.level.requestFocusInWindow();
+		frame.revalidate();
+		frame.repaint();
 	}
 	
 	private void options_selected(JFrame frame, Options options) throws InterruptedException {
 		
+		closeThread();
 		frame.remove(this);
 		frame.setContentPane(options);
 		frame.revalidate();
 		frame.repaint();
-	
-		//stopThread();
-		//options.wakeThread();
 	}
+	
 	private void multi_selected(JFrame frame, Multiplayer multi, You_Lose youlose) throws InterruptedException {
 	
+		closeThread();
 		frame.remove(this);
 		frame.setContentPane(multi);
 		frame.revalidate();
 		frame.repaint();
-		
-		//stopThread();
-		//multi.wakeThread();
 	}
 	
 	private void credits_selected(JFrame frame, Credits credits) throws InterruptedException {
 	
-		frame.remove(this);
-		frame.setContentPane(credits);
-		frame.revalidate();
-		frame.repaint();
-		
 		synchronized(this) {
 			Music.setSong(Music.creditsSong);
 		}
 		
-		//stopThread();
+		closeThread();
+		frame.remove(this);
+		frame.setContentPane(credits);
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	public Menu(JFrame frame) {
+		
+		r = new Runnable(){
+			@Override
+			public void run() {
+				while (true) {
+					
+					double xSize = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+					double ySize = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+					
+					if(!Options.full_screen)
+						menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
+					else if(Options.full_screen)
+						menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 430, 300);
+					
+					try {
+						Thread.sleep(34);
+					} catch (InterruptedException e) {
+						return;
+					}
+				}
+			}
+		};
+		
 		options  = new Options(frame, this);
 		credits  = new Credits(frame, this);
 		multi	 = new Multiplayer(frame, game, this);
@@ -156,11 +166,6 @@ public class Menu extends JPanel implements Serializable {
 			EXIT_scaled = new JLabel(new ImageIcon(EXIT));
 
 			START_scaled.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-				}
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -197,19 +202,11 @@ public class Menu extends JPanel implements Serializable {
 					repaint();
 				}
 
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-				}
+				@Override public void mouseReleased(MouseEvent e) 	{}
+				@Override public void mouseClicked(MouseEvent e) 	{}
 			});
 			
 			MULTI_scaled.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
 
 				@Override
 				public void mousePressed(MouseEvent e) {
@@ -248,20 +245,11 @@ public class Menu extends JPanel implements Serializable {
 					repaint();
 				}
 
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
+				@Override public void mouseClicked(MouseEvent e) 	{}
+				@Override public void mouseReleased(MouseEvent e) 	{}
 			});
 			
 			OPTIONS_scaled.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
 
 				@Override
 				public void mousePressed(MouseEvent e) {
@@ -300,20 +288,11 @@ public class Menu extends JPanel implements Serializable {
 					repaint();
 				}
 
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
+				@Override public void mouseClicked(MouseEvent e) 	{}
+				@Override public void mouseReleased(MouseEvent e) 	{}
 			});
 			
 			CREDITS_scaled.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
 
 				@Override
 				public void mousePressed(MouseEvent e) {
@@ -352,19 +331,11 @@ public class Menu extends JPanel implements Serializable {
 					repaint();
 				}
 
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
+				@Override public void mouseClicked(MouseEvent e) 	{}
+				@Override public void mouseReleased(MouseEvent e) 	{}
 			});
 			
 			EXIT_scaled.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-				}
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -395,10 +366,8 @@ public class Menu extends JPanel implements Serializable {
 					System.exit(0);
 				}
 
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-				}
+				@Override public void mouseReleased(MouseEvent e) 	{}
+				@Override public void mouseClicked(MouseEvent e) 	{}
 			});
 
 			menu_choices = new JPanel();
@@ -414,31 +383,8 @@ public class Menu extends JPanel implements Serializable {
 			this.add(menu_choices);
 			menu_choices.setBackground(new Color(0, 0, 0, 0));
 			menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
-
-			Toolkit tk = Toolkit.getDefaultToolkit();
-			double xSize = tk.getScreenSize().getWidth();
-			double ySize = tk.getScreenSize().getHeight();
 			
-			t = new Thread(new Runnable(){
-				@Override
-				public void run() {
-					while (true) {
-						
-						if(!Options.full_screen)
-							menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
-						else if(Options.full_screen)
-							menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 430, 300);
-						
-						try {
-							Thread.sleep(34);
-						} catch (InterruptedException e) {
-							return;
-						}
-					}
-				}
-			});
-			
-			t.start();
+			launchThread();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -452,15 +398,14 @@ public class Menu extends JPanel implements Serializable {
 
 	}
 	
-	public synchronized void closeThread() {
-		
-		t.interrupt();
-		multi.closeThread();
-		options.closeThread();
-		game.closeThread();
+	public synchronized void launchThread() { 
+		if(t != null && t.isAlive())
+			t.interrupt();
+		t = new Thread(r);
+		t.start(); 	 
 	}
-//	
-//	public synchronized void wakeThread() { t.notify(); }
-//	
-//	public synchronized void stopThread() throws InterruptedException { t.wait(); }
+	
+	public synchronized void closeThread() {
+		t.interrupt();
+	}
 }
