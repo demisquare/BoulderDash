@@ -91,60 +91,11 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		isReset = true;
 	}
 
-//	@Override
-//	public void run() {
-//			
-//		int counter = 0; 
-//			
-//		while(true) {
-//				
-//			++counter;
-//			if(counter == 200/FPS) {
-//					
-//				counter = 0;
-//				level.getWorld().update();
-//			}
-//				
-//			try {
-//				SwingUtilities.invokeAndWait(new Runnable() {
-//					@Override
-//					public void run() {
-//						level.revalidate();
-//						level.repaint();
-//					}
-//				});
-//			
-//			} catch (InvocationTargetException | InterruptedException e1) {
-//				e1.printStackTrace();
-//			}
-//			
-//			level.getWorld().reset();
-//				
-//			try {
-//				Thread.sleep(FPS);
-//			
-//			}catch(InterruptedException e) {
-//				return;
-//			
-//			}
-//		}	
-//	}
+	public synchronized void launchThread() { t2.start(); 	 }
 	
 	public synchronized void closeThread() {
 		t2.interrupt();
 		level.closeThread();
 		score.closeThread();
 	}
-	
-//	public synchronized void wakeThread() { 
-//		t.notify();
-//		t2.notify();
-//		score.wakeThread();
-//	}
-	
-//	public synchronized void stopThread() throws InterruptedException { 
-//		t.wait();
-//		t2.wait();
-//		score.stopThread();
-//	}
 }
