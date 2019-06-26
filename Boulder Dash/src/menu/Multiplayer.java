@@ -53,7 +53,6 @@ public class Multiplayer extends JPanel {
 		}
 		
 		
-		menu.launchThread();
 		frame.remove(this);
 		frame.setContentPane(menu);
 		frame.revalidate();

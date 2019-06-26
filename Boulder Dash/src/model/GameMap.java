@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,6 +14,7 @@ import menu.Options;
 
 //definisce la mappa di gioco come matrice di blocchi
 public class GameMap {
+<<<<<<< HEAD
 
 	private static String defaultPath = "." + File.separator + "resources" + File.separator + "maps" + File.separator;
 
@@ -34,6 +34,25 @@ public class GameMap {
 	// shortcut per i vari oggetti Host
 	private ArrayList<GameObject> host;
 	// shortcut per i vari oggetti Enemy
+=======
+	
+	private static String defaultPath = "." + File.separator + "resources" + File.separator + "maps" + File.separator;
+	
+	//mappe separate per ogni tipologia di blocco:
+		//contiene Player, Enemy, Wall, Door
+	private ConcurrentHashMap<Integer, GameObject> blocks;
+		//contiene EmptyBlock
+	private ConcurrentHashMap<Integer, GameObject> emptyBlocksMap;
+		//contiene Rock
+	private ConcurrentHashMap<Integer, GameObject> rocksMap;
+		//contiene Diamond
+	private ConcurrentHashMap<Integer, GameObject> diamondsMap;
+		//contiene Ground
+	private ConcurrentHashMap<Integer, GameObject> groundMap;
+		//shortcut per i vari oggetti Player
+	private ArrayList<GameObject> player;
+		//shortcut per i vari oggetti Enemy
+>>>>>>> parent of fcb80bf... I don't really know
 	private ArrayList<GameObject> enemy;
 
 	// dimensione logica...
@@ -167,8 +186,13 @@ public class GameMap {
 		}
 	}
 
+<<<<<<< HEAD
 	public GameMap(String filename/* , Mode m */) {
 
+=======
+	public GameMap(String filename) {
+		
+>>>>>>> parent of fcb80bf... I don't really know
 		GameObject.map = this;
 
 		blocks = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
@@ -183,8 +207,12 @@ public class GameMap {
 
 		initialize(filename);
 	}
+<<<<<<< HEAD
 
 	// restituisce il tile nella posizione <x, y>
+=======
+	
+>>>>>>> parent of fcb80bf... I don't really know
 	public GameObject getTile(int x, int y) {
 
 		GameObject ret = blocks.get(x * dimX + y);
@@ -201,8 +229,11 @@ public class GameMap {
 		return ret;
 	}
 
+<<<<<<< HEAD
 	// aggiunge il GameObject in posizione <x, y> e si assiura che nessun altro
 	// oggetto abbia le stesse coordinate
+=======
+>>>>>>> parent of fcb80bf... I don't really know
 	public GameObject setTile(int x, int y, GameObject value) {
 
 		GameObject ret = getTile(x, y);
@@ -260,11 +291,15 @@ public class GameMap {
 		return groundMap;
 	}
 
+<<<<<<< HEAD
 	// probabilmente dovr� deprecarla
+=======
+>>>>>>> parent of fcb80bf... I don't really know
 	public GameObject getPlayer() {
 
 		return player.get(0);
 	}
+<<<<<<< HEAD
 
 	public GameObject getPlayer(int i) {
 
@@ -282,13 +317,19 @@ public class GameMap {
 		return host.get(i);
 	}
 
+=======
+	
+>>>>>>> parent of fcb80bf... I don't really know
 	public ArrayList<GameObject> getEnemies() {
 
 		return enemy;
 	}
 
+<<<<<<< HEAD
 	// verifica se il valore i � contenuto nella matrice (conviene sostituirlo con
 	// due param?)
+=======
+>>>>>>> parent of fcb80bf... I don't really know
 	public boolean containsKey(int i) {
 
 		return blocks.containsKey(i) || emptyBlocksMap.containsKey(i) || diamondsMap.containsKey(i)
