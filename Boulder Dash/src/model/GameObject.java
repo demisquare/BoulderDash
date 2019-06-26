@@ -72,6 +72,8 @@ public abstract class GameObject {
 	
 	public boolean isDead() { return dead; }
 	
+	public boolean hasMoved() { return dead; }
+	
 	public GameObject getSuccessor() { return successor; }
 	
 	public void setDead(boolean x) {
@@ -185,11 +187,12 @@ public abstract class GameObject {
 		
 			if(map.getTile(i, j) instanceof EmptyBlock) {
 				
+				moved = true;
 				swap(i, j);
 				return true;
 			}
 		}
-		
+		moved = false;
 		return false;
 	}
 }

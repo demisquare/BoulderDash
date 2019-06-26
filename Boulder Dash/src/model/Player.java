@@ -29,8 +29,6 @@ public class Player extends GameObject implements Living {
 
 	@Override
 	protected boolean move(int dir) {
-		moved = false;
-
 		int i = x + dmap[dir][0];
 		int j = y + dmap[dir][1];
 
