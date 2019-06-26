@@ -8,16 +8,9 @@ import view.Sprite;
 //classe che contiene sia il player che la mappa
 public class World implements Runnable {
 
-<<<<<<< HEAD
 	//contiene la "matrice logica" del gioco (l'implementazione non ï¿½ una matrice)
 	GameMap map;	
 	//true se il world ï¿½ stato aggiornato
-=======
-	GameMap map;	
-	//Stack<Integer> stack = new Stack<Integer>();
-	
-	//true se il world è stato aggiornato
->>>>>>> parent of fcb80bf... I don't really know
 	private boolean hasChanged;
 
 	//dimensione grafica...

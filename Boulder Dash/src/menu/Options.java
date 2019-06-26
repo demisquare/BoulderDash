@@ -52,19 +52,6 @@ public class Options extends JPanel {
 	JLabel WINDOWED_scaled;
 	JLabel FULLSCREEN_scaled;
 	JLabel MUSIC_check;
-<<<<<<< HEAD
-	
-	public static boolean music = false;
-	public static boolean full_screen = false;	
-	
-	public static boolean multiplayer = false;
-	public static boolean host = false;
-
-	enum Difficulty {
-		paradiso, purgatorio, inferno;
-	}
-=======
->>>>>>> parent of fcb80bf... I don't really know
 
 	private void turn_back(JFrame frame, Menu menu) throws InterruptedException {
 		
@@ -90,9 +77,11 @@ public class Options extends JPanel {
 		frame.setSize(1280, 749);
 	}
 	
-	public static boolean music = true;
-	public static boolean full_screen = false;
+	public static boolean music = false;
+	public static boolean full_screen = false;	
 	
+	public static boolean multiplayer = false;
+	public static boolean host = false;
 
 	enum Difficulty {
 		paradiso, purgatorio, inferno;

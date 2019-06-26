@@ -30,6 +30,7 @@ public abstract class GameObject {
 	protected boolean processed;
 	protected boolean dead;
 	protected boolean isFalling;
+	protected boolean moved;
 	
 	protected GameObject successor;
 	
@@ -39,6 +40,7 @@ public abstract class GameObject {
 		this.y = y;
 		processed = false;
 		isFalling = false;
+		moved = false;
 		dead = false;
 		
 		successor = null;
