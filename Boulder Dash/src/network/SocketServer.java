@@ -27,7 +27,7 @@ public class SocketServer {
 	Player player;
 	// Host host;
 
-	private ArrayList<Packet> packets;
+	// private ArrayList<Packet> packets;
 
 	public SocketServer(Game game) {
 		this.game = game;
@@ -37,7 +37,7 @@ public class SocketServer {
 		closeRun = false;
 		t1 = null;
 		t2 = null;
-		packets = new ArrayList<Packet>();
+		// packets = new ArrayList<Packet>();
 	}
 
 	public void connect() {
@@ -56,25 +56,36 @@ public class SocketServer {
 					System.out.println("[SERVER] Avvio thread invio...");
 					while (socket.isConnected() && !socket.isClosed()) {
 						synchronized (this) {
+
 							player = (Player) game.level.getWorld().getPlayer();
 
-							if (player.hasMoved()) {
-								Packet move = new PacketMove(player.getX(), player.getY(), 0);
-								if(!packets.contains(move))
-									packets.add(move);
-						
-								move = packets.get(packets.size()-1);
-								
-								MessageHandler.sendObject(move);
-								System.out.println("[SERVER] Invio al client: " + move.toString());
+							while (!player.hasMoved()) {
+								try {
+									this.wait();
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+							this.notify();
+
+							Packet move = new PacketMove(player.getX(), player.getY(), 0);
+							MessageHandler.sendObject(move);
+							System.out.println("[SERVER] Invio al client: " + move.toString());
+
+							try {
+								this.wait();
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 
 							}
-							/*
-							 * else if (player.isDead()) {
-							 * 
-							 * }
-							 */
+
 						}
+						/*
+						 * else if (player.isDead()) { }
+						 * 
+						 */
 					}
 
 					try {
