@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -168,7 +167,6 @@ public class GameMap {
 	}
 
 	public GameMap(String filename/* , Mode m */) {
-
 		GameObject.map = this;
 
 		blocks = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);

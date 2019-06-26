@@ -4,14 +4,14 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalTime;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import menu.Options;
 import model.*;
@@ -325,7 +325,7 @@ public class Level extends JPanel implements KeyListener {
 				// a static map instead of a switch
 				hostSprites.get(0).movePose(pgMove.get(dir));
 				synchronized (this) {
-					world.getPlayer().update(pgMove.get(dir));
+					//world.getPlayer().update(pgMove.get(dir));
 
 				}
 
@@ -350,6 +350,8 @@ public class Level extends JPanel implements KeyListener {
 	}
 
 	// eventi di movimento da tastiera del player...
+	@Override public void keyTyped(KeyEvent e) {}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 
@@ -384,9 +386,5 @@ public class Level extends JPanel implements KeyListener {
 
 	public synchronized void closeThread() {
 		t.interrupt();
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
 	}
 }

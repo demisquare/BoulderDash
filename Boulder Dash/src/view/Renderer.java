@@ -16,31 +16,45 @@ public class Renderer {
 	public static int WINDOW_HEIGHT = 720;
 
 	static void init(World world) {
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		double xSize = tk.getScreenSize().getWidth();
-		double ySize = tk.getScreenSize().getHeight();
+		
+		if(Options.full_screen) {
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			double xSize = tk.getScreenSize().getWidth();
+			double ySize = tk.getScreenSize().getHeight();
 
-		Camera.offsetMaxX = world.getWidth() - (int) ((WINDOW_WIDTH * xSize) / 1280);
-		Camera.offsetMaxY = world.getHeight() - (int) ((WINDOW_HEIGHT * ySize) / 720);
+			Camera.offsetMaxX = world.getWidth() - (int) ((WINDOW_WIDTH * xSize) / 1280);
+			Camera.offsetMaxY = world.getHeight() - (int) ((WINDOW_HEIGHT * ySize) / 720);
+		
+		} else {
+			
+			Camera.offsetMaxX = world.getWidth() - WINDOW_WIDTH;
+			Camera.offsetMaxY = world.getHeight() - WINDOW_HEIGHT;
+		}
 	}
 
 	static void render(Graphics g, Level l) {
 
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		double xSize = tk.getScreenSize().getWidth();
-		double ySize = tk.getScreenSize().getHeight();
+		if(Options.full_screen) {
+			
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			double xSize = tk.getScreenSize().getWidth();
+			double ySize = tk.getScreenSize().getHeight();
 
-		// imposta camera...
-		Camera.x = l.world.getPlayer().getX() * Sprite.TILE_SIZE - (int) (((WINDOW_WIDTH * xSize) / 1280) / 2)
-				+ Sprite.TILE_SIZE;
-		Camera.y = l.world.getPlayer().getY() * Sprite.TILE_SIZE - (int) (((WINDOW_HEIGHT * ySize) / 720) / 2)
-				+ Sprite.TILE_SIZE;
+			// imposta camera...
+			Camera.x = l.world.getPlayer().getX() * Sprite.TILE_SIZE - (int) (((WINDOW_WIDTH * xSize) / 1280) / 2) + Sprite.TILE_SIZE;
+			Camera.y = l.world.getPlayer().getY() * Sprite.TILE_SIZE - (int) (((WINDOW_HEIGHT * ySize) / 720) / 2) + Sprite.TILE_SIZE;
 
-		Camera.set();
+			Camera.set();
+		
+		} else {
+			Camera.x = l.world.getPlayer().getX() * Sprite.TILE_SIZE - (WINDOW_WIDTH / 2) + Sprite.TILE_SIZE;
+			Camera.y = l.world.getPlayer().getY() * Sprite.TILE_SIZE - (WINDOW_HEIGHT/ 2) + Sprite.TILE_SIZE;
 
+			Camera.set();
+		}
 		// muovi telecamera...
 		g.translate(-Camera.x, -Camera.y);
-
+		
 		// disegna mappa...
 		for (int i = 0; i < l.getBlockSprites().size(); ++i) {
 
