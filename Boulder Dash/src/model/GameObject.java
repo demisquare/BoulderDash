@@ -9,6 +9,7 @@ public abstract class GameObject {
 	static final char ROCK 		  = '4';
 	static final char DOOR 		  = 'D';
 	static final char PLAYER	  = 'P';
+	static final char HOST	 	  = 'H';
 	static final char ENEMY		  = 'E';
 	
 	public static final int DOWN  = 0;
@@ -80,7 +81,7 @@ public abstract class GameObject {
 	/*
 	 * Primo metodo fondamentale: gestisce la distruzione di un oggetto
 	 * (diamanti, terreno, nemici...) sostituendolo nella map con un EmptyBlock,
-	 * conservato in successor per facilità di recupero nella fase
+	 * conservato in successor per facilitï¿½ di recupero nella fase
 	 * di aggiornamento della grafica ( si veda Level.updateGraphics() )
 	 * */
 	protected final boolean destroy() {

@@ -141,8 +141,8 @@ public class Menu extends JPanel implements Serializable {
 		
 		options  = new Options(frame, this);
 		credits  = new Credits(frame, this);
-		multi	 = new Multiplayer(frame, game, this);
 		game 	 = new Game(frame, this);
+		multi	 = new Multiplayer(frame, game, this);
 		game.isReset = true;
 		
 		try {

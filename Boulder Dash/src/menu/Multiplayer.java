@@ -26,7 +26,6 @@ public class Multiplayer extends JPanel {
 			+ File.separator + "Menu" + File.separator + "MultiPage" + File.separator;
 
 	private Thread t;
-	Game game;
 
 	BufferedImage background;
 	Image arrow_back;
@@ -44,6 +43,15 @@ public class Multiplayer extends JPanel {
 	private SocketClient socketClient;
 
 	private void turn_back(JFrame frame, Menu menu) throws InterruptedException {
+		if(Options.multiplayer) {
+			if(Options.host) {
+				socketClient.close();
+				Options.host = false;
+			} else
+				socketServer.close();
+			Options.multiplayer = false;
+		}
+		
 		
 		menu.launchThread();
 		frame.remove(this);
@@ -53,9 +61,11 @@ public class Multiplayer extends JPanel {
 	}
 
 	private void client_selected(JFrame frame, Menu menu, Game game) throws InterruptedException {
-
 		socketClient = new SocketClient(game);
 		socketClient.connect();
+		
+		Options.multiplayer = true;
+		Options.host = true;
 
 		synchronized(this) {
 			Music.setSong(Music.gameSong);
@@ -71,9 +81,10 @@ public class Multiplayer extends JPanel {
 	}
 
 	private void server_selected(JFrame frame, Menu menu, Game game) throws InterruptedException {
-
 		socketServer = new SocketServer(game);
 		socketServer.connect();
+		
+		Options.multiplayer = true;
 
 		synchronized(this) {
 			Music.setSong(Music.gameSong);
@@ -90,7 +101,6 @@ public class Multiplayer extends JPanel {
 
 	public Multiplayer(JFrame frame, Game game, Menu menu) {
 
-		this.game = game;
 		try {
 
 			background = ImageIO.read(new File(MultiPagePath + "background.png"));

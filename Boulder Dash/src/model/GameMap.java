@@ -11,30 +11,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import menu.Options;
+
 //definisce la mappa di gioco come matrice di blocchi
 public class GameMap {
-	
-	private static String defaultPath = 
-			"." + File.separator + 
-			"resources" + File.separator + 
-			"maps" + File.separator;
-	
-	//mappe separate per ogni tipologia di blocco:
-	//contiene Player, Enemy, Wall, Door
+
+	private static String defaultPath = "." + File.separator + "resources" + File.separator + "maps" + File.separator;
+
+	// mappe separate per ogni tipologia di blocco:
+	// contiene Player, Enemy, Wall, Door
 	private ConcurrentHashMap<Integer, GameObject> blocks;
-	//contiene EmptyBlock
+	// contiene EmptyBlock
 	private ConcurrentHashMap<Integer, GameObject> emptyBlocksMap;
-	//contiene Rock
+	// contiene Rock
 	private ConcurrentHashMap<Integer, GameObject> rocksMap;
-	//contiene Diamond
+	// contiene Diamond
 	private ConcurrentHashMap<Integer, GameObject> diamondsMap;
-	//contiene Ground
+	// contiene Ground
 	private ConcurrentHashMap<Integer, GameObject> groundMap;
-	//shortcut per i vari oggetti Player
+	// shortcut per i vari oggetti Player
 	private ArrayList<GameObject> player;
-	//shortcut per i vari oggetti Enemy
+	// shortcut per i vari oggetti Host
+	private ArrayList<GameObject> host;
+	// shortcut per i vari oggetti Enemy
 	private ArrayList<GameObject> enemy;
-	
+
 	// dimensione logica...
 	int dimX;
 	int dimY;
@@ -43,7 +44,7 @@ public class GameMap {
 	int numDiamonds;
 
 	private char[][] load(String filename) {
-		
+
 		BufferedReader bIn = null;
 		try {
 			bIn = new BufferedReader(new FileReader(defaultPath + filename));
@@ -51,9 +52,9 @@ public class GameMap {
 			map = null;
 			e.printStackTrace();
 		}
-		
+
 		char[][] ret = null;
-		
+
 		if (bIn != null) {
 			try {
 				String line;
@@ -62,9 +63,9 @@ public class GameMap {
 				if (bIn.ready()) {
 					dimX = Integer.parseInt(bIn.readLine());
 					dimY = Integer.parseInt(bIn.readLine());
-					
+
 					ret = new char[dimY][dimX];
-					
+
 					System.out.println(dimX);
 					System.out.println(dimY);
 
@@ -77,121 +78,160 @@ public class GameMap {
 						}
 					}
 				}
-				
-			} catch(Exception e) {
+
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		try {
 			bIn.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
+
 		return ret;
 	}
-	
+
 	private void initialize(String filename) {
 
 		numDiamonds = 0;
-		
+
 		char[][] cfile = load(filename);
-		
+
 		for (int x = 0; x < dimX; ++x) {
 			for (int y = 0; y < dimY; ++y) {
 				switch (cfile[y][x]) {
-					
-					case DIAMOND:
-						diamondsMap.put(x*dimX+y, new Diamond(x, y));
-						++numDiamonds;
-						break;
-					
-					case GROUND:
-						groundMap.put(x*dimX+y, new Ground(x, y));
-						break;
-					
-					case WALL:
-						blocks.put(x*dimX+y, new Wall(x, y));
-						break;
-					
-					case ROCK:
-						rocksMap.put(x*dimX+y, new Rock(x, y));
-						break;
-						
-					case DOOR:
-						blocks.put(x*dimX+y, new Door(x, y));
-						break;
-						
-					case PLAYER:
+
+				case DIAMOND:
+					diamondsMap.put(x * dimX + y, new Diamond(x, y));
+					++numDiamonds;
+					break;
+
+				case GROUND:
+					groundMap.put(x * dimX + y, new Ground(x, y));
+					break;
+
+				case WALL:
+					blocks.put(x * dimX + y, new Wall(x, y));
+					break;
+
+				case ROCK:
+					rocksMap.put(x * dimX + y, new Rock(x, y));
+					break;
+
+				case DOOR:
+					blocks.put(x * dimX + y, new Door(x, y));
+					break;
+
+				case PLAYER:
+					if (Options.multiplayer && Options.host) {
+						Host h = new Host(x, y, 1);
+						host.add((GameObject) h);
+						blocks.put(x * dimX + y, (GameObject) h);
+					} else {
 						Player p = new Player(x, y, 1);
 						player.add((GameObject) p);
-						blocks.put(x*dimX+y, (GameObject) p);
-						break;
-					
-					case ENEMY:
-						Enemy e = new Enemy(x, y, 1);
-						enemy.add((GameObject) e);
-						blocks.put(x*dimX+y, (GameObject) e);
-						break;	
-					
-					case EMPTY_BLOCK:
-						emptyBlocksMap.put(x*dimX+y, new EmptyBlock(x, y));
-						break;
+						blocks.put(x * dimX + y, (GameObject) p);
+					}
+
+					break;
+
+				case HOST:
+					if (Options.multiplayer) {
+						if (Options.host) {
+							Player p = new Player(x, y, 1);
+							player.add((GameObject) p);
+							blocks.put(x * dimX + y, (GameObject) p);
+						} else {
+							Host h = new Host(x, y, 1);
+							host.add((GameObject) h);
+							blocks.put(x * dimX + y, (GameObject) h);
+						}
+					} else {
+						emptyBlocksMap.put(x * dimX + y, new EmptyBlock(x, y));
+					}
+					break;
+
+				case ENEMY:
+					Enemy e = new Enemy(x, y, 1);
+					enemy.add((GameObject) e);
+					blocks.put(x * dimX + y, (GameObject) e);
+					break;
+
+				case EMPTY_BLOCK:
+					emptyBlocksMap.put(x * dimX + y, new EmptyBlock(x, y));
+					break;
 				}
 			}
 		}
 	}
 
-	public GameMap(String filename/*, Mode m*/) {
-		
+	public GameMap(String filename/* , Mode m */) {
+
 		GameObject.map = this;
 
-		blocks = new ConcurrentHashMap<Integer, GameObject>(dimX*dimY, 1);
-		emptyBlocksMap = new ConcurrentHashMap<Integer, GameObject>(dimX*dimY, 1);
-		diamondsMap = new ConcurrentHashMap<Integer, GameObject>(dimX*dimY, 1);
-		rocksMap = new ConcurrentHashMap<Integer, GameObject>(dimX*dimY, 1);
-		groundMap = new ConcurrentHashMap<Integer, GameObject>(dimX*dimY, 1);
-		
+		blocks = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
+		emptyBlocksMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
+		diamondsMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
+		rocksMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
+		groundMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
+
 		player = new ArrayList<GameObject>();
-		enemy  = new ArrayList<GameObject>();
-		
+		host = new ArrayList<GameObject>();
+		enemy = new ArrayList<GameObject>();
+
 		initialize(filename);
 	}
-	
-	//restituisce il tile nella posizione <x, y>
+
+	// restituisce il tile nella posizione <x, y>
 	public GameObject getTile(int x, int y) {
 
-		GameObject ret = blocks.get(x*dimX+y);
-		
-		if(ret == null) ret = emptyBlocksMap.get(x*dimX+y);
-		if(ret == null)	ret = rocksMap.get(x*dimX+y);
-		if(ret == null)	ret = diamondsMap.get(x*dimX+y);
-		if(ret == null)	ret = groundMap.get(x*dimX+y);
-		
+		GameObject ret = blocks.get(x * dimX + y);
+
+		if (ret == null)
+			ret = emptyBlocksMap.get(x * dimX + y);
+		if (ret == null)
+			ret = rocksMap.get(x * dimX + y);
+		if (ret == null)
+			ret = diamondsMap.get(x * dimX + y);
+		if (ret == null)
+			ret = groundMap.get(x * dimX + y);
+
 		return ret;
 	}
 
-	//aggiunge il GameObject in posizione <x, y> e si assiura che nessun altro oggetto abbia le stesse coordinate
+	// aggiunge il GameObject in posizione <x, y> e si assiura che nessun altro
+	// oggetto abbia le stesse coordinate
 	public GameObject setTile(int x, int y, GameObject value) {
-		
+
 		GameObject ret = getTile(x, y);
-		
-		if(value instanceof EmptyBlock)		emptyBlocksMap.put(x*dimX+y, value);
-		else if(value instanceof Ground)	groundMap.put(x*dimX+y, value);
-		else if(value instanceof Diamond)	diamondsMap.put(x*dimX+y, value);
-		else if(value instanceof Rock)		rocksMap.put(x*dimX+y, value);
-		else								blocks.put(x*dimX+y, value);
-		
-		if(ret instanceof EmptyBlock)		emptyBlocksMap.remove(x*dimX+y, ret);
-		else if(ret instanceof Ground)		groundMap.remove(x*dimX+y, ret);
-		else if(ret instanceof Diamond)		diamondsMap.remove(x*dimX+y, ret);
-		else if(ret instanceof Rock)		rocksMap.remove(x*dimX+y, ret);
-		else								blocks.remove(x*dimX+y, ret);
-		
+
+		if (value instanceof EmptyBlock)
+			emptyBlocksMap.put(x * dimX + y, value);
+		else if (value instanceof Ground)
+			groundMap.put(x * dimX + y, value);
+		else if (value instanceof Diamond)
+			diamondsMap.put(x * dimX + y, value);
+		else if (value instanceof Rock)
+			rocksMap.put(x * dimX + y, value);
+		else
+			blocks.put(x * dimX + y, value);
+
+		if (ret instanceof EmptyBlock)
+			emptyBlocksMap.remove(x * dimX + y, ret);
+		else if (ret instanceof Ground)
+			groundMap.remove(x * dimX + y, ret);
+		else if (ret instanceof Diamond)
+			diamondsMap.remove(x * dimX + y, ret);
+		else if (ret instanceof Rock)
+			rocksMap.remove(x * dimX + y, ret);
+		else
+			blocks.remove(x * dimX + y, ret);
+
 		return ret;
 	}
-	
+
 	public int getDimX() {
 		return dimX;
 	}
@@ -203,7 +243,7 @@ public class GameMap {
 	public ConcurrentHashMap<Integer, GameObject> getBlocks() {
 		return blocks;
 	}
-	
+
 	public ConcurrentHashMap<Integer, GameObject> getEmptyBlocksMap() {
 		return emptyBlocksMap;
 	}
@@ -220,30 +260,38 @@ public class GameMap {
 		return groundMap;
 	}
 
-	//probabilmente dovrò deprecarla
+	// probabilmente dovrï¿½ deprecarla
 	public GameObject getPlayer() {
-		
+
 		return player.get(0);
 	}
-	
+
 	public GameObject getPlayer(int i) {
-		
+
 		return player.get(i);
 	}
-	
+
+	// probabilmente dovrï¿½ deprecarla
+	public GameObject getHost() {
+
+		return host.get(0);
+	}
+
+	public GameObject getHost(int i) {
+
+		return host.get(i);
+	}
+
 	public ArrayList<GameObject> getEnemies() {
-		
+
 		return enemy;
 	}
 
-	//verifica se il valore i è contenuto nella matrice (conviene sostituirlo con due param?)
+	// verifica se il valore i ï¿½ contenuto nella matrice (conviene sostituirlo con
+	// due param?)
 	public boolean containsKey(int i) {
-		
-		return 
-			blocks.containsKey(i) 
-			|| emptyBlocksMap.containsKey(i)
-			|| diamondsMap.containsKey(i)
-			|| groundMap.containsKey(i)
-			|| rocksMap.containsKey(i);
+
+		return blocks.containsKey(i) || emptyBlocksMap.containsKey(i) || diamondsMap.containsKey(i)
+				|| groundMap.containsKey(i) || rocksMap.containsKey(i);
 	}
 }

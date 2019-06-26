@@ -15,14 +15,15 @@ public class SocketServer implements Runnable {
 	private boolean closeRun;
 	private ServerSocket listener;
 	private Socket socket;
-	Player main;
+	//Player player;
+	//Host host;
 
 	public SocketServer(Game game) {
-		main = (Player) game.level.getWorld().getPlayer();
+		//player = (Player) game.level.getWorld().getPlayer();
+		//host = (Host) game.level.getWorld().getHost();
 		socket = null;
 		t = null;
 		closeRun = false;
-		Options.multiplayer = true;
 	}
 
 	public void connect() {

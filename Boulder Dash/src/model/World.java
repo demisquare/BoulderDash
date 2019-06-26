@@ -9,9 +9,9 @@ import view.Sprite;
 //classe che contiene sia il player che la mappa
 public class World implements Runnable {
 
-	//contiene la "matrice logica" del gioco (l'implementazione non è una matrice)
+	//contiene la "matrice logica" del gioco (l'implementazione non ï¿½ una matrice)
 	GameMap map;	
-	//true se il world è stato aggiornato
+	//true se il world ï¿½ stato aggiornato
 	private boolean hasChanged;
 	//dimensione grafica...
 	private int width  = 0;	
@@ -38,6 +38,10 @@ public class World implements Runnable {
 	
 	public GameObject getPlayer() {
 		return map.getPlayer();
+	}
+	
+	public GameObject getHost() {
+		return map.getHost();
 	}
 
 	public GameMap getMap() {

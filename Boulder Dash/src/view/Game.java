@@ -74,7 +74,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		score_init(frame, menu);
 	}
 	
-	public void reset(JFrame frame, Menu menu) {
+	public void reset(JFrame frame, Menu menu) throws NullPointerException{
 		
 		level.closeThread();
 		level = new Level();
