@@ -53,7 +53,7 @@ public class Options extends JPanel {
 	JLabel FULLSCREEN_scaled;
 	JLabel MUSIC_check;
 	
-	public static boolean music = true;
+	public static boolean music = false;
 	public static boolean full_screen = false;	
 	
 	public static boolean multiplayer = false;
@@ -75,7 +75,6 @@ public class Options extends JPanel {
 	}
 	
 	private void full_screen(JFrame frame) {
-		
 		frame.dispose();
 		if (!frame.isUndecorated())
 			frame.setUndecorated(true);
@@ -84,7 +83,6 @@ public class Options extends JPanel {
 	}
 	
 	private void windowed(JFrame frame) {
-		
 		frame.dispose();
 		if (frame.isUndecorated())
 			frame.setUndecorated(false);

@@ -29,7 +29,6 @@ public abstract class GameObject {
 	
 	protected boolean processed;
 	protected boolean dead;
-	protected boolean moved;
 	protected boolean isFalling;
 	
 	protected GameObject successor;
@@ -41,7 +40,6 @@ public abstract class GameObject {
 		processed = false;
 		isFalling = false;
 		dead = false;
-		moved = false;
 		
 		successor = null;
 	}
@@ -69,8 +67,6 @@ public abstract class GameObject {
 	public void setY(int y) { this.y = y; }	
 	
 	public boolean hasChanged()  { return processed; }
-	
-	public boolean hasMoved() { return moved; }
 	
 	public boolean isDead() { return dead; }
 	
@@ -186,12 +182,12 @@ public abstract class GameObject {
 		if(!(i < 0 || i >= map.dimX) && !(j < 0 || j >= map.dimY)) {
 		
 			if(map.getTile(i, j) instanceof EmptyBlock) {
-				moved = true;
+				
 				swap(i, j);
 				return true;
 			}
 		}
-		moved = false;
+		
 		return false;
 	}
 }

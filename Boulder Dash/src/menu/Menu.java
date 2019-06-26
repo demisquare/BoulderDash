@@ -39,6 +39,7 @@ public class Menu extends JPanel implements Serializable {
 			+ File.separator;
 	
 	private Thread t;
+	private final Runnable r;
 	
 	BufferedImage background;
 
@@ -115,6 +116,28 @@ public class Menu extends JPanel implements Serializable {
 	}
 
 	public Menu(JFrame frame) {
+		
+		r = new Runnable(){
+			@Override
+			public void run() {
+				while (true) {
+					
+					double xSize = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+					double ySize = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+					
+					if(!Options.full_screen)
+						menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
+					else if(Options.full_screen)
+						menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 430, 300);
+					
+					try {
+						Thread.sleep(34);
+					} catch (InterruptedException e) {
+						return;
+					}
+				}
+			}
+		};
 		
 		options  = new Options(frame, this);
 		credits  = new Credits(frame, this);
@@ -376,32 +399,9 @@ public class Menu extends JPanel implements Serializable {
 	}
 	
 	public synchronized void launchThread() { 
-		
 		if(t != null && t.isAlive())
 			t.interrupt();
-		
-		t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					
-					double xSize = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-					double ySize = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-					
-					if(!Options.full_screen)
-						menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
-					else if(Options.full_screen)
-						menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 430, 300);
-					
-					try {
-						Thread.sleep(34);
-					} catch (InterruptedException e) {
-						return;
-					}
-				}
-			}
-		});
-		
+		t = new Thread(r);
 		t.start(); 	 
 	}
 	

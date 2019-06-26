@@ -2,9 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.ConcurrentModificationException;
-import java.util.concurrent.ConcurrentHashMap;
 
 import view.Sprite;
 
@@ -19,7 +17,6 @@ public class World implements Runnable {
 	private int width  = 0;	
 	private int height = 0;
 	private int FPS;
-	private int PlayerLifes;
 	
 	public static enum Mode { Single, Multi }
 	
@@ -28,8 +25,6 @@ public class World implements Runnable {
 		
 		//sostituire con il filename
 		map = new GameMap("levelmap"/*, m*/);
-		
-		PlayerLifes = 3;
 		//FPS per l'aggiornamento
 		this.FPS = FPS;		
 		//dimensione grafica...
@@ -98,31 +93,6 @@ public class World implements Runnable {
 		hasChanged = false;
 	}
 
-	private boolean relocatePlayer() {
-		
-		if(getPlayer().isDead()) {
-			if(PlayerLifes > 0) {
-			
-				--PlayerLifes;
-				ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
-				GameObject g = temp.get(Collections.min(temp.keySet()));
-				getPlayer().swap(g.getX(), g.getY());
-				getPlayer().setDead(true);
-				return true;
-				
-			}
-		}
-		
-		return false;
-	}
-	
-	public boolean updatePlayer(int dir) {
-		
-		if(getPlayer().update(dir))
-			return relocatePlayer();
-		return false;
-	}
-		
 	//questa funzione dovrebbe in automatico aggiornare gli stati di 
 	//Player, Enemy, etc, ogni tick del timer
 	public void update() {
@@ -153,8 +123,6 @@ public class World implements Runnable {
 			for(GameObject e : temp)
 				if(e.processed == false)
 					e.update();
-			
-			relocatePlayer();
 			
 		} catch(ConcurrentModificationException e1) {
 			e1.printStackTrace();
