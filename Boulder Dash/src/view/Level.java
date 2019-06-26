@@ -241,8 +241,7 @@ public class Level extends JPanel implements KeyListener {
 
 				BufferedImage img = spritesheet.getSprite(1, 2);
 				blockSprites.add(new BlockSprite(img, newObj));
-
-				enemySprites.remove(i);
+				
 				System.out.println("ENEMY REMOVED");
 			}
 		}
@@ -292,7 +291,7 @@ public class Level extends JPanel implements KeyListener {
 				// a static map instead of a switch
 				playerSprites.get(0).movePose(pgMove.get(dir));
 				synchronized (this) {
-					world.getPlayer().update(pgMove.get(dir));
+					world.updatePlayer(pgMove.get(dir));
 
 				}
 

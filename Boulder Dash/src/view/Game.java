@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Toolkit;
+
 import java.io.Serializable;
 
 import javax.swing.JFrame;

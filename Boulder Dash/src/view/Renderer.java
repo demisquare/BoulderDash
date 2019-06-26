@@ -53,8 +53,10 @@ public class Renderer {
 		// disegna player...
 		for (int i = 0; i < l.playerSprites.size(); ++i) {
 
-			g.drawImage(l.playerSprites.get(i).getAnimation().getSprite(),
+			if (!l.playerSprites.get(i).logicObj.isDead()) {
+				g.drawImage(l.playerSprites.get(i).getAnimation().getSprite(),
 					l.world.getPlayer().getX() * Sprite.TILE_SIZE, l.world.getPlayer().getY() * Sprite.TILE_SIZE, null);
+			}
 		}
 
 		if (Options.multiplayer) {
