@@ -1,10 +1,12 @@
 package network;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import model.Host;
 import network.packet.*;
 
 public class MessageHandler {
@@ -15,10 +17,10 @@ public class MessageHandler {
 	}
 
 
-	public static void sendObject(Object obj) {
+	public static void sendObject(Packet pkg) {
 		try {
 			ObjectOutputStream write = new ObjectOutputStream(socket.getOutputStream());
-			write.writeObject(obj);
+			write.writeObject(pkg);
 			write.flush();
 
 		} catch (IOException e) {
@@ -26,19 +28,19 @@ public class MessageHandler {
 		}
 	}
 
-	public static Object receiveObject() {
-		Object obj = new Object();
+	public static Packet receiveObject() throws EOFException {
+		Packet pkg = null;
 		try {
 			ObjectInputStream read = new ObjectInputStream(socket.getInputStream());
-			obj = read.readObject();
+			pkg = (Packet)read.readObject();
 
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return obj;
+		return pkg;
 	}
 
-	public void HandlePacket(Object pkg) {
+	public static void HandlePacket(Packet pkg, Host host) {
 
 		if (pkg instanceof PacketMove) {
 			// TODO: operazioni per muovere player/nemici...
