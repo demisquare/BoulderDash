@@ -72,7 +72,7 @@ public abstract class GameObject {
 	
 	public boolean isDead() { return dead; }
 	
-	public boolean hasMoved() { return dead; }
+	public boolean hasMoved() { return moved; }
 	
 	public GameObject getSuccessor() { return successor; }
 	
