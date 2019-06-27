@@ -29,41 +29,50 @@ public class Player extends GameObject implements Living {
 
 	@Override
 	protected boolean move(int dir) {
-		int i = x + dmap[dir][0];
-		int j = y + dmap[dir][1];
-
-		if (!(i < 0 || i >= map.dimX) && !(j < 0 || j >= map.dimY)) {
-
-			if (map.getTile(i, j) instanceof EmptyBlock) {
-
-				moved = true;
-				System.out.println("si muove...");
-				swap(i, j);
-
-				return true;
-
-			} else if (map.getTile(i, j) instanceof Door) {
-
-				moved = true;
-
-				System.out.println("VITTORIA");
-
-				destroy();
-
-				return true;
-
-			} else if (map.getTile(i, j) instanceof Enemy) {
-
-				moved = true;
-
-				destroy();
-
-				return true;
+		try {
+			this.lock.lock();
+			int i = x + dmap[dir][0];
+			int j = y + dmap[dir][1];
+	
+			if (!(i < 0 || i >= map.dimX) && !(j < 0 || j >= map.dimY)) {
+	
+				if (map.getTile(i, j) instanceof EmptyBlock) {
+	
+					moved = true;
+					System.out.println("si muove...");
+					swap(i, j);
+						
+					this.hasMoved.signal();
+					return true;
+	
+				} else if (map.getTile(i, j) instanceof Door) {
+	
+					moved = true;
+	
+					System.out.println("VITTORIA");
+	
+					destroy();
+					
+					this.hasMoved.signal();
+					return true;
+	
+				} else if (map.getTile(i, j) instanceof Enemy) {
+	
+					moved = true;
+	
+					destroy();
+	
+					this.hasMoved.signal();
+					return true;
+				}
+	
 			}
-
+			moved = false;
+			return moved;
 		}
-		moved = false;
-		return moved;
+		finally {
+			this.lock.unlock();
+		}
 	}
 
 	@Override
@@ -84,7 +93,9 @@ public class Player extends GameObject implements Living {
 
 				movingCounter = 0;
 				if (g.destroy()) {
+					
 					return move(dir);
+					
 				}
 			}
 			return false;

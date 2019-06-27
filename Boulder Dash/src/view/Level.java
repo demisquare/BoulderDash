@@ -292,6 +292,7 @@ public class Level extends JPanel implements KeyListener {
 				// a static map instead of a switch
 				playerSprites.get(0).movePose(pgMove.get(dir));
 				synchronized (this) {
+					
 					world.getPlayer().update(pgMove.get(dir));
 
 				}

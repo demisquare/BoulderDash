@@ -55,38 +55,32 @@ public class SocketServer {
 				public void run() {
 					System.out.println("[SERVER] Avvio thread invio...");
 					while (socket.isConnected() && !socket.isClosed()) {
-						synchronized (this) {
+						
 
 							player = (Player) game.level.getWorld().getPlayer();
-
+							
+							player.lock.lock();
 							while (!player.hasMoved()) {
 								try {
-									this.wait();
+									player.hasMoved.wait();
 								} catch (InterruptedException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 							}
-							this.notify();
-
+							
 							Packet move = new PacketMove(player.getX(), player.getY(), 0);
 							MessageHandler.sendObject(move);
 							System.out.println("[SERVER] Invio al client: " + move.toString());
-
-							try {
-								this.wait();
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-
-							}
-
+							player.lock.unlock();
 						}
+
+						
 						/*
 						 * else if (player.isDead()) { }
 						 * 
 						 */
-					}
+					
 
 					try {
 						Thread.sleep(34);

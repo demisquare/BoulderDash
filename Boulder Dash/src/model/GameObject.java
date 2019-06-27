@@ -1,4 +1,6 @@
 package model;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class GameObject {
 
@@ -32,6 +34,9 @@ public abstract class GameObject {
 	protected boolean isFalling;
 	protected boolean moved;
 	
+	public ReentrantLock lock;
+	public Condition hasMoved;
+	
 	protected GameObject successor;
 	
 	public GameObject(int x, int y) {
@@ -42,6 +47,9 @@ public abstract class GameObject {
 		isFalling = false;
 		moved = false;
 		dead = false;
+		
+		lock= new ReentrantLock();
+		hasMoved= lock.newCondition();
 		
 		successor = null;
 	}
@@ -72,8 +80,15 @@ public abstract class GameObject {
 	
 	public boolean isDead() { return dead; }
 	
-	public boolean hasMoved() { return moved; }
-	
+	public boolean hasMoved() {
+		try {
+			this.lock.lock();
+			return moved; 
+		}
+		finally {
+			this.lock.unlock();
+		}
+	}
 	public GameObject getSuccessor() { return successor; }
 	
 	public void setDead(boolean x) {
