@@ -1,6 +1,6 @@
 package model;
-//import java.util.concurrent.locks.Condition;
-//import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class GameObject {
 
@@ -34,8 +34,8 @@ public abstract class GameObject {
 	protected boolean isFalling;
 	protected boolean moved;
 	
-	//public static ReentrantLock lock;
-	//public static Condition hasMoved;
+	public static ReentrantLock lock;
+	public static Condition hasMoved;
 	
 	protected GameObject successor;
 	
@@ -48,8 +48,8 @@ public abstract class GameObject {
 		moved = false;
 		dead = false;
 		
-		//lock= new ReentrantLock();
-		//hasMoved= lock.newCondition();
+		lock= new ReentrantLock();
+		hasMoved= lock.newCondition();
 		
 		successor = null;
 	}
@@ -197,7 +197,6 @@ public abstract class GameObject {
 			if(map.getTile(i, j) instanceof EmptyBlock) {
 				
 				moved = true;
-				System.out.println("si muove...");
 				swap(i, j);
 				return true;
 			}
