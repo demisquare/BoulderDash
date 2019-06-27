@@ -56,6 +56,8 @@ public class Score extends JPanel implements Serializable {
 		//socketServer.close();
 		//socketClient.close();
 		try{
+
+			menu.launchThread();
 			game.isReset = false;
 			frame.remove(game);
 			frame.setContentPane(menu);

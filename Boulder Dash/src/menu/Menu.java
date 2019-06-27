@@ -89,10 +89,12 @@ public class Menu extends JPanel implements Serializable {
 		synchronized(this) {
 			Music.setSong(Music.gameSong);
 		}
+		closeThread();
 	}
 	
 	private void options_selected(JFrame frame, Options options) throws InterruptedException {
 		
+		closeThread();
 		frame.remove(this);
 		frame.setContentPane(options);
 		frame.revalidate();
@@ -101,6 +103,7 @@ public class Menu extends JPanel implements Serializable {
 	
 	private void multi_selected(JFrame frame, Multiplayer multi, You_Lose youlose) throws InterruptedException {
 	
+		closeThread();
 		frame.remove(this);
 		frame.setContentPane(multi);
 		frame.revalidate();
@@ -109,6 +112,7 @@ public class Menu extends JPanel implements Serializable {
 	
 	private void credits_selected(JFrame frame, Credits credits) throws InterruptedException {
 	
+		closeThread();
 		frame.remove(this);
 		frame.setContentPane(credits);
 		frame.revalidate();
@@ -364,29 +368,6 @@ public class Menu extends JPanel implements Serializable {
 			this.add(menu_choices);
 			menu_choices.setBackground(new Color(0, 0, 0, 0));
 			menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
-
-			Toolkit tk = Toolkit.getDefaultToolkit();
-			double xSize = tk.getScreenSize().getWidth();
-			double ySize = tk.getScreenSize().getHeight();
-			
-			t = new Thread(new Runnable(){
-				@Override
-				public void run() {
-					while (true) {
-						
-						if(!Options.full_screen)
-							menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
-						else if(Options.full_screen)
-							menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 430, 300);
-						
-						try {
-							Thread.sleep(34);
-						} catch (InterruptedException e) {
-							return;
-						}
-					}
-				}
-			});
 			
 			launchThread();
 			
@@ -403,13 +384,41 @@ public class Menu extends JPanel implements Serializable {
 	}
 	
 	public synchronized void launchThread() { 
+		
+		if(t != null && t.isAlive())
+			t.interrupt();
+		
+		t = new Thread(new Runnable(){
+			@Override
+			public void run() {
+				while (true) {
+					
+					if(!Options.full_screen) {
+						
+						menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
+					
+					} else if(Options.full_screen) {
+						
+						Toolkit tk = Toolkit.getDefaultToolkit();
+						double xSize = tk.getScreenSize().getWidth();
+						double ySize = tk.getScreenSize().getHeight();
+						menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 430, 300);
+					
+					}
+					
+					try {
+						Thread.sleep(34);
+					} catch (InterruptedException e) {
+						return;
+					}
+				}
+			}
+		});
+		
 		t.start(); 	 
 	}
 	
 	public synchronized void closeThread() {
 		t.interrupt();
-		multi.closeThread();
-		options.closeThread();
-		game.closeThread();
 	}
 }
