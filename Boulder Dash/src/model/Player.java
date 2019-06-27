@@ -50,14 +50,10 @@ public class Player extends GameObject implements Living {
 			++diamondCount;
 			++movingCounter;
 			pushRockCounter = 0;
-
 			if (movingCounter >= 1) {
-
 				movingCounter = 0;
 				if (g.destroy()) {
-					
 					return move(dir);
-					
 				}
 			}
 			return false;
@@ -67,9 +63,7 @@ public class Player extends GameObject implements Living {
 			System.out.println("scava...");
 			++movingCounter;
 			pushRockCounter = 0;
-
 			if (movingCounter >= 1) {
-
 				movingCounter = 0;
 				if (g.destroy()) {
 					return move(dir);
@@ -81,9 +75,7 @@ public class Player extends GameObject implements Living {
 
 			++pushRockCounter;
 			movingCounter = 0;
-
-			if (pushRockCounter == 6) {
-
+			if (pushRockCounter >= 6) {
 				pushRockCounter = 0;
 				movingCounter = 1;
 				if (g.move(dir)) {
@@ -98,9 +90,7 @@ public class Player extends GameObject implements Living {
 
 			++movingCounter;
 			pushRockCounter = 0;
-
-			if (movingCounter >=1) {
-
+			if (movingCounter >= 1) {
 				movingCounter = 0;
 				return move(dir);
 			}
@@ -108,15 +98,13 @@ public class Player extends GameObject implements Living {
 		}
 
 		// this is for EmptyBlock
-
 		++movingCounter;
 		pushRockCounter = 0;
-
-		if (movingCounter >=1) {
-
+		if (movingCounter >= 1) {
 			movingCounter = 0;
 			return super.move(dir);
 		}
+		
 		return false;
 	}
 	

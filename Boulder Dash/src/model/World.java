@@ -129,31 +129,24 @@ public class World implements Runnable {
 					e.update();
 			
 		} catch(ConcurrentModificationException e1) {
-			e1.printStackTrace();
-			
+			e1.printStackTrace();	
 		}
-		
 		//flag di vittoria qui?
 		hasChanged = true;
 	}
 	
 	@Override
 	public void run() {
-	
 		while(true) {
+			synchronized(this) {
+				update();
+			}
 			try {
-				
-				synchronized(this) {
-					update();
-				}
-				
 				Thread.sleep(200/FPS + 1);
-				
 			} catch (InterruptedException e) {
 				return;
 			}
 		}
-
 	}
 
 	public void setChanged(boolean b) {

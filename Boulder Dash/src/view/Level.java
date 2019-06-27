@@ -19,17 +19,14 @@ import network.*;
 import network.packet.*;
 
 public class Level extends JPanel implements KeyListener {
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9009048960794622320L;
-
 	// mappa che collega ogni pressione di tastiera al movimento corrispondente
 	// nello specifico: enumeratore Awt di pressione tasto , enumeratore logico di
 	// direzione
 	private static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>() {
-
 		/**
 		 * 
 		 */
@@ -44,7 +41,6 @@ public class Level extends JPanel implements KeyListener {
 	};
 
 	private static final HashMap<String, Integer[]> blocks = new HashMap<String, Integer[]>() {
-
 		/**
 		 * 
 		 */
@@ -178,17 +174,15 @@ public class Level extends JPanel implements KeyListener {
 	}
 
 	// sincronizza la grafica con la logica
-	public void updateGraphics() throws NullPointerException {
-
+	public synchronized void updateGraphics() throws NullPointerException {
 		// aggiorna i blocchi
 		for (int i = 0; i < blockSprites.size(); ++i) {
+			
+			GameObject g = blockSprites.get(i).getLogicObject();
 			// se il blocco logico e' cambiato nell'ultimo world.update()...
-			if (blockSprites.get(i).getLogicObject().isDead()) {
-
-				if (blockSprites.get(i).getLogicObject().getSuccessor() != null) {
-
-					GameObject newObj = blockSprites.get(i).getLogicObject().getSuccessor();
-
+			if (g.isDead() || g.hasChanged()) {
+				if (g.getSuccessor() != null) {
+					GameObject newObj = g.getSuccessor();
 					BufferedImage img = spritesheet.getSprite(1, 2);
 					blockSprites.set(i, new BlockSprite(img, newObj));
 				}
@@ -196,16 +190,11 @@ public class Level extends JPanel implements KeyListener {
 		}
 		// aggiorna i players
 		for (int i = 0; i < playerSprites.size(); ++i) {
-
 			Player p = (Player) playerSprites.get(i).logicObj;
-
 			if (p.isDead()) {
-
 				GameObject newObj = p.getSuccessor();
-
 				BufferedImage img = spritesheet.getSprite(1, 2);
 				blockSprites.add(new BlockSprite(img, newObj));
-
 				playerSprites.remove(i);
 				System.out.println("PLAYER REMOVED");
 			}
@@ -214,16 +203,11 @@ public class Level extends JPanel implements KeyListener {
 		if(Options.multiplayer && Options.host) {
 			// aggiorna gli hosts
 			for (int i = 0; i < hostSprites.size(); ++i) {
-
 				Host h = (Host) hostSprites.get(i).logicObj;
-
 				if (h.isDead()) {
-
 					GameObject newObj = h.getSuccessor();
-
 					BufferedImage img = spritesheet.getSprite(1, 2);
 					blockSprites.add(new BlockSprite(img, newObj));
-
 					hostSprites.remove(i);
 					System.out.println("HOST REMOVED");
 				}
@@ -232,34 +216,24 @@ public class Level extends JPanel implements KeyListener {
 
 		// aggiorna gli enemies
 		for (int i = 0; i < enemySprites.size(); ++i) {
-
 			Enemy e = (Enemy) enemySprites.get(i).logicObj;
-
 			if (e.isDead()) {
-
 				GameObject newObj = e.getSuccessor();
-
 				BufferedImage img = spritesheet.getSprite(1, 2);
 				blockSprites.add(new BlockSprite(img, newObj));
-
 				enemySprites.remove(i);
 				System.out.println("ENEMY REMOVED");
 			}
 		}
 		// aggiorna gli enemies pt.2
 		for (int i = 0; i < enemySprites.size(); ++i) {
-
 			Enemy e = (Enemy) enemySprites.get(i).logicObj;
-
 			if (!e.isDead()) {
-
 				// per accelerare l'animazione dell'Enemy, aumentare la costante 1
 				if (enemySprites.get(i).counter >= (125 / (FPS * 1))) {
-
 					enemySprites.get(i).movePose(e.getLastDir());
 					enemySprites.get(i).getAnimation().update();
 					enemySprites.get(i).counter = 0;
-
 				} else {
 					enemySprites.get(i).counter += 1;
 				}
@@ -286,19 +260,13 @@ public class Level extends JPanel implements KeyListener {
 	public void updatePlayerOnPressing(int dir) {
 
 		if (!world.getPlayer().isDead()) {
-
 			if (pgMove.containsKey(dir)) {
-
 				// a static map instead of a switch
 				playerSprites.get(0).movePose(pgMove.get(dir));
 				synchronized (this) {
-					
 					world.getPlayer().update(pgMove.get(dir));
-
 				}
-
 			}
-
 			playerSprites.get(0).getAnimation().update();
 		}
 	}
@@ -306,13 +274,11 @@ public class Level extends JPanel implements KeyListener {
 	public void updatePlayerOnRelease(int dir) {
 
 		if (!world.getPlayer().isDead()) {
-
 			playerSprites.get(0).getAnimation().stop();
 			playerSprites.get(0).getAnimation().reset();
 			// a static map instead of a switch
 			if (pgMove.containsKey(dir))
 				playerSprites.get(0).standPose(pgMove.get(dir));
-
 			playerSprites.get(0).getAnimation().update();
 		}
 	}
@@ -320,18 +286,13 @@ public class Level extends JPanel implements KeyListener {
 	public void updateHostOnPressing(int dir) {
 
 		if (!world.getHost().isDead()) {
-
 			if (pgMove.containsKey(dir)) {
-
 				// a static map instead of a switch
 				hostSprites.get(0).movePose(pgMove.get(dir));
 				synchronized (this) {
 					//world.getPlayer().update(pgMove.get(dir));
-
 				}
-
 			}
-
 			hostSprites.get(0).getAnimation().update();
 		}
 	}
@@ -339,13 +300,11 @@ public class Level extends JPanel implements KeyListener {
 	public void updateHostOnRelease(int dir) {
 
 		if (!world.getHost().isDead()) {
-
 			hostSprites.get(0).getAnimation().stop();
 			hostSprites.get(0).getAnimation().reset();
 			// a static map instead of a switch
 			if (pgMove.containsKey(dir))
 				hostSprites.get(0).standPose(pgMove.get(dir));
-
 			hostSprites.get(0).getAnimation().update();
 		}
 	}
@@ -357,15 +316,13 @@ public class Level extends JPanel implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 
 		if ((java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0) {
-
 			lastTimePressed = java.time.LocalTime.now();
-
 			updatePlayerOnPressing(e.getKeyCode());
-
 			revalidate();
 			repaint();
-
-			world.reset();
+			synchronized(this) {
+				world.reset(); 
+			}
 		}
 	}
 
@@ -373,15 +330,13 @@ public class Level extends JPanel implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 
 		if ((java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0) {
-
 			lastTimePressed = java.time.LocalTime.now();
-
 			updatePlayerOnRelease(e.getKeyCode());
-
 			revalidate();
 			repaint();
-
-			world.reset();
+			synchronized(this) {
+				world.reset();
+			}
 		}
 	}
 

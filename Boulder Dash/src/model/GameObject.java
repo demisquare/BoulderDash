@@ -104,7 +104,7 @@ public abstract class GameObject {
 				
 				map.setTile(x, y, successor);
 				
-				successor.processed = true;		
+				successor.processed = false;		
 				processed = true;
 				dead = true;
 				
@@ -143,7 +143,6 @@ public abstract class GameObject {
 			}
 		
 			map.setTile(x, y, temp);
-		
 			temp.x = x;
 			temp.y = y;
 			temp.processed = true;
@@ -155,7 +154,6 @@ public abstract class GameObject {
 			}
 	
 			map.setTile(i, j, this);
-	
 			x = i;
 			y = j;
 			processed = true;
