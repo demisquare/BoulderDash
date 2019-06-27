@@ -15,6 +15,8 @@ public class Player extends GameObject implements Living {
 	int diamondCount;
 	// variabile inutile, viene usata per le animazioni ma si pu� sostituire
 	private int speed;
+	
+	private int lifes;
 
 	public Player(int x, int y, int s) {
 		super(x, y);
@@ -23,6 +25,7 @@ public class Player extends GameObject implements Living {
 		pushRockCounter = 0;
 		movingCounter = 0;
 		speed = s;
+		lifes = 2;
 	}
 
 	@Override
@@ -30,57 +33,10 @@ public class Player extends GameObject implements Living {
 		return false;
 	}
 
-	@Override
-	protected boolean move(int dir) {
-		try {
-			GameObject.lock.lock();
-			int i = x + dmap[dir][0];
-			int j = y + dmap[dir][1];
-	
-			if (!(i < 0 || i >= map.dimX) && !(j < 0 || j >= map.dimY)) {
-	
-				if (map.getTile(i, j) instanceof EmptyBlock) {
-	
-					moved = true;
-					System.out.println("si muove...");
-					swap(i, j);
-						
-					GameObject.hasMoved.signalAll();
-					return true;
-	
-				} else if (map.getTile(i, j) instanceof Door) {
-	
-					moved = true;
-	
-					System.out.println("VITTORIA");
-	
-					destroy();
-					
-					GameObject.hasMoved.signalAll();
-					return true;
-	
-				} else if (map.getTile(i, j) instanceof Enemy) {
-	
-					moved = true;
-					
-					//destroy();
-					ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
-					GameObject g = temp.get(Collections.min(temp.keySet()));
-					swap(g.getX(), g.getY());
-					
-					GameObject.hasMoved.signalAll();
-					return true;
-				}
-	
-			}
-			moved = false;
-			return moved;
-		}
-		finally {
-			GameObject.lock.unlock();
-		}
+	public int getSpeed() {
+		return speed;
 	}
-
+	
 	@Override
 	public boolean update(int dir) {
 
@@ -163,8 +119,64 @@ public class Player extends GameObject implements Living {
 		}
 		return false;
 	}
-
-	public int getSpeed() {
-		return speed;
+	
+	void respawn() {	
+		if(lifes > 0) {
+			ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
+			GameObject g = temp.get(Collections.min(temp.keySet()));
+			swap(g.getX(), g.getY());
+			--lifes;
+		
+		} else {
+			destroy();
+		}
+	}
+	
+	@Override
+	protected boolean move(int dir) {
+		try {
+			GameObject.lock.lock();
+			int i = x + dmap[dir][0];
+			int j = y + dmap[dir][1];
+	
+			if (!(i < 0 || i >= map.dimX) && !(j < 0 || j >= map.dimY)) {
+	
+				if (map.getTile(i, j) instanceof EmptyBlock) {
+	
+					moved = true;
+					System.out.println("si muove...");
+					swap(i, j);
+						
+					GameObject.hasMoved.signalAll();
+					return true;
+	
+				} else if (map.getTile(i, j) instanceof Door) {
+	
+					moved = true;
+	
+					System.out.println("VITTORIA");
+	
+					destroy();
+					
+					GameObject.hasMoved.signalAll();
+					return true;
+	
+				} else if (map.getTile(i, j) instanceof Enemy) {
+	
+					moved = true;
+					
+					respawn();
+					
+					GameObject.hasMoved.signalAll();
+					return true;
+				}
+	
+			}
+			moved = false;
+			return moved;
+		}
+		finally {
+			GameObject.lock.unlock();
+		}
 	}
 }

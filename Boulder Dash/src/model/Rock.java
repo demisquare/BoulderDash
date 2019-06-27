@@ -20,13 +20,11 @@ public class Rock extends GameObject implements Sliding {
 				if(isFalling) {
 					if(map.getTile(x, y+1) instanceof Player) {
 
-						ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
-						GameObject g = temp.get(Collections.min(temp.keySet()));
-						map.getTile(x, y+1).swap(g.getX(), g.getY());
-						
+						((Player)map.getTile(x, y+1)).respawn();
 						isFalling = false;
 					
 					} else if(map.getTile(x, y+1) instanceof Enemy) {
+						
 						map.getTile(x, y+1).destroy();
 						isFalling = false;
 					
@@ -37,11 +35,10 @@ public class Rock extends GameObject implements Sliding {
 					
 					if(map.getTile(x, y+1) instanceof Player) {
 
-						ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
-						GameObject g = temp.get(Collections.min(temp.keySet()));
-						map.getTile(x, y+1).swap(g.getX(), g.getY());
+						((Player)map.getTile(x, y+1)).respawn();
 						
 					} else if(map.getTile(x, y+1) instanceof Enemy) {
+						
 						map.getTile(x, y+1).destroy();
 					}
 					
@@ -58,9 +55,7 @@ public class Rock extends GameObject implements Sliding {
 					
 					if(map.getTile(x+1, y) instanceof Player) {
 						
-						ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
-						GameObject g = temp.get(Collections.min(temp.keySet()));
-						map.getTile(x+1, y).swap(g.getX(), g.getY());
+						((Player)map.getTile(x+1, y)).respawn();
 						
 					} else if(map.getTile(x+1, y) instanceof Enemy) {
 						map.getTile(x+1, y).destroy();
@@ -77,9 +72,7 @@ public class Rock extends GameObject implements Sliding {
 					
 					if(map.getTile(x+1, y) instanceof Player) {
 						
-						ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
-						GameObject g = temp.get(Collections.min(temp.keySet()));
-						map.getTile(x+1, y).swap(g.getX(), g.getY());
+						((Player)map.getTile(x+1, y)).respawn();
 						
 					} else if(map.getTile(x+1, y) instanceof Enemy) {
 						map.getTile(x+1, y).destroy();

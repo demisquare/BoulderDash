@@ -45,9 +45,7 @@ public class Enemy extends GameObject implements Living {
 					//map.getTile(i, j).destroy();
 					//swap(i, j);
 
-					ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
-					GameObject g = temp.get(Collections.min(temp.keySet()));
-					map.getTile(i, j).swap(g.getX(), g.getY());
+					((Player)map.getTile(i, j)).respawn();
 					
 					return true;
 				}
