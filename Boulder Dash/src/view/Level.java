@@ -388,4 +388,6 @@ public class Level extends JPanel implements KeyListener {
 	public synchronized void closeThread() {
 		t.interrupt();
 	}
+	
+	
 }

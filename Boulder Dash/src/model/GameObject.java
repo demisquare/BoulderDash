@@ -34,8 +34,8 @@ public abstract class GameObject {
 	protected boolean isFalling;
 	protected boolean moved;
 	
-	public ReentrantLock lock;
-	public Condition hasMoved;
+	public static ReentrantLock lock;
+	public static Condition hasMoved;
 	
 	protected GameObject successor;
 	
@@ -81,13 +81,7 @@ public abstract class GameObject {
 	public boolean isDead() { return dead; }
 	
 	public boolean hasMoved() {
-		try {
-			this.lock.lock();
 			return moved; 
-		}
-		finally {
-			this.lock.unlock();
-		}
 	}
 	public GameObject getSuccessor() { return successor; }
 	

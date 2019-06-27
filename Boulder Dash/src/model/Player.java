@@ -30,7 +30,7 @@ public class Player extends GameObject implements Living {
 	@Override
 	protected boolean move(int dir) {
 		try {
-			this.lock.lock();
+			GameObject.lock.lock();
 			int i = x + dmap[dir][0];
 			int j = y + dmap[dir][1];
 	
@@ -42,7 +42,7 @@ public class Player extends GameObject implements Living {
 					System.out.println("si muove...");
 					swap(i, j);
 						
-					this.hasMoved.signal();
+					GameObject.hasMoved.signalAll();
 					return true;
 	
 				} else if (map.getTile(i, j) instanceof Door) {
@@ -53,7 +53,7 @@ public class Player extends GameObject implements Living {
 	
 					destroy();
 					
-					this.hasMoved.signal();
+					GameObject.hasMoved.signalAll();
 					return true;
 	
 				} else if (map.getTile(i, j) instanceof Enemy) {
@@ -62,7 +62,7 @@ public class Player extends GameObject implements Living {
 	
 					destroy();
 	
-					this.hasMoved.signal();
+					GameObject.hasMoved.signalAll();
 					return true;
 				}
 	
@@ -71,7 +71,7 @@ public class Player extends GameObject implements Living {
 			return moved;
 		}
 		finally {
-			this.lock.unlock();
+			GameObject.lock.unlock();
 		}
 	}
 

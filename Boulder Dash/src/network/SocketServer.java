@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import model.GameObject;
 import model.Host;
 import model.Player;
 import network.packet.Packet;
@@ -56,23 +57,23 @@ public class SocketServer {
 					System.out.println("[SERVER] Avvio thread invio...");
 					while (socket.isConnected() && !socket.isClosed()) {
 						
-
-							player = (Player) game.level.getWorld().getPlayer();
+							System.out.println("connesso");
+							//game.level.getWorld().getPlayer();
+							GameObject.lock.lock();
+							if(GameObject.lock.isHeldByCurrentThread())
+								System.out.println("Pls");
 							
-							player.lock.lock();
-							while (!player.hasMoved()) {
-								try {
-									player.hasMoved.wait();
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+							while (!game.level.getWorld().getPlayer().hasMoved()) {
+								//System.out.println("godverdomme");
+								//game.level.getWorld().getPlayer().hasMoved.await();
 							}
-							
-							Packet move = new PacketMove(player.getX(), player.getY(), 0);
+							if(GameObject.lock.isHeldByCurrentThread())
+								System.out.println("Pls");
+							Packet move = new PacketMove(game.level.getWorld().getPlayer().getX(), game.level.getWorld().getPlayer().getY(), 0);
 							MessageHandler.sendObject(move);
 							System.out.println("[SERVER] Invio al client: " + move.toString());
-							player.lock.unlock();
+							game.level.getWorld().getPlayer();
+							GameObject.lock.unlock();
 						}
 
 						
