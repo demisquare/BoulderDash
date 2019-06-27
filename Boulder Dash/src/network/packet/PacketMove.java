@@ -19,7 +19,6 @@ public class PacketMove extends Packet {
 	
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
 		if(obj instanceof PacketMove)
 			return super.equals(obj) && this.dir == ((PacketMove)obj).dir;
 		return false;

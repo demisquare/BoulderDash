@@ -1,6 +1,5 @@
 package network;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,25 +16,25 @@ public class MessageHandler {
 	}
 
 
-	public static void sendObject(Packet pkg) {
+	public static void sendObject(Packet pkg) throws IOException{
 		try {
 			ObjectOutputStream write = new ObjectOutputStream(socket.getOutputStream());
 			write.writeObject(pkg);
 			write.flush();
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new IOException();
 		}
 	}
 
-	public static Packet receiveObject() throws EOFException {
+	public static Packet receiveObject() throws IOException {
 		Packet pkg = null;
 		try {
 			ObjectInputStream read = new ObjectInputStream(socket.getInputStream());
 			pkg = (Packet)read.readObject();
 
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+			throw new IOException();
 		}
 		return pkg;
 	}

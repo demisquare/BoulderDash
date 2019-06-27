@@ -15,9 +15,9 @@ public class PacketDie extends Packet {
 	
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
 		if(obj instanceof PacketDie)
 			return super.equals(obj);
 		return false;
 	}
+	
 }
