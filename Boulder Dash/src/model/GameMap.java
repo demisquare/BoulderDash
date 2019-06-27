@@ -29,9 +29,9 @@ public class GameMap {
 	// contiene Ground
 	private ConcurrentHashMap<Integer, GameObject> groundMap;
 	// shortcut per i vari oggetti Player
-	private ArrayList<GameObject> player;
+	private GameObject player;
 	// shortcut per i vari oggetti Host
-	private ArrayList<GameObject> host;
+	private GameObject host;
 	// shortcut per i vari oggetti Enemy
 	private ArrayList<GameObject> enemy;
 
@@ -126,18 +126,15 @@ public class GameMap {
 				case PLAYER:
 					if(Options.multiplayer) {
 						if(Options.host) {
-							GameObject h = new Host(x, y, 1);
-							host.add(h);
-							blocks.put(x * dimX + y, h);
+							host = new Host(x, y, 1);
+							blocks.put(x * dimX + y, host);
 						} else {
-							GameObject p = new Player(x, y, 1);
-							player.add(p);
-							blocks.put(x * dimX + y, p);
+							player = new Player(x, y, 1);
+							blocks.put(x * dimX + y, player);
 						}
 					} else {
-						GameObject p = new Player(x, y, 1);
-						player.add(p);
-						blocks.put(x * dimX + y, p);
+						player = new Player(x, y, 1);
+						blocks.put(x * dimX + y, player);
 					}
 
 					break;
@@ -145,13 +142,11 @@ public class GameMap {
 				case HOST:
 					if(Options.multiplayer) {
 						if(Options.host) {
-							GameObject p = new Player(x, y, 1);
-							player.add(p);
-							blocks.put(x * dimX + y, p);
+							player = new Player(x, y, 1);
+							blocks.put(x * dimX + y, player);
 						} else {
-							GameObject h = new Host(x, y, 1);
-							host.add(h);
-							blocks.put(x * dimX + y, h);
+							host = new Host(x, y, 1);
+							blocks.put(x * dimX + y, host);
 						}
 					} else {
 						emptyBlocksMap.put(x * dimX + y, new EmptyBlock(x, y));
@@ -159,9 +154,9 @@ public class GameMap {
 					break;
 
 				case ENEMY:
-					Enemy e = new Enemy(x, y, 1);
-					enemy.add((GameObject) e);
-					blocks.put(x * dimX + y, (GameObject) e);
+					GameObject e = new Enemy(x, y, 1);
+					enemy.add(e);
+					blocks.put(x * dimX + y, e);
 					break;
 
 				case EMPTY_BLOCK:
@@ -181,8 +176,6 @@ public class GameMap {
 		rocksMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
 		groundMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
 
-		player = new ArrayList<GameObject>();
-		host = new ArrayList<GameObject>();
 		enemy = new ArrayList<GameObject>();
 
 		initialize(filename);
@@ -264,26 +257,14 @@ public class GameMap {
 		return groundMap;
 	}
 
-	// probabilmente dovr� deprecarla
 	public GameObject getPlayer() {
 
-		return player.get(0);
+		return player;
 	}
 
-	public GameObject getPlayer(int i) {
-
-		return player.get(i);
-	}
-
-	// probabilmente dovr� deprecarla
 	public GameObject getHost() {
 
-		return host.get(0);
-	}
-
-	public GameObject getHost(int i) {
-
-		return host.get(i);
+		return host;
 	}
 
 	public ArrayList<GameObject> getEnemies() {
