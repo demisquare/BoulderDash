@@ -61,7 +61,7 @@ public class Enemy extends GameObject implements Living {
 	public boolean update() {
 		
 		++delayMovement;
-		if(delayMovement == 2) {
+		if(delayMovement >= 2) {
 			
 			delayMovement = 0;
 			lastDir = r.nextInt(4);

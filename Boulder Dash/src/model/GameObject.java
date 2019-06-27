@@ -104,8 +104,7 @@ public abstract class GameObject {
 				
 				map.setTile(x, y, successor);
 				
-				successor.processed = false;
-			
+				successor.processed = true;		
 				processed = true;
 				dead = true;
 				
