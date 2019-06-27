@@ -1,6 +1,8 @@
 package model;
 
+import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 //TODO
 public class Enemy extends GameObject implements Living {
@@ -40,8 +42,13 @@ public class Enemy extends GameObject implements Living {
 				
 				if(map.getTile(i, j) instanceof Player) {
 					
-					map.getTile(i, j).destroy();
-					swap(i, j);
+					//map.getTile(i, j).destroy();
+					//swap(i, j);
+
+					ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
+					GameObject g = temp.get(Collections.min(temp.keySet()));
+					map.getTile(i, j).swap(g.getX(), g.getY());
+					
 					return true;
 				}
 			}

@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Collections;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class Player extends GameObject implements Living {
 
 	// metodo semplice per aggiungere un delay al movimento
@@ -59,9 +62,12 @@ public class Player extends GameObject implements Living {
 				} else if (map.getTile(i, j) instanceof Enemy) {
 	
 					moved = true;
-	
-					destroy();
-	
+					
+					//destroy();
+					ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
+					GameObject g = temp.get(Collections.min(temp.keySet()));
+					swap(g.getX(), g.getY());
+					
 					GameObject.hasMoved.signalAll();
 					return true;
 				}

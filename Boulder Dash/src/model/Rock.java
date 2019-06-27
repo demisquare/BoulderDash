@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Collections;
+import java.util.concurrent.ConcurrentHashMap;
+
 //TODO
 public class Rock extends GameObject implements Sliding {
 	
@@ -15,14 +18,33 @@ public class Rock extends GameObject implements Sliding {
 			if(map.getTile(x, y+1) instanceof Living) {
 				
 				if(isFalling) {
+					if(map.getTile(x, y+1) instanceof Player) {
+
+						ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
+						GameObject g = temp.get(Collections.min(temp.keySet()));
+						map.getTile(x, y+1).swap(g.getX(), g.getY());
+						
+						isFalling = false;
 					
-					map.getTile(x, y+1).destroy();
-					isFalling = false;
+					} else if(map.getTile(x, y+1) instanceof Enemy) {
+						map.getTile(x, y+1).destroy();
+						isFalling = false;
+					
+					}
 					return true;
-				
+					
 				} else if(map.getTile(x, y-1) instanceof Rock) {
 					
-					map.getTile(x, y+1).destroy();
+					if(map.getTile(x, y+1) instanceof Player) {
+
+						ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
+						GameObject g = temp.get(Collections.min(temp.keySet()));
+						map.getTile(x, y+1).swap(g.getX(), g.getY());
+						
+					} else if(map.getTile(x, y+1) instanceof Enemy) {
+						map.getTile(x, y+1).destroy();
+					}
+					
 					return true;
 					
 				}
@@ -34,7 +56,13 @@ public class Rock extends GameObject implements Sliding {
 
 					isFalling = true;
 					
-					if(map.getTile(x+1, y) instanceof Living) {
+					if(map.getTile(x+1, y) instanceof Player) {
+						
+						ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
+						GameObject g = temp.get(Collections.min(temp.keySet()));
+						map.getTile(x+1, y).swap(g.getX(), g.getY());
+						
+					} else if(map.getTile(x+1, y) instanceof Enemy) {
 						map.getTile(x+1, y).destroy();
 					}
 					
@@ -47,7 +75,13 @@ public class Rock extends GameObject implements Sliding {
 
 					isFalling = true;
 					
-					if(map.getTile(x+1, y) instanceof Living) {
+					if(map.getTile(x+1, y) instanceof Player) {
+						
+						ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
+						GameObject g = temp.get(Collections.min(temp.keySet()));
+						map.getTile(x+1, y).swap(g.getX(), g.getY());
+						
+					} else if(map.getTile(x+1, y) instanceof Enemy) {
 						map.getTile(x+1, y).destroy();
 					}
 					

@@ -124,28 +124,34 @@ public class GameMap {
 					break;
 
 				case PLAYER:
-					if (Options.multiplayer && Options.host) {
-						Host h = new Host(x, y, 1);
-						host.add((GameObject) h);
-						blocks.put(x * dimX + y, (GameObject) h);
+					if(Options.multiplayer) {
+						if(Options.host) {
+							GameObject h = new Host(x, y, 1);
+							host.add(h);
+							blocks.put(x * dimX + y, h);
+						} else {
+							GameObject p = new Player(x, y, 1);
+							player.add(p);
+							blocks.put(x * dimX + y, p);
+						}
 					} else {
-						Player p = new Player(x, y, 1);
-						player.add((GameObject) p);
-						blocks.put(x * dimX + y, (GameObject) p);
+						GameObject p = new Player(x, y, 1);
+						player.add(p);
+						blocks.put(x * dimX + y, p);
 					}
 
 					break;
 
 				case HOST:
-					if (Options.multiplayer) {
-						if (Options.host) {
-							Player p = new Player(x, y, 1);
-							player.add((GameObject) p);
-							blocks.put(x * dimX + y, (GameObject) p);
+					if(Options.multiplayer) {
+						if(Options.host) {
+							GameObject p = new Player(x, y, 1);
+							player.add(p);
+							blocks.put(x * dimX + y, p);
 						} else {
-							Host h = new Host(x, y, 1);
-							host.add((GameObject) h);
-							blocks.put(x * dimX + y, (GameObject) h);
+							GameObject h = new Host(x, y, 1);
+							host.add(h);
+							blocks.put(x * dimX + y, h);
 						}
 					} else {
 						emptyBlocksMap.put(x * dimX + y, new EmptyBlock(x, y));
@@ -229,7 +235,7 @@ public class GameMap {
 
 		return ret;
 	}
-
+	
 	public int getDimX() {
 		return dimX;
 	}
