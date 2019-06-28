@@ -67,11 +67,10 @@ public class Menu extends JPanel implements Serializable {
 
 	private void start_selected(JFrame frame) throws InterruptedException {
 		
+		closeThread();
 		frame.remove(this);
 		
-		if(!game.isReset) { 
-			game.reset(frame, this); 
-		}
+		game.launchGame(frame, this); 
 		
 		frame.setContentPane(game);
 		
@@ -89,7 +88,6 @@ public class Menu extends JPanel implements Serializable {
 		synchronized(this) {
 			Music.setSong(Music.gameSong);
 		}
-		closeThread();
 	}
 	
 	private void options_selected(JFrame frame, Options options) throws InterruptedException {
@@ -128,7 +126,6 @@ public class Menu extends JPanel implements Serializable {
 		credits  = new Credits(frame, this);
 		game 	 = new Game(frame, this);
 		multi	 = new Multiplayer(frame, game, this);
-		game.isReset = true;
 		
 		try {
 			background = ImageIO.read(new File(MainMenuPage + "MainMenuPage_Background.png"));

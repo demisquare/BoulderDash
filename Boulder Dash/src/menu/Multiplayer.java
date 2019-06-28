@@ -72,7 +72,7 @@ public class Multiplayer extends JPanel {
 		
 		closeThread();
 		frame.remove(this);
-		game.reset(frame, menu);
+		game.launchGame(frame, menu);
 		frame.setContentPane(game);
 		game.level.requestFocusInWindow();
 		frame.revalidate();
@@ -91,7 +91,7 @@ public class Multiplayer extends JPanel {
 		
 		closeThread();
 		frame.remove(this);
-		game.reset(frame, menu);
+		game.launchGame(frame, menu);
 		frame.setContentPane(game);
 		game.level.requestFocusInWindow();
 		frame.revalidate();

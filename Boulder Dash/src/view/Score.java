@@ -126,41 +126,12 @@ public class Score extends JPanel implements Serializable {
 				@Override public void mouseReleased(MouseEvent e) {}
 			});
 			
-
+			launchThread();
+			
 			time_left = new JLabel("" + remaining_time, JLabel.CENTER);
 			time_left.setForeground(Color.WHITE);
 			time_left.setFont(eightBit);
-			
-			Toolkit tk = Toolkit.getDefaultToolkit();
-			double xSize = tk.getScreenSize().getWidth();
-			double ySize = tk.getScreenSize().getHeight();
-			
-			t = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					while (true) {
-						if(!Options.full_screen) {
-							ARROW_BACK_scaled.setBounds(230, 640, 146, 97);
-							Lives.setBounds(32, 440, 305, 94);
-							time_left.setBounds(16, 580, 350, 100);
-						}
-						else if(Options.full_screen) {
-							//ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back.getScaledInstance((int)(80*(xSize/1280)), (int)(50*(ySize/720)), Image.SCALE_SMOOTH)));
-							ARROW_BACK_scaled.setBounds((int)(230*(xSize/1280)), (int)(640*(ySize/720)), 146, 97);
-							Lives.setBounds((int)(32*(xSize/1280)), (int)(440*(ySize/720)), 305, 94);
-							time_left.setBounds((int)(16*(xSize/1280)), (int)(580*(ySize/720)), 350, 100);
-						}
-						try {
-							Thread.sleep(34);
-						} catch (InterruptedException e) {
-							return;
-						}
-					}
-				}
-			});
-			
-			launchThread();
-			
+					
 			this.add(Lives);
 			this.setLayout(null); //se non settiamo a null non possiamo usare il setBounds.
 			this.add(ARROW_BACK_scaled);
@@ -180,7 +151,43 @@ public class Score extends JPanel implements Serializable {
 		g.drawImage(Background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 
-	public synchronized void launchThread() { t.start(); 	 }
+	public synchronized void launchThread() { 
+		if(t != null && t.isAlive())
+			t.interrupt();
+		t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					if(!Options.full_screen) {
+						ARROW_BACK_scaled.setBounds(230, 640, 146, 97);
+						Lives.setBounds(32, 440, 305, 94);
+						time_left.setBounds(16, 580, 350, 100);
+					}
+					else if(Options.full_screen) {
+						
+						Toolkit tk = Toolkit.getDefaultToolkit();
+						double xSize = tk.getScreenSize().getWidth();
+						double ySize = tk.getScreenSize().getHeight();
+				
+						//ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back.getScaledInstance((int)(80*(xSize/1280)), (int)(50*(ySize/720)), Image.SCALE_SMOOTH)));
+						ARROW_BACK_scaled.setBounds((int)(230*(xSize/1280)), (int)(640*(ySize/720)), 146, 97);
+						Lives.setBounds((int)(32*(xSize/1280)), (int)(440*(ySize/720)), 305, 94);
+						time_left.setBounds((int)(16*(xSize/1280)), (int)(580*(ySize/720)), 350, 100);
+					}
+					try {
+						Thread.sleep(34);
+					} catch (InterruptedException e) {
+						return;
+					}
+				}
+			}
+		});
+		
+		t.start();
+	}
 	
-	public synchronized void closeThread() 	{ t.interrupt(); }
+	public synchronized void closeThread() 	{ 
+		if(t != null && t.isAlive())
+			t.interrupt(); 
+	}
 }

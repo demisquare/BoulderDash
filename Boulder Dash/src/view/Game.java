@@ -36,30 +36,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		setDividerLocation(920);
 		setDividerSize(0);
 		
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		double xSize = tk.getScreenSize().getWidth();
-		
-		t2 = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					if(!Options.full_screen) {
-						setDividerLocation(920);
-					}
-					else if(Options.full_screen) {
-						setDividerLocation((int)(920*(xSize/1280)));
-					}
-					
-					try {
-						Thread.sleep(34);
-					} catch (InterruptedException e) {
-						return;
-					}
-				}
-			}
-		});
-		
-		t2.start();
+		launchThread();
 	}
 	
 	public Game(JFrame frame, Menu menu) {
@@ -76,7 +53,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		score_init(frame, menu);
 	}
 	
-	public void reset(JFrame frame, Menu menu) throws NullPointerException{
+	public void launchGame(JFrame frame, Menu menu) throws NullPointerException{
 		
 		level.closeThread();
 		level = new Level();
@@ -88,13 +65,45 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		this.setLeftComponent(level);
 		this.setRightComponent(score);
 		
+		level.launchThread();
+		
 		isReset = true;
 	}
 
-	public synchronized void launchThread() { t2.start(); 	 }
+	public synchronized void launchThread() { 
+		
+		if(t2 != null && t2.isAlive())
+			t2.interrupt();
+		
+		t2 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					if(!Options.full_screen) {
+						setDividerLocation(920);
+					}
+					else if(Options.full_screen) {
+						Toolkit tk = Toolkit.getDefaultToolkit();
+						double xSize = tk.getScreenSize().getWidth();
+						
+						setDividerLocation((int)(920*(xSize/1280)));
+					}
+					
+					try {
+						Thread.sleep(34);
+					} catch (InterruptedException e) {
+						return;
+					}
+				}
+			}
+		});
+		
+		t2.start();
+	}
 	
 	public synchronized void closeThread() {
-		t2.interrupt();
+		if(t2 != null && t2.isAlive())
+			t2.interrupt();
 		level.closeThread();
 		score.closeThread();
 	}

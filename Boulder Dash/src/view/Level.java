@@ -152,9 +152,8 @@ public class Level extends JPanel implements KeyListener {
 		// crea un world...
 		world = new World(FPS);
 
-		t = new Thread(world);
-		t.start();
-
+		t = null;
+		
 		initGraphics();
 
 		lastTimePressed = java.time.LocalTime.now();
@@ -318,11 +317,6 @@ public class Level extends JPanel implements KeyListener {
 		if ((java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0) {
 			lastTimePressed = java.time.LocalTime.now();
 			updatePlayerOnPressing(e.getKeyCode());
-			revalidate();
-			repaint();
-			synchronized(this) {
-				world.reset(); 
-			}
 		}
 	}
 
@@ -332,15 +326,41 @@ public class Level extends JPanel implements KeyListener {
 		if ((java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0) {
 			lastTimePressed = java.time.LocalTime.now();
 			updatePlayerOnRelease(e.getKeyCode());
-			revalidate();
-			repaint();
-			synchronized(this) {
-				world.reset();
-			}
 		}
 	}
 
+	public void launchThread() {
+		world.launchThread();
+	
+		if(t != null && t.isAlive())
+			t.interrupt();
+		
+		t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true) {
+					synchronized(this) {
+						revalidate();
+						repaint();
+					}
+					synchronized(this) {
+						world.reset();
+					}
+					try {
+						Thread.sleep(34);
+					} catch(InterruptedException e) {
+						return;
+					}
+				}
+			}
+		});
+		
+		t.start();
+	}
+	
 	public synchronized void closeThread() {
-		t.interrupt();
+		if(t != null && t.isAlive())
+			t.interrupt();
+		world.closeThread();
 	}
 }

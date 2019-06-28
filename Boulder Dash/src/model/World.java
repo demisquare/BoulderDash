@@ -6,13 +6,15 @@ import java.util.ConcurrentModificationException;
 import view.Sprite;
 
 //classe che contiene sia il player che la mappa
-public class World implements Runnable {
+public class World {
 
 	//contiene la "matrice logica" del gioco (l'implementazione non � una matrice)
 	GameMap map;	
 	//true se il world � stato aggiornato
 	private boolean hasChanged;
 
+	private Thread t;
+	
 	//dimensione grafica...
 	int width  = 0;	
 	int height = 0;
@@ -30,6 +32,7 @@ public class World implements Runnable {
 		//default a true (per evitare un aggiornamento immediato)
 		hasChanged = true;
 		
+		t = null;
 		//dimensione grafica...
 		width = map.getDimX() * Sprite.TILE_SIZE;
 		height = map.getDimY() * Sprite.TILE_SIZE;
@@ -101,6 +104,8 @@ public class World implements Runnable {
 	//Player, Enemy, etc, ogni tick del timer
 	public void update() {
 		
+		if(hasChanged)
+			return;
 		//aggiorna gli stati di ogni casella
 		try {
 			Collection<GameObject> temp = map.getBlocks().values();
@@ -135,21 +140,36 @@ public class World implements Runnable {
 		hasChanged = true;
 	}
 	
-	@Override
-	public void run() {
-		while(true) {
-			synchronized(this) {
-				update();
+	public void launchThread() {
+		
+		if(t != null && t.isAlive())
+			t.interrupt();
+		
+		t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true) {
+					synchronized(this) {
+						update();
+					}
+					try {
+						Thread.sleep(150);
+					} catch (InterruptedException e) {
+						return;
+					}
+				}
 			}
-			try {
-				Thread.sleep(200/FPS + 1);
-			} catch (InterruptedException e) {
-				return;
-			}
-		}
+		});
+		
+		t.start();
 	}
-
+	
 	public void setChanged(boolean b) {
 		hasChanged = b;
+	}
+
+	public void closeThread() {
+		if(t != null && t.isAlive())
+			t.interrupt();
 	}
 }
