@@ -22,8 +22,12 @@ import view.Game;
 public class Multiplayer extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private static final String MultiPagePath = "." + File.separator + "resources" + File.separator + "assets"
-			+ File.separator + "Menu" + File.separator + "MultiPage" + File.separator;
+	private static final String MultiPagePath = 
+			"." + File.separator 
+			+ "resources" + File.separator 
+			+ "assets" + File.separator 
+			+ "Menu" + File.separator 
+			+ "MultiPage" + File.separator;
 
 	private Thread t;
 
@@ -43,6 +47,7 @@ public class Multiplayer extends JPanel {
 	private SocketClient socketClient;
 
 	private void turn_back(JFrame frame, Menu menu) throws InterruptedException {
+		
 		if(Options.multiplayer) {
 			if(Options.host) {
 				socketClient.close();
@@ -52,7 +57,6 @@ public class Multiplayer extends JPanel {
 			Options.multiplayer = false;
 		}
 		
-		
 		frame.remove(this);
 		frame.setContentPane(menu);
 		frame.revalidate();
@@ -60,11 +64,14 @@ public class Multiplayer extends JPanel {
 	}
 
 	private void client_selected(JFrame frame, Menu menu, Game game) throws InterruptedException {
-		socketClient = new SocketClient(game);
-		socketClient.connect();
-		
+
 		Options.multiplayer = true;
 		Options.host = true;
+		
+		game.launchGame(frame, menu);
+		
+		socketClient = new SocketClient(game);
+		socketClient.connect();
 
 		synchronized(this) {
 			Music.setSong(Music.gameSong);
@@ -72,7 +79,6 @@ public class Multiplayer extends JPanel {
 		
 		closeThread();
 		frame.remove(this);
-		game.launchGame(frame, menu);
 		frame.setContentPane(game);
 		game.level.requestFocusInWindow();
 		frame.revalidate();
@@ -80,11 +86,12 @@ public class Multiplayer extends JPanel {
 	}
 
 	private void server_selected(JFrame frame, Menu menu, Game game) throws InterruptedException {
+		
+		Options.multiplayer = true;
+		
 		socketServer = new SocketServer(game);
 		socketServer.connect();
 		
-		Options.multiplayer = true;
-
 		synchronized(this) {
 			Music.setSong(Music.gameSong);
 		}

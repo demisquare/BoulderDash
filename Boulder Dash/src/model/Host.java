@@ -4,6 +4,5 @@ package model;
 public class Host extends Player {
 	public Host(int x, int y, int s) {
 		super(x, y, s);
-		// TODO Auto-generated constructor stub
 	}
 }

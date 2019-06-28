@@ -27,8 +27,8 @@ public class SocketServer {
 
 	public SocketServer(Game game) {
 		this.game = game;
-		player = null;
-		host = null;
+		player = (Player) game.level.getWorld().getPlayer();
+		host = (Host) game.level.getWorld().getHost();
 		socket = null;
 		closeRun = false;
 		t1 = null;
@@ -69,10 +69,9 @@ public class SocketServer {
 					System.out.println("[SERVER] Avvio thread invio...");
 					while (socket.isConnected() && !socket.isClosed()) {
 
-						player = (Player) game.level.getWorld().getPlayer();
 
 						if (player.hasMoved()) {
-							Packet move = new PacketMove(player.getX(), player.getY(), 0);
+							Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir());
 
 							try {
 								msg.sendObject(move);
@@ -124,7 +123,6 @@ public class SocketServer {
 					System.out.println("[SERVER] Avvio thread ricezione...");
 					while (socket.isConnected() && !socket.isClosed()) {
 						synchronized (this) {
-							host = (Host) game.level.getWorld().getHost();
 							System.out.println("[SERVER] In ascolto...");
 							Packet pkg;
 							try {

@@ -50,14 +50,24 @@ public class MessageHandler {
 	}
 
 	public void HandlePacket(Packet pkg, Host host) {
-
+		
+		if(host == null)
+			System.out.println("rcodi2");
+		
 		if (pkg instanceof PacketMove) {
 			// TODO: operazioni per muovere player/nemici...
-			//host.update(((PacketMove) pkg).getDir());
+			if(((PacketMove)pkg).getDir() != -1) {
+				synchronized(this) {
+					host.update(((PacketMove)pkg).getDir());
+				}
+			}
 		}
 
 		else if (pkg instanceof PacketDie) {
 			// TODO: operazioni per uccidere player/nemici...
+			synchronized(this) {
+				host.respawn();
+			}
 		}
 	}
 }

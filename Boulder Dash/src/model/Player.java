@@ -17,6 +17,16 @@ public class Player extends GameObject implements Living {
 	private int speed;
 	
 	private int lifes;
+	
+	private int lastDir;
+
+	public int getLastDir() {
+		return lastDir;
+	}
+
+	public void setLastDir(int lastDir) {
+		this.lastDir = lastDir;
+	}
 
 	public Player(int x, int y, int s) {
 		super(x, y);
@@ -26,6 +36,7 @@ public class Player extends GameObject implements Living {
 		movingCounter = 0;
 		speed = s;
 		lifes = 2;
+		lastDir = -1;
 	}
 
 	@Override
@@ -124,8 +135,7 @@ public class Player extends GameObject implements Living {
 	
 	@Override
 	protected boolean move(int dir) {
-		//try {
-		//	GameObject.lock.lock();
+		
 			int i = x + dmap[dir][0];
 			int j = y + dmap[dir][1];
 	
@@ -137,7 +147,6 @@ public class Player extends GameObject implements Living {
 					System.out.println("si muove...");
 					swap(i, j);
 						
-					//GameObject.hasMoved.signalAll();
 					return true;
 	
 				} else if (map.getTile(i, j) instanceof Door) {
@@ -148,7 +157,6 @@ public class Player extends GameObject implements Living {
 	
 					destroy();
 					
-					//GameObject.hasMoved.signalAll();
 					return true;
 	
 				} else if (map.getTile(i, j) instanceof Enemy) {
@@ -157,15 +165,10 @@ public class Player extends GameObject implements Living {
 					
 					respawn();
 					
-					//GameObject.hasMoved.signalAll();
 					return true;
 				}
 			}
 			moved = false;
 			return moved;
 		}
-		//finally {
-		//	GameObject.lock.unlock();
-		//}
-	//}
 }

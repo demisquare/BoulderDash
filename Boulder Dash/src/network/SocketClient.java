@@ -22,9 +22,9 @@ public class SocketClient {
 	Game game;
 
 	public SocketClient(Game game) {
-		player = null;
-		host = null;
 		this.game = game;
+		player = (Player) game.level.getWorld().getPlayer();
+		host = (Host) game.level.getWorld().getHost();
 		player = null;
 		socket = null;
 		closeRun = false;
@@ -53,10 +53,8 @@ public class SocketClient {
 					System.out.println("[CLIENT] Avvio thread invio...");
 					while (socket.isConnected() && !socket.isClosed()) {
 
-						player = (Player) game.level.getWorld().getPlayer();
-
 						if (player.hasMoved()) {
-							Packet move = new PacketMove(player.getX(), player.getY(), 0);
+							Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir());
 
 							try {
 								msg.sendObject(move);
@@ -108,7 +106,7 @@ public class SocketClient {
 					System.out.println("[CLIENT] Avvio thread ricezione...");
 					while (socket.isConnected() && !socket.isClosed()) {
 						synchronized (this) {
-							host = (Host) game.level.getWorld().getHost();
+							
 							System.out.println("[CLIENT] In ascolto...");
 							Packet pkg;
 							try {
@@ -120,7 +118,12 @@ public class SocketClient {
 							}
 
 							if (pkg != null) {
+								if(host == null)
+									System.out.println("rcodi");
+								
+								
 								msg.HandlePacket(pkg, host);
+								
 								System.out.println("[CLIENT] ricevo dal server: " + pkg.toString());
 								//host.update(GameObject.DOWN);
 							}
