@@ -121,8 +121,8 @@ public class SocketClient {
 								if(host == null)
 									System.out.println("rcodi");
 								
-								
-								msg.HandlePacket(pkg, host);
+								Host htemp = host;
+								msg.HandlePacket(pkg, htemp);
 								
 								System.out.println("[CLIENT] ricevo dal server: " + pkg.toString());
 								//host.update(GameObject.DOWN);

@@ -134,7 +134,8 @@ public class SocketServer {
 							}
 
 							if (pkg != null) {
-								msg.HandlePacket(pkg, host);
+								Host htemp = host;
+								msg.HandlePacket(pkg, htemp);
 								System.out.println("[SERVER] ricevo dal client: " + pkg.toString());
 								//host.update(GameObject.DOWN);
 							}
