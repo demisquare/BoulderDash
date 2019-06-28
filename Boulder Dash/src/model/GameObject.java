@@ -24,7 +24,7 @@ public abstract class GameObject {
 			                      { 1,  0},
 			                      { 0, -1} };
 	
-	static GameMap map = null;
+	public static GameMap map = null;
 	
 	protected int x;
 	protected int y;

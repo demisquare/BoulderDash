@@ -1,10 +1,11 @@
 package ai;
 
 import model.Enemy;
+import model.GameMap;
 import menu.Options;
 import menu.Options.Difficulty;
 
-public class IntelligentEnemy extends Enemy {
+public class IntelligentEnemy extends Enemy implements Agent {
 
 /*
 	Come gestisco il livello di difficoltà?
@@ -24,12 +25,15 @@ public class IntelligentEnemy extends Enemy {
 		
 		if(Options.difficulty == Difficulty.paradiso) {
 			super.calculateDirection();
+			System.out.println("parafiso");
 			
 		} else if(Options.difficulty == Difficulty.purgatorio) {
-			lastDir = MovementAlgorithms.manatthanDistance();
+			lastDir = MovementAlgorithms.manatthanDistance(this);
+			System.out.println("purgafiso");
 			
 		} else if(Options.difficulty == Difficulty.inferno) {
-			lastDir = MovementAlgorithms.greedyWalk();
+			lastDir = MovementAlgorithms.greedyWalk(this);
+			System.out.println("infiso");
 			
 		}
 	}
@@ -41,6 +45,8 @@ public class IntelligentEnemy extends Enemy {
 		if(delayMovement >= 3) {
 			
 			delayMovement = 0;
+			calculateDirection();
+			return move(lastDir);
 		}
 		
 		return false;
@@ -50,5 +56,10 @@ public class IntelligentEnemy extends Enemy {
 	@Override
 	public boolean update(int dir) {
 		return false;
+	}
+
+	@Override
+	public GameMap getEnvironment() {
+		return map;
 	}
 }

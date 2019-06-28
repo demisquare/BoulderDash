@@ -11,6 +11,7 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
+import ai.IntelligentEnemy;
 import menu.Options;
 import model.*;
 
@@ -133,7 +134,7 @@ public class Level extends JPanel implements KeyListener {
 		enemySprites = new ArrayList<LivingSprite>();
 
 		for (int i = 0; i < world.getEnemies().size(); ++i) {
-			Enemy e = (Enemy) world.getEnemies().get(i);
+			IntelligentEnemy e = (IntelligentEnemy) world.getEnemies().get(i);
 			enemySprites.add(new LivingSprite("enemySpriteSheet", e.getSpeed(), e));
 		}
 	}

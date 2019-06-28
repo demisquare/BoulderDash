@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import ai.IntelligentEnemy;
 import menu.Options;
+import menu.Options.Difficulty;
 
 //definisce la mappa di gioco come matrice di blocchi
 public class GameMap {
@@ -154,7 +156,7 @@ public class GameMap {
 					break;
 
 				case ENEMY:
-					GameObject e = new Enemy(x, y, 1);
+					GameObject e = new IntelligentEnemy(x, y, 1);
 					enemy.add(e);
 					blocks.put(x * dimX + y, e);
 					break;
