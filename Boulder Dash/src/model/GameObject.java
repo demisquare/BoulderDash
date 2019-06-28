@@ -19,7 +19,7 @@ public abstract class GameObject {
 	public static final int RIGHT = 2;
 	public static final int UP    = 3;
 		
-	static final int dmap[][] = { { 0,  1},
+	public static final int dmap[][] = { { 0,  1},
 			                      {-1,  0},
 			                      { 1,  0},
 			                      { 0, -1} };

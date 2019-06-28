@@ -1,5 +1,7 @@
 package ai;
 
+import java.util.Random;
+
 import model.GameObject;
 
 //TODO
@@ -14,16 +16,22 @@ class MovementAlgorithms {
 			GameObject player = e.getEnvironment().getPlayer();
 			GameObject enemy  = (GameObject) e;
 			
-			int dx = player.getX() - enemy.getX();
-			int dy = player.getY() - enemy.getY();
-			
-			if(dx >= dy) {
-				if(dx >= 0)	return GameObject.RIGHT;
-				else		return GameObject.LEFT;
-			} else {
-				if(dy >= 0) return GameObject.DOWN;
-				else		return GameObject.UP;
+			double min = e.getEnvironment().getDimX() + e.getEnvironment().getDimY(); 
+			int ret = (new Random()).nextInt(4);
+			for(int i = 0; i < 4; ++i) {
+				
+				double temp = 
+						Math.sqrt(
+								Math.pow(player.getX() - enemy.getX() - GameObject.dmap[i][0], 2) + 
+								Math.pow(player.getY() - enemy.getY() - GameObject.dmap[i][1], 2));
+				
+				if(temp < min) {
+					min = temp;
+					ret = i;
+				}
 			}
+			
+			return ret;
 		}
 		
 		return -1;
