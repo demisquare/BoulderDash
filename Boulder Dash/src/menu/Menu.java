@@ -64,6 +64,35 @@ public class Menu extends JPanel implements Serializable {
 	public Options options;
 	Credits credits;
 	You_Lose youlose;
+	
+	public void check_resize() {
+		if(!Options.full_screen) {
+			
+			menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
+		
+		} else if(Options.full_screen) {
+			
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			double xSize = tk.getScreenSize().getWidth();
+			double ySize = tk.getScreenSize().getHeight();
+			
+//			START=START.getScaledInstance((int)(191*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
+//			START_SELECTED=START_SELECTED.getScaledInstance((int)(191*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);					
+//			MULTI=MULTI.getScaledInstance((int)(423*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
+//			MULTI_SELECTED=MULTI_SELECTED.getScaledInstance((int)(423*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
+//			OPTIONS=OPTIONS.getScaledInstance((int)(272*(xSize/1280)), (int)(54*(ySize/720)), Image.SCALE_SMOOTH);
+//			OPTIONS_SELECTED=OPTIONS_SELECTED.getScaledInstance((int)(272*(xSize/1280)), (int)(54*(ySize/720)), Image.SCALE_SMOOTH);
+//			CREDITS=CREDITS.getScaledInstance((int)(267*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
+//			CREDITS_SELECTED=CREDITS_SELECTED.getScaledInstance((int)(267*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
+//			EXIT=EXIT.getScaledInstance((int)(141*(xSize/1280)), (int)(50*(ySize/720)), Image.SCALE_SMOOTH);
+//			EXIT_SELECTED=EXIT_SELECTED.getScaledInstance((int)(141*(xSize/1280)), (int)(50*(ySize/720)), Image.SCALE_SMOOTH);
+			
+			
+			menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), (int)(500*(xSize/1280)), (int)(500*(ySize/720)));		
+			this.revalidate();
+			this.repaint();
+		}
+	}
 
 	private void start_selected(JFrame frame) throws InterruptedException {
 		
@@ -390,18 +419,7 @@ public class Menu extends JPanel implements Serializable {
 			public void run() {
 				while (true) {
 					
-					if(!Options.full_screen) {
-						
-						menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
 					
-					} else if(Options.full_screen) {
-						
-						Toolkit tk = Toolkit.getDefaultToolkit();
-						double xSize = tk.getScreenSize().getWidth();
-						double ySize = tk.getScreenSize().getHeight();
-						menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 430, 300);
-					
-					}
 					
 					try {
 						Thread.sleep(34);

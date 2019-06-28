@@ -67,7 +67,7 @@ public class Options extends JPanel {
 
 	private void turn_back(JFrame frame, Menu menu) throws InterruptedException {
 		
-		menu.launchThread();
+		menu.check_resize();
 		frame.remove(this);
 		frame.setContentPane(menu);
 		frame.revalidate();
