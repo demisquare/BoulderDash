@@ -108,8 +108,10 @@ public class Player extends GameObject implements Living {
 		return false;
 	}
 	
-	void respawn() {	
+	public void respawn() {	
 		if(lifes > 0) {
+			respawned = true;
+			
 			ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
 			GameObject g = temp.get(Collections.min(temp.keySet()));
 			swap(g.getX(), g.getY());

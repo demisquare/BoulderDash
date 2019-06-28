@@ -78,25 +78,30 @@ public class World {
 	public void reset() {
 
 		Collection<GameObject> temp = map.getBlocks().values();
-		for(GameObject e : temp)
-			e.processed = false;
+		for(GameObject e : temp) {
+			e.clearFlags();
+		}
 		
 		temp = map.getDiamondsMap().values();
-		for(GameObject e : temp)
-			e.processed = false;
+		for(GameObject e : temp) {
+			e.clearFlags();
+		}
 		
 		temp = map.getEmptyBlocksMap().values();
-		for(GameObject e : temp)
-			e.processed = false;
+		for(GameObject e : temp) {
+			e.clearFlags();
+		}
 		
 		temp = map.getGroundMap().values();
-		for(GameObject e : temp)
-			e.processed = false;
+		for(GameObject e : temp) {
+			e.clearFlags();
+		}
 		
 		temp = map.getRocksMap().values();
-		for(GameObject e : temp)
-			e.processed = false;
-	
+		for(GameObject e : temp) {
+			e.clearFlags();
+		}
+		
 		hasChanged = false;
 	}
 

@@ -33,10 +33,27 @@ public abstract class GameObject {
 	protected boolean dead;
 	protected boolean isFalling;
 	public boolean moved;
+	public boolean respawned;
 	
 	//public static ReentrantLock lock;
 	//public static Condition hasMoved;
 	
+	public boolean isMoved() {
+		return moved;
+	}
+
+	public void setMoved(boolean moved) {
+		this.moved = moved;
+	}
+
+	public boolean isRespawned() {
+		return respawned;
+	}
+
+	public void setRespawned(boolean respawned) {
+		this.respawned = respawned;
+	}
+
 	protected GameObject successor;
 	
 	public GameObject(int x, int y) {
@@ -47,7 +64,7 @@ public abstract class GameObject {
 		isFalling = false;
 		moved = false;
 		dead = false;
-		
+		respawned = false;
 		//lock = new ReentrantLock();
 		//hasMoved = lock.newCondition();
 		
@@ -198,5 +215,9 @@ public abstract class GameObject {
 		}
 		moved = false;
 		return false;
+	}
+
+	public void clearFlags() {
+		processed = false;
 	}
 }

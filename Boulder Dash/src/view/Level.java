@@ -290,7 +290,6 @@ public class Level extends JPanel implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-
 		if ((java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0) {
 			lastTimePressed = java.time.LocalTime.now();
 			updatePlayerOnPressing(e.getKeyCode());
