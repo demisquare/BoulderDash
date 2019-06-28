@@ -6,8 +6,8 @@ public abstract class Packet implements Serializable{
 
 	private static final long serialVersionUID = 3559409846577267961L;
 	
-	int x;
-	int y;
+	private int x;
+	private int y;
 
 	public Packet(int x, int y) {
 		this.x = x;

@@ -1,13 +1,10 @@
 package network;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.ArrayDeque;
 
-import model.GameObject;
 import model.Host;
 import model.Player;
 import network.packet.Packet;
@@ -26,19 +23,19 @@ public class SocketServer {
 
 	Game game;
 	Player player;
-	// Host host;
+	Host host;
 
-	// private ArrayList<Packet> packets;
+	private ArrayDeque<Packet> packets;
 
 	public SocketServer(Game game) {
 		this.game = game;
 		player = null;
-		// host = (Host) game.level.getWorld().getHost();
+		host = null;
 		socket = null;
 		closeRun = false;
 		t1 = null;
 		t2 = null;
-		// packets = new ArrayList<Packet>();
+		packets = new ArrayDeque<Packet>();
 	}
 
 	public void connect() {
@@ -56,32 +53,41 @@ public class SocketServer {
 				public void run() {
 					System.out.println("[SERVER] Avvio thread invio...");
 					while (socket.isConnected() && !socket.isClosed()) {
-						
-							System.out.println("connesso");
-							//game.level.getWorld().getPlayer();
-							GameObject.lock.lock();
-							if(GameObject.lock.isHeldByCurrentThread())
-								System.out.println("Pls");
-							
-							while (!game.level.getWorld().getPlayer().hasMoved()) {
-								//System.out.println("godverdomme");
-								//game.level.getWorld().getPlayer().hasMoved.await();
+
+						player = (Player) game.level.getWorld().getPlayer();
+
+						if (player.hasMoved()) {
+							Packet move = new PacketMove(player.getX(), player.getY(), 0);
+							if (!packets.contains(move)) {
+								packets.add(move);
+								try {
+									MessageHandler.sendObject(packets.getLast());
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									System.out.println("[SERVER] Client disconnesso...");
+									close();
+								}
+								// packets.remove();
+								System.out.println("[SERVER] Invio al client: " + move.toString());
 							}
-							if(GameObject.lock.isHeldByCurrentThread())
-								System.out.println("Pls");
-							Packet move = new PacketMove(game.level.getWorld().getPlayer().getX(), game.level.getWorld().getPlayer().getY(), 0);
-							MessageHandler.sendObject(move);
-							System.out.println("[SERVER] Invio al client: " + move.toString());
-							game.level.getWorld().getPlayer();
-							GameObject.lock.unlock();
 						}
 
-						
-						/*
-						 * else if (player.isDead()) { }
-						 * 
-						 */
-					
+						if (player.isDead()) {
+							Packet die = new PacketDie(player.getX(), player.getY());
+							if (!packets.contains(die)) {
+								packets.add(die);
+								try {
+									MessageHandler.sendObject(packets.getLast());
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									System.out.println("[SERVER] Client disconnesso...");
+									close();
+								}
+								// packets.remove();
+								System.out.println("[SERVER] Invio al client: " + die.toString());
+							}
+						}
+					}
 
 					try {
 						Thread.sleep(34);
@@ -105,17 +111,17 @@ public class SocketServer {
 						synchronized (this) {
 							player = (Player) game.level.getWorld().getPlayer();
 							System.out.println("[SERVER] In ascolto...");
-							Packet obj;
+							Packet pkg;
 							try {
-								obj = MessageHandler.receiveObject();
-							} catch (EOFException e1) {
+								pkg = MessageHandler.receiveObject();
+							} catch (IOException e) {
 								System.out.println("[SERVER] Client disconnesso...");
 								close();
 								return;
 							}
 
-							if (obj != null)
-								System.out.println("[SERVER] ricevo dal client: " + obj.toString());
+							if (pkg != null)
+								System.out.println("[SERVER] ricevo dal client: " + pkg.toString());
 						}
 						try {
 							Thread.sleep(34);
@@ -129,7 +135,7 @@ public class SocketServer {
 					}
 				}
 			});
-			// t2.start();
+			t2.start();
 
 		} catch (IOException e) {
 			e.printStackTrace();
