@@ -299,11 +299,7 @@ public class Level extends JPanel implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-
-		if ((java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0) {
-			lastTimePressed = java.time.LocalTime.now();
-			updatePlayerOnRelease(e.getKeyCode());
-		}
+		updatePlayerOnRelease(e.getKeyCode());
 	}
 
 	public void launchThread() {

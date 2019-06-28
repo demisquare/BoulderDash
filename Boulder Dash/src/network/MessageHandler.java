@@ -16,7 +16,7 @@ public class MessageHandler {
 	}
 
 
-	public static void sendObject(Packet pkg) throws IOException{
+	public static void sendObject(Packet pkg) throws IOException {
 		try {
 			ObjectOutputStream write = new ObjectOutputStream(socket.getOutputStream());
 			write.writeObject(pkg);

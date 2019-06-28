@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayDeque;
 
+import model.GameObject;
 import model.Host;
 import model.Player;
 import network.packet.Packet;
@@ -58,10 +59,10 @@ public class SocketServer {
 
 						if (player.hasMoved()) {
 							Packet move = new PacketMove(player.getX(), player.getY(), 0);
-							if (!packets.contains(move)) {
-								packets.add(move);
+							//if (!packets.contains(move)) {
+								//packets.add(move);
 								try {
-									MessageHandler.sendObject(packets.getLast());
+									MessageHandler.sendObject(move);
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
 									System.out.println("[SERVER] Client disconnesso...");
@@ -69,7 +70,9 @@ public class SocketServer {
 								}
 								// packets.remove();
 								System.out.println("[SERVER] Invio al client: " + move.toString());
-							}
+								
+							//}
+							player.moved = false;
 						}
 
 						if (player.isDead()) {
@@ -120,8 +123,10 @@ public class SocketServer {
 								return;
 							}
 
-							if (pkg != null)
+							if (pkg != null) {
 								System.out.println("[SERVER] ricevo dal client: " + pkg.toString());
+								game.level.getWorld().getHost().update(GameObject.DOWN);
+							}
 						}
 						try {
 							Thread.sleep(34);

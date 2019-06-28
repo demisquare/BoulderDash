@@ -32,7 +32,7 @@ public abstract class GameObject {
 	protected boolean processed;
 	protected boolean dead;
 	protected boolean isFalling;
-	protected boolean moved;
+	public boolean moved;
 	
 	//public static ReentrantLock lock;
 	//public static Condition hasMoved;
@@ -48,8 +48,8 @@ public abstract class GameObject {
 		moved = false;
 		dead = false;
 		
-		//lock= new ReentrantLock();
-		//hasMoved= lock.newCondition();
+		//lock = new ReentrantLock();
+		//hasMoved = lock.newCondition();
 		
 		successor = null;
 	}
@@ -101,7 +101,7 @@ public abstract class GameObject {
 				
 				map.setTile(x, y, successor);
 				
-				successor.processed = true;		
+				successor.processed = false;		
 				processed = true;
 				dead = true;
 				
