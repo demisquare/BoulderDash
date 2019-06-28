@@ -4,11 +4,15 @@ public class PacketMove extends Packet {
 	
 	private static final long serialVersionUID = -4739418266360642653L;
 	
-	int dir;
+	private int dir;
 	
 	public PacketMove(int x, int y, int dir) {
 		super(x, y);
 		this.dir = dir;
+	}
+	
+	public int getDir() {
+		return dir;
 	}
 	
 	@Override

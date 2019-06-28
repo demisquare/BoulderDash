@@ -3,9 +3,7 @@ package network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayDeque;
 
-import model.GameObject;
 import model.Host;
 import model.Player;
 import network.packet.Packet;
@@ -21,12 +19,11 @@ public class SocketServer {
 	private boolean closeRun;
 	private ServerSocket listener;
 	private Socket socket;
+	private MessageHandler msg;
 
 	Game game;
 	Player player;
 	Host host;
-
-	private ArrayDeque<Packet> packets;
 
 	public SocketServer(Game game) {
 		this.game = game;
@@ -36,15 +33,32 @@ public class SocketServer {
 		closeRun = false;
 		t1 = null;
 		t2 = null;
-		packets = new ArrayDeque<Packet>();
+		msg = new MessageHandler();
 	}
+
+	/*
+	 * costruttore di ObjectInputStream: BLOCCANTE si sblocca quando riceve un
+	 * pacchetto da un OutputStream
+	 * 
+	 * quindi: x[SERVER] new InputStream x[CLIENT] new OutputStream x[CLIENT] invia
+	 * pacchetto x[SERVER] InputStream riceve, si sblocca x[CLIENT] nel frattempo
+	 * new InputStream x[SERVER] new OutputStream (può farlo quando vuoi) x[SERVER]
+	 * invia pacchetto x[CLIENT] riceve pacchetto, si sblocca InputStream fine
+	 * 
+	 */
 
 	public void connect() {
 		try {
 			listener = new ServerSocket(8000);
 			System.out.println("[SERVER] Server attivo. In attesa di connessioni...");
 			socket = listener.accept();
-			MessageHandler.setSocket(socket);
+
+			msg.setSocket(socket);
+			msg.initInput();
+			msg.receiveObject();
+			msg.initOutput();
+			msg.sendObject(new PacketMove(0, 0, 0));
+
 			System.out.println("[SERVER] Connessione stabilita con " + socket.getInetAddress().getHostAddress() + ":"
 					+ socket.getLocalPort());
 
@@ -59,43 +73,41 @@ public class SocketServer {
 
 						if (player.hasMoved()) {
 							Packet move = new PacketMove(player.getX(), player.getY(), 0);
-							//if (!packets.contains(move)) {
-								//packets.add(move);
-								try {
-									MessageHandler.sendObject(move);
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									System.out.println("[SERVER] Client disconnesso...");
-									close();
-								}
-								// packets.remove();
-								System.out.println("[SERVER] Invio al client: " + move.toString());
-								
-							//}
-							player.moved = false;
+
+							try {
+								msg.sendObject(move);
+							} catch (IOException e) {
+
+								System.out.println("[SERVER] Client disconnesso...");
+								close();
+							}
+
+							System.out.println("[SERVER] Invio al client: " + move.toString());
+
+							player.setMoved(false);
 						}
 
-						if (player.isDead()) {
+						if (player.isRespawned()) {
 							Packet die = new PacketDie(player.getX(), player.getY());
-							if (!packets.contains(die)) {
-								packets.add(die);
-								try {
-									MessageHandler.sendObject(packets.getLast());
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									System.out.println("[SERVER] Client disconnesso...");
-									close();
-								}
-								// packets.remove();
-								System.out.println("[SERVER] Invio al client: " + die.toString());
+
+							try {
+								msg.sendObject(die);
+							} catch (IOException e) {
+
+								System.out.println("[SERVER] Client disconnesso...");
+								close();
 							}
+
+							System.out.println("[SERVER] Invio al client: " + die.toString());
+
 						}
+						player.setRespawned(false);
 					}
 
 					try {
 						Thread.sleep(34);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
+
 						e.printStackTrace();
 					}
 					if (closeRun)
@@ -112,11 +124,11 @@ public class SocketServer {
 					System.out.println("[SERVER] Avvio thread ricezione...");
 					while (socket.isConnected() && !socket.isClosed()) {
 						synchronized (this) {
-							player = (Player) game.level.getWorld().getPlayer();
+							host = (Host) game.level.getWorld().getHost();
 							System.out.println("[SERVER] In ascolto...");
 							Packet pkg;
 							try {
-								pkg = MessageHandler.receiveObject();
+								pkg = (Packet) msg.receiveObject();
 							} catch (IOException e) {
 								System.out.println("[SERVER] Client disconnesso...");
 								close();
@@ -124,14 +136,15 @@ public class SocketServer {
 							}
 
 							if (pkg != null) {
+								msg.HandlePacket(pkg, host);
 								System.out.println("[SERVER] ricevo dal client: " + pkg.toString());
-								game.level.getWorld().getHost().update(GameObject.DOWN);
+								//host.update(GameObject.DOWN);
 							}
 						}
 						try {
 							Thread.sleep(34);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
+
 							e.printStackTrace();
 						}
 						if (closeRun)

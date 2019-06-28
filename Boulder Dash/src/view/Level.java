@@ -4,19 +4,15 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import menu.Options;
 import model.*;
-import network.*;
-import network.packet.*;
 
 public class Level extends JPanel implements KeyListener {
 	/**

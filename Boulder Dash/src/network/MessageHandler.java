@@ -10,39 +10,50 @@ import network.packet.*;
 
 public class MessageHandler {
 
-	private static Socket socket;
-	public static void setSocket(Socket socket) throws IOException {
-		MessageHandler.socket = socket;
+	private Socket socket;
+	private ObjectInputStream read;
+	private ObjectOutputStream write;
+
+	public MessageHandler() {
+		socket = null;
+		read = null;
+		write = null;
 	}
 
+	public void initInput() throws IOException {
+		read = new ObjectInputStream(socket.getInputStream());
+	}
 
-	public static void sendObject(Packet pkg) throws IOException {
-		try {
-			ObjectOutputStream write = new ObjectOutputStream(socket.getOutputStream());
+	public void initOutput() throws IOException {
+		write = new ObjectOutputStream(socket.getOutputStream());
+	}
+
+	public void setSocket(Socket socket) throws IOException {
+		this.socket = socket;
+	}
+
+	public void sendObject(Packet pkg) throws IOException {
+	
 			write.writeObject(pkg);
 			write.flush();
-
-		} catch (IOException e) {
-			throw new IOException();
-		}
 	}
 
-	public static Packet receiveObject() throws IOException {
+	public Packet receiveObject() throws IOException {
 		Packet pkg = null;
 		try {
-			ObjectInputStream read = new ObjectInputStream(socket.getInputStream());
-			pkg = (Packet)read.readObject();
+			pkg = (Packet) read.readObject();
 
-		} catch (IOException | ClassNotFoundException e) {
-			throw new IOException();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 		return pkg;
 	}
 
-	public static void HandlePacket(Packet pkg, Host host) {
+	public void HandlePacket(Packet pkg, Host host) {
 
 		if (pkg instanceof PacketMove) {
 			// TODO: operazioni per muovere player/nemici...
+			//host.update(((PacketMove) pkg).getDir());
 		}
 
 		else if (pkg instanceof PacketDie) {
