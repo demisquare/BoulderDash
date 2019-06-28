@@ -80,14 +80,11 @@ public abstract class GameObject {
 	
 	public boolean isDead() { return dead; }
 	
-	public boolean hasMoved() {
-			return moved; 
-	}
+	public boolean hasMoved() { return moved; }
+	
 	public GameObject getSuccessor() { return successor; }
 	
-	public void setDead(boolean x) {
-		dead = x;
-	}
+	public void setDead(boolean x) {dead = x; }
 	
 	public abstract boolean update();
 	public abstract boolean update(int dir);
@@ -104,7 +101,7 @@ public abstract class GameObject {
 				
 				map.setTile(x, y, successor);
 				
-				successor.processed = false;		
+				successor.processed = true;		
 				processed = true;
 				dead = true;
 				

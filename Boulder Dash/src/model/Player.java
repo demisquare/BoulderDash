@@ -158,7 +158,6 @@ public class Player extends GameObject implements Living {
 					//GameObject.hasMoved.signalAll();
 					return true;
 				}
-	
 			}
 			moved = false;
 			return moved;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import model.*;
 
-public class LivingSprite {
+public class LivingSprite extends DummyClass {
 
 	public static final int DOWN = 0;
 	public static final int LEFT = 1;
@@ -39,8 +39,6 @@ public class LivingSprite {
 	private Animation animation;
 
 	private Sprite sprite;
-
-	GameObject logicObj;
 	
 	public LivingSprite(String file, int speed, GameObject obj) {
 	

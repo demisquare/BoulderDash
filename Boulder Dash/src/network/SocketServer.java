@@ -148,7 +148,6 @@ public class SocketServer {
 			listener.close();
 			if (socket != null) {
 				socket.close();
-
 			}
 
 			System.out.println("[SERVER] Server chiuso.");

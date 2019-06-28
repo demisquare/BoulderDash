@@ -4,19 +4,18 @@ import java.awt.image.BufferedImage;
 
 import model.GameObject;
 
-public class BlockSprite {
+public class BlockSprite extends DummyClass {
 
 	private BufferedImage img;
-	private GameObject g;
 	
 	public BlockSprite(BufferedImage img) {
 		this.img = img;
-		g = null;
+		logicObj = null;
 	}
 	
 	public BlockSprite(BufferedImage img, GameObject g) {
 		this.img = img;
-		this.g = g;
+		this.logicObj = g;
 	}
 
 	public BufferedImage getImg() {
@@ -28,11 +27,11 @@ public class BlockSprite {
 	}
 
 	public GameObject getLogicObject() {
-		return g;
+		return logicObj;
 	}
 
 	public void setLogicObject(GameObject g) {
-		this.g = g;
+		this.logicObj = g;
 	}
 	
 	

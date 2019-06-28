@@ -56,7 +56,7 @@ public class Level extends JPanel implements KeyListener {
 		}
 	};
 
-	private int FPS = 34;
+	private int FPS = 30;
 	private static Sprite spritesheet = new Sprite();
 	private static Random r = new Random();
 
@@ -172,61 +172,38 @@ public class Level extends JPanel implements KeyListener {
 		this.world = world;
 	}
 
-	// sincronizza la grafica con la logica
-	public synchronized void updateGraphics() throws NullPointerException {
-		// aggiorna i blocchi
-		for (int i = 0; i < blockSprites.size(); ++i) {
+	private void updateCategory(ArrayList<? extends DummyClass> Arr, boolean toRemove, boolean toAdd) {
+		
+		for (int i = 0; i < Arr.size(); ++i) {
 			
-			GameObject g = blockSprites.get(i).getLogicObject();
+			GameObject g = Arr.get(i).getLogicObj();
 			// se il blocco logico e' cambiato nell'ultimo world.update()...
-			if (g.isDead() || g.hasChanged()) {
+			if (g.isDead()) {
 				if (g.getSuccessor() != null) {
 					GameObject newObj = g.getSuccessor();
 					BufferedImage img = spritesheet.getSprite(1, 2);
-					blockSprites.set(i, new BlockSprite(img, newObj));
+					if(!toAdd)
+						blockSprites.set(i, new BlockSprite(img, newObj));
+					else
+						blockSprites.add(i, new BlockSprite(img, newObj));
+					if(toRemove)
+						Arr.remove(i);
 				}
 			}
 		}
-		// aggiorna i players
-		for (int i = 0; i < playerSprites.size(); ++i) {
-			Player p = (Player) playerSprites.get(i).logicObj;
-			if (p.isDead()) {
-				GameObject newObj = p.getSuccessor();
-				BufferedImage img = spritesheet.getSprite(1, 2);
-				blockSprites.add(new BlockSprite(img, newObj));
-				playerSprites.remove(i);
-				System.out.println("PLAYER REMOVED");
-			}
-		}
-		
-		if(Options.multiplayer && Options.host) {
-			// aggiorna gli hosts
-			for (int i = 0; i < hostSprites.size(); ++i) {
-				Host h = (Host) hostSprites.get(i).logicObj;
-				if (h.isDead()) {
-					GameObject newObj = h.getSuccessor();
-					BufferedImage img = spritesheet.getSprite(1, 2);
-					blockSprites.add(new BlockSprite(img, newObj));
-					hostSprites.remove(i);
-					System.out.println("HOST REMOVED");
-				}
-			}
-		}
+	}
+	
+	// sincronizza la grafica con la logica
+	public synchronized void updateGraphics() throws NullPointerException {
 
-		// aggiorna gli enemies
-		for (int i = 0; i < enemySprites.size(); ++i) {
-			Enemy e = (Enemy) enemySprites.get(i).logicObj;
-			if (e.isDead()) {
-				GameObject newObj = e.getSuccessor();
-				BufferedImage img = spritesheet.getSprite(1, 2);
-				blockSprites.add(new BlockSprite(img, newObj));
-				enemySprites.remove(i);
-				System.out.println("ENEMY REMOVED");
-			}
-		}
+		updateCategory(blockSprites, false, false);
+		updateCategory(playerSprites, true, true);		
+		updateCategory(enemySprites, true, true);
+		if(Options.multiplayer && Options.host)
+			updateCategory(hostSprites, true, true);
 		// aggiorna gli enemies pt.2
 		for (int i = 0; i < enemySprites.size(); ++i) {
-			Enemy e = (Enemy) enemySprites.get(i).logicObj;
+			Enemy e = (Enemy) enemySprites.get(i).getLogicObj();
 			if (!e.isDead()) {
 				// per accelerare l'animazione dell'Enemy, aumentare la costante 1
 				if (enemySprites.get(i).counter >= (125 / (FPS * 1))) {
@@ -339,15 +316,13 @@ public class Level extends JPanel implements KeyListener {
 			@Override
 			public void run() {
 				while(true) {
-					synchronized(this) {
-						revalidate();
-						repaint();
-					}
+					revalidate();
+					repaint();
 					synchronized(this) {
 						world.reset();
 					}
 					try {
-						Thread.sleep(34);
+						Thread.sleep(1000/FPS + 1);
 					} catch(InterruptedException e) {
 						return;
 					}
