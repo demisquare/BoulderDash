@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Enemy extends GameObject implements Living {
 	
 	//manca anche qui un delay sul movimento: con un counter oppure usando ScheduledExecutorService?
-	private int delayMovement;
+	protected int delayMovement;
 	
 	protected Random r;
 	protected int speed;
@@ -57,6 +57,10 @@ public class Enemy extends GameObject implements Living {
 		//return false;
 	}
 
+	protected void calculateDirection() {
+		lastDir = r.nextInt(4);
+	}
+	
 	@Override
 	public boolean update() {
 		
@@ -64,7 +68,7 @@ public class Enemy extends GameObject implements Living {
 		if(delayMovement >= 3) {
 			
 			delayMovement = 0;
-			lastDir = r.nextInt(4);
+			calculateDirection();
 			return move(lastDir);
 		}
 		

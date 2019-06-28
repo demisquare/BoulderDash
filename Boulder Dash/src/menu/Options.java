@@ -29,6 +29,18 @@ public class Options extends JPanel {
 	
 	private Thread t;
 
+	public static boolean music = false;
+	public static boolean full_screen = false;	
+	
+	public static boolean multiplayer = false;
+	public static boolean host = false;
+
+	public enum Difficulty {
+		paradiso, purgatorio, inferno;
+	}
+
+	static public Difficulty difficulty = Difficulty.purgatorio;
+	
 	BufferedImage background;
 	Image arrow_back;
 	Image arrow_back_SELECTED;
@@ -78,18 +90,6 @@ public class Options extends JPanel {
 		frame.setSize(1280, 749);
 	}
 	
-	public static boolean music = false;
-	public static boolean full_screen = false;	
-	
-	public static boolean multiplayer = false;
-	public static boolean host = false;
-
-	enum Difficulty {
-		paradiso, purgatorio, inferno;
-	}
-
-	public Difficulty difficulty = Difficulty.purgatorio;
-
 	public Options(JFrame frame, Menu menu) {
 		try {
 			

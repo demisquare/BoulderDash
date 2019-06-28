@@ -6,22 +6,13 @@ class MovementAlgorithms {
 
 	private MovementAlgorithms() {}
 	
-	public static int ManatthanAlgorithm() {
-		
+	public static int manatthanDistance() {
+		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	public static ArrayList<Integer> RecursiveManatthanAlgorithm() {
-		
-		ArrayList<Integer> directions = null;
-		
-		return directions;
-	}
-	
-	public static ArrayList<Integer> MinimumWalkAlgorithm() {
-		
-		ArrayList<Integer> directions = null;
-		
-		return directions;
+
+	public static int greedyWalk() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
