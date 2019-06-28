@@ -56,19 +56,16 @@ public class Level extends JPanel implements KeyListener {
 	private int FPS = 30;
 	private static Sprite spritesheet = new Sprite();
 	private static Random r = new Random();
-
 	/*
 	 * AudioPlayer game_song = new AudioPlayer("." + File.separator + "resources" +
 	 * File.separator + "assets" + File.separator + "music" + File.separator +
 	 * "game_song"+ ".wav");
 	 */
-
 	private Thread t;
-
+	private Game game;
 	// Questa classe far� da interfaccia a TUTTA la logica di un livello
 	World world;
 	LocalTime lastTimePressed;
-
 	// graphics for blocks
 	ArrayList<BlockSprite> blockSprites;
 	// graphics for both Player and Enemies
@@ -139,7 +136,7 @@ public class Level extends JPanel implements KeyListener {
 		}
 	}
 
-	public Level() {
+	public Level(Game g) {
 		super();
 
 		setFocusable(true);
@@ -148,7 +145,8 @@ public class Level extends JPanel implements KeyListener {
 
 		// crea un world...
 		world = new World(FPS);
-
+		game = g;
+		
 		t = null;
 		
 		initGraphics();
@@ -212,6 +210,12 @@ public class Level extends JPanel implements KeyListener {
 				}
 			}
 		}
+		
+		if(((Player)world.getPlayer()).getLifes() == 0)
+			game.youLose();
+		
+		if(world.getWinCon())
+			game.youWin();
 	}
 
 	// permette di ridefinire i componenti del pannello di default.

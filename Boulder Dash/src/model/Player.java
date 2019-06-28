@@ -18,6 +18,10 @@ public class Player extends GameObject implements Living {
 	
 	private int lifes;
 	
+	public int getLifes() {
+		return lifes;
+	}
+
 	private int lastDir;
 
 	public int getLastDir() {
@@ -35,7 +39,7 @@ public class Player extends GameObject implements Living {
 		pushRockCounter = 0;
 		movingCounter = 0;
 		speed = s;
-		lifes = 2;
+		lifes = 3;
 		lastDir = -1;
 	}
 
@@ -120,7 +124,7 @@ public class Player extends GameObject implements Living {
 	}
 	
 	public void respawn() {	
-		if(lifes > 0) {
+		if(lifes > 1) {
 			respawned = true;
 			
 			ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
@@ -129,6 +133,7 @@ public class Player extends GameObject implements Living {
 			--lifes;
 		
 		} else {
+			lifes = 0;
 			destroy();
 		}
 	}
@@ -152,6 +157,7 @@ public class Player extends GameObject implements Living {
 				} else if (map.getTile(i, j) instanceof Door) {
 	
 					moved = true;
+					map.winCon = true;
 	
 					System.out.println("VITTORIA");
 	
