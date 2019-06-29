@@ -21,11 +21,7 @@ class MovementAlgorithms {
 			int ret = (new Random()).nextInt(4);
 			for(int i = 0; i < 4; ++i) {
 				
-				double temp = 
-//						Math.sqrt(
-//								Math.pow(player.getX() - enemy.getX() - GameObject.dmap[i][0], 2) + 
-//								Math.pow(player.getY() - enemy.getY() - GameObject.dmap[i][1], 2));
-//				
+				double temp = 				
 						Math.abs(player.getX() - enemy.getX() - GameObject.dmap[i][0]) +
 						Math.abs(player.getY() - enemy.getY() - GameObject.dmap[i][1]);
 				
@@ -34,6 +30,7 @@ class MovementAlgorithms {
 								enemy.getX() + GameObject.dmap[i][0], 
 								enemy.getY() + GameObject.dmap[i][1]) 
 						instanceof EmptyBlock) {
+					
 					min = temp;
 					ret = i;
 				}

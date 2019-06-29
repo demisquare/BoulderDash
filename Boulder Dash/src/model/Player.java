@@ -75,7 +75,7 @@ public class Player extends GameObject implements Living {
 
 		} else if (g instanceof Ground) {
 
-			System.out.println("scava...");
+			//System.out.println("scava...");
 			++movingCounter;
 			pushRockCounter = 0;
 			if (movingCounter >= 1) {
@@ -90,7 +90,7 @@ public class Player extends GameObject implements Living {
 
 			++pushRockCounter;
 			movingCounter = 0;
-			if (pushRockCounter >= 6) {
+			if (pushRockCounter >= 5) {
 				pushRockCounter = 0;
 				movingCounter = 1;
 				if (g.move(dir)) {
