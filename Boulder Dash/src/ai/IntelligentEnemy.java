@@ -35,7 +35,7 @@ public class IntelligentEnemy extends Enemy implements Agent {
 			
 			//System.out.println("purgafiso");
 			
-			lastDir = MovementAlgorithms.manatthanDistance(this);
+			lastDir = MovementAlgorithms.euclideanDistance(this);
 			
 		} else if(Options.difficulty == Difficulty.inferno) {
 			
