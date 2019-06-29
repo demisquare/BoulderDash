@@ -2,7 +2,6 @@ package view;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -21,6 +20,8 @@ import menu.Menu;
 import menu.Options;
 import menu.Scaling;
 
+import model.Player;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -37,7 +38,6 @@ public class Score extends JPanel implements Serializable {
 			"assets" + File.separator + 
 			"ScoreTab" + File.separator;
 	
-	private Thread t;
 	
 	BufferedImage Background;
 	Image arrow_back;
@@ -46,19 +46,30 @@ public class Score extends JPanel implements Serializable {
 	Image lives_2;
 	Image lives_1;
 	
+	public static int total_score = 0;
 	public static int remaining_time = 150; //150 secondi per livello
 	public boolean turn_back = false;
 	
 	JLabel ARROW_BACK_scaled;
 	JLabel time_left;
 	JLabel Lives;
+	JLabel Diamonds;
+	JLabel score;
 	
-	public void check_resize() {
+	public void check_resize(Level level) {
+		ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 80, 50, Options.full_screen)));
+		if(((Player)level.getWorld().getPlayer()).getLifes() == 3)
+			Lives.setIcon(new ImageIcon(Scaling.get(lives_3, 240, 73, Options.full_screen)));
+		else if(((Player)level.getWorld().getPlayer()).getLifes() == 2)
+			Lives.setIcon(new ImageIcon(Scaling.get(lives_2, 240, 73, Options.full_screen)));
+		else
+			Lives.setIcon(new ImageIcon(Scaling.get(lives_1, 240, 73, Options.full_screen)));
+		
 		Scaling.set(ARROW_BACK_scaled, 230, 640, 146, 97, Options.full_screen);
 		Scaling.set(Lives, 32, 440, 305, 94, Options.full_screen);
 		Scaling.set(time_left, 16, 580, 350, 100, Options.full_screen);
-		
-		
+		Scaling.set(Diamonds, 14, 120, 350, 100, Options.full_screen);
+		Scaling.set(score, 12, 275, 350, 100, Options.full_screen);	
 	}
 	
 	private void turn_back(JFrame frame, Menu menu, Game game) throws InterruptedException {
@@ -83,7 +94,7 @@ public class Score extends JPanel implements Serializable {
 		
 	}
 	
-	public Score(JFrame frame, Menu menu, Game game) { //Default Score resolution: 360x720
+	public Score(JFrame frame, Menu menu, Game game, Level level) { //Default Score resolution: 360x720
 		
 		try {
 			Font eightBit = Font.createFont(Font.TRUETYPE_FONT, new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "8BITFONT.TTF")).deriveFont(80f);
@@ -138,11 +149,22 @@ public class Score extends JPanel implements Serializable {
 			time_left = new JLabel("" + remaining_time, JLabel.CENTER);
 			time_left.setForeground(Color.WHITE);
 			time_left.setFont(eightBit);
+			
+			int missing_diamonds = level.getWorld().getMap().getNumDiamonds();
+			Diamonds = new JLabel("" + missing_diamonds, JLabel.CENTER);
+			Diamonds.setForeground(Color.WHITE);
+			Diamonds.setFont(eightBit);
+			
+			score = new JLabel("" + total_score, JLabel.CENTER);
+			score.setForeground(Color.WHITE);
+			score.setFont(eightBit);
 					
 			this.add(Lives);
 			this.setLayout(null); //se non settiamo a null non possiamo usare il setBounds.
 			this.add(ARROW_BACK_scaled);
 			this.add(time_left);
+			this.add(Diamonds);
+			this.add(score);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
