@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class Scaling {
 	
@@ -35,9 +36,19 @@ public class Scaling {
 		
 		if(scaled) {
 			updateToolkit();
-			L.setBounds((int)(a*vx), (int)(b*vy), c, d);	
+			L.setBounds((int)(a*vx), (int)(b*vy), (int)(c*vx), (int)(d*vy));	
 		
 		} else
 			L.setBounds(a, b, c, d);
-	}	
+	}
+	
+	public static void set(JPanel L, int a, int b, int c, int d, boolean scaled) {
+		
+		if(scaled) {
+			updateToolkit();
+			L.setBounds((int)(a*vx), (int)(b*vy), (int)(c*vx), (int)(d*vy));	
+		
+		} else
+			L.setBounds(a, b, c, d);
+	}
 }

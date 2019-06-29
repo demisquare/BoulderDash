@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import audio.Music;
 import menu.Menu;
 import menu.Options;
+import menu.Scaling;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -51,6 +52,14 @@ public class Score extends JPanel implements Serializable {
 	JLabel ARROW_BACK_scaled;
 	JLabel time_left;
 	JLabel Lives;
+	
+	public void check_resize() {
+		Scaling.set(ARROW_BACK_scaled, 230, 640, 146, 97, Options.full_screen);
+		Scaling.set(Lives, 32, 440, 305, 94, Options.full_screen);
+		Scaling.set(time_left, 16, 580, 350, 100, Options.full_screen);
+		
+		
+	}
 	
 	private void turn_back(JFrame frame, Menu menu, Game game) throws InterruptedException {
 		//socketServer.close();
@@ -102,14 +111,14 @@ public class Score extends JPanel implements Serializable {
 						e1.printStackTrace();
 					}
 					
-					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
+					ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 80, 50, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
 				
 				@Override
 				public void mouseExited(MouseEvent e) {
-					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
+					ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 80, 50, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -117,7 +126,7 @@ public class Score extends JPanel implements Serializable {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					Music.playTone("hover");
-					ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back_SELECTED));
+					ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back_SELECTED, 80, 50, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -125,8 +134,6 @@ public class Score extends JPanel implements Serializable {
 				@Override public void mouseClicked(MouseEvent e) {}
 				@Override public void mouseReleased(MouseEvent e) {}
 			});
-			
-			launchThread();
 			
 			time_left = new JLabel("" + remaining_time, JLabel.CENTER);
 			time_left.setForeground(Color.WHITE);
@@ -149,45 +156,5 @@ public class Score extends JPanel implements Serializable {
 		super.paintComponent(g);
 		
 		g.drawImage(Background, 0, 0, this.getWidth(), this.getHeight(), null);
-	}
-
-	public synchronized void launchThread() { 
-		if(t != null && t.isAlive())
-			t.interrupt();
-		t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					if(!Options.full_screen) {
-						ARROW_BACK_scaled.setBounds(230, 640, 146, 97);
-						Lives.setBounds(32, 440, 305, 94);
-						time_left.setBounds(16, 580, 350, 100);
-					}
-					else if(Options.full_screen) {
-						
-						Toolkit tk = Toolkit.getDefaultToolkit();
-						double xSize = tk.getScreenSize().getWidth();
-						double ySize = tk.getScreenSize().getHeight();
-				
-						//ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back.getScaledInstance((int)(80*(xSize/1280)), (int)(50*(ySize/720)), Image.SCALE_SMOOTH)));
-						ARROW_BACK_scaled.setBounds((int)(230*(xSize/1280)), (int)(640*(ySize/720)), 146, 97);
-						Lives.setBounds((int)(32*(xSize/1280)), (int)(440*(ySize/720)), 305, 94);
-						time_left.setBounds((int)(16*(xSize/1280)), (int)(580*(ySize/720)), 350, 100);
-					}
-					try {
-						Thread.sleep(34);
-					} catch (InterruptedException e) {
-						return;
-					}
-				}
-			}
-		});
-		
-		t.start();
-	}
-	
-	public synchronized void closeThread() 	{ 
-		if(t != null && t.isAlive())
-			t.interrupt(); 
 	}
 }
