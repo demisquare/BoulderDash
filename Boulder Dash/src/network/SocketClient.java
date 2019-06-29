@@ -86,7 +86,7 @@ public class SocketClient {
 					}
 
 					try {
-						Thread.sleep(34);
+						Thread.sleep(5);
 					} catch (InterruptedException e) {
 
 						e.printStackTrace();
@@ -120,15 +120,14 @@ public class SocketClient {
 								if(host == null)
 									System.out.println("rcodi");
 								
-								Host htemp = host;
-								msg.HandlePacket(pkg, htemp);
+								msg.HandlePacket(pkg, game.level);
 								
 								System.out.println("[CLIENT] ricevo dal server: " + pkg.toString());
 								//host.update(GameObject.DOWN);
 							}
 						
 						try {
-							Thread.sleep(34);
+							Thread.sleep(5);
 						} catch (InterruptedException e) {
 
 							e.printStackTrace();

@@ -69,7 +69,6 @@ public class SocketServer {
 					System.out.println("[SERVER] Avvio thread invio...");
 					while (socket.isConnected() && !socket.isClosed()) {
 
-
 						if (player.hasMoved()) {
 							Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir());
 
@@ -104,7 +103,7 @@ public class SocketServer {
 					}
 
 					try {
-						Thread.sleep(34);
+						Thread.sleep(5);
 					} catch (InterruptedException e) {
 
 						e.printStackTrace();
@@ -139,14 +138,13 @@ public class SocketServer {
 							}
 
 							if (pkg != null) {
-								Host htemp = host;
-								msg.HandlePacket(pkg, htemp);
+								msg.HandlePacket(pkg, game.level);
 								System.out.println("[SERVER] ricevo dal client: " + pkg.toString());
 								//host.update(GameObject.DOWN);
 							}
 						
 						try {
-							Thread.sleep(34);
+							Thread.sleep(5);
 						} catch (InterruptedException e) {
 
 							e.printStackTrace();

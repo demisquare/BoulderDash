@@ -3,10 +3,14 @@ package network;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import java.net.Socket;
 
 import model.Host;
+
 import network.packet.*;
+
+import view.Level;
 
 public class MessageHandler {
 
@@ -49,16 +53,16 @@ public class MessageHandler {
 		return pkg;
 	}
 
-	public void HandlePacket(Packet pkg, Host host) {
+	public void HandlePacket(Packet pkg, Level level) {
 		
-		if(host == null)
+		if(level == null)
 			System.out.println("rcodi2");
 		
 		if (pkg instanceof PacketMove) {
 			// TODO: operazioni per muovere player/nemici...
 			if(((PacketMove)pkg).getDir() != -1) {
 				synchronized(this) {
-					host.update(((PacketMove)pkg).getDir());
+					level.updateHostOnPressing(((PacketMove)pkg).getDir());
 				}
 			}
 		}
@@ -66,7 +70,7 @@ public class MessageHandler {
 		else if (pkg instanceof PacketDie) {
 			// TODO: operazioni per uccidere player/nemici...
 			synchronized(this) {
-				host.respawn(((PacketDie)pkg).getX(), ((PacketDie)pkg).getY());
+				((Host)level.getWorld().getHost()).respawn(((PacketDie)pkg).getX(), ((PacketDie)pkg).getY());
 			}
 		}
 	}
