@@ -64,9 +64,60 @@ public class Options extends JPanel {
 	JLabel WINDOWED_scaled;
 	JLabel FULLSCREEN_scaled;
 	JLabel MUSIC_check;
-
-	private void turn_back(JFrame frame, Menu menu) throws InterruptedException {
+	
+	public void check_resize() {
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		double xSize = tk.getScreenSize().getWidth();
+		double ySize = tk.getScreenSize().getHeight();
 		
+		if(!full_screen) {			
+			ARROW_BACK_scaled.setBounds(5, 5, 146, 97);
+			PARADISO_scaled.setBounds(100, 90, 350, 150);
+			PURGATORIO_scaled.setBounds(460, 90, 350, 150);
+			INFERNO_scaled.setBounds(800, 90, 350, 150);
+			WINDOWED_scaled.setBounds(280, 280, 350, 150);
+			FULLSCREEN_scaled.setBounds(620, 280, 350, 150);
+			MUSIC_check.setBounds(720, 430, 50, 50);
+		}
+		else if(full_screen) {				
+			ARROW_BACK_scaled.setBounds((int)(5*(xSize/1280)), (int)(5*(ySize/720)), 146, 97);
+			PARADISO_scaled.setBounds((int)(100*(xSize/1280)), (int)(90*(ySize/720)), 350, 150);
+			PURGATORIO_scaled.setBounds((int)(460*(xSize/1280)), (int)(90*(ySize/720)), 350, 150);
+			INFERNO_scaled.setBounds((int)(800*(xSize/1280)), (int)(90*(ySize/720)), 350, 150);
+			WINDOWED_scaled.setBounds((int)(280*(xSize/1280)), (int)(280*(ySize/720)), 350, 150);
+			FULLSCREEN_scaled.setBounds((int)(620*(xSize/1280)), (int)(280*(ySize/720)), 350, 150);
+			MUSIC_check.setBounds((int)(720*(xSize/1280)), (int)(430*(ySize/720)), 50, 50);
+		}
+		
+		ARROW_BACK_scaled.setIcon(new ImageIcon(arrow_back));
+		if(difficulty==Difficulty.paradiso) {
+			PARADISO_scaled.setIcon(new ImageIcon(paradiso_SELECTED));
+			PURGATORIO_scaled.setIcon(new ImageIcon(purgatorio));
+			INFERNO_scaled.setIcon(new ImageIcon(inferno));
+		}
+		else if(difficulty==Difficulty.purgatorio) {
+			PARADISO_scaled.setIcon(new ImageIcon(paradiso));
+			PURGATORIO_scaled.setIcon(new ImageIcon(purgatorio_SELECTED));
+			INFERNO_scaled.setIcon(new ImageIcon(inferno));
+			}
+		else if(difficulty==Difficulty.inferno) {
+			PARADISO_scaled.setIcon(new ImageIcon(paradiso));
+			PURGATORIO_scaled.setIcon(new ImageIcon(purgatorio));
+			INFERNO_scaled.setIcon(new ImageIcon(inferno_SELECTED));
+			}
+		if(!full_screen) {
+			WINDOWED_scaled.setIcon(new ImageIcon(windowed_SELECTED));
+			FULLSCREEN_scaled.setIcon(new ImageIcon(fullscreen));
+		}
+		else if(full_screen) {
+			WINDOWED_scaled.setIcon(new ImageIcon(windowed));
+			FULLSCREEN_scaled.setIcon(new ImageIcon(fullscreen_SELECTED));
+		}
+		if(music)	MUSIC_check.setIcon(new ImageIcon(music_checked));
+		else 		MUSIC_check.setIcon(new ImageIcon(music_unchecked));
+	}
+
+	private void turn_back(JFrame frame, Menu menu) throws InterruptedException {		
 		menu.check_resize();
 		frame.remove(this);
 		frame.setContentPane(menu);
@@ -75,6 +126,7 @@ public class Options extends JPanel {
 	}
 	
 	private void full_screen(JFrame frame) {
+		this.check_resize();
 		frame.dispose();
 		if (!frame.isUndecorated())
 			frame.setUndecorated(true);
@@ -83,6 +135,7 @@ public class Options extends JPanel {
 	}
 	
 	private void windowed(JFrame frame) {
+		this.check_resize();
 		frame.dispose();
 		if (frame.isUndecorated())
 			frame.setUndecorated(false);
@@ -351,12 +404,12 @@ public class Options extends JPanel {
 						Music.playTone("select");
 					}
 					
+					full_screen = false;
 					windowed(frame);
 					FULLSCREEN_scaled.setIcon(new ImageIcon(fullscreen));
 					WINDOWED_scaled.setIcon(new ImageIcon(windowed_SELECTED));
 					revalidate();
 					repaint();
-					full_screen = false;
 				}
 
 				@Override
@@ -404,13 +457,12 @@ public class Options extends JPanel {
 						Music.playTone("select");
 					}
 					
+					full_screen=true;
 					full_screen(frame);
 					FULLSCREEN_scaled.setIcon(new ImageIcon(fullscreen_SELECTED));
 					WINDOWED_scaled.setIcon(new ImageIcon(windowed));
 					revalidate();
 					repaint();
-					full_screen=true;
-
 				}
 
 				@Override
@@ -479,32 +531,11 @@ public class Options extends JPanel {
 			this.add(MUSIC_check);
 
 			
-			Toolkit tk = Toolkit.getDefaultToolkit();
-			double xSize = tk.getScreenSize().getWidth();
-			double ySize = tk.getScreenSize().getHeight();
-			
 			t = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					while (true) {
-						if(!full_screen) {
-							ARROW_BACK_scaled.setBounds(5, 5, 146, 97);
-							PARADISO_scaled.setBounds(100, 90, 350, 150);
-							PURGATORIO_scaled.setBounds(460, 90, 350, 150);
-							INFERNO_scaled.setBounds(800, 90, 350, 150);
-							WINDOWED_scaled.setBounds(280, 280, 350, 150);
-							FULLSCREEN_scaled.setBounds(620, 280, 350, 150);
-							MUSIC_check.setBounds(720, 430, 50, 50);
-						}
-						else if(full_screen) {
-							ARROW_BACK_scaled.setBounds((int)(5*(xSize/1280)), (int)(5*(ySize/720)), 146, 97);
-							PARADISO_scaled.setBounds((int)(100*(xSize/1280)), (int)(90*(ySize/720)), 350, 150);
-							PURGATORIO_scaled.setBounds((int)(460*(xSize/1280)), (int)(90*(ySize/720)), 350, 150);
-							INFERNO_scaled.setBounds((int)(800*(xSize/1280)), (int)(90*(ySize/720)), 350, 150);
-							WINDOWED_scaled.setBounds((int)(280*(xSize/1280)), (int)(280*(ySize/720)), 350, 150);
-							FULLSCREEN_scaled.setBounds((int)(620*(xSize/1280)), (int)(280*(ySize/720)), 350, 150);
-							MUSIC_check.setBounds((int)(720*(xSize/1280)), (int)(430*(ySize/720)), 50, 50);
-						}
+						
 							
 						try {
 							Thread.sleep(34);
