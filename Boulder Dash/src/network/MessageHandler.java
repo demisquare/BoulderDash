@@ -55,8 +55,8 @@ public class MessageHandler {
 
 	public void HandlePacket(Packet pkg, Level level) {
 		
-		if(level == null)
-			System.out.println("rcodi2");
+		//if(level == null)
+		//	System.out.println("rcodi2");
 		
 		if (pkg instanceof PacketMove) {
 			// TODO: operazioni per muovere player/nemici...

@@ -68,37 +68,39 @@ public class SocketServer {
 				public void run() {
 					System.out.println("[SERVER] Avvio thread invio...");
 					while (socket.isConnected() && !socket.isClosed()) {
+						synchronized (this) {
 
-						if (player.hasMoved()) {
-							Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir());
+							if (player.hasMoved()) {
+								Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir());
 
-							try {
-								msg.sendObject(move);
-							} catch (IOException e) {
+								try {
+									msg.sendObject(move);
+								} catch (IOException e) {
 
-								System.err.println("[SERVER] Client disconnesso...");
-								close();
+									System.err.println("[SERVER] Client disconnesso...");
+									close();
+								}
+
+								System.out.println("[SERVER] Invio al client: " + move.toString());
+
+								player.setMoved(false);
 							}
 
-							System.out.println("[SERVER] Invio al client: " + move.toString());
+							if (player.isRespawned()) {
+								Packet die = new PacketDie(player.getX(), player.getY());
 
-							player.setMoved(false);
-						}
+								try {
+									msg.sendObject(die);
+								} catch (IOException e) {
 
-						if (player.isRespawned()) {
-							Packet die = new PacketDie(player.getX(), player.getY());
+									System.err.println("[SERVER] Client disconnesso...");
+									close();
+								}
 
-							try {
-								msg.sendObject(die);
-							} catch (IOException e) {
+								System.out.println("[SERVER] Invio al client: " + die.toString());
 
-								System.err.println("[SERVER] Client disconnesso...");
-								close();
+								player.setRespawned(false);
 							}
-
-							System.out.println("[SERVER] Invio al client: " + die.toString());
-
-							player.setRespawned(false);
 						}
 					}
 
@@ -121,13 +123,14 @@ public class SocketServer {
 				public void run() {
 					System.out.println("[SERVER] Avvio thread ricezione...");
 					while (socket.isConnected() && !socket.isClosed()) {
-						
+						synchronized (this) {
+
 							System.out.println("[SERVER] In ascolto...");
 							Object temp;
 							Packet pkg = null;
 							try {
 								temp = msg.receiveObject();
-								if(temp instanceof Packet)
+								if (temp instanceof Packet)
 									pkg = (Packet) temp;
 								else
 									System.out.println(":^)");
@@ -140,18 +143,19 @@ public class SocketServer {
 							if (pkg != null) {
 								msg.HandlePacket(pkg, game.level);
 								System.out.println("[SERVER] ricevo dal client: " + pkg.toString());
-								//host.update(GameObject.DOWN);
+								// host.update(GameObject.DOWN);
 							}
-						
-						try {
-							Thread.sleep(5);
-						} catch (InterruptedException e) {
 
-							e.printStackTrace();
+							try {
+								Thread.sleep(5);
+							} catch (InterruptedException e) {
+
+								e.printStackTrace();
+							}
+							if (closeRun)
+								return;
+
 						}
-						if (closeRun)
-							return;
-
 					}
 				}
 			});
