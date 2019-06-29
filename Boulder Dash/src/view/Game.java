@@ -29,7 +29,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	
 	private void score_init(JFrame frame, Menu menu) {
 		
-		score = new Score(frame, menu, this);
+		score = new Score(frame, menu, this, level);
 		
 		this.setLeftComponent(level);
 		this.setRightComponent(score);
@@ -60,8 +60,9 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		level.addKeyListener(level);
 		
 		//score.closeThread();
-		score = new Score(frame, menu, this);
+		score = new Score(frame, menu, this, level);
 		
+		score.check_resize(level);
 		this.setLeftComponent(level);
 		this.setRightComponent(score);
 		
