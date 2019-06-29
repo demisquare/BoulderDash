@@ -134,6 +134,7 @@ public class Player extends GameObject implements Living {
 			--lifes;
 		
 		} else {
+			moved = false;
 			lifes = 0;
 			destroy();
 		}

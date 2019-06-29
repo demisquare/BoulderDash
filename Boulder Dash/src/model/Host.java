@@ -15,6 +15,7 @@ public class Host extends Player {
 			--lifes;
 		
 		} else {
+			moved = false;
 			lifes = 0;
 			destroy();
 		}
