@@ -5,9 +5,12 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -44,8 +47,8 @@ public class Credits extends JPanel{
 	}
 	
 	public Credits(JFrame frame, Menu menu) {
-		try {
-			
+		
+		try {			
 			background = ImageIO.read(new File(CreditsPagePath + "background.png"));
 			arrow_back = ImageIO.read(new File(CreditsPagePath + "arrow_back.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
 			arrow_back_SELECTED = ImageIO.read(new File(CreditsPagePath + "arrow_back_SELECTED.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);

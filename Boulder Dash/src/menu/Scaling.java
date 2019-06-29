@@ -1,5 +1,6 @@
 package menu;
 
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.Toolkit;
 
@@ -32,17 +33,7 @@ public class Scaling {
 		return img.getScaledInstance(a, b, Image.SCALE_SMOOTH);
 	}
 	
-	public static void set(JLabel L, int a, int b, int c, int d, boolean scaled) {
-		
-		if(scaled) {
-			updateToolkit();
-			L.setBounds((int)(a*vx), (int)(b*vy), (int)(c*vx), (int)(d*vy));	
-		
-		} else
-			L.setBounds(a, b, c, d);
-	}
-	
-	public static void set(JPanel L, int a, int b, int c, int d, boolean scaled) {
+	public static void set(Component L, int a, int b, int c, int d, boolean scaled) {
 		
 		if(scaled) {
 			updateToolkit();
