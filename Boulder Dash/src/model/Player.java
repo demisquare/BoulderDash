@@ -171,7 +171,7 @@ public class Player extends GameObject implements Living {
 	
 					moved = true;
 					
-					respawn();
+					this.respawn();
 					
 					return true;
 				}
