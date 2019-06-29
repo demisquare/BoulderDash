@@ -44,6 +44,7 @@ public class World {
 			return;
 		//aggiorna gli stati di ogni casella
 		try {
+			
 			Collection<GameObject> temp = map.getBlocks().values();
 			for(GameObject e : temp)
 				if(e.processed == false)

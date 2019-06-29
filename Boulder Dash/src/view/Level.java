@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -139,6 +140,7 @@ public class Level extends JPanel implements KeyListener {
 	public Level(Game g) {
 		super();
 
+		setBackground(Color.GRAY);
 		setFocusable(true);
 		setVisible(true);
 		setEnabled(true);
