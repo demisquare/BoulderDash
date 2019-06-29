@@ -28,4 +28,12 @@ public abstract class Packet implements Serializable{
 		
 		return false;
 	}
+
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return x;
+	}
 }

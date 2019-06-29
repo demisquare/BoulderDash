@@ -25,7 +25,6 @@ public class SocketClient {
 		this.game = game;
 		player = (Player) game.level.getWorld().getPlayer();
 		host = (Host) game.level.getWorld().getHost();
-		player = null;
 		socket = null;
 		closeRun = false;
 		t1 = null;
@@ -82,8 +81,8 @@ public class SocketClient {
 
 							System.out.println("[CLIENT] Invio al server: " + die.toString());
 
+							player.setRespawned(false);
 						}
-						player.setRespawned(false);
 					}
 
 					try {
@@ -105,7 +104,7 @@ public class SocketClient {
 				public void run() {
 					System.out.println("[CLIENT] Avvio thread ricezione...");
 					while (socket.isConnected() && !socket.isClosed()) {
-						synchronized (this) {
+						
 							
 							System.out.println("[CLIENT] In ascolto...");
 							Packet pkg;
@@ -127,7 +126,7 @@ public class SocketClient {
 								System.out.println("[CLIENT] ricevo dal server: " + pkg.toString());
 								//host.update(GameObject.DOWN);
 							}
-						}
+						
 						try {
 							Thread.sleep(34);
 						} catch (InterruptedException e) {
