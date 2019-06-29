@@ -63,53 +63,14 @@ public class Menu extends JPanel implements Serializable {
 	You_Lose youlose;
 	
 	public void check_resize() {
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		double xSize = tk.getScreenSize().getWidth();
-		double ySize = tk.getScreenSize().getHeight();
 		
-		if(!Options.full_screen) {
-			
-			START=START.getScaledInstance(191, 55, Image.SCALE_SMOOTH);
-			START_SELECTED=START_SELECTED.getScaledInstance(191, 55, Image.SCALE_SMOOTH);					
-			MULTI=MULTI.getScaledInstance(423, 55, Image.SCALE_SMOOTH);
-			MULTI_SELECTED=MULTI_SELECTED.getScaledInstance(423, 55, Image.SCALE_SMOOTH);
-			OPTIONS=OPTIONS.getScaledInstance(272, 54, Image.SCALE_SMOOTH);
-			OPTIONS_SELECTED=OPTIONS_SELECTED.getScaledInstance(272, 54, Image.SCALE_SMOOTH);
-			CREDITS=CREDITS.getScaledInstance(267, 55, Image.SCALE_SMOOTH);
-			CREDITS_SELECTED=CREDITS_SELECTED.getScaledInstance(267, 55, Image.SCALE_SMOOTH);
-			EXIT=EXIT.getScaledInstance(141, 50, Image.SCALE_SMOOTH);
-			EXIT_SELECTED=EXIT_SELECTED.getScaledInstance(141, 50, Image.SCALE_SMOOTH);
-			
-			menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 550, 550);
-			
-			START_scaled.setIcon(new ImageIcon(START));
-			MULTI_scaled.setIcon(new ImageIcon(MULTI));
-			OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS));
-			CREDITS_scaled.setIcon(new ImageIcon(CREDITS));
-			EXIT_scaled.setIcon(new ImageIcon(EXIT));
-		
-		} else if(Options.full_screen) {
-			
-			START=START.getScaledInstance((int)(191*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
-			START_SELECTED=START_SELECTED.getScaledInstance((int)(191*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);					
-			MULTI=MULTI.getScaledInstance((int)(423*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
-			MULTI_SELECTED=MULTI_SELECTED.getScaledInstance((int)(423*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
-			OPTIONS=OPTIONS.getScaledInstance((int)(272*(xSize/1280)), (int)(54*(ySize/720)), Image.SCALE_SMOOTH);
-			OPTIONS_SELECTED=OPTIONS_SELECTED.getScaledInstance((int)(272*(xSize/1280)), (int)(54*(ySize/720)), Image.SCALE_SMOOTH);
-			CREDITS=CREDITS.getScaledInstance((int)(267*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
-			CREDITS_SELECTED=CREDITS_SELECTED.getScaledInstance((int)(267*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
-			EXIT=EXIT.getScaledInstance((int)(141*(xSize/1280)), (int)(50*(ySize/720)), Image.SCALE_SMOOTH);
-			EXIT_SELECTED=EXIT_SELECTED.getScaledInstance((int)(141*(xSize/1280)), (int)(50*(ySize/720)), Image.SCALE_SMOOTH);
-			
-			
-			menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 550, 550);		
-
-			START_scaled.setIcon(new ImageIcon(START));
-			MULTI_scaled.setIcon(new ImageIcon(MULTI));
-			OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS));
-			CREDITS_scaled.setIcon(new ImageIcon(CREDITS));
-			EXIT_scaled.setIcon(new ImageIcon(EXIT));
-		}
+		START_scaled.setIcon(new ImageIcon(Scaling.get(START, 191, 55, Options.full_screen)));
+		MULTI_scaled.setIcon(new ImageIcon(Scaling.get(MULTI, 423, 55, Options.full_screen)));
+		OPTIONS_scaled.setIcon(new ImageIcon(Scaling.get(OPTIONS, 272, 54, Options.full_screen)));
+		CREDITS_scaled.setIcon(new ImageIcon(Scaling.get(CREDITS, 267, 55, Options.full_screen)));
+		EXIT_scaled.setIcon(new ImageIcon(Scaling.get(EXIT, 141, 50, Options.full_screen)));
+	
+		Scaling.set(menu_choices, (int)(1280d/2d - 430d/2d), 250, 550, 550, Options.full_screen);	
 	}
 
 	private void start_selected(JFrame frame) throws InterruptedException {
@@ -202,14 +163,14 @@ public class Menu extends JPanel implements Serializable {
 					synchronized(this) {
 						Music.playTone("hover");
 					}
-					START_scaled.setIcon(new ImageIcon(START_SELECTED));
+					START_scaled.setIcon(new ImageIcon(Scaling.get(START_SELECTED, 191, 55, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					START_scaled.setIcon(new ImageIcon(START));
+					START_scaled.setIcon(new ImageIcon(Scaling.get(START, 191, 55, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -227,7 +188,7 @@ public class Menu extends JPanel implements Serializable {
 						e1.printStackTrace();
 					}
 					
-					START_scaled.setIcon(new ImageIcon(START));
+					START_scaled.setIcon(new ImageIcon(Scaling.get(START, 191, 55, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -251,14 +212,14 @@ public class Menu extends JPanel implements Serializable {
 						e1.printStackTrace();
 					}
 					
-					MULTI_scaled.setIcon(new ImageIcon(MULTI));
+					MULTI_scaled.setIcon(new ImageIcon(Scaling.get(MULTI, 423, 55, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					MULTI_scaled.setIcon(new ImageIcon(MULTI));
+					MULTI_scaled.setIcon(new ImageIcon(Scaling.get(MULTI, 423, 55, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -270,7 +231,7 @@ public class Menu extends JPanel implements Serializable {
 						Music.playTone("hover");
 					}
 					
-					MULTI_scaled.setIcon(new ImageIcon(MULTI_SELECTED));
+					MULTI_scaled.setIcon(new ImageIcon(Scaling.get(MULTI_SELECTED, 423, 55, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -294,14 +255,14 @@ public class Menu extends JPanel implements Serializable {
 						e1.printStackTrace();
 					}
 					
-					OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS));
+					OPTIONS_scaled.setIcon(new ImageIcon(Scaling.get(OPTIONS, 272, 54, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS));
+					OPTIONS_scaled.setIcon(new ImageIcon(Scaling.get(OPTIONS, 272, 54, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -313,7 +274,7 @@ public class Menu extends JPanel implements Serializable {
 						Music.playTone("hover");
 					}
 					
-					OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS_SELECTED));
+					OPTIONS_scaled.setIcon(new ImageIcon(Scaling.get(OPTIONS_SELECTED, 272, 54, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -337,14 +298,14 @@ public class Menu extends JPanel implements Serializable {
 						e1.printStackTrace();
 					}
 					
-					CREDITS_scaled.setIcon(new ImageIcon(CREDITS));
+					CREDITS_scaled.setIcon(new ImageIcon(Scaling.get(CREDITS, 267, 55, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					CREDITS_scaled.setIcon(new ImageIcon(CREDITS));
+					CREDITS_scaled.setIcon(new ImageIcon(Scaling.get(CREDITS, 267, 55, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -356,7 +317,7 @@ public class Menu extends JPanel implements Serializable {
 						Music.playTone("hover");
 					}
 					
-					CREDITS_scaled.setIcon(new ImageIcon(CREDITS_SELECTED));
+					CREDITS_scaled.setIcon(new ImageIcon(Scaling.get(CREDITS_SELECTED, 267, 55, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -374,14 +335,14 @@ public class Menu extends JPanel implements Serializable {
 						Music.playTone("hover");
 					}
 					
-					EXIT_scaled.setIcon(new ImageIcon(EXIT_SELECTED));
+					EXIT_scaled.setIcon(new ImageIcon(Scaling.get(EXIT_SELECTED, 141, 50, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					EXIT_scaled.setIcon(new ImageIcon(EXIT));
+					EXIT_scaled.setIcon(new ImageIcon(Scaling.get(EXIT, 141, 50, Options.full_screen)));
 					revalidate();
 					repaint();
 				}

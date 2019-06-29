@@ -59,7 +59,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		level = new Level(this);
 		level.addKeyListener(level);
 		
-		score.closeThread();
+		//score.closeThread();
 		score = new Score(frame, menu, this);
 		
 		this.setLeftComponent(level);
@@ -105,7 +105,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		if(t2 != null && t2.isAlive())
 			t2.interrupt();
 		level.closeThread();
-		score.closeThread();
+		//score.closeThread();
 	}
 
 	public void youLose() {
