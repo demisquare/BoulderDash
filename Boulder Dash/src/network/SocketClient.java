@@ -8,6 +8,7 @@ import model.Player;
 import network.packet.Packet;
 import network.packet.PacketDie;
 import network.packet.PacketMove;
+import network.packet.PacketStand;
 import view.Game;
 
 public class SocketClient {
@@ -36,15 +37,15 @@ public class SocketClient {
 		try {
 			System.out.println("[CLIENT] Connessione al server...");
 			socket = new Socket("localhost", 8000);
-			
+
 			msg.setSocket(socket);
 			msg.initOutput();
 			msg.sendObject(new PacketMove(0, 0, 0));
 			msg.initInput();
 			msg.receiveObject();
-			
+
 			System.out.println("[CLIENT] Connesso!");
-			
+
 			t1 = new Thread(new Runnable() {
 
 				@Override
@@ -52,7 +53,7 @@ public class SocketClient {
 					System.out.println("[CLIENT] Avvio thread invio...");
 					while (socket.isConnected() && !socket.isClosed()) {
 
-						if (player.hasMoved()) {
+						if (player.hasMoved() && player.getLastDir() != -1) {
 							Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir());
 
 							try {
@@ -66,6 +67,22 @@ public class SocketClient {
 							System.out.println("[CLIENT] Invio al server: " + move.toString());
 
 							player.setMoved(false);
+						}
+
+						if (game.level.isMouseReleased() && player.getLastDir() != -1) {
+							Packet stand = new PacketStand(player.getX(), player.getY(), player.getLastDir());
+
+							try {
+								msg.sendObject(stand);
+							} catch (IOException e) {
+
+								System.err.println("[SERVER] Client disconnesso...");
+								close();
+							}
+
+							System.out.println("[SERVER] Invio al client: " + stand.toString());
+
+							game.level.setMouseReleased(false);
 						}
 
 						if (player.isRespawned()) {
@@ -104,28 +121,24 @@ public class SocketClient {
 				public void run() {
 					System.out.println("[CLIENT] Avvio thread ricezione...");
 					while (socket.isConnected() && !socket.isClosed()) {
-						
-							
-							System.out.println("[CLIENT] In ascolto...");
-							Packet pkg;
-							try {
-								pkg = (Packet) msg.receiveObject();
-							} catch (IOException e) {
-								System.out.println("[CLIENT] Server disconnesso...");
-								close();
-								return;
-							}
 
-							if (pkg != null) {
-								if(host == null)
-									System.out.println("rcodi");
-								
-								msg.HandlePacket(pkg, game.level);
-								
-								System.out.println("[CLIENT] ricevo dal server: " + pkg.toString());
-								//host.update(GameObject.DOWN);
-							}
-						
+						System.out.println("[CLIENT] In ascolto...");
+						Packet pkg;
+						try {
+							pkg = (Packet) msg.receiveObject();
+						} catch (IOException e) {
+							System.out.println("[CLIENT] Server disconnesso...");
+							close();
+							return;
+						}
+
+						if (pkg != null) {
+							msg.HandlePacket(pkg, game.level);
+
+							System.out.println("[CLIENT] ricevo dal server: " + pkg.toString());
+							// host.update(GameObject.DOWN);
+						}
+
 						try {
 							Thread.sleep(5);
 						} catch (InterruptedException e) {
@@ -139,7 +152,7 @@ public class SocketClient {
 				}
 			});
 			t2.start();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

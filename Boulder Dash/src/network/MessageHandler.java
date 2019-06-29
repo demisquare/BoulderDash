@@ -37,9 +37,9 @@ public class MessageHandler {
 	}
 
 	public void sendObject(Packet pkg) throws IOException {
-	
-			write.writeObject(pkg);
-			write.flush();
+
+		write.writeObject(pkg);
+		write.flush();
 	}
 
 	public Packet receiveObject() throws IOException {
@@ -54,23 +54,30 @@ public class MessageHandler {
 	}
 
 	public void HandlePacket(Packet pkg, Level level) {
-		
-		//if(level == null)
-		//	System.out.println("rcodi2");
-		
+
 		if (pkg instanceof PacketMove) {
-			// TODO: operazioni per muovere player/nemici...
-			if(((PacketMove)pkg).getDir() != -1) {
-				synchronized(this) {
-					level.updateHostOnPressing(((PacketMove)pkg).getDir());
+			if (((PacketMove) pkg).getDir() != -1) {
+				synchronized (this) {
+					level.updateHostOnPressing(((PacketMove) pkg).getDir());
+				}
+			}
+		}
+
+		else if (pkg instanceof PacketStand) {
+			if (((PacketStand) pkg).getDir() != -1) {
+				synchronized (this) {
+					level.updateHostOnRelease(((PacketStand) pkg).getDir());
 				}
 			}
 		}
 
 		else if (pkg instanceof PacketDie) {
-			// TODO: operazioni per uccidere player/nemici...
-			synchronized(this) {
-				((Host)level.getWorld().getHost()).respawn(((PacketDie)pkg).getX(), ((PacketDie)pkg).getY());
+			synchronized (this) {
+				Host host = ((Host) level.getWorld().getHost());
+				System.out.println("Host Respawn: " + pkg.toString());
+				
+				host.respawn(((PacketDie) pkg).getX(), ((PacketDie) pkg).getY());
+				System.out.println("host: " + host.getX() + " - " + host.getY());
 			}
 		}
 	}

@@ -9,6 +9,7 @@ import model.Player;
 import network.packet.Packet;
 import network.packet.PacketDie;
 import network.packet.PacketMove;
+import network.packet.PacketStand;
 import view.Game;
 
 public class SocketServer {
@@ -38,13 +39,12 @@ public class SocketServer {
 
 	/*
 	 * costruttore di ObjectInputStream: BLOCCANTE si sblocca quando riceve un
-	 * pacchetto da un OutputStream
+	 * pacchetto da un OutputStream...
 	 * 
 	 * quindi: x[SERVER] new InputStream x[CLIENT] new OutputStream x[CLIENT] invia
 	 * pacchetto x[SERVER] InputStream riceve, si sblocca x[CLIENT] nel frattempo
 	 * new InputStream x[SERVER] new OutputStream (può farlo quando vuoi) x[SERVER]
 	 * invia pacchetto x[CLIENT] riceve pacchetto, si sblocca InputStream fine
-	 * 
 	 */
 
 	public void connect() {
@@ -70,7 +70,7 @@ public class SocketServer {
 					while (socket.isConnected() && !socket.isClosed()) {
 						synchronized (this) {
 
-							if (player.hasMoved()) {
+							if (player.hasMoved() && player.getLastDir() != -1) {
 								Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir());
 
 								try {
@@ -84,6 +84,22 @@ public class SocketServer {
 								System.out.println("[SERVER] Invio al client: " + move.toString());
 
 								player.setMoved(false);
+							}
+							
+							if (game.level.isMouseReleased() && player.getLastDir() != -1) {
+								Packet stand = new PacketStand(player.getX(), player.getY(), player.getLastDir());
+
+								try {
+									msg.sendObject(stand);
+								} catch (IOException e) {
+
+									System.err.println("[SERVER] Client disconnesso...");
+									close();
+								}
+
+								System.out.println("[SERVER] Invio al client: " + stand.toString());
+
+								game.level.setMouseReleased(false);
 							}
 
 							if (player.isRespawned()) {
