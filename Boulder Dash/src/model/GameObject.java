@@ -123,7 +123,7 @@ public abstract class GameObject {
 				dead = true;
 				
 				if(map.containsKey(x*map.dimX+y) && map.getTile(x, y).equals(successor)) {
-					System.err.println("viene distrutto... " + this);
+					//System.err.println("viene distrutto... " + this);
 				
 				} else {
 					throw new NullPointerException();
