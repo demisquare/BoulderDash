@@ -5,12 +5,10 @@ import java.awt.Toolkit;
 
 import javax.swing.JLabel;
 
-public class Scaling {
-
+public class CustomImage {
+	
 	private static double vx;
 	private static double vy;
-	
-	private Scaling() {}
 	
 	private static void updateToolkit() {
 		
@@ -21,7 +19,7 @@ public class Scaling {
 		if(ty != vy) vy = ty;
 	}
 	
-	public static Image get(Image img, int a, int b, boolean scaled) {
+	private static Image get(Image img, int a, int b, boolean scaled) {
 		
 		if(scaled) {
 			updateToolkit();
@@ -39,5 +37,21 @@ public class Scaling {
 		
 		} else
 			L.setBounds(a, b, c, d);
+	}	
+	
+	private final Image img;
+	private Image actualInstance;
+	
+	public CustomImage(Image img) {
+		this.img = img;
+		actualInstance = null;
+	}
+	
+	public void resize(int a, int b, boolean scaled) {
+		actualInstance = CustomImage.get(img, a, b, scaled);
+	}
+	
+	public Image getInstance() {
+		return actualInstance;
 	}
 }

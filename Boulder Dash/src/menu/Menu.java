@@ -36,7 +36,7 @@ public class Menu extends JPanel implements Serializable {
 	
 	BufferedImage background;
 
-	Image START;
+	CustomImage START;
 	Image MULTI;
 	Image OPTIONS;
 	Image CREDITS;

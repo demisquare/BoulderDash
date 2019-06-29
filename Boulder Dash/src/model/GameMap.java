@@ -1,7 +1,5 @@
 package model;
 
-import static model.GameObject.*;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,12 +10,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import ai.IntelligentEnemy;
 import menu.Options;
-import menu.Options.Difficulty;
 
 //definisce la mappa di gioco come matrice di blocchi
 public class GameMap {
 
-	private static String defaultPath = "." + File.separator + "resources" + File.separator + "maps" + File.separator;
+	// dimensione logica...
+	final int dimX = 40;
+	final int dimY = 22;
+	
+	private static String defaultPath = 
+			"." + File.separator + 
+			"resources" + File.separator + 
+			"maps" + File.separator;
 
 	// mappe separate per ogni tipologia di blocco:
 	// contiene Player, Enemy, Wall, Door
@@ -37,39 +41,25 @@ public class GameMap {
 	// shortcut per i vari oggetti Enemy
 	private ArrayList<GameObject> enemy;
 
-	boolean winCon;
-	// dimensione logica...
-	int dimX;
-	int dimY;
-
-	// numero diamanti sulla mappa (per la condizione di vittoria)
-	int numDiamonds;
-
+	private boolean winCon;
+	
 	private char[][] load(String filename) {
 
 		BufferedReader bIn = null;
 		try {
 			bIn = new BufferedReader(new FileReader(defaultPath + filename));
 		} catch (FileNotFoundException e) { // trovare una gestione migliore
-			map = null;
+			GameObject.map = null;
 			e.printStackTrace();
 		}
 
-		char[][] ret = null;
+		char[][] ret = new char[dimY][dimX];
 
 		if (bIn != null) {
 			try {
 				String line;
-
 				// si leggono le dimensioni del livello
 				if (bIn.ready()) {
-					dimX = Integer.parseInt(bIn.readLine());
-					dimY = Integer.parseInt(bIn.readLine());
-
-					ret = new char[dimY][dimX];
-
-					System.out.println(dimX);
-					System.out.println(dimY);
 
 					while (bIn.ready()) {
 						for (int x = 0; x < dimY; ++x) {
@@ -90,6 +80,7 @@ public class GameMap {
 			bIn.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
 
 		return ret;
@@ -97,36 +88,33 @@ public class GameMap {
 
 	private void initialize(String filename) {
 
-		numDiamonds = 0;
-
 		char[][] cfile = load(filename);
 
 		for (int x = 0; x < dimX; ++x) {
 			for (int y = 0; y < dimY; ++y) {
 				switch (cfile[y][x]) {
 
-				case DIAMOND:
+				case GameObject.DIAMOND:
 					diamondsMap.put(x * dimX + y, new Diamond(x, y));
-					++numDiamonds;
 					break;
 
-				case GROUND:
+				case GameObject.GROUND:
 					groundMap.put(x * dimX + y, new Ground(x, y));
 					break;
 
-				case WALL:
+				case GameObject.WALL:
 					blocks.put(x * dimX + y, new Wall(x, y));
 					break;
 
-				case ROCK:
+				case GameObject.ROCK:
 					rocksMap.put(x * dimX + y, new Rock(x, y));
 					break;
 
-				case DOOR:
+				case GameObject.DOOR:
 					blocks.put(x * dimX + y, new Door(x, y));
 					break;
 
-				case PLAYER:
+				case GameObject.PLAYER:
 					if(Options.multiplayer) {
 						if(Options.host) {
 							host = new Host(x, y, 1);
@@ -142,7 +130,7 @@ public class GameMap {
 
 					break;
 
-				case HOST:
+				case GameObject.HOST:
 					if(Options.multiplayer) {
 						if(Options.host) {
 							player = new Player(x, y, 1);
@@ -156,13 +144,13 @@ public class GameMap {
 					}
 					break;
 
-				case ENEMY:
+				case GameObject.ENEMY:
 					GameObject e = new IntelligentEnemy(x, y, 1);
 					enemy.add(e);
 					blocks.put(x * dimX + y, e);
 					break;
 
-				case EMPTY_BLOCK:
+				case GameObject.EMPTY_BLOCK:
 					emptyBlocksMap.put(x * dimX + y, new EmptyBlock(x, y));
 					break;
 				}
@@ -171,8 +159,8 @@ public class GameMap {
 	}
 
 	public GameMap(String filename/* , Mode m */) {
+		
 		GameObject.map = this;
-
 		winCon = false;
 		
 		blocks = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
@@ -186,6 +174,29 @@ public class GameMap {
 		initialize(filename);
 	}
 
+	// verifica se il valore i � contenuto nella matrice (conviene sostituirlo con
+	// due param?)
+	public boolean containsKey(int i) {
+
+		return blocks.containsKey(i) || emptyBlocksMap.containsKey(i) || diamondsMap.containsKey(i)
+				|| groundMap.containsKey(i) || rocksMap.containsKey(i);
+	}
+	
+	public int getNumDiamonds() {
+		
+		return diamondsMap.size();
+	}
+	
+	public boolean getWinCon() {
+		
+		return winCon;
+	}
+	
+	public void setWinCon(boolean t) {
+		
+		winCon = t;
+	}
+	
 	// restituisce il tile nella posizione <x, y>
 	public GameObject getTile(int x, int y) {
 
@@ -275,13 +286,5 @@ public class GameMap {
 	public ArrayList<GameObject> getEnemies() {
 
 		return enemy;
-	}
-
-	// verifica se il valore i � contenuto nella matrice (conviene sostituirlo con
-	// due param?)
-	public boolean containsKey(int i) {
-
-		return blocks.containsKey(i) || emptyBlocksMap.containsKey(i) || diamondsMap.containsKey(i)
-				|| groundMap.containsKey(i) || rocksMap.containsKey(i);
 	}
 }

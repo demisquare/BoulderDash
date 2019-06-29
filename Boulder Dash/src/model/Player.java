@@ -101,7 +101,7 @@ public class Player extends GameObject implements Living {
 
 			// variare il parametro da 1 in su per semplificare (meno diamanti da
 			// raccogliere)
-		} else if (g instanceof Door && diamondCount >= map.numDiamonds / 1) {
+		} else if (g instanceof Door && diamondCount >= map.getNumDiamonds() / 1) {
 
 			++movingCounter;
 			pushRockCounter = 0;
@@ -158,7 +158,7 @@ public class Player extends GameObject implements Living {
 				} else if (map.getTile(i, j) instanceof Door) {
 	
 					moved = true;
-					map.winCon = true;
+					map.setWinCon(true);
 	
 					//System.out.println("VITTORIA");
 	

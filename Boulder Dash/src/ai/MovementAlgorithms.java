@@ -15,7 +15,7 @@ class MovementAlgorithms {
 			Math.pow(Math.pow(Math.abs(dx), p) + Math.pow(Math.abs(dy), p), 1d/p);
 	}
 	
-	public static int euclideanDistance(Agent e) {
+	public static int greedyPath(Agent e) {
 	
 		if(e instanceof IntelligentEnemy) {
 			
@@ -44,7 +44,7 @@ class MovementAlgorithms {
 		return 0;
 	}
 
-	public static int greedyWalk(Agent e) {
+	public static int optimalPath(Agent e) {
 		
 		if(e instanceof IntelligentEnemy) {
 			

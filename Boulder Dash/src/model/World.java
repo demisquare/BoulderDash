@@ -9,18 +9,16 @@ import view.Sprite;
 public class World {
 
 	//contiene la "matrice logica" del gioco (l'implementazione non � una matrice)
-	GameMap map;	
-	//true se il world � stato aggiornato
-	private boolean hasChanged;
-
-	private Thread t;
-	
+	GameMap map;		
 	//dimensione grafica...
-	int width  = 0;	
-	int height = 0;
-	//	Graph<Integer, Integer> g= new SimpleGraph(int.class);
+	final int width;	
+	final int height;
 
 	private int FPS;
+	//true se il world � stato aggiornato
+	private boolean hasChanged;
+	private Thread t;
+
 	
 	// costruttore di default
 	public World(int FPS) {
@@ -33,80 +31,9 @@ public class World {
 		hasChanged = true;
 		
 		t = null;
-		//dimensione grafica...
+		//dimensione grafica..
 		width = map.getDimX() * Sprite.TILE_SIZE;
 		height = map.getDimY() * Sprite.TILE_SIZE;
-		
-		//da definire la posizione di partenza (e il criterio di scelta)
-		//stack.add((2*map.getDimX())+10);
-	}
-	
-	// getter e setter
-	
-	public boolean getWinCon() {
-		return map.winCon;
-	}
-	
-	public GameObject getPlayer() {
-		return map.getPlayer();
-	}
-	
-	public GameObject getHost() {
-		return map.getHost();
-	}
-
-	public GameMap getMap() {
-		return map;
-	}
-
-	public void setMap(GameMap map) {
-		this.map = map;
-	}
-	
-	public ArrayList<GameObject> getEnemies() {
-		return map.getEnemies();
-	}
-	
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-	
-	public boolean isChanged() {
-		return hasChanged;
-	}
-	
-	public void reset() {
-
-		Collection<GameObject> temp = map.getBlocks().values();
-		for(GameObject e : temp) {
-			e.clearFlags();
-		}
-		
-		temp = map.getDiamondsMap().values();
-		for(GameObject e : temp) {
-			e.clearFlags();
-		}
-		
-		temp = map.getEmptyBlocksMap().values();
-		for(GameObject e : temp) {
-			e.clearFlags();
-		}
-		
-		temp = map.getGroundMap().values();
-		for(GameObject e : temp) {
-			e.clearFlags();
-		}
-		
-		temp = map.getRocksMap().values();
-		for(GameObject e : temp) {
-			e.clearFlags();
-		}
-		
-		hasChanged = false;
 	}
 
 	//questa funzione dovrebbe in automatico aggiornare gli stati di 
@@ -145,8 +72,38 @@ public class World {
 		} catch(ConcurrentModificationException e1) {
 			e1.printStackTrace();	
 		}
-		//flag di vittoria qui?
+
 		hasChanged = true;
+	}
+		
+	public void reset() {
+
+		Collection<GameObject> temp = map.getBlocks().values();
+		for(GameObject e : temp) {
+			e.clearFlags();
+		}
+		
+		temp = map.getDiamondsMap().values();
+		for(GameObject e : temp) {
+			e.clearFlags();
+		}
+		
+		temp = map.getEmptyBlocksMap().values();
+		for(GameObject e : temp) {
+			e.clearFlags();
+		}
+		
+		temp = map.getGroundMap().values();
+		for(GameObject e : temp) {
+			e.clearFlags();
+		}
+		
+		temp = map.getRocksMap().values();
+		for(GameObject e : temp) {
+			e.clearFlags();
+		}
+		
+		hasChanged = false;
 	}
 	
 	public void launchThread() {
@@ -172,13 +129,51 @@ public class World {
 		
 		t.start();
 	}
-	
-	public void setChanged(boolean b) {
-		hasChanged = b;
-	}
 
 	public void closeThread() {
 		if(t != null && t.isAlive())
 			t.interrupt();
+	}
+	
+// getter e setter
+		
+	public boolean getWinCon() {
+		return map.getWinCon();
+	}
+		
+	public GameObject getPlayer() {
+		return map.getPlayer();
+	}
+		
+	public GameObject getHost() {
+		return map.getHost();
+	}
+
+	public GameMap getMap() {
+		return map;
+	}
+
+	public void setMap(GameMap map) {
+		this.map = map;
+	}
+		
+	public ArrayList<GameObject> getEnemies() {
+		return map.getEnemies();
+	}
+		
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+		
+	public boolean isChanged() {
+		return hasChanged;
+	}
+		
+	public void setChanged(boolean b) {
+		hasChanged = b;
 	}
 }
