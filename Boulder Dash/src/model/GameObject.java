@@ -20,9 +20,9 @@ public abstract class GameObject {
 	public static final int UP    = 3;
 		
 	public static final int dmap[][] = { { 0,  1},
-			                      {-1,  0},
-			                      { 1,  0},
-			                      { 0, -1} };
+			               				 {-1,  0},
+			               				 { 1,  0},
+			               				 { 0, -1} };
 	
 	public static GameMap map = null;
 	

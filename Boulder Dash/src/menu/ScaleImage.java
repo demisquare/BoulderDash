@@ -10,16 +10,19 @@ public class ScaleImage {
 	
 	private ScaleImage() {}
 	
-	public static Image get(Image img, int a, int b) {
+	public static Image get(Image img, int a, int b, boolean scaled) {
 		
-		double tx = Toolkit.getDefaultToolkit().getScreenSize().getWidth()/1280d;
-		if(tx != vx)
-			vx = tx;
+		if(scaled) {
+			double tx = Toolkit.getDefaultToolkit().getScreenSize().getWidth()/1280d;
+			if(tx != vx) vx = tx;
 		
-		double ty = Toolkit.getDefaultToolkit().getScreenSize().getHeight()/720d;
-		if(ty != vy)
-			vy = ty;
+			double ty = Toolkit.getDefaultToolkit().getScreenSize().getHeight()/720d;
+			if(ty != vy) vy = ty;
 		
-		return img.getScaledInstance((int)(a*vx), (int)(b*vy), Image.SCALE_SMOOTH);
+			return img.getScaledInstance((int)(a*vx), (int)(b*vy), Image.SCALE_SMOOTH);
+		
+		}
+		
+		return img.getScaledInstance(a, b, Image.SCALE_SMOOTH);
 	}
 }
