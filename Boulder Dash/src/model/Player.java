@@ -54,7 +54,7 @@ public class Player extends GameObject implements Living {
 	
 	@Override
 	public boolean update(int dir) {
-
+		
 		int i = (x + dmap[dir][0]);
 		int j = (y + dmap[dir][1]);
 
@@ -124,6 +124,7 @@ public class Player extends GameObject implements Living {
 	}
 	
 	public void respawn() {	
+		
 		if(lifes > 1) {
 			respawned = true;
 			
@@ -149,7 +150,7 @@ public class Player extends GameObject implements Living {
 				if (map.getTile(i, j) instanceof EmptyBlock) {
 	
 					moved = true;
-					System.out.println("si muove...");
+					//System.out.println("si muove...");
 					swap(i, j);
 						
 					return true;
@@ -159,7 +160,7 @@ public class Player extends GameObject implements Living {
 					moved = true;
 					map.winCon = true;
 	
-					System.out.println("VITTORIA");
+					//System.out.println("VITTORIA");
 	
 					destroy();
 					
@@ -174,6 +175,7 @@ public class Player extends GameObject implements Living {
 					return true;
 				}
 			}
+			
 			moved = false;
 			return moved;
 		}

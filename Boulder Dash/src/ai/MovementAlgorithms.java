@@ -2,6 +2,7 @@ package ai;
 
 import java.util.Random;
 
+import model.EmptyBlock;
 import model.GameObject;
 
 //TODO
@@ -21,11 +22,18 @@ class MovementAlgorithms {
 			for(int i = 0; i < 4; ++i) {
 				
 				double temp = 
-						Math.sqrt(
-								Math.pow(player.getX() - enemy.getX() - GameObject.dmap[i][0], 2) + 
-								Math.pow(player.getY() - enemy.getY() - GameObject.dmap[i][1], 2));
+//						Math.sqrt(
+//								Math.pow(player.getX() - enemy.getX() - GameObject.dmap[i][0], 2) + 
+//								Math.pow(player.getY() - enemy.getY() - GameObject.dmap[i][1], 2));
+//				
+						Math.abs(player.getX() - enemy.getX() - GameObject.dmap[i][0]) +
+						Math.abs(player.getY() - enemy.getY() - GameObject.dmap[i][1]);
 				
-				if(temp < min) {
+				if(temp < min && 
+						e.getEnvironment().getTile(
+								enemy.getX() + GameObject.dmap[i][0], 
+								enemy.getY() + GameObject.dmap[i][1]) 
+						instanceof EmptyBlock) {
 					min = temp;
 					ret = i;
 				}

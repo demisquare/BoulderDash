@@ -27,19 +27,19 @@ public class IntelligentEnemy extends Enemy implements Agent {
 		
 		if(Options.difficulty == Difficulty.paradiso) {
 			
-			System.out.println("parafiso");
+			//System.out.println("parafiso");
 			
 			super.calculateDirection();
 			
 		} else if(Options.difficulty == Difficulty.purgatorio) {
 			
-			System.out.println("purgafiso");
+			//System.out.println("purgafiso");
 			
 			lastDir = MovementAlgorithms.manatthanDistance(this);
 			
 		} else if(Options.difficulty == Difficulty.inferno) {
 			
-			System.out.println("infiso");
+			//System.out.println("infiso");
 			
 			lastDir = MovementAlgorithms.greedyWalk(this);
 		}
