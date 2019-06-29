@@ -23,9 +23,6 @@ import view.Game;
 
 public class Menu extends JPanel implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5844904387077358595L;
 	
 	private static final String MainMenuPage =
@@ -35,7 +32,7 @@ public class Menu extends JPanel implements Serializable {
 			+ File.separator + "MainMenuPage" 
 			+ File.separator;
 	
-	private Thread t;
+//	private Thread t;
 	
 	BufferedImage background;
 
@@ -66,32 +63,58 @@ public class Menu extends JPanel implements Serializable {
 	You_Lose youlose;
 	
 	public void check_resize() {
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		double xSize = tk.getScreenSize().getWidth();
+		double ySize = tk.getScreenSize().getHeight();
+		
 		if(!Options.full_screen) {
 			
-			menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
+			START=START.getScaledInstance(191, 55, Image.SCALE_SMOOTH);
+			START_SELECTED=START_SELECTED.getScaledInstance(191, 55, Image.SCALE_SMOOTH);					
+			MULTI=MULTI.getScaledInstance(423, 55, Image.SCALE_SMOOTH);
+			MULTI_SELECTED=MULTI_SELECTED.getScaledInstance(423, 55, Image.SCALE_SMOOTH);
+			OPTIONS=OPTIONS.getScaledInstance(272, 54, Image.SCALE_SMOOTH);
+			OPTIONS_SELECTED=OPTIONS_SELECTED.getScaledInstance(272, 54, Image.SCALE_SMOOTH);
+			CREDITS=CREDITS.getScaledInstance(267, 55, Image.SCALE_SMOOTH);
+			CREDITS_SELECTED=CREDITS_SELECTED.getScaledInstance(267, 55, Image.SCALE_SMOOTH);
+			EXIT=EXIT.getScaledInstance(141, 50, Image.SCALE_SMOOTH);
+			EXIT_SELECTED=EXIT_SELECTED.getScaledInstance(141, 50, Image.SCALE_SMOOTH);
+			
+			menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 550, 550);
+			
+			START_scaled.setIcon(new ImageIcon(START));
+			MULTI_scaled.setIcon(new ImageIcon(MULTI));
+			OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS));
+			CREDITS_scaled.setIcon(new ImageIcon(CREDITS));
+			EXIT_scaled.setIcon(new ImageIcon(EXIT));
 		
 		} else if(Options.full_screen) {
 			
-			menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), (int)(500*(xSize/1280)), (int)(500*(ySize/720)));		
-
-			
-			START=ScaleImage.get(START, 191, 55);
-			MULTI=MULTI.getScaledInstance(scaleX(423), scaleY(55), Image.SCALE_SMOOTH);
-			OPTIONS=OPTIONS.getScaledInstance((int)(272*(xSize/1280)), (int)(54*(ySize/720)), Image.SCALE_SMOOTH);
-			CREDITS=CREDITS.getScaledInstance((int)(267*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
-			EXIT=EXIT.getScaledInstance((int)(141*(xSize/1280)), (int)(50*(ySize/720)), Image.SCALE_SMOOTH);
-			
+			START=START.getScaledInstance((int)(191*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
 			START_SELECTED=START_SELECTED.getScaledInstance((int)(191*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);					
+			MULTI=MULTI.getScaledInstance((int)(423*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
 			MULTI_SELECTED=MULTI_SELECTED.getScaledInstance((int)(423*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
+			OPTIONS=OPTIONS.getScaledInstance((int)(272*(xSize/1280)), (int)(54*(ySize/720)), Image.SCALE_SMOOTH);
 			OPTIONS_SELECTED=OPTIONS_SELECTED.getScaledInstance((int)(272*(xSize/1280)), (int)(54*(ySize/720)), Image.SCALE_SMOOTH);
+			CREDITS=CREDITS.getScaledInstance((int)(267*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
 			CREDITS_SELECTED=CREDITS_SELECTED.getScaledInstance((int)(267*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
+			EXIT=EXIT.getScaledInstance((int)(141*(xSize/1280)), (int)(50*(ySize/720)), Image.SCALE_SMOOTH);
 			EXIT_SELECTED=EXIT_SELECTED.getScaledInstance((int)(141*(xSize/1280)), (int)(50*(ySize/720)), Image.SCALE_SMOOTH);
+			
+			
+			menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), 550, 550);		
+
+			START_scaled.setIcon(new ImageIcon(START));
+			MULTI_scaled.setIcon(new ImageIcon(MULTI));
+			OPTIONS_scaled.setIcon(new ImageIcon(OPTIONS));
+			CREDITS_scaled.setIcon(new ImageIcon(CREDITS));
+			EXIT_scaled.setIcon(new ImageIcon(EXIT));
 		}
 	}
 
 	private void start_selected(JFrame frame) throws InterruptedException {
 		
-		closeThread();
+//		closeThread();
 		frame.remove(this);
 		
 		game.launchGame(frame, this); 
@@ -116,8 +139,9 @@ public class Menu extends JPanel implements Serializable {
 	
 	private void options_selected(JFrame frame, Options options) throws InterruptedException {
 		
-		closeThread();
+//		closeThread();
 		frame.remove(this);
+		options.check_resize();
 		frame.setContentPane(options);
 		frame.revalidate();
 		frame.repaint();
@@ -125,7 +149,7 @@ public class Menu extends JPanel implements Serializable {
 	
 	private void multi_selected(JFrame frame, Multiplayer multi, You_Lose youlose) throws InterruptedException {
 	
-		closeThread();
+//		closeThread();
 		frame.remove(this);
 		frame.setContentPane(multi);
 		frame.revalidate();
@@ -134,7 +158,7 @@ public class Menu extends JPanel implements Serializable {
 	
 	private void credits_selected(JFrame frame, Credits credits) throws InterruptedException {
 	
-		closeThread();
+//		closeThread();
 		frame.remove(this);
 		frame.setContentPane(credits);
 		frame.revalidate();
@@ -388,9 +412,9 @@ public class Menu extends JPanel implements Serializable {
 			this.setLayout(null);
 			this.add(menu_choices);
 			menu_choices.setBackground(new Color(0, 0, 0, 0));
-			menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 430, 300);
+			menu_choices.setBounds((1280 / 2 - 430 / 2), 250, 550, 550);
 			
-			launchThread();
+//			launchThread();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -404,31 +428,31 @@ public class Menu extends JPanel implements Serializable {
 
 	}
 	
-	public synchronized void launchThread() { 
-		
-		if(t != null && t.isAlive())
-			t.interrupt();
-		
-		t = new Thread(new Runnable(){
-			@Override
-			public void run() {
-				while (true) {
-					
-					
-					
-					try {
-						Thread.sleep(34);
-					} catch (InterruptedException e) {
-						return;
-					}
-				}
-			}
-		});
-		
-		t.start(); 	 
-	}
-	
-	public synchronized void closeThread() {
-		t.interrupt();
-	}
+//	public synchronized void launchThread() { 
+//		
+//		if(t != null && t.isAlive())
+//			t.interrupt();
+//		
+//		t = new Thread(new Runnable(){
+//			@Override
+//			public void run() {
+//				while (true) {
+//					
+//					
+//					
+//					try {
+//						Thread.sleep(34);
+//					} catch (InterruptedException e) {
+//						return;
+//					}
+//				}
+//			}
+//		});
+//		
+//		t.start(); 	 
+//	}
+//	
+//	public synchronized void closeThread() {
+//		t.interrupt();
+//	}
 }

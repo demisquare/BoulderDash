@@ -32,7 +32,7 @@ public class Credits extends JPanel{
 
 	public void turn_back(JFrame frame, Menu menu) {
 		
-		menu.launchThread();
+		menu.check_resize();
 		frame.remove(this);
 		frame.setContentPane(menu);
 		frame.revalidate();
