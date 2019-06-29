@@ -20,4 +20,45 @@ public class Host extends Player {
 			destroy();
 		}
 	}
+	
+	@Override
+	protected boolean move(int dir) {
+		
+		int i = x + dmap[dir][0];
+		int j = y + dmap[dir][1];
+
+		if (!(i < 0 || i >= map.dimX) && !(j < 0 || j >= map.dimY)) {
+
+			if (map.getTile(i, j) instanceof EmptyBlock) {
+
+				moved = true;
+				//System.out.println("si muove...");
+				swap(i, j);
+					
+				return true;
+
+			} else if (map.getTile(i, j) instanceof Door) {
+
+				moved = true;
+				map.setWinCon(true);
+
+				//System.out.println("VITTORIA");
+
+				destroy();
+				
+				return true;
+
+			} else if (map.getTile(i, j) instanceof Enemy) {
+
+				moved = true;
+				
+				respawn();
+				
+				return true;
+			}
+		}
+		
+		moved = false;
+		return moved;
+	}
 }
