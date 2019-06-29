@@ -37,6 +37,7 @@ public class GameMap {
 	// shortcut per i vari oggetti Enemy
 	private ArrayList<GameObject> enemy;
 
+	boolean winCon;
 	// dimensione logica...
 	int dimX;
 	int dimY;
@@ -172,6 +173,8 @@ public class GameMap {
 	public GameMap(String filename/* , Mode m */) {
 		GameObject.map = this;
 
+		winCon = false;
+		
 		blocks = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
 		emptyBlocksMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
 		diamondsMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);

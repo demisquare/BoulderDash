@@ -88,6 +88,9 @@ public class Multiplayer extends JPanel {
 	private void server_selected(JFrame frame, Menu menu, Game game) throws InterruptedException {
 		
 		Options.multiplayer = true;
+		Options.host = false;
+		
+		game.launchGame(frame, menu);
 		
 		socketServer = new SocketServer(game);
 		socketServer.connect();
@@ -98,7 +101,6 @@ public class Multiplayer extends JPanel {
 		
 		closeThread();
 		frame.remove(this);
-		game.launchGame(frame, menu);
 		frame.setContentPane(game);
 		game.level.requestFocusInWindow();
 		frame.revalidate();

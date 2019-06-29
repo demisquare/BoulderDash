@@ -43,6 +43,10 @@ public class World {
 	
 	// getter e setter
 	
+	public boolean getWinCon() {
+		return map.winCon;
+	}
+	
 	public GameObject getPlayer() {
 		return map.getPlayer();
 	}

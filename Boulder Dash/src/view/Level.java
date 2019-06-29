@@ -23,7 +23,7 @@ public class Level extends JPanel implements KeyListener {
 	// mappa che collega ogni pressione di tastiera al movimento corrispondente
 	// nello specifico: enumeratore Awt di pressione tasto , enumeratore logico di
 	// direzione
-	private static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>() {
+	public static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>() {
 		/**
 		 * 
 		 */
@@ -37,7 +37,7 @@ public class Level extends JPanel implements KeyListener {
 		}
 	};
 
-	private static final HashMap<String, Integer[]> blocks = new HashMap<String, Integer[]>() {
+	public static final HashMap<String, Integer[]> blocks = new HashMap<String, Integer[]>() {
 		/**
 		 * 
 		 */
@@ -56,19 +56,16 @@ public class Level extends JPanel implements KeyListener {
 	private int FPS = 30;
 	private static Sprite spritesheet = new Sprite();
 	private static Random r = new Random();
-
 	/*
 	 * AudioPlayer game_song = new AudioPlayer("." + File.separator + "resources" +
 	 * File.separator + "assets" + File.separator + "music" + File.separator +
 	 * "game_song"+ ".wav");
 	 */
-
 	private Thread t;
-
+	private Game game;
 	// Questa classe far� da interfaccia a TUTTA la logica di un livello
 	World world;
 	LocalTime lastTimePressed;
-
 	// graphics for blocks
 	ArrayList<BlockSprite> blockSprites;
 	// graphics for both Player and Enemies
@@ -139,7 +136,7 @@ public class Level extends JPanel implements KeyListener {
 		}
 	}
 
-	public Level() {
+	public Level(Game g) {
 		super();
 
 		setFocusable(true);
@@ -148,7 +145,8 @@ public class Level extends JPanel implements KeyListener {
 
 		// crea un world...
 		world = new World(FPS);
-
+		game = g;
+		
 		t = null;
 		
 		initGraphics();
@@ -212,6 +210,12 @@ public class Level extends JPanel implements KeyListener {
 				}
 			}
 		}
+		
+		if(((Player)world.getPlayer()).getLifes() == 0)
+			game.youLose();
+		
+		if(world.getWinCon())
+			game.youWin();
 	}
 
 	// permette di ridefinire i componenti del pannello di default.
@@ -230,56 +234,50 @@ public class Level extends JPanel implements KeyListener {
 		Renderer.render(g, this);
 	}
 
-	public void updatePlayerOnPressing(int dir) {
+	public synchronized void updatePlayerOnPressing(int dir) {
 
 		if (!world.getPlayer().isDead()) {
-			if (pgMove.containsKey(dir)) {
-				// a static map instead of a switch
-				playerSprites.get(0).movePose(pgMove.get(dir));
-				synchronized (this) {
-					if(world.getPlayer().update(pgMove.get(dir))) {
-						((Player)world.getPlayer()).setLastDir(pgMove.get(dir));
-					}
+			// a static map instead of a switch
+			playerSprites.get(0).movePose(dir);
+			synchronized (this) {
+				if(world.getPlayer().update(dir)) {
+					((Player)world.getPlayer()).setLastDir(dir);
 				}
 			}
 			playerSprites.get(0).getAnimation().update();
 		}
 	}
 
-	public void updatePlayerOnRelease(int dir) {
+	public synchronized void updatePlayerOnRelease(int dir) {
 
 		if (!world.getPlayer().isDead()) {
 			playerSprites.get(0).getAnimation().stop();
 			playerSprites.get(0).getAnimation().reset();
 			// a static map instead of a switch
-			if (pgMove.containsKey(dir))
-				playerSprites.get(0).standPose(pgMove.get(dir));
+			playerSprites.get(0).standPose(dir);
 			playerSprites.get(0).getAnimation().update();
 		}
 	}
 	
-	public void updateHostOnPressing(int dir) {
+	public synchronized void updateHostOnPressing(int dir) {
 
 		if (!world.getHost().isDead()) {
-			if (pgMove.containsKey(dir)) {
-				// a static map instead of a switch
-				hostSprites.get(0).movePose(pgMove.get(dir));
-				synchronized (this) {
-					//world.getPlayer().update(pgMove.get(dir));
-				}
+			// a static map instead of a switch
+			hostSprites.get(0).movePose(dir);
+			synchronized (this) {
+				world.getHost().update(dir);
 			}
 			hostSprites.get(0).getAnimation().update();
 		}
 	}
 
-	public void updateHostOnRelease(int dir) {
+	public synchronized void updateHostOnRelease(int dir) {
 
 		if (!world.getHost().isDead()) {
 			hostSprites.get(0).getAnimation().stop();
 			hostSprites.get(0).getAnimation().reset();
 			// a static map instead of a switch
-			if (pgMove.containsKey(dir))
-				hostSprites.get(0).standPose(pgMove.get(dir));
+			hostSprites.get(0).standPose(dir);
 			hostSprites.get(0).getAnimation().update();
 		}
 	}
@@ -291,13 +289,15 @@ public class Level extends JPanel implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if ((java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0) {
 			lastTimePressed = java.time.LocalTime.now();
-			updatePlayerOnPressing(e.getKeyCode());
+			if(pgMove.containsKey(e.getKeyCode()))
+				updatePlayerOnPressing(pgMove.get(e.getKeyCode()));
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		updatePlayerOnRelease(e.getKeyCode());
+		if(pgMove.containsKey(e.getKeyCode()))
+			updatePlayerOnRelease(pgMove.get(e.getKeyCode()));
 	}
 
 	public void launchThread() {

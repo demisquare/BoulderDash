@@ -19,10 +19,10 @@ public abstract class GameObject {
 	public static final int RIGHT = 2;
 	public static final int UP    = 3;
 		
-	static final int dmap[][] = { { 0,  1},
-			                      {-1,  0},
-			                      { 1,  0},
-			                      { 0, -1} };
+	public static final int dmap[][] = { { 0,  1},
+			               				 {-1,  0},
+			               				 { 1,  0},
+			               				 { 0, -1} };
 	
 	public static GameMap map = null;
 	
@@ -123,7 +123,7 @@ public abstract class GameObject {
 				dead = true;
 				
 				if(map.containsKey(x*map.dimX+y) && map.getTile(x, y).equals(successor)) {
-					System.out.println("viene distrutto... " + this);
+					//System.err.println("viene distrutto... " + this);
 				
 				} else {
 					throw new NullPointerException();
@@ -132,7 +132,7 @@ public abstract class GameObject {
 				return true;
 			
 		} catch(NullPointerException e) {
-			System.out.println("I'm in destroy(): " + this);
+			System.err.println("I'm in destroy(): " + this);
 			e.printStackTrace();
 		}
 		
@@ -152,7 +152,7 @@ public abstract class GameObject {
 			
 			if(!map.getTile(x, y).equals(this)) {
 			
-				System.out.println("in model.GameObject.swap(): " + this + " != " + map.getTile(x, y));
+				System.err.println("in model.GameObject.swap(): " + this + " != " + map.getTile(x, y));
 				error = true;
 			}
 		
@@ -163,7 +163,7 @@ public abstract class GameObject {
 	
 			if(!map.getTile(i, j).equals(temp)) {
 		
-				System.out.println("in model.GameObject.swap(): " + temp + " != " + map.getTile(i, j));
+				System.err.println("in model.GameObject.swap(): " + temp + " != " + map.getTile(i, j));
 				error = true;
 			}
 	
@@ -208,7 +208,7 @@ public abstract class GameObject {
 			if(map.getTile(i, j) instanceof EmptyBlock) {
 				
 				moved = true;
-				System.out.println("si muove...");
+				//System.out.println("si muove...");
 				swap(i, j);
 				return true;
 			}

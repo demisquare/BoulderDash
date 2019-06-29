@@ -16,8 +16,12 @@ public class Player extends GameObject implements Living {
 	// variabile inutile, viene usata per le animazioni ma si pu� sostituire
 	private int speed;
 	
-	private int lifes;
+	protected int lifes;
 	
+	public int getLifes() {
+		return lifes;
+	}
+
 	private int lastDir;
 
 	public int getLastDir() {
@@ -35,7 +39,7 @@ public class Player extends GameObject implements Living {
 		pushRockCounter = 0;
 		movingCounter = 0;
 		speed = s;
-		lifes = 2;
+		lifes = 3;
 		lastDir = -1;
 	}
 
@@ -50,7 +54,7 @@ public class Player extends GameObject implements Living {
 	
 	@Override
 	public boolean update(int dir) {
-
+		
 		int i = (x + dmap[dir][0]);
 		int j = (y + dmap[dir][1]);
 
@@ -71,7 +75,7 @@ public class Player extends GameObject implements Living {
 
 		} else if (g instanceof Ground) {
 
-			System.out.println("scava...");
+			//System.out.println("scava...");
 			++movingCounter;
 			pushRockCounter = 0;
 			if (movingCounter >= 1) {
@@ -86,7 +90,7 @@ public class Player extends GameObject implements Living {
 
 			++pushRockCounter;
 			movingCounter = 0;
-			if (pushRockCounter >= 6) {
+			if (pushRockCounter >= 5) {
 				pushRockCounter = 0;
 				movingCounter = 1;
 				if (g.move(dir)) {
@@ -120,7 +124,8 @@ public class Player extends GameObject implements Living {
 	}
 	
 	public void respawn() {	
-		if(lifes > 0) {
+		
+		if(lifes > 1) {
 			respawned = true;
 			
 			ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
@@ -129,6 +134,7 @@ public class Player extends GameObject implements Living {
 			--lifes;
 		
 		} else {
+			lifes = 0;
 			destroy();
 		}
 	}
@@ -144,7 +150,7 @@ public class Player extends GameObject implements Living {
 				if (map.getTile(i, j) instanceof EmptyBlock) {
 	
 					moved = true;
-					System.out.println("si muove...");
+					//System.out.println("si muove...");
 					swap(i, j);
 						
 					return true;
@@ -152,8 +158,9 @@ public class Player extends GameObject implements Living {
 				} else if (map.getTile(i, j) instanceof Door) {
 	
 					moved = true;
+					map.winCon = true;
 	
-					System.out.println("VITTORIA");
+					//System.out.println("VITTORIA");
 	
 					destroy();
 					
@@ -168,6 +175,7 @@ public class Player extends GameObject implements Living {
 					return true;
 				}
 			}
+			
 			moved = false;
 			return moved;
 		}
