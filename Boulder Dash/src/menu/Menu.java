@@ -65,20 +65,6 @@ public class Menu extends JPanel implements Serializable {
 	Credits credits;
 	You_Lose youlose;
 	
-	private int scaleX(int a) {
-		
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		double vx = tk.getScreenSize().getWidth()/1280d;
-		return (int)(a*vx);
-	}
-	
-	private int scaleY(int a) {
-		
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		double vy = tk.getScreenSize().getHeight()/720d;
-		return (int)(a*vy);
-	}
-	
 	public void check_resize() {
 		if(!Options.full_screen) {
 			
@@ -89,7 +75,7 @@ public class Menu extends JPanel implements Serializable {
 			menu_choices.setBounds((int)((1280 / 2 - 430 / 2)*(xSize/1280)), (int)(250*(ySize/720)), (int)(500*(xSize/1280)), (int)(500*(ySize/720)));		
 
 			
-			START=START.getScaledInstance(scaleX(191), scaleY(55), Image.SCALE_SMOOTH);
+			START=ScaleImage.get(START, 191, 55);
 			MULTI=MULTI.getScaledInstance(scaleX(423), scaleY(55), Image.SCALE_SMOOTH);
 			OPTIONS=OPTIONS.getScaledInstance((int)(272*(xSize/1280)), (int)(54*(ySize/720)), Image.SCALE_SMOOTH);
 			CREDITS=CREDITS.getScaledInstance((int)(267*(xSize/1280)), (int)(55*(ySize/720)), Image.SCALE_SMOOTH);
