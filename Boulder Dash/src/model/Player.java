@@ -16,7 +16,7 @@ public class Player extends GameObject implements Living {
 	// variabile inutile, viene usata per le animazioni ma si pu� sostituire
 	private int speed;
 	
-	private int lifes;
+	protected int lifes;
 	
 	public int getLifes() {
 		return lifes;
