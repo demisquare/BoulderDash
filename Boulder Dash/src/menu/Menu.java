@@ -78,7 +78,7 @@ public class Menu extends JPanel implements Serializable {
 //		closeThread();
 		frame.remove(this);
 		
-		game.launchGame(frame, this); 
+		game.launchGame(); 
 		
 		frame.setContentPane(game);
 		
@@ -388,32 +388,4 @@ public class Menu extends JPanel implements Serializable {
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 
 	}
-	
-//	public synchronized void launchThread() { 
-//		
-//		if(t != null && t.isAlive())
-//			t.interrupt();
-//		
-//		t = new Thread(new Runnable(){
-//			@Override
-//			public void run() {
-//				while (true) {
-//					
-//					
-//					
-//					try {
-//						Thread.sleep(34);
-//					} catch (InterruptedException e) {
-//						return;
-//					}
-//				}
-//			}
-//		});
-//		
-//		t.start(); 	 
-//	}
-//	
-//	public synchronized void closeThread() {
-//		t.interrupt();
-//	}
 }

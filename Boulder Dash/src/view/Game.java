@@ -21,13 +21,15 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	public static int FPS = 34;
 	
 	private Thread t2;
+	private JFrame frame;
+	private Menu menu;
 	
 	public Level level;
 	public Score score;
 	
 	public boolean isReset;
 	
-	private void score_init(JFrame frame, Menu menu) {
+	private void score_init() {
 		
 		score = new Score(frame, menu, this, level);
 		
@@ -42,6 +44,8 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	public Game(JFrame frame, Menu menu) {
 		
 		isReset = false;
+		this.frame = frame;
+		this.menu = menu;
 		
 		setVisible(true);
 		setFocusable(true);
@@ -50,10 +54,10 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		level = new Level(this);
 		level.addKeyListener(level);
 			
-		score_init(frame, menu);
+		score_init();
 	}
 	
-	public void launchGame(JFrame frame, Menu menu) throws NullPointerException{
+	public void launchGame() throws NullPointerException{
 		
 		level.closeThread();
 		level = new Level(this);
