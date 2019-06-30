@@ -24,7 +24,7 @@ public class World {
 	public World(int FPS) {
 		
 		//sostituire con il filename
-		map = new GameMap("levelmap");
+		map = new GameMap("level_1");
 		
 		this.FPS = FPS;
 		//default a true (per evitare un aggiornamento immediato)
