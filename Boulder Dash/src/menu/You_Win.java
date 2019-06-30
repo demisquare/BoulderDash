@@ -19,6 +19,12 @@ import view.Game;
 public class You_Win extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private static final String YouWinPath =
+		"." + File.separator + 
+		"resources" + File.separator + 
+		"assets" + File.separator + 
+		"Menu" + File.separator + 
+		"YouWinPage" + File.separator;
 
 	BufferedImage background;
 	Image Menu;
@@ -45,19 +51,11 @@ public class You_Win extends JPanel {
 	
 	public You_Win(JFrame frame, Game game, Menu menu) {
 		try {
-			background = ImageIO.read(new File("." + File.separator + "resources" + File.separator + "assets"
-					+ File.separator + "Menu" + File.separator + "YouWinPage" + File.separator + "background.png"));
-
-			Menu = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "YouWinPage" + File.separator + "Menu.png")).getScaledInstance(250, 60, Image.SCALE_SMOOTH);
-
-			Menu_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "YouWinPage" + File.separator + "Menu_SELECTED.png")).getScaledInstance(250, 60, Image.SCALE_SMOOTH);
+			background = ImageIO.read(new File(YouWinPath + "background.png"));
+			Menu = ImageIO.read(new File(YouWinPath + "Menu.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
+			Menu_SELECTED = ImageIO.read(new File(YouWinPath + "Menu_SELECTED.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
 			
 			
-
 			MENU_scaled = new JLabel(new ImageIcon(Menu));
 
 

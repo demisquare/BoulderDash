@@ -95,9 +95,6 @@ public class Score extends JPanel implements Serializable {
 			frame.repaint();
 			Music.setSong(Music.menuSong);
 			
-			//game.stopThread();
-			//menu.wakeThread();
-			
 		} catch(NullPointerException e) {
 			e.printStackTrace();
 		}
