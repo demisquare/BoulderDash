@@ -7,6 +7,7 @@ import java.io.Serializable;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
+import audio.Music;
 import menu.Menu;
 import menu.Options;
 import menu.You_Lose;
@@ -60,7 +61,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	
 	public Game(JFrame frame, Menu menu) {
 		
-		stage = 0;
+		stage = 1;
 		
 		youlose = new You_Lose(frame, this, menu);
 		youwin = new You_Win(frame, this, menu);
@@ -83,7 +84,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		
 		checkResize();
 	
-		if(stage < 1) {
+		if(stage <= 3) {
 			
 			level.closeThread();
 			level = new Level(this, stage);
@@ -114,23 +115,33 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 
 	public void youLose() {
 		
-		stage = 0;
+		stage = 1;
 		
 		frame.remove(this);
 		youlose.check_resize();
 		frame.setContentPane(youlose);
 		frame.revalidate();
 		frame.repaint();
+		
+		synchronized(this) {
+			Music.backgroundMusic.stop();
+			Music.playTone("lose");
+		}
 	}
 
 	public void youWin() {
 		
-		stage = 0;
+		stage = 1;
 		
 		frame.remove(this);
 		youwin.check_resize();
 		frame.setContentPane(youwin);
 		frame.revalidate();
 		frame.repaint();
+		
+		synchronized(this) {
+			Music.backgroundMusic.stop();
+			Music.playTone("victory");
+		}
 	}
 }

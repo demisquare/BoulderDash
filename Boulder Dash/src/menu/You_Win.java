@@ -37,6 +37,10 @@ public class You_Win extends JPanel {
 		frame.setContentPane(menu);
 		frame.revalidate();
 		frame.repaint();
+		
+		synchronized(this) {
+			Music.setSong(Music.menuSong);
+		}
 	}
 
 	public void check_resize() {

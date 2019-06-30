@@ -41,6 +41,10 @@ public class You_Lose extends JPanel {
 		frame.setContentPane(menu);
 		frame.revalidate();
 		frame.repaint();
+		
+		synchronized(this) {
+			Music.setSong(Music.menuSong);
+		}
 	}
 	private void retry(JFrame frame, Game game) throws InterruptedException {
 				
