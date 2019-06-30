@@ -65,7 +65,7 @@ public class Multiplayer extends JPanel {
 		Options.multiplayer = true;
 		Options.host = true;
 
-		game.launchGame(frame, menu);
+		game.launchGame();
 
 		socketClient = new SocketClient(game);
 		socketClient.connect();
@@ -91,7 +91,7 @@ public class Multiplayer extends JPanel {
 		Options.multiplayer = true;
 		Options.host = false;
 
-		game.launchGame(frame, menu);
+		game.launchGame();
 
 		socketServer = new SocketServer(game);
 		socketServer.connect();
