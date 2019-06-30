@@ -23,7 +23,7 @@ public class MessageHandler {
 		read = null;
 		write = null;
 	}
-	
+
 	public void close() throws IOException {
 		write.close();
 		read.close();
@@ -42,9 +42,9 @@ public class MessageHandler {
 	}
 
 	public void sendObject(Packet pkg) throws IOException {
-	
-			write.writeObject(pkg);
-			write.flush();
+
+		write.writeObject(pkg);
+		write.flush();
 	}
 
 	public Packet receiveObject() throws IOException {
@@ -59,23 +59,26 @@ public class MessageHandler {
 	}
 
 	public void HandlePacket(Packet pkg, Level level) {
-		
-		//if(level == null)
-		//	System.out.println("rcodi2");
-		
+
 		if (pkg instanceof PacketMove) {
 			// TODO: operazioni per muovere player/nemici...
-			if(((PacketMove)pkg).getDir() != -1) {
-				synchronized(this) {
-					level.updateHostOnPressing(((PacketMove)pkg).getDir());
+			if (((PacketMove) pkg).getDir() != -1) {
+				if (((PacketMove) pkg).getDest() == -1) {
+					synchronized (this) {
+						level.updateHostOnPressing(((PacketMove) pkg).getDir());
+					}
+				} else {
+					//muovi nemici...
+					
 				}
+				
 			}
 		}
 
 		else if (pkg instanceof PacketDie) {
 			// TODO: operazioni per uccidere player/nemici...
-			synchronized(this) {
-				((Host)level.getWorld().getHost()).respawn(((PacketDie)pkg).getX(), ((PacketDie)pkg).getY());
+			synchronized (this) {
+				((Host) level.getWorld().getHost()).respawn(((PacketDie) pkg).getX(), ((PacketDie) pkg).getY());
 			}
 		}
 	}

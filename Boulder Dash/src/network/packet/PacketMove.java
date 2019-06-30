@@ -6,8 +6,8 @@ public class PacketMove extends Packet {
 	
 	private int dir;
 	
-	public PacketMove(int x, int y, int dir) {
-		super(x, y);
+	public PacketMove(int x, int y, int dir, int dest) {
+		super(x, y, dest);
 		this.dir = dir;
 	}
 	
@@ -18,7 +18,7 @@ public class PacketMove extends Packet {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "[move: " + super.toString() + " - " + dir + "]";
+		return "[move: " + super.toString() + " - " + dir +"]";
 	}
 	
 	@Override

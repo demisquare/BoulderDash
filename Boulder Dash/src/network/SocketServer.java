@@ -8,6 +8,8 @@ import java.net.SocketTimeoutException;
 
 import javax.swing.JOptionPane;
 
+import model.Enemy;
+import model.GameObject;
 import model.Host;
 import model.Player;
 import network.packet.Packet;
@@ -65,7 +67,7 @@ public class SocketServer {
 				msg.initInput();
 				msg.receiveObject();
 				msg.initOutput();
-				msg.sendObject(new PacketMove(0, 0, 0));
+				msg.sendObject(new PacketMove(0, 0, 0, 0));
 
 				connected = true;
 				
@@ -96,7 +98,7 @@ public class SocketServer {
 						synchronized (this) {
 
 							if (player.hasMoved()) {
-								Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir());
+								Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir(), -1);
 
 								try {
 									msg.sendObject(move);
@@ -113,9 +115,31 @@ public class SocketServer {
 
 								player.setMoved(false);
 							}
+							
+							for(GameObject enemy:game.level.getWorld().getEnemies())
+							{
+								if (enemy.hasMoved()) {
+									Packet move = new PacketMove(((Enemy) enemy).getX(), ((Enemy) enemy).getY(), ((Enemy) enemy).getLastDir(), game.level.getWorld().getEnemies().indexOf(enemy));
+
+									try {
+										msg.sendObject(move);
+									} catch (IOException e) {
+
+										//System.err.println("[SERVER] Client disconnesso...");
+										JOptionPane.showMessageDialog(
+										        null, "Connection Timeout.", "Error", JOptionPane.ERROR_MESSAGE);
+										close();
+										return;
+									}
+
+									System.out.println("[SERVER] Invio al client: " + move.toString());
+
+									((Enemy) enemy).setMoved(false);
+								}
+							}
 
 							if (player.isRespawned()) {
-								Packet die = new PacketDie(player.getX(), player.getY());
+								Packet die = new PacketDie(player.getX(), player.getY(), -1);
 
 								try {
 									msg.sendObject(die);
@@ -205,8 +229,8 @@ public class SocketServer {
 
 			listener.close();
 			if (socket != null) {
-				socket.close();
 				msg.close();
+				socket.close();
 			}
 
 			System.out.println("[SERVER] Server chiuso.");
