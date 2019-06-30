@@ -30,7 +30,7 @@ public class Music {
 	public static void setSong(AudioPlayer song)
 	{
 		Music.backgroundMusic.stop();
-		Music.backgroundMusic.rewind();
+		//Music.backgroundMusic.rewind();
 		Music.backgroundMusic = song;
 	}
 	
@@ -42,7 +42,7 @@ public class Music {
 			}
 		} else {
 			Music.backgroundMusic.stop();
-			Music.backgroundMusic.rewind();
+			//Music.backgroundMusic.rewind();
 		}
 	}
 	

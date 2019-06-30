@@ -23,6 +23,11 @@ public class MessageHandler {
 		read = null;
 		write = null;
 	}
+	
+	public void close() throws IOException {
+		write.close();
+		read.close();
+	}
 
 	public void initInput() throws IOException {
 		read = new ObjectInputStream(socket.getInputStream());
