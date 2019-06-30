@@ -78,7 +78,7 @@ public class Menu extends JPanel implements Serializable {
 //		closeThread();
 		frame.remove(this);
 		
-		game.launchGame(); 
+		game.launchGame(frame, this); 
 		
 		frame.setContentPane(game);
 		

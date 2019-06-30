@@ -67,8 +67,9 @@ public class Player extends GameObject implements Living {
 			pushRockCounter = 0;
 			if (movingCounter >= 1) {
 				movingCounter = 0;
-				if (g.destroy()) 
+				if (g.destroy()) {
 					return move(dir);
+				}
 			}
 			return false;
 
@@ -79,8 +80,9 @@ public class Player extends GameObject implements Living {
 			pushRockCounter = 0;
 			if (movingCounter >= 1) {
 				movingCounter = 0;
-				if (g.destroy())
+				if (g.destroy()) {
 					return move(dir);
+				}
 			}
 			return false;
 
@@ -91,9 +93,9 @@ public class Player extends GameObject implements Living {
 			if (pushRockCounter >= 5) {
 				pushRockCounter = 0;
 				movingCounter = 1;
-				if (g.move(dir)) 
+				if (g.move(dir)) {
 					return move(dir);
-
+				}
 			}
 			return false;
 
