@@ -2,52 +2,75 @@ package ai;
 
 import model.Enemy;
 import model.GameMap;
+
+import java.util.LinkedList;
+
 import menu.Options;
 import menu.Options.Difficulty;
 
 public class IntelligentEnemy extends Enemy implements Agent {
 
-	int[] tryAgain;
-/*
-	Come gestisco il livello di difficoltà?
+	private int[] tryAgain;
+	private LinkedList<Integer> directions;
+	private int counter;
 	
-	abbiamo tre livelli:
-	- Paradiso		->		random
-	- Purgatiorio	->		distanza di Manatthan 
-	- Inferno		->		cammino minimo (sempre con Manatthan?)
-	
-*/
 	public IntelligentEnemy(int x, int y, int s) {
 		super(x, y, s);
 		tryAgain = new int[]{0, 0, 0, 0};
+		directions = null;
+		counter = 5;
+	}
+
+	@Override
+	public GameMap getEnvironment() {
+		return map;
 	}
 	
 	@Override
-	protected void calculateDirection() {
+	protected boolean calculateDirection() {
+		
+		boolean isWorking = false;
 		
 		if(Options.difficulty == Difficulty.paradiso) {
-			
-			//System.out.println("parafiso");
 			
 			super.calculateDirection();
 			
 		} else if(Options.difficulty == Difficulty.purgatorio) {
 			
-			//System.out.println("purgafiso");
-			
 			lastDir = MovementAlgorithms.greedyPath(this);
 			
 		} else if(Options.difficulty == Difficulty.inferno) {
 			
-			//System.out.println("infiso");
+			if(counter >= 5 || directions == null || directions.isEmpty()) {
+				directions = MovementAlgorithms.optimalPath(this);
+				counter = 0;
 			
-			lastDir = MovementAlgorithms.optimalPath(this);
+			} else {
+				++counter;
+			}
+			
+			if(directions != null && !directions.isEmpty()) {
+				System.out.println(directions.getFirst());
+				lastDir = directions.getFirst();
+				directions.removeFirst();
+			}
 		}
+		
+		isWorking = (lastDir >= 0 && lastDir < 4);
 		
 		tryAgain[0] = lastDir;
 		tryAgain[1] = (lastDir + 1) % 4;
 		tryAgain[2] = (lastDir + 3) % 4;
 		tryAgain[3] = (lastDir + 2) % 4;
+		
+		return isWorking;
+	}
+	
+	private boolean tryMove() {
+		for(int i = 0; i < 4; ++i)
+			if(move(tryAgain[i]))
+				return true;
+		return false;
 	}
 	
 	@Override
@@ -57,28 +80,16 @@ public class IntelligentEnemy extends Enemy implements Agent {
 		if(delayMovement >= 3) {
 			
 			delayMovement = 0;
-			calculateDirection();
-			return tryMove();
+			if(calculateDirection()) {
+				return tryMove();
+			}
 		}
 		
 		return false;
 	}
-
 	
-	private boolean tryMove() {
-		for(int i = 0; i < 4; ++i)
-			if(move(tryAgain[i]))
-				return true;
-		return false;
-	}
-
 	@Override
 	public boolean update(int dir) {
 		return false;
-	}
-
-	@Override
-	public GameMap getEnvironment() {
-		return map;
 	}
 }

@@ -57,8 +57,9 @@ public class Enemy extends GameObject implements Living {
 		//return false;
 	}
 
-	protected void calculateDirection() {
+	protected boolean calculateDirection() {
 		lastDir = r.nextInt(4);
+		return true;
 	}
 	
 	@Override
