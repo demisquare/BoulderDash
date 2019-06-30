@@ -9,6 +9,8 @@ import javax.swing.JSplitPane;
 
 import menu.Menu;
 import menu.Options;
+import menu.You_Lose;
+import menu.You_Win;
 
 public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	/**
@@ -26,6 +28,9 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	public Score score;
 	
 	public boolean isReset;
+	
+	private final You_Lose youlose;
+	private final You_Win youwin;
 	
 	private void checkResize() {
 		
@@ -52,6 +57,9 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	}
 	
 	public Game(JFrame frame, Menu menu) {
+		
+		youlose = new You_Lose(frame, this, menu);
+		youwin = new You_Win(frame, this, menu);
 		
 		isReset = false;
 		this.frame = frame;
@@ -93,10 +101,18 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	}
 
 	public void youLose() {
-		//qui lancia you_lose
+		frame.remove(this);
+		youlose.check_resize();
+		frame.setContentPane(youlose);
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	public void youWin() {
-		//qui lancia you_win
+		frame.remove(this);
+		youwin.check_resize();
+		frame.setContentPane(youwin);
+		frame.revalidate();
+		frame.repaint();
 	}
 }
