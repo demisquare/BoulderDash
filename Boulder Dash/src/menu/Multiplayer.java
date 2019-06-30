@@ -46,10 +46,11 @@ public class Multiplayer extends JPanel {
 	private void turn_back(JFrame frame, Menu menu) throws InterruptedException {
 
 		if (Options.multiplayer) {
-			if (Options.host && socketClient.isConnected()) {
+			if (socketClient != null && socketClient.isConnected()) {
 				socketClient.close();
 				Options.host = false;
-			} else if(socketServer.isConnected())
+			}
+			if(socketServer != null && socketServer.isConnected())
 				socketServer.close();
 			Options.multiplayer = false;
 		}
