@@ -43,7 +43,7 @@ public class SocketClient {
 
 				msg.setSocket(socket);
 				msg.initOutput();
-				msg.sendObject(new PacketMove(0, 0, 0));
+				msg.sendObject(new PacketMove(0, 0, 0, 0));
 				msg.initInput();
 				msg.receiveObject();
 
@@ -65,7 +65,7 @@ public class SocketClient {
 					while (socket.isConnected() && !socket.isClosed()) {
 
 						if (player.hasMoved()) {
-							Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir());
+							Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir(), -1);
 
 							try {
 								msg.sendObject(move);
@@ -83,7 +83,7 @@ public class SocketClient {
 						}
 
 						if (player.isRespawned()) {
-							Packet die = new PacketDie(player.getX(), player.getY());
+							Packet die = new PacketDie(player.getX(), player.getY(), -1);
 
 							try {
 								msg.sendObject(die);
@@ -165,8 +165,8 @@ public class SocketClient {
 
 	public void close() {
 		try {
-			socket.close();
 			msg.close();
+			socket.close();
 			System.out.println("[CLIENT] Socket chiuso.");
 		} catch (IOException e) {
 			e.printStackTrace();
