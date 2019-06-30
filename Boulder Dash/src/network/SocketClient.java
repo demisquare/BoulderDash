@@ -1,7 +1,9 @@
 package network;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import model.Host;
 import model.Player;
@@ -14,9 +16,9 @@ public class SocketClient {
 
 	private Thread t1;
 	private Thread t2;
-	private boolean closeRun;
 	private Socket socket;
 	private MessageHandler msg;
+	private boolean connected;
 	Player player;
 	Host host;
 	Game game;
@@ -25,8 +27,8 @@ public class SocketClient {
 		this.game = game;
 		player = (Player) game.level.getWorld().getPlayer();
 		host = (Host) game.level.getWorld().getHost();
+		connected = false;
 		socket = null;
-		closeRun = false;
 		t1 = null;
 		t2 = null;
 		msg = new MessageHandler();
@@ -34,23 +36,34 @@ public class SocketClient {
 
 	public void connect() {
 		try {
-			System.out.println("[CLIENT] Connessione al server...");
-			socket = new Socket("localhost", 8000);
-			
-			msg.setSocket(socket);
-			msg.initOutput();
-			msg.sendObject(new PacketMove(0, 0, 0));
-			msg.initInput();
-			msg.receiveObject();
-			
-			System.out.println("[CLIENT] Connesso!");
+			try {
+				System.out.println("[CLIENT] Connessione al server...");
+				socket = new Socket("localhost", 8000);
+				socket.setSoTimeout(10000);
+				
+				msg.setSocket(socket);
+				msg.initOutput();
+				msg.sendObject(new PacketMove(0, 0, 0));
+				msg.initInput();
+				msg.receiveObject();
+				
+				connected = true;
+				System.out.println("[CLIENT] Connesso!");
+			} catch(ConnectException c) {
+				System.err.println("[CLIENT] Errore! Il server non ha risposto.");
+				return;
+			} catch (SocketTimeoutException s) {
+				System.err.println("[SERVER] Timeout. Server chiuso.");
+				socket.close();
+				return;
+			}
 			
 			t1 = new Thread(new Runnable() {
 
 				@Override
 				public void run() {
 					System.out.println("[CLIENT] Avvio thread invio...");
-					while (socket.isConnected() && !socket.isClosed()) {
+					while (connected) {
 
 						if (player.hasMoved()) {
 							Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir());
@@ -91,8 +104,7 @@ public class SocketClient {
 
 						e.printStackTrace();
 					}
-					if (closeRun)
-						return;
+				
 				}
 
 			});
@@ -103,7 +115,7 @@ public class SocketClient {
 				@Override
 				public void run() {
 					System.out.println("[CLIENT] Avvio thread ricezione...");
-					while (socket.isConnected() && !socket.isClosed()) {
+					while (connected) {
 						
 							
 							System.out.println("[CLIENT] In ascolto...");
@@ -132,8 +144,7 @@ public class SocketClient {
 
 							e.printStackTrace();
 						}
-						if (closeRun)
-							return;
+					
 
 					}
 				}
@@ -145,14 +156,22 @@ public class SocketClient {
 		}
 	}
 
+	public boolean isConnected() {
+		return connected;
+	}
+	
 	public void close() {
-		System.out.println("[CLIENT] Socket chiuso.");
 		try {
 			socket.close();
+			msg.close();
+			System.out.println("[CLIENT] Socket chiuso.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			closeRun = true;
+			connected = false;
+			
+			t1.interrupt();
+			t2.interrupt();
 		}
 	}
 }

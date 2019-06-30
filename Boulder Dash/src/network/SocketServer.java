@@ -1,8 +1,11 @@
 package network;
 
 import java.io.IOException;
+import java.net.BindException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import model.Host;
 import model.Player;
@@ -15,8 +18,7 @@ public class SocketServer {
 
 	private Thread t1;
 	private Thread t2;
-
-	private boolean closeRun;
+	private boolean connected;
 	private ServerSocket listener;
 	private Socket socket;
 	private MessageHandler msg;
@@ -29,8 +31,8 @@ public class SocketServer {
 		this.game = game;
 		player = (Player) game.level.getWorld().getPlayer();
 		host = (Host) game.level.getWorld().getHost();
+		connected = false;
 		socket = null;
-		closeRun = false;
 		t1 = null;
 		t2 = null;
 		msg = new MessageHandler();
@@ -47,27 +49,43 @@ public class SocketServer {
 	 * 
 	 */
 
-	public void connect() {
+	public void connect(){
 		try {
-			listener = new ServerSocket(8000);
-			System.out.println("[SERVER] Server attivo. In attesa di connessioni...");
-			socket = listener.accept();
+			try {
+				listener = new ServerSocket(8000, 1, InetAddress.getLocalHost());  
+				listener.setSoTimeout(10000);
+				
+				System.out.println("[SERVER] Server attivo. In attesa di connessioni...");
+							
+				socket = listener.accept();
 
-			msg.setSocket(socket);
-			msg.initInput();
-			msg.receiveObject();
-			msg.initOutput();
-			msg.sendObject(new PacketMove(0, 0, 0));
+				msg.setSocket(socket);
+				msg.initInput();
+				msg.receiveObject();
+				msg.initOutput();
+				msg.sendObject(new PacketMove(0, 0, 0));
 
-			System.out.println("[SERVER] Connessione stabilita con " + socket.getInetAddress().getHostAddress() + ":"
-					+ socket.getLocalPort());
+				connected = true;
+				System.out.println("[SERVER] Connessione stabilita con " + socket.getInetAddress().getHostAddress() + ":"
+						+ socket.getLocalPort());
+			} catch (BindException b) {
+				// TODO Auto-generated catch block
+				System.err.println("[SERVER] Errore! Stai cercando di aprire due server!");
+				return;
+			}
+			catch (SocketTimeoutException s) {
+				System.err.println("[SERVER] Timeout. Server chiuso.");
+				listener.close();
+				return;
+			}
+			
 
 			t1 = new Thread(new Runnable() {
 
 				@Override
 				public void run() {
 					System.out.println("[SERVER] Avvio thread invio...");
-					while (socket.isConnected() && !socket.isClosed()) {
+					while (connected) {
 						synchronized (this) {
 
 							if (player.hasMoved()) {
@@ -110,8 +128,6 @@ public class SocketServer {
 
 						e.printStackTrace();
 					}
-					if (closeRun)
-						return;
 				}
 
 			});
@@ -122,7 +138,7 @@ public class SocketServer {
 				@Override
 				public void run() {
 					System.out.println("[SERVER] Avvio thread ricezione...");
-					while (socket.isConnected() && !socket.isClosed()) {
+					while (connected) {
 						synchronized (this) {
 
 							System.out.println("[SERVER] In ascolto...");
@@ -152,8 +168,6 @@ public class SocketServer {
 
 								e.printStackTrace();
 							}
-							if (closeRun)
-								return;
 
 						}
 					}
@@ -163,15 +177,20 @@ public class SocketServer {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 
+	public boolean isConnected() {
+		return connected;
+	}
+	
 	public void close() {
 		try {
 
 			listener.close();
 			if (socket != null) {
 				socket.close();
+				msg.close();
 			}
 
 			System.out.println("[SERVER] Server chiuso.");
@@ -181,7 +200,10 @@ public class SocketServer {
 			e.printStackTrace();
 
 		} finally {
-			closeRun = true;
+			connected = false;
+			
+			t1.interrupt();
+			t2.interrupt();
 		}
 
 	}
