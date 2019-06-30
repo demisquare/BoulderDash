@@ -42,13 +42,28 @@ public class You_Lose extends JPanel {
 		frame.revalidate();
 		frame.repaint();
 	}
-	private void retry(JFrame frame, Game game) {
-		Music.setSong(Music.gameSong);
-		frame.remove(this);
-		frame.setContentPane(game);
-		game.level.requestFocusInWindow();
-		frame.revalidate();
-		frame.repaint();
+	private void retry(JFrame frame, Game game) throws InterruptedException {
+				
+				frame.remove(this);
+				
+				game.launchGame(); 
+				
+				frame.setContentPane(game);
+				
+				if(!frame.isAncestorOf(game)) { 
+					throw new InterruptedException();
+				}
+				
+				if(!game.level.requestFocusInWindow()) { 
+					throw new InterruptedException(); 
+				}
+				
+				frame.revalidate();
+				frame.repaint();
+				
+				synchronized(this) {
+					Music.setSong(Music.gameSong);
+				}
 	}
 	
 	public void check_resize() {
@@ -123,7 +138,11 @@ public class You_Lose extends JPanel {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					retry(frame, game);
+					try {
+						retry(frame, game);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
 					RETRY_scaled.setIcon(new ImageIcon(Scaling.get(Retry, 250, 60, Options.full_screen)));
 					revalidate();
 					repaint();
