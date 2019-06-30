@@ -193,13 +193,13 @@ public class Score extends JPanel implements Serializable {
 	}
 	
 	int getMissing_diamonds() {return missing_diamonds;}
-	void setMissing_diamonds(int md) {missing_diamonds=md;}
+	void setMissing_diamonds(int md) {missing_diamonds=md; Diamonds.setText("" + missing_diamonds);}
 	
 	int getTotal_score() {return total_score;}
-	void setTotal_score(int ts) {total_score=ts;}
+	void setTotal_score(int ts) {total_score=ts; score.setText("" + total_score);}
 	
 	int getRemaining_time() {return remaining_time;}
-	void setRemaining_time(int rt) {remaining_time=rt;}
+	void setRemaining_time(int rt) {remaining_time=rt; time_left.setText("" + remaining_time);}
 }
 
 
