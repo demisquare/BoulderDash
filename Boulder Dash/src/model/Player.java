@@ -110,6 +110,12 @@ public class Player extends GameObject implements Living {
 				return move(dir);
 			}
 			return false;
+		
+		} else if (g instanceof Enemy) {
+			
+			moved = true;
+			respawn();
+			return true;
 		}
 
 		// this is for EmptyBlock
@@ -151,29 +157,16 @@ public class Player extends GameObject implements Living {
 				if (map.getTile(i, j) instanceof EmptyBlock) {
 	
 					moved = true;
-					//System.out.println("si muove...");
-					swap(i, j);
-						
+					swap(i, j);	
 					return true;
 	
 				} else if (map.getTile(i, j) instanceof Door) {
 	
 					moved = true;
 					map.setWinCon(true);
-	
-					//System.out.println("VITTORIA");
-	
 					destroy();
-					
 					return true;
 	
-				} else if (map.getTile(i, j) instanceof Enemy) {
-	
-					moved = true;
-					
-					this.respawn();
-					
-					return true;
 				}
 			}
 			

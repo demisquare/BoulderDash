@@ -20,6 +20,13 @@ public class You_Lose extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String YouLosePath =
+			"." + File.separator + 
+			"resources" + File.separator + 
+			"assets" + File.separator + 
+			"Menu" + File.separator + 
+			"YouLosePage" + File.separator;
+	
 	BufferedImage background;
 	Image Menu;
 	Image Menu_SELECTED;
@@ -46,24 +53,11 @@ public class You_Lose extends JPanel {
 
 	public You_Lose(JFrame frame, Game game, Menu menu) {
 		try {
-			background = ImageIO.read(new File("." + File.separator + "resources" + File.separator + "assets"
-					+ File.separator + "Menu" + File.separator + "YouLosePage" + File.separator + "background.png"));
-
-			Menu = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "YouLosePage" + File.separator + "Menu.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
-
-			Menu_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "YouLosePage" + File.separator + "Menu_SELECTED.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
-
-			Retry = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "YouLosePage" + File.separator + "Retry.png")).getScaledInstance(540, 79, Image.SCALE_SMOOTH);
-
-			Retry_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "YouLosePage" + File.separator + "Retry_SELECTED.png")).getScaledInstance(540, 79, Image.SCALE_SMOOTH);
+			background = ImageIO.read(new File(YouLosePath + "background.png"));
+			Menu = ImageIO.read(new File(YouLosePath + "Menu.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
+			Menu_SELECTED = ImageIO.read(new File(YouLosePath + "Menu_SELECTED.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
+			Retry = ImageIO.read(new File(YouLosePath + "Retry.png")).getScaledInstance(540, 79, Image.SCALE_SMOOTH);
+			Retry_SELECTED = ImageIO.read(new File(YouLosePath + "Retry_SELECTED.png")).getScaledInstance(540, 79, Image.SCALE_SMOOTH);
 
 			MENU_scaled = new JLabel(new ImageIcon(Menu));
 			RETRY_scaled = new JLabel(new ImageIcon(Retry));
