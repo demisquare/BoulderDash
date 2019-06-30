@@ -73,8 +73,17 @@ public class Score extends JPanel implements Serializable {
 	}
 	
 	private void turn_back(JFrame frame, Menu menu, Game game) throws InterruptedException {
-		//socketServer.close();
-		//socketClient.close();
+		
+//		if (Options.multiplayer) {
+//			if (socketClient != null && socketClient.isConnected()) {
+//				socketClient.close();
+//				Options.host = false;
+//			}
+//			if(socketServer != null && socketServer.isConnected())
+//				socketServer.close();
+//			Options.multiplayer = false;
+//		}
+		
 		try{
 
 			menu.check_resize();
