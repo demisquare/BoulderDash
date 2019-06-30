@@ -20,6 +20,13 @@ public class You_Lose extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String YouLosePath =
+			"." + File.separator + 
+			"resources" + File.separator + 
+			"assets" + File.separator + 
+			"Menu" + File.separator + 
+			"YouLosePage" + File.separator;
+	
 	BufferedImage background;
 	Image Menu;
 	Image Menu_SELECTED;
@@ -35,35 +42,49 @@ public class You_Lose extends JPanel {
 		frame.revalidate();
 		frame.repaint();
 	}
-	private void retry(JFrame frame, Game game) {
-		Music.setSong(Music.gameSong);
-		frame.remove(this);
-		frame.setContentPane(game);
-		game.level.requestFocusInWindow();
-		frame.revalidate();
-		frame.repaint();
+	private void retry(JFrame frame, Game game) throws InterruptedException {
+				
+				frame.remove(this);
+				
+				game.launchGame(); 
+				
+				frame.setContentPane(game);
+				
+				if(!frame.isAncestorOf(game)) { 
+					throw new InterruptedException();
+				}
+				
+				if(!game.level.requestFocusInWindow()) { 
+					throw new InterruptedException(); 
+				}
+				
+				frame.revalidate();
+				frame.repaint();
+				
+				synchronized(this) {
+					Music.setSong(Music.gameSong);
+				}
+	}
+	
+	public void check_resize() {
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		double xSize = tk.getScreenSize().getWidth();
+		double ySize = tk.getScreenSize().getHeight();
+		
+		MENU_scaled.setIcon(new ImageIcon(Scaling.get(Menu, 250, 60, Options.full_screen)));
+		RETRY_scaled.setIcon(new ImageIcon(Scaling.get(Retry, 250, 60, Options.full_screen)));
+		
+		Scaling.set(MENU_scaled, 330, 560, 250, 60, Options.full_screen);
+		Scaling.set(RETRY_scaled, 680, 560, 250, 60, Options.full_screen);
 	}
 
 	public You_Lose(JFrame frame, Game game, Menu menu) {
 		try {
-			background = ImageIO.read(new File("." + File.separator + "resources" + File.separator + "assets"
-					+ File.separator + "Menu" + File.separator + "YouLosePage" + File.separator + "background.png"));
-
-			Menu = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "YouLosePage" + File.separator + "Menu.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
-
-			Menu_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "YouLosePage" + File.separator + "Menu_SELECTED.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
-
-			Retry = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "YouLosePage" + File.separator + "Retry.png")).getScaledInstance(540, 79, Image.SCALE_SMOOTH);
-
-			Retry_SELECTED = ImageIO
-					.read(new File("." + File.separator + "resources" + File.separator + "assets" + File.separator
-							+ "Menu" + File.separator + "YouLosePage" + File.separator + "Retry_SELECTED.png")).getScaledInstance(540, 79, Image.SCALE_SMOOTH);
+			background = ImageIO.read(new File(YouLosePath + "background.png"));
+			Menu = ImageIO.read(new File(YouLosePath + "Menu.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
+			Menu_SELECTED = ImageIO.read(new File(YouLosePath + "Menu_SELECTED.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
+			Retry = ImageIO.read(new File(YouLosePath + "Retry.png")).getScaledInstance(540, 79, Image.SCALE_SMOOTH);
+			Retry_SELECTED = ImageIO.read(new File(YouLosePath + "Retry_SELECTED.png")).getScaledInstance(540, 79, Image.SCALE_SMOOTH);
 
 			MENU_scaled = new JLabel(new ImageIcon(Menu));
 			RETRY_scaled = new JLabel(new ImageIcon(Retry));
@@ -80,14 +101,14 @@ public class You_Lose extends JPanel {
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
 					menu(frame, menu);
-					MENU_scaled.setIcon(new ImageIcon(Menu));
+					MENU_scaled.setIcon(new ImageIcon(Scaling.get(Menu, 250, 60, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					MENU_scaled.setIcon(new ImageIcon(Menu));
+					MENU_scaled.setIcon(new ImageIcon(Scaling.get(Menu, 250, 60, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -95,7 +116,7 @@ public class You_Lose extends JPanel {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					Music.playTone("hover");
-					MENU_scaled.setIcon(new ImageIcon(Menu_SELECTED));
+					MENU_scaled.setIcon(new ImageIcon(Scaling.get(Menu_SELECTED, 250, 60, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -117,15 +138,19 @@ public class You_Lose extends JPanel {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Music.playTone("select");
-					retry(frame, game);
-					RETRY_scaled.setIcon(new ImageIcon(Retry));
+					try {
+						retry(frame, game);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					RETRY_scaled.setIcon(new ImageIcon(Scaling.get(Retry, 250, 60, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					RETRY_scaled.setIcon(new ImageIcon(Retry));
+					RETRY_scaled.setIcon(new ImageIcon(Scaling.get(Retry, 250, 60, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -133,7 +158,7 @@ public class You_Lose extends JPanel {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					Music.playTone("hover");
-					RETRY_scaled.setIcon(new ImageIcon(Retry_SELECTED));
+					RETRY_scaled.setIcon(new ImageIcon(Scaling.get(Retry_SELECTED, 250, 60, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -149,30 +174,9 @@ public class You_Lose extends JPanel {
 			this.add(MENU_scaled);
 			this.add(RETRY_scaled);
 			
-			Toolkit tk = Toolkit.getDefaultToolkit();
-			double xSize = tk.getScreenSize().getWidth();
-			double ySize = tk.getScreenSize().getHeight();
+
 			
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					while (true) {
-						if(!Options.full_screen) {
-							MENU_scaled.setBounds(200, 200, 698, 79);
-							RETRY_scaled.setBounds(300, 200, 698, 79);
-						}
-						else if(Options.full_screen) {
-							MENU_scaled.setBounds((int)(200*(xSize/1280)), (int)(200*(ySize/720)), 698, 79);
-							RETRY_scaled.setBounds((int)(300*(xSize/1280)), (int)(200*(ySize/720)), 698, 79);
-						}
-						try {
-							Thread.sleep(34);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}).start();
+
 			
 		} catch (IOException e) {
 			e.printStackTrace();
