@@ -75,7 +75,6 @@ public class Menu extends JPanel implements Serializable {
 
 	private void start_selected(JFrame frame) throws InterruptedException {
 		
-//		closeThread();
 		frame.remove(this);
 		
 		game.launchGame(); 
