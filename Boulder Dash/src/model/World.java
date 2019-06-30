@@ -21,10 +21,10 @@ public class World {
 
 	
 	// costruttore di default
-	public World(int FPS) {
+	public World(int FPS, int stage) {
 		
 		//sostituire con il filename
-		map = new GameMap("levelmap");
+		map = new GameMap("levelmap" + stage);
 		
 		this.FPS = FPS;
 		//default a true (per evitare un aggiornamento immediato)

@@ -29,6 +29,8 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	
 	public boolean isReset;
 	
+	private int stage;
+	
 	private final You_Lose youlose;
 	private final You_Win youwin;
 	
@@ -58,6 +60,8 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	
 	public Game(JFrame frame, Menu menu) {
 		
+		stage = 0;
+		
 		youlose = new You_Lose(frame, this, menu);
 		youwin = new You_Win(frame, this, menu);
 		
@@ -69,7 +73,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		setFocusable(true);
 		setEnabled(true);
 		
-		level = new Level(this);
+		level = new Level(this, stage);
 		level.addKeyListener(level);
 			
 		score_init();
@@ -78,20 +82,28 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	public void launchGame() throws NullPointerException{
 		
 		checkResize();
+	
+		if(stage < 1) {
+			
+			level.closeThread();
+			level = new Level(this, stage);
+			level.addKeyListener(level);
 		
-		level.closeThread();
-		level = new Level(this);
-		level.addKeyListener(level);
+			score = new Score(frame, menu, this, level);
 		
-		score = new Score(frame, menu, this, level);
+			score.check_resize(level);
+			this.setLeftComponent(level);
+			this.setRightComponent(score);
 		
-		score.check_resize(level);
-		this.setLeftComponent(level);
-		this.setRightComponent(score);
+			level.launchThread();
 		
-		level.launchThread();
+			isReset = true;
+
+			++stage;
 		
-		isReset = true;
+		} else {
+			youWin();
+		}
 	}
 	
 	public synchronized void closeThread() {
@@ -101,6 +113,9 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	}
 
 	public void youLose() {
+		
+		stage = 0;
+		
 		frame.remove(this);
 		youlose.check_resize();
 		frame.setContentPane(youlose);
@@ -109,6 +124,9 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	}
 
 	public void youWin() {
+		
+		stage = 0;
+		
 		frame.remove(this);
 		youwin.check_resize();
 		frame.setContentPane(youwin);
