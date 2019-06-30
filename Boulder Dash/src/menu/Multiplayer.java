@@ -23,8 +23,12 @@ import view.Game;
 public class Multiplayer extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private static final String MultiPagePath = "." + File.separator + "resources" + File.separator + "assets"
-			+ File.separator + "Menu" + File.separator + "MultiPage" + File.separator;
+	private static final String MultiPagePath = 
+			"." + File.separator + 
+			"resources" + File.separator + 
+			"assets" + File.separator + 
+			"Menu" + File.separator + 
+			"MultiPage" + File.separator;
 
 	private Thread t;
 
