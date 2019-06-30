@@ -2,10 +2,11 @@ package network;
 
 import java.io.IOException;
 import java.net.BindException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+
+import javax.swing.JOptionPane;
 
 import model.Host;
 import model.Player;
@@ -52,12 +53,13 @@ public class SocketServer {
 	public void connect(){
 		try {
 			try {
-				listener = new ServerSocket(8000, 1, InetAddress.getLocalHost());  
+				listener = new ServerSocket(8000);  
 				listener.setSoTimeout(10000);
 				
 				System.out.println("[SERVER] Server attivo. In attesa di connessioni...");
 							
 				socket = listener.accept();
+				socket.setSoTimeout(0);
 
 				msg.setSocket(socket);
 				msg.initInput();
@@ -66,15 +68,20 @@ public class SocketServer {
 				msg.sendObject(new PacketMove(0, 0, 0));
 
 				connected = true;
+				
 				System.out.println("[SERVER] Connessione stabilita con " + socket.getInetAddress().getHostAddress() + ":"
 						+ socket.getLocalPort());
 			} catch (BindException b) {
 				// TODO Auto-generated catch block
-				System.err.println("[SERVER] Errore! Stai cercando di aprire due server!");
+				//System.err.println("[SERVER] Errore! Stai cercando di aprire due server!");
+				JOptionPane.showMessageDialog(
+				        null, "Failed to create a game. Please check first if you have previously created another game.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			catch (SocketTimeoutException s) {
-				System.err.println("[SERVER] Timeout. Server chiuso.");
+				//System.err.println("[SERVER] Timeout. Server chiuso.");
+				JOptionPane.showMessageDialog(
+				        null, "Connection Timeout.", "Error", JOptionPane.ERROR_MESSAGE);
 				listener.close();
 				return;
 			}
@@ -85,7 +92,7 @@ public class SocketServer {
 				@Override
 				public void run() {
 					System.out.println("[SERVER] Avvio thread invio...");
-					while (connected) {
+					while (socket.isConnected() && !socket.isClosed()) {
 						synchronized (this) {
 
 							if (player.hasMoved()) {
@@ -95,8 +102,11 @@ public class SocketServer {
 									msg.sendObject(move);
 								} catch (IOException e) {
 
-									System.err.println("[SERVER] Client disconnesso...");
+									//System.err.println("[SERVER] Client disconnesso...");
+									JOptionPane.showMessageDialog(
+									        null, "Connection Timeout.", "Error", JOptionPane.ERROR_MESSAGE);
 									close();
+									return;
 								}
 
 								System.out.println("[SERVER] Invio al client: " + move.toString());
@@ -111,8 +121,11 @@ public class SocketServer {
 									msg.sendObject(die);
 								} catch (IOException e) {
 
-									System.err.println("[SERVER] Client disconnesso...");
+									//System.err.println("[SERVER] Client disconnesso...");
+									JOptionPane.showMessageDialog(
+									        null, "Connection Timeout.", "Error", JOptionPane.ERROR_MESSAGE);
 									close();
+									return;
 								}
 
 								System.out.println("[SERVER] Invio al client: " + die.toString());
@@ -125,8 +138,9 @@ public class SocketServer {
 					try {
 						Thread.sleep(5);
 					} catch (InterruptedException e) {
-
-						e.printStackTrace();
+						close();
+						//e.printStackTrace();
+						
 					}
 				}
 
@@ -138,7 +152,7 @@ public class SocketServer {
 				@Override
 				public void run() {
 					System.out.println("[SERVER] Avvio thread ricezione...");
-					while (connected) {
+					while (socket.isConnected() && !socket.isClosed()) {
 						synchronized (this) {
 
 							System.out.println("[SERVER] In ascolto...");
@@ -151,7 +165,9 @@ public class SocketServer {
 								else
 									System.out.println(":^)");
 							} catch (IOException e) {
-								System.err.println("[SERVER] Client disconnesso...");
+								//System.err.println("[SERVER] Client disconnesso...");
+								JOptionPane.showMessageDialog(
+								        null, "Connection Timeout.", "Error", JOptionPane.ERROR_MESSAGE);
 								close();
 								return;
 							}
@@ -165,8 +181,8 @@ public class SocketServer {
 							try {
 								Thread.sleep(5);
 							} catch (InterruptedException e) {
-
-								e.printStackTrace();
+								close();
+								//e.printStackTrace();
 							}
 
 						}

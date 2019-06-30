@@ -3,7 +3,7 @@ package network;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
+import javax.swing.JOptionPane;
 
 import model.Host;
 import model.Player;
@@ -39,31 +39,30 @@ public class SocketClient {
 			try {
 				System.out.println("[CLIENT] Connessione al server...");
 				socket = new Socket("localhost", 8000);
-				socket.setSoTimeout(10000);
-				
+				// socket.setSoTimeout(10000);
+
 				msg.setSocket(socket);
 				msg.initOutput();
 				msg.sendObject(new PacketMove(0, 0, 0));
 				msg.initInput();
 				msg.receiveObject();
-				
+
 				connected = true;
 				System.out.println("[CLIENT] Connesso!");
-			} catch(ConnectException c) {
-				System.err.println("[CLIENT] Errore! Il server non ha risposto.");
-				return;
-			} catch (SocketTimeoutException s) {
-				System.err.println("[SERVER] Timeout. Server chiuso.");
-				socket.close();
+			} catch (ConnectException c) {
+				// System.err.println("[CLIENT] Errore! Il server non ha risposto.");
+				JOptionPane.showMessageDialog(null,
+						"Failed to connect to server. Please check first if you have previously created a game.",
+						"Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			
+
 			t1 = new Thread(new Runnable() {
 
 				@Override
 				public void run() {
 					System.out.println("[CLIENT] Avvio thread invio...");
-					while (connected) {
+					while (socket.isConnected() && !socket.isClosed()) {
 
 						if (player.hasMoved()) {
 							Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir());
@@ -72,7 +71,9 @@ public class SocketClient {
 								msg.sendObject(move);
 							} catch (IOException e) {
 
-								System.out.println("[CLIENT] Server disconnesso...");
+								// System.out.println("[CLIENT] Server disconnesso...");
+								JOptionPane.showMessageDialog(null, "Connection Timeout.", "Error",
+										JOptionPane.ERROR_MESSAGE);
 								close();
 							}
 
@@ -88,7 +89,9 @@ public class SocketClient {
 								msg.sendObject(die);
 							} catch (IOException e) {
 
-								System.out.println("[CLIENT] Server disconnesso...");
+								// System.out.println("[CLIENT] Server disconnesso...");
+								JOptionPane.showMessageDialog(null, "Connection Timeout.", "Error",
+										JOptionPane.ERROR_MESSAGE);
 								close();
 							}
 
@@ -101,10 +104,10 @@ public class SocketClient {
 					try {
 						Thread.sleep(5);
 					} catch (InterruptedException e) {
-
-						e.printStackTrace();
+						close();
+						// e.printStackTrace();
 					}
-				
+
 				}
 
 			});
@@ -115,42 +118,42 @@ public class SocketClient {
 				@Override
 				public void run() {
 					System.out.println("[CLIENT] Avvio thread ricezione...");
-					while (connected) {
-						
-							
-							System.out.println("[CLIENT] In ascolto...");
-							Packet pkg;
-							try {
-								pkg = (Packet) msg.receiveObject();
-							} catch (IOException e) {
-								System.out.println("[CLIENT] Server disconnesso...");
-								close();
-								return;
-							}
+					while (socket.isConnected() && !socket.isClosed()) {
 
-							if (pkg != null) {
-								if(host == null)
-									System.out.println("rcodi");
-								
-								msg.HandlePacket(pkg, game.level);
-								
-								System.out.println("[CLIENT] ricevo dal server: " + pkg.toString());
-								//host.update(GameObject.DOWN);
-							}
-						
+						System.out.println("[CLIENT] In ascolto...");
+						Packet pkg;
+						try {
+							pkg = (Packet) msg.receiveObject();
+						} catch (IOException e) {
+							// System.out.println("[CLIENT] Server disconnesso...");
+							JOptionPane.showMessageDialog(null, "Connection Timeout.", "Error",
+									JOptionPane.ERROR_MESSAGE);
+							close();
+							return;
+						}
+
+						if (pkg != null) {
+							if (host == null)
+								System.out.println("rcodi");
+
+							msg.HandlePacket(pkg, game.level);
+
+							System.out.println("[CLIENT] ricevo dal server: " + pkg.toString());
+							// host.update(GameObject.DOWN);
+						}
+
 						try {
 							Thread.sleep(5);
 						} catch (InterruptedException e) {
-
-							e.printStackTrace();
+							close();
+							//e.printStackTrace();
 						}
-					
 
 					}
 				}
 			});
 			t2.start();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -159,7 +162,7 @@ public class SocketClient {
 	public boolean isConnected() {
 		return connected;
 	}
-	
+
 	public void close() {
 		try {
 			socket.close();
@@ -169,7 +172,7 @@ public class SocketClient {
 			e.printStackTrace();
 		} finally {
 			connected = false;
-			
+
 			t1.interrupt();
 			t2.interrupt();
 		}
