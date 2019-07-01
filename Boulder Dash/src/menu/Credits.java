@@ -34,6 +34,8 @@ public class Credits extends JPanel{
 	JLabel ARROW_BACK_scaled;
 	
 	public Credits(JFrame frame, Menu menu) {
+		super();
+		
 		image_init();		
 			
 		ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));

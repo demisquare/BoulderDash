@@ -58,6 +58,7 @@ public class Level extends JPanel implements KeyListener {
 	private static Sprite spritesheet = new Sprite();
 	private static Random r = new Random();
 
+	private boolean isComplete;
 	private int prevDiamonds;
 	private int FPS = 30;
 	private boolean mouseReleased = false;
@@ -75,9 +76,11 @@ public class Level extends JPanel implements KeyListener {
 	ArrayList<LivingSprite> enemySprites;
 
 	public Level(Game g, int stage, Score score) {
-		
+	
 		super();
-
+		
+		isComplete = false;
+		
 		this.score = score;
 		
 		setBackground(Color.GRAY);
@@ -97,6 +100,8 @@ public class Level extends JPanel implements KeyListener {
 
 		lastTimePressed = java.time.LocalTime.now();
 		Renderer.init(world);
+	
+		isComplete = true;
 	}
 
 	private void initGraphics() {
@@ -305,6 +310,14 @@ public class Level extends JPanel implements KeyListener {
 				
 				int timecounter = 0;
 				
+				while(!isComplete && !world.isComplete()) {
+					try {
+						Thread.sleep(5);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				
 				while(true) {
 					revalidate();
 					repaint();
@@ -366,6 +379,8 @@ public class Level extends JPanel implements KeyListener {
 
 		Renderer.render(g, this);
 	}
+	
+	public boolean isComplete() 						{ return isComplete; }
 	
 	public void setScore(Score score) 					{ this.score = score; }
 

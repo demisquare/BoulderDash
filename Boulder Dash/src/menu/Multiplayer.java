@@ -45,6 +45,8 @@ public class Multiplayer extends JPanel {
 	private SocketClient socketClient;
 	
 	public Multiplayer(JFrame frame, Game game, Menu menu) {
+		super();
+		
 		image_init();
 		label_init();
 		MouseListener_init(frame, game, menu);

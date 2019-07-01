@@ -32,6 +32,8 @@ public class You_Win extends JPanel {
 	JLabel MENU_scaled;
 
 	public You_Win(JFrame frame, Game game, Menu menu) {
+		super();
+		
 		image_init();
 				
 		MENU_scaled = new JLabel(new ImageIcon(Menu));

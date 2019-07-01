@@ -6,6 +6,9 @@ import menu.Options;
 
 public class Music {
 		
+//	la classe è completamente statica
+	private Music() {};
+	
 	public static final AudioPlayer menuSong = new AudioPlayer(
 			"." + File.separator +
 			"resources" + File.separator +

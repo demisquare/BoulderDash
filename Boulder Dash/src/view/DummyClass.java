@@ -8,6 +8,10 @@ public class DummyClass {
 
 	GameObject logicObj;
 
+	public DummyClass(GameObject logicObj) {
+		this.logicObj = logicObj;
+	}
+	
 	public GameObject getLogicObj() {
 		return logicObj;
 	}
