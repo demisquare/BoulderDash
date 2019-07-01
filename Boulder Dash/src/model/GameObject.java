@@ -1,8 +1,21 @@
+//AUTORE: Davide Caligiuri
 package model;
 
 public abstract class GameObject {
 
-	//costanti usate per la lettura da file
+//	costanti usate per le direzioni di movimento
+	public static final int DOWN  = 0;
+	public static final int LEFT  = 1;
+	public static final int RIGHT = 2;
+	public static final int UP    = 3;	
+//	mappa costante direzione -> variazione coordinate
+	public static final int dmap[][] = { { 0,  1},
+			               				 {-1,  0},
+			               				 { 1,  0},
+			               				 { 0, -1} };
+//	riferimento alla mappa di gioco
+	public static GameMap map = null;
+//	costanti usate per la lettura da file
 	static final char EMPTY_BLOCK = '0';
 	static final char WALL	 	  = '1';
 	static final char DIAMOND 	  = '2';
@@ -12,39 +25,21 @@ public abstract class GameObject {
 	static final char PLAYER	  = 'P';
 	static final char HOST	 	  = 'H';
 	static final char ENEMY		  = 'E';
-	
-	//costanti usate per le direzioni di movimento
-	public static final int DOWN  = 0;
-	public static final int LEFT  = 1;
-	public static final int RIGHT = 2;
-	public static final int UP    = 3;
-		
-	//mappa costante direzione -> variazione coordinate
-	public static final int dmap[][] = { { 0,  1},
-			               				 {-1,  0},
-			               				 { 1,  0},
-			               				 { 0, -1} };
-	
-	//riferimento alla mappa di gioco
-	public static GameMap map = null;
-	
-	//coordinate dell'oggetto
+//	coordinate dell'oggetto
 	protected int x;
 	protected int y;
-	
-	//verifica se l'oggetto ha subito un aggiornamento (tramite update())
+//	verifica se l'oggetto ha subito un aggiornamento (tramite update())
 	protected boolean processed;
-	//verifica se l'oggetto necessita di essere eliminato
+//	verifica se l'oggetto necessita di essere eliminato
 	protected boolean dead;
-	//verifica se l'oggetto sta cadendo
+//	verifica se l'oggetto sta cadendo
 	protected boolean isFalling;
-	//verifica se l'oggetto si sta muovendo
-	public boolean moved;
-	//verifica se l'oggetto è respawnato
-	public boolean respawned;
-	
-	//nel caso l'oggetto vada sostituito, 
-	//corrisponde all'oggetto con cui sostituirlo
+//	verifica se l'oggetto si sta muovendo
+	protected boolean moved;
+//	verifica se l'oggetto è respawnato
+	protected boolean respawned;
+//	nel caso l'oggetto vada sostituito, 
+//	corrisponde all'oggetto con cui sostituirlo
 	protected GameObject successor;
 	
 	public GameObject(int x, int y) {
@@ -77,7 +72,7 @@ public abstract class GameObject {
 				processed = true;
 				dead = true;
 				
-				if(map.containsKey(x*map.dimX+y) && map.getTile(x, y).equals(successor)) {
+				if(map.containsKey(x*GameMap.dimX+y) && map.getTile(x, y).equals(successor)) {
 					//System.err.println("viene distrutto... " + this);
 				
 				} else {
@@ -100,35 +95,23 @@ public abstract class GameObject {
 	protected final void swap(int i, int j) {
 		
 		GameObject temp = map.getTile(i, j);
-		boolean error = false;
 		
-		//if(temp.processed == false) {
-			
-			if(!map.getTile(x, y).equals(this)) {
-			
-				System.err.println("in model.GameObject.swap(): " + this + " != " + map.getTile(x, y));
-				error = true;
-			}
+		if(!map.getTile(x, y).equals(this))	
+			System.err.println("in model.GameObject.swap(): " + this + " != " + map.getTile(x, y));
 		
-			map.setTile(x, y, temp);
-			temp.x = x;
-			temp.y = y;
-			temp.processed = true;
+		map.setTile(x, y, temp);
+		temp.x = x;
+		temp.y = y;
+		temp.processed = true;
 	
-			if(!map.getTile(i, j).equals(temp)) {
-		
-				System.err.println("in model.GameObject.swap(): " + temp + " != " + map.getTile(i, j));
-				error = true;
-			}
+		if(!map.getTile(i, j).equals(temp))
+			System.err.println("in model.GameObject.swap(): " + temp + " != " + map.getTile(i, j));
 	
-			map.setTile(i, j, this);
-			x = i;
-			y = j;
-			processed = true;
-			
-			/*if(!error)
-				System.out.println("scambia i tiles...");*/
-		//}
+		map.setTile(i, j, this);
+		x = i;
+		y = j;
+		processed = true;
+		
 	}
 	
 //	implementazione generica della gravità:
@@ -137,7 +120,7 @@ public abstract class GameObject {
 //	(simulando una caduta)
 	protected boolean fall() {
 		
-		if(!(y+1 < 0 || y+1 >= map.dimY)) {
+		if(!(y+1 < 0 || y+1 >= GameMap.dimY)) {
 			
 			try { 
 				if(map.getTile(x, y+1) instanceof EmptyBlock) {
@@ -165,7 +148,7 @@ public abstract class GameObject {
 		int i = (x + dmap[dir][0]);
 		int j = (y + dmap[dir][1]);
 		
-		if(!(i < 0 || i >= map.dimX) && !(j < 0 || j >= map.dimY)) {
+		if(!(i < 0 || i >= GameMap.dimX) && !(j < 0 || j >= GameMap.dimY)) {
 		
 			if(map.getTile(i, j) instanceof EmptyBlock) {
 				
@@ -199,12 +182,12 @@ public abstract class GameObject {
 	public boolean isRespawned() 				{ return respawned; }
 	public void setRespawned(boolean respawned) { this.respawned = respawned; }
 	
-	public GameObject getSuccessor()	{ return successor; }
+	public GameObject getSuccessor()			{ return successor; }
 
 	@Override
 	public int hashCode() {
 		return 
-			x*map.dimX + y;
+			x*GameMap.dimX + y;
 	}
 	
 	@Override
@@ -217,9 +200,5 @@ public abstract class GameObject {
 	public String toString() {
 		return
 			this.getClass().getCanonicalName() + " at [" + x + ", " + y + "]";
-	}
-
-	public int getDiamondsCollected() {
-		return 0;
 	}
 }

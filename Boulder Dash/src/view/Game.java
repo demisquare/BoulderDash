@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
 import audio.Music;
+
 import menu.Menu;
 import menu.Options;
 import menu.Options.Difficulty;
@@ -15,27 +16,45 @@ import menu.You_Lose;
 import menu.You_Win;
 
 public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3366963664175197486L;
 	
+	private static final long serialVersionUID = -3366963664175197486L;
 	public static int FPS = 34;
 	
-	private Thread t2;
 	private final JFrame frame;
 	private final Menu menu;
+	private final You_Lose youlose;
+	private final You_Win youwin;
 	
+	private Difficulty startingDifficulty;
+	private Thread t2;
+	private int stage;
+
 	public Level level;
 	public Score score;
 	
-	public boolean isReset;
+	public boolean isReset;	
 	
-	private Difficulty startingDifficulty;
-	private int stage;
-	
-	private final You_Lose youlose;
-	private final You_Win youwin;
+	public Game(JFrame frame, Menu menu) {
+		
+		stage = 0;
+		startingDifficulty = null;
+		
+		youlose = new You_Lose(frame, this, menu);
+		youwin = new You_Win(frame, this, menu);
+		
+		isReset = false;
+		this.frame = frame;
+		this.menu = menu;
+		
+		setVisible(true);
+		setFocusable(true);
+		setEnabled(true);
+		
+		level = new Level(this, stage, null);
+		level.addKeyListener(level);
+			
+		score_init();
+	}
 	
 	private void checkResize() {
 		
@@ -59,28 +78,6 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		setDividerLocation(920);
 		setDividerSize(0);
 	
-	}
-	
-	public Game(JFrame frame, Menu menu) {
-		
-		stage = 0;
-		startingDifficulty = null;
-		
-		youlose = new You_Lose(frame, this, menu);
-		youwin = new You_Win(frame, this, menu);
-		
-		isReset = false;
-		this.frame = frame;
-		this.menu = menu;
-		
-		setVisible(true);
-		setFocusable(true);
-		setEnabled(true);
-		
-		level = new Level(this, stage, null);
-		level.addKeyListener(level);
-			
-		score_init();
 	}
 	
 	public void launchGame() throws NullPointerException{

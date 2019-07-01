@@ -1,24 +1,26 @@
+//AUTORE: Davide Caligiuri
 package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
+
 import view.Sprite;
 
 //classe che contiene sia il player che la mappa
 public class World {
+
+	//frequenza d'aggiornamento
+	private int FPS;
+	//true se il world � stato aggiornato
+	private boolean hasChanged;
+	private Thread t;
 
 	//contiene la "matrice logica" del gioco (l'implementazione non � una matrice)
 	GameMap map;		
 	//dimensione grafica...
 	final int width;	
 	final int height;
-
-	private int FPS;
-	//true se il world � stato aggiornato
-	private boolean hasChanged;
-	private Thread t;
-
 	
 	// costruttore di default
 	public World(int FPS, int stage) {
@@ -36,13 +38,13 @@ public class World {
 		height = map.getDimY() * Sprite.TILE_SIZE;
 	}
 
-	//questa funzione dovrebbe in automatico aggiornare gli stati di 
-	//Player, Enemy, etc, ogni tick del timer
+//	questa funzione aggiorna in automatico gli stati di 
+//	Player, Enemy, etc, ogni tick del timer
 	public void update() {
 		
 		if(hasChanged)
 			return;
-		//aggiorna gli stati di ogni casella
+		
 		try {
 			
 			Collection<GameObject> temp = map.getBlocks().values();
@@ -107,6 +109,8 @@ public class World {
 		hasChanged = false;
 	}
 	
+//gestione multithreading	
+	
 	public void launchThread() {
 		
 		if(t != null && t.isAlive())
@@ -137,44 +141,18 @@ public class World {
 	}
 	
 // getter e setter
+	public GameMap getMap() 					{ return map; }
+	public void setMap(GameMap map) 			{ this.map = map; }
+	
+	public boolean getWinCon() 					{ return map.getWinCon(); }
+	
+	public GameObject getPlayer() 				{ return map.getPlayer(); }	
+	public GameObject getHost() 				{ return map.getHost(); }
+	public ArrayList<GameObject> getEnemies() 	{ return map.getEnemies(); }
 		
-	public boolean getWinCon() {
-		return map.getWinCon();
-	}
+	public int getWidth() 						{ return width; }
+	public int getHeight() 						{ return height; }
 		
-	public GameObject getPlayer() {
-		return map.getPlayer();
-	}
-		
-	public GameObject getHost() {
-		return map.getHost();
-	}
-
-	public GameMap getMap() {
-		return map;
-	}
-
-	public void setMap(GameMap map) {
-		this.map = map;
-	}
-		
-	public ArrayList<GameObject> getEnemies() {
-		return map.getEnemies();
-	}
-		
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-		
-	public boolean isChanged() {
-		return hasChanged;
-	}
-		
-	public void setChanged(boolean b) {
-		hasChanged = b;
-	}
+	public boolean isChanged() 					{ return hasChanged; }
+	public void setChanged(boolean b) 			{ hasChanged = b; }
 }

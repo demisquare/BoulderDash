@@ -1,3 +1,4 @@
+//AUTORE: Davide Caligiuri
 package model;
 
 //gli implementors di questa interfaccia sono oggetti che "scivolano" 

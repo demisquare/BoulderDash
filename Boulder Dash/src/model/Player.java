@@ -1,3 +1,4 @@
+//AUTORE: Davide Caligiuri
 package model;
 
 import java.util.Collections;
@@ -5,37 +6,20 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Player extends GameObject implements Living {
 
-	// metodo semplice per aggiungere un delay al movimento
-	// ATTENZIONE: � dipendente dal framerate (non dovrebbe)
+// 	metodo semplice per aggiungere un delay al movimento
+// 	ATTENZIONE: e' dipendente dal framerate
 	private int movingCounter;
-	// metodo semplice per aggiungere un delay sulla spinta delle rocce
-	// ATTENZIONE: � dipendente dal framerate (non dovrebbe)
+// 	metodo semplice per aggiungere un delay sulla spinta delle rocce
+// 	ATTENZIONE: e' dipendente dal framerate
 	private int pushRockCounter;
-	// conta il numero di diamanti raccolti
+// 	conta il numero di diamanti raccolti
 	int diamondCount;
-	// variabile inutile, viene usata per le animazioni ma si pu� sostituire
+// 	variabile inutile, viene usata per le animazioni ma si puo' sostituire
 	private int speed;
 
 	private int lastDir;
 	
 	protected int lifes;
-
-	@Override
-	public int getDiamondsCollected() {
-		return diamondCount;
-	}
-	
-	public int getLifes() {
-		return lifes;
-	}
-
-	public int getLastDir() {
-		return lastDir;
-	}
-
-	public void setLastDir(int lastDir) {
-		this.lastDir = lastDir;
-	}
 
 	public Player(int x, int y, int s) {
 		super(x, y);
@@ -48,14 +32,7 @@ public class Player extends GameObject implements Living {
 		lastDir = -1;
 	}
 
-	@Override
-	public boolean update() {
-		return false;
-	}
-
-	public int getSpeed() {
-		return speed;
-	}
+	@Override public boolean update() { return false; }
 	
 	@Override
 	public boolean update(int dir) {
@@ -133,6 +110,34 @@ public class Player extends GameObject implements Living {
 		
 		return false;
 	}
+
+	@Override
+	protected boolean move(int dir) {
+		
+		int i = x + dmap[dir][0];
+		int j = y + dmap[dir][1];
+	
+		if (!(i < 0 || i >= GameMap.dimX) && !(j < 0 || j >= GameMap.dimY)) {
+	
+			if (map.getTile(i, j) instanceof EmptyBlock) {
+	
+				moved = true;
+				swap(i, j);	
+				return true;
+	
+			} else if (map.getTile(i, j) instanceof Door) {
+	
+				moved = true;
+				map.setWinCon(true);
+				destroy();
+				return true;
+	
+			}
+		}
+			
+		moved = false;
+		return moved;
+	}
 	
 	public void respawn() {	
 		
@@ -156,32 +161,11 @@ public class Player extends GameObject implements Living {
 			destroy();
 		}
 	}
-	
-	@Override
-	protected boolean move(int dir) {
-		
-		int i = x + dmap[dir][0];
-		int j = y + dmap[dir][1];
-	
-		if (!(i < 0 || i >= map.dimX) && !(j < 0 || j >= map.dimY)) {
-	
-			if (map.getTile(i, j) instanceof EmptyBlock) {
-	
-				moved = true;
-				swap(i, j);	
-				return true;
-	
-			} else if (map.getTile(i, j) instanceof Door) {
-	
-				moved = true;
-				map.setWinCon(true);
-				destroy();
-				return true;
-	
-			}
-		}
-			
-		moved = false;
-		return moved;
-	}
+
+	public int getLifes() 						{ return lifes; }
+
+	public int getLastDir() 					{ return lastDir; }
+	public void setLastDir(int lastDir) 		{ this.lastDir = lastDir; }
+
+	public int getSpeed() 						{ return speed; }
 }

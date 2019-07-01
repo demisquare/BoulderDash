@@ -1,3 +1,4 @@
+//AUTORE: Davide Caligiuri
 package model;
 
 import java.io.BufferedReader;
@@ -5,43 +6,61 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ai.IntelligentEnemy;
+
 import menu.Options;
 
-//definisce la mappa di gioco come matrice di blocchi
+//	definisce la mappa di gioco come matrice di blocchi
 public class GameMap {
-
-	// dimensione logica...
-	final int dimX = 40;
-	final int dimY = 22;
 	
 	private static String defaultPath = 
 			"." + File.separator + 
 			"resources" + File.separator + 
 			"maps" + File.separator;
 
-	// mappe separate per ogni tipologia di blocco:
-	// contiene Player, Enemy, Wall, Door
+// 	mappe separate per ogni tipologia di blocco:
+// 	contiene Player, Enemy, Wall, Door
 	private ConcurrentHashMap<Integer, GameObject> blocks;
-	// contiene EmptyBlock
+// 	contiene EmptyBlock
 	private ConcurrentHashMap<Integer, GameObject> emptyBlocksMap;
-	// contiene Rock
+// 	contiene Rock
 	private ConcurrentHashMap<Integer, GameObject> rocksMap;
-	// contiene Diamond
+// 	contiene Diamond
 	private ConcurrentHashMap<Integer, GameObject> diamondsMap;
-	// contiene Ground
+// 	contiene Ground
 	private ConcurrentHashMap<Integer, GameObject> groundMap;
-	// shortcut per i vari oggetti Player
+// 	shortcut per i vari oggetti Player
 	private GameObject player;
-	// shortcut per i vari oggetti Host
+// 	shortcut per i vari oggetti Host
 	private GameObject host;
-	// shortcut per i vari oggetti Enemy
+// 	shortcut per i vari oggetti Enemy
 	private ArrayList<GameObject> enemy;
-
+//	true se viene vinta la partita
 	private boolean winCon;
+
+//	dimensione logica...
+	final static int dimX = 40;
+	final static int dimY = 22;
+
+	public GameMap(String filename/* , Mode m */) {
+		
+		GameObject.map = this;
+		winCon = false;
+		
+		blocks = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
+		emptyBlocksMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
+		diamondsMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
+		rocksMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
+		groundMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
+
+		enemy = new ArrayList<GameObject>();
+
+		initialize(filename);
+	}
 	
 	private char[][] load(String filename) {
 
@@ -158,22 +177,6 @@ public class GameMap {
 		}
 	}
 
-	public GameMap(String filename/* , Mode m */) {
-		
-		GameObject.map = this;
-		winCon = false;
-		
-		blocks = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
-		emptyBlocksMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
-		diamondsMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
-		rocksMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
-		groundMap = new ConcurrentHashMap<Integer, GameObject>(dimX * dimY, 1);
-
-		enemy = new ArrayList<GameObject>();
-
-		initialize(filename);
-	}
-
 	// verifica se il valore i � contenuto nella matrice (conviene sostituirlo con
 	// due param?)
 	public boolean containsKey(int i) {
@@ -181,23 +184,10 @@ public class GameMap {
 		return blocks.containsKey(i) || emptyBlocksMap.containsKey(i) || diamondsMap.containsKey(i)
 				|| groundMap.containsKey(i) || rocksMap.containsKey(i);
 	}
+
+//getter e setter
 	
-	public int getNumDiamonds() {
-		
-		return diamondsMap.size();
-	}
-	
-	public boolean getWinCon() {
-		
-		return winCon;
-	}
-	
-	public void setWinCon(boolean t) {
-		
-		winCon = t;
-	}
-	
-	// restituisce il tile nella posizione <x, y>
+//	restituisce il tile nella posizione <x, y>
 	public GameObject getTile(int x, int y) {
 
 		GameObject ret = blocks.get(x * dimX + y);
@@ -214,8 +204,8 @@ public class GameMap {
 		return ret;
 	}
 
-	// aggiunge il GameObject in posizione <x, y> e si assiura che nessun altro
-	// oggetto abbia le stesse coordinate
+//	aggiunge il GameObject in posizione <x, y> e si assiura che nessun altro
+// 	oggetto abbia le stesse coordinate
 	public GameObject setTile(int x, int y, GameObject value) {
 
 		GameObject ret = getTile(x, y);
@@ -245,46 +235,22 @@ public class GameMap {
 		return ret;
 	}
 	
-	public int getDimX() {
-		return dimX;
-	}
+	public int getNumDiamonds() 				{ return diamondsMap.size(); }
+	
+	public boolean getWinCon() 					{ return winCon; }
+	public void setWinCon(boolean t) 			{ winCon = t; }
+	
+	public int getDimX() 						{ return dimX; }
+	public int getDimY() 						{ return dimY; }
 
-	public int getDimY() {
-		return dimY;
-	}
+	public ConcurrentHashMap<Integer, GameObject> getBlocks() 			{ return blocks; }
+	public ConcurrentHashMap<Integer, GameObject> getEmptyBlocksMap() 	{ return emptyBlocksMap; }
+	public ConcurrentHashMap<Integer, GameObject> getRocksMap() 		{ return rocksMap; }
+	public ConcurrentHashMap<Integer, GameObject> getDiamondsMap() 		{ return diamondsMap; }
+	public ConcurrentHashMap<Integer, GameObject> getGroundMap() 		{ return groundMap; }
 
-	public ConcurrentHashMap<Integer, GameObject> getBlocks() {
-		return blocks;
-	}
+	public GameObject getPlayer() 				{ return player; }
+	public GameObject getHost() 				{ return host; }
 
-	public ConcurrentHashMap<Integer, GameObject> getEmptyBlocksMap() {
-		return emptyBlocksMap;
-	}
-
-	public ConcurrentHashMap<Integer, GameObject> getRocksMap() {
-		return rocksMap;
-	}
-
-	public ConcurrentHashMap<Integer, GameObject> getDiamondsMap() {
-		return diamondsMap;
-	}
-
-	public ConcurrentHashMap<Integer, GameObject> getGroundMap() {
-		return groundMap;
-	}
-
-	public GameObject getPlayer() {
-
-		return player;
-	}
-
-	public GameObject getHost() {
-
-		return host;
-	}
-
-	public ArrayList<GameObject> getEnemies() {
-
-		return enemy;
-	}
+	public ArrayList<GameObject> getEnemies() 	{ return enemy; }
 }
