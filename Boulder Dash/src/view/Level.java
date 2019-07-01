@@ -24,25 +24,24 @@ import model.*;
 public class Level extends JPanel implements KeyListener {
 	
 	private static final long serialVersionUID = 9009048960794622320L;
-	// mappa che collega ogni pressione di tastiera al movimento corrispondente
-	// nello specifico: enumeratore Awt di pressione tasto , enumeratore logico di
-	// direzione
+
+// 	mappa che collega ogni pressione di tastiera al movimento corrispondente
+// 	nello specifico: enumeratore Awt di pressione tasto , enumeratore logico di
+// 	direzione
 	public static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>() {
 
 		private static final long serialVersionUID = -6595629016610529055L;
-
 		{
 			put(KeyEvent.VK_LEFT, GameObject.LEFT);
 			put(KeyEvent.VK_RIGHT, GameObject.RIGHT);
 			put(KeyEvent.VK_UP, GameObject.UP);
 			put(KeyEvent.VK_DOWN, GameObject.DOWN);
 		}
-	};
-
+	};	
+//	mappa che collega ogni classe a una coppia di interi, utilizzati per l'inizializzazione degli sprites
 	public static final HashMap<String, Integer[]> blocks = new HashMap<String, Integer[]>() {
 		
 		private static final long serialVersionUID = 7591763942826182803L;
-
 		{
 			put(EmptyBlock.class.getCanonicalName(), new Integer[] { 1, 2 });
 			put(Wall.class.getCanonicalName(), new Integer[] { 0, 1 });
@@ -166,17 +165,15 @@ public class Level extends JPanel implements KeyListener {
 			
 			GameObject g = Arr.get(i).getLogicObj();
 			// se il blocco logico e' cambiato nell'ultimo world.update()...
-			if (g.isDead()) {
-				if (g.getSuccessor() != null) {
-					GameObject newObj = g.getSuccessor();
-					BufferedImage img = spritesheet.getSprite(1, 2);
-					if(!toAdd)
-						blockSprites.set(i, new BlockSprite(img, newObj));
-					else
-						blockSprites.add(i, new BlockSprite(img, newObj));
-					if(toRemove)
-						Arr.remove(i);
-				}
+			if(g.isDead() && g.getSuccessor() != null) {
+				GameObject newObj = g.getSuccessor();
+				BufferedImage img = spritesheet.getSprite(1, 2);
+				if(!toAdd)
+					blockSprites.set(i, new BlockSprite(img, newObj));
+				else
+					blockSprites.add(i, new BlockSprite(img, newObj));
+				if(toRemove)
+					Arr.remove(i);
 			}
 		}
 	}
