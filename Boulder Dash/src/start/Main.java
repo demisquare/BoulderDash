@@ -6,12 +6,10 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import audio.Music;
+
 import menu.*;
 
-//import java.awt.event.WindowEvent;
-//import java.awt.event.WindowListener;
-
-public class Main implements Runnable/*, WindowListener*/ {
+public class Main implements Runnable {
 	
 	static JFrame frame = null;
 	static Menu menu 	= null;
@@ -36,14 +34,16 @@ public class Main implements Runnable/*, WindowListener*/ {
 		
 		// _____________INIT________________
 		frame = new JFrame("Boulder Dash");
-		frame.setSize(1280, 749); // 1280x720 risoluzione gioco, 29px in pi� in altezza per la barra tel titolo della finestra.		
+// 		1280x720 risoluzione gioco, 29px in pi� in altezza per la barra tel titolo della finestra.
+		frame.setSize(1280, 749); 
 		menu = new Menu(frame);
-		frame.setContentPane(menu); // IMPOSTO IL MENU DI DEFAULT
+// 		IMPOSTO IL MENU DI DEFAULT
+		frame.setContentPane(menu);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);	
 	
-		//__________AUDIO ENGINE____________
+//		__________AUDIO ENGINE____________
 		Music.backgroundMusic = Music.menuSong;	
 		t = new Thread(new Runnable() {
 			@Override
