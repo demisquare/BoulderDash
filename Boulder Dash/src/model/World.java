@@ -12,6 +12,7 @@ public class World {
 
 	//true se il world � stato aggiornato
 	private boolean hasChanged;
+	private boolean isComplete;
 	private Thread t;
 
 	//contiene la "matrice logica" del gioco (l'implementazione non � una matrice)
@@ -23,6 +24,7 @@ public class World {
 	// costruttore di default
 	public World(int stage) {
 		
+		isComplete = false;
 		//sostituire con il filename
 		map = new GameMap("level" + stage);
 		
@@ -33,6 +35,8 @@ public class World {
 		//dimensione grafica..
 		width = map.getDimX() * Sprite.TILE_SIZE;
 		height = map.getDimY() * Sprite.TILE_SIZE;
+		
+		isComplete = true;
 	}
 
 //	questa funzione aggiorna in automatico gli stati di 
@@ -115,6 +119,15 @@ public class World {
 		t = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				
+				while(!isComplete) {
+					try {
+						Thread.sleep(5);
+					} catch(InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				
 				while(true) {
 					synchronized(this) {
 						update();
@@ -137,6 +150,8 @@ public class World {
 	}
 	
 // getter e setter
+	public boolean isComplete() 				{ return isComplete; }
+	
 	public GameMap getMap() 					{ return map; }
 	public void setMap(GameMap map) 			{ this.map = map; }
 	

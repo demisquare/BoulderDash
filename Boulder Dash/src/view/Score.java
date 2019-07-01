@@ -63,6 +63,9 @@ public class Score extends JPanel implements Serializable {
 	JLabel score;
 	
 	public Score(JFrame frame, Menu menu, Game game, Level level) { //Default Score resolution: 360x720		
+		
+		super();
+		
 		this.frame = frame;
 		this.menu = menu;
 		this.game = game;

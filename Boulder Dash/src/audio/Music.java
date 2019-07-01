@@ -6,6 +6,9 @@ import menu.Options;
 
 public class Music {
 		
+//	la classe è completamente statica
+	private Music() {};
+	
 	public static final AudioPlayer menuSong = new AudioPlayer(
 			"." + File.separator +
 			"resources" + File.separator +
@@ -27,24 +30,21 @@ public class Music {
 			"music" + File.separator +
 			"credits_song" + ".wav");
 	
-	public static void setSong(AudioPlayer song)
-	{
-		Music.backgroundMusic.stop();
-		//Music.backgroundMusic.rewind();
+	public static void setSong(AudioPlayer song) {
+		stop();
 		Music.backgroundMusic = song;
+		start();
 	}
 	
-	public static void start()
-	{
-		if (Options.music) {
-			if (!Music.backgroundMusic.isPlaying()) {
+	public static void stop() {
+		Music.backgroundMusic.stop();
+	}
+	
+	public static void start() {
+		if(Options.music)
+			if (!Music.backgroundMusic.isPlaying())
 				Music.backgroundMusic.loop();
 			}
-		} else {
-			Music.backgroundMusic.stop();
-			//Music.backgroundMusic.rewind();
-		}
-	}
 	
 	public static void playTone(String name)
 	{

@@ -86,7 +86,7 @@ public class MessageHandler {
 		else if (pkg instanceof PacketDie) {
 			// TODO: operazioni per uccidere player/nemici...
 			synchronized (this) {
-				((Host) level.getWorld().getHost()).respawn(((PacketDie) pkg).getX(), ((PacketDie) pkg).getY());
+				((Host) level.getWorld().getHost()).respawn();
 			}
 		}
 	}

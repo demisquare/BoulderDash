@@ -36,6 +36,8 @@ public class You_Lose extends JPanel {
 	JLabel RETRY_scaled;
 	
 	public You_Lose(JFrame frame, Game game, Menu menu) {
+		super();
+		
 		image_init();
 		label_init();
 		MouseListener_init(frame, game, menu);	

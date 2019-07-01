@@ -221,8 +221,6 @@ public class GameMap {
 			rocksMap.put(x * dimX + y, value);
 		else {
 			blocks.put(x * dimX + y, value);
-			if(value instanceof Enemy && !enemy.contains(value)) 
-				enemy.add(value);
 		}
 		
 		if (ret instanceof EmptyBlock)
@@ -235,8 +233,6 @@ public class GameMap {
 			rocksMap.remove(x * dimX + y, ret);
 		else {
 			blocks.remove(x * dimX + y, ret);
-			if(value instanceof Enemy && enemy.contains(ret))
-				enemy.remove(ret);
 		}
 		
 		return ret;

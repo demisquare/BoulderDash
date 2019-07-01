@@ -62,6 +62,8 @@ public class Menu extends JPanel implements Serializable {
 	You_Lose youlose;
 	
 	public Menu(JFrame frame) {
+		super();
+		
 		panel_init(frame);
 		image_init();
 		label_init();

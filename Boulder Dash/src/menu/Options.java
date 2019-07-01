@@ -63,6 +63,8 @@ public class Options extends JPanel {
 	JLabel MUSIC_check;
 	
 	public Options(JFrame frame, Menu menu) {
+		super();
+		
 		image_init();
 		label_init();
 		MouseListener_init(frame, menu);

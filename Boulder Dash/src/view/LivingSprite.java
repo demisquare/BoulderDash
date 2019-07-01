@@ -41,7 +41,8 @@ public class LivingSprite extends DummyClass {
 	private Sprite sprite;
 	
 	public LivingSprite(String file, int speed, GameObject obj) {
-	
+		super(obj);
+		
 		counter = 0;
 		
 		logicObj = obj;

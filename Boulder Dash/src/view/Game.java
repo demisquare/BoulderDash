@@ -36,6 +36,8 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	
 	public Game(JFrame frame, Menu menu) {
 		
+		super();
+		
 		stage = 0;
 		startingDifficulty = null;
 		

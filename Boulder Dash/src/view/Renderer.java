@@ -8,6 +8,7 @@ import model.World;
 
 public class Renderer {
 
+//	la classe è completamente statica
 	private Renderer() {};
 
 	// dimensioni viewport

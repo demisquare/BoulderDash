@@ -10,13 +10,13 @@ public class BlockSprite extends DummyClass {
 	private BufferedImage img;
 	
 	public BlockSprite(BufferedImage img) {
+		super(null);	
 		this.img = img;
-		logicObj = null;
 	}
 	
 	public BlockSprite(BufferedImage img, GameObject g) {
+		super(g);
 		this.img = img;
-		this.logicObj = g;
 	}
 
 	public BufferedImage getImg() {
