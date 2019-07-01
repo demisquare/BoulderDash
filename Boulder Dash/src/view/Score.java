@@ -88,7 +88,10 @@ public class Score extends JPanel implements Serializable {
 //		}
 		
 		try{
-
+			
+			Options.difficulty = game.getStartingDifficulty();
+			//System.out.println("difficulty resetted");
+			game.setStage(0);
 			menu.check_resize();
 			game.isReset = false;
 			game.closeThread();
@@ -105,6 +108,9 @@ public class Score extends JPanel implements Serializable {
 	}
 	
 	public Score(JFrame frame, Menu menu, Game game, Level level) { //Default Score resolution: 360x720
+		
+		setFocusable(false);
+		setEnabled(false);
 		
 		this.level=level;
 		missing_diamonds = level.getWorld().getMap().getNumDiamonds();

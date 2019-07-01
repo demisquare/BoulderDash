@@ -10,6 +10,7 @@ import javax.swing.JSplitPane;
 import audio.Music;
 import menu.Menu;
 import menu.Options;
+import menu.Options.Difficulty;
 import menu.You_Lose;
 import menu.You_Win;
 
@@ -30,6 +31,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	
 	public boolean isReset;
 	
+	private Difficulty startingDifficulty;
 	private int stage;
 	
 	private final You_Lose youlose;
@@ -61,7 +63,8 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	
 	public Game(JFrame frame, Menu menu) {
 		
-		stage = 1;
+		stage = 0;
+		startingDifficulty = null;
 		
 		youlose = new You_Lose(frame, this, menu);
 		youwin = new You_Win(frame, this, menu);
@@ -84,12 +87,16 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		
 		checkResize();
 	
-		if(stage <= 3) {
+		if(startingDifficulty == null) {
+			startingDifficulty = Options.difficulty;
+		}
+		
+		if(stage < 3) {
 			
 			level.closeThread();
 			level = new Level(this, stage);
 			level.addKeyListener(level);
-		
+			
 			score = new Score(frame, menu, this, level);
 		
 			score.check_resize(level);
@@ -97,11 +104,10 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 			this.setRightComponent(score);
 		
 			level.launchThread();
-		
 			isReset = true;
 
 			++stage;
-		
+			
 		} else {
 			youWin();
 		}
@@ -115,7 +121,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 
 	public void youLose() {
 		
-		stage = 1;
+		stage = 0;
 		
 		frame.remove(this);
 		youlose.check_resize();
@@ -131,7 +137,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 
 	public void youWin() {
 		
-		stage = 1;
+		stage = 0;
 		
 		frame.remove(this);
 		youwin.check_resize();
@@ -143,5 +149,13 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 			Music.backgroundMusic.stop();
 			Music.playTone("victory");
 		}
+	}
+
+	public void setStage(int i) {
+		stage = i;
+	}
+
+	public Difficulty getStartingDifficulty() {
+		return startingDifficulty;
 	}
 }
