@@ -95,20 +95,19 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 			level.addKeyListener(level);
 			
 			score = new Score(frame, menu, this, level);
+		
 			score.check_resize();
-			level.setScore(score);
-			
-			try {
-				Thread.sleep(200);
-			} catch(InterruptedException e) {
-				e.printStackTrace();
-			}
-			
 			this.setLeftComponent(level);
 			this.setRightComponent(score);
+			level.requestFocusInWindow();
 			
+			level.setScore(score);
 			level.launchThread();
 			isReset = true;
+			
+			setVisible(true);
+			setFocusable(true);
+			setEnabled(true);
 
 			++stage;
 			
