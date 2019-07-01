@@ -42,27 +42,5 @@ public class Main implements Runnable {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);	
-	
-//		__________AUDIO ENGINE____________
-		Music.backgroundMusic = Music.menuSong;	
-		t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-						
-				while (true) {
-					
-					synchronized(this) {
-						Music.start();
-					}
-							
-					try {
-						Thread.sleep(34);
-					} catch (InterruptedException e) {
-						return;
-					}
-				}
-			}
-		});
-		t.start();		
 	}
 }

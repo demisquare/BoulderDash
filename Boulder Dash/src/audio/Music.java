@@ -63,5 +63,5 @@ public class Music {
 		}
 	}
 	
-	public static AudioPlayer backgroundMusic = null;
+	public static AudioPlayer backgroundMusic = Music.menuSong;
 }
