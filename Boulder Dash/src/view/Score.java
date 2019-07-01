@@ -17,10 +17,13 @@ import javax.swing.JPanel;
 
 import audio.Music;
 import menu.Menu;
+import menu.Multiplayer;
 import menu.Options;
 import menu.Scaling;
 
 import model.Player;
+import network.SocketClient;
+import network.SocketServer;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -38,6 +41,8 @@ public class Score extends JPanel implements Serializable {
 			"assets" + File.separator + 
 			"ScoreTab" + File.separator;
 	
+	private Multiplayer multi;
+
 	private JFrame frame;
 	private Menu menu;
 	private Game game;
@@ -70,6 +75,7 @@ public class Score extends JPanel implements Serializable {
 		this.menu = menu;
 		this.game = game;
 		this.level = level;
+		this.multi = null;
 		
 		remaining_time = 150;
 		
@@ -100,23 +106,21 @@ public class Score extends JPanel implements Serializable {
 		Scaling.set(score, 12, 275, 350, 100, Options.full_screen);	
 	}
 	
-	private void turn_back() throws InterruptedException {
-		
-//		if (Options.multiplayer) {
-//			if (socketClient != null && socketClient.isConnected()) {
-//				socketClient.close();
-//				Options.host = false;
-//			}
-//			if(socketServer != null && socketServer.isConnected())
-//				socketServer.close();
-//			Options.multiplayer = false;
-//		}
+	private void turn_back() throws InterruptedException {		
+		if (Options.multiplayer) {
+			if (multi.getSocketClient() != null && multi.getSocketClient().isConnected()) {
+				multi.getSocketClient().close();
+				Options.host = false;
+			}
+			if(multi.getSocketServer() != null && multi.getSocketServer().isConnected())
+				multi.getSocketServer().close();
+			Options.multiplayer = false;
+		}
 		
 		try{
 			
 			Options.difficulty = game.getStartingDifficulty();
 			total_score = 0;
-			//System.out.println("difficulty resetted");
 			game.setStage(0);
 			menu.check_resize();
 			game.isReset = false;
@@ -133,6 +137,10 @@ public class Score extends JPanel implements Serializable {
 		
 	}
 	
+	public void setMulti(Multiplayer multi) {
+		this.multi = multi;
+	}
+
 	private void image_init() {
 		try {
 			Background = ImageIO.read(new File(ScoreTabPath + "score_background.png"));

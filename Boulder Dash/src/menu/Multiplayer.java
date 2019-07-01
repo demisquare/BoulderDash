@@ -99,10 +99,19 @@ public class Multiplayer extends JPanel {
 			frame.remove(this);
 			frame.setContentPane(game);
 			game.level.requestFocusInWindow();
+			game.score.setMulti(this);
 			frame.revalidate();
 			frame.repaint();
 		}
 
+	}
+
+	public SocketServer getSocketServer() {
+		return socketServer;
+	}
+
+	public SocketClient getSocketClient() {
+		return socketClient;
 	}
 
 	private void server_selected(JFrame frame, Menu menu, Game game) throws InterruptedException {
@@ -124,6 +133,7 @@ public class Multiplayer extends JPanel {
 			frame.remove(this);
 			frame.setContentPane(game);
 			game.level.requestFocusInWindow();
+			game.score.setMulti(this);
 			frame.revalidate();
 			frame.repaint();
 		}
