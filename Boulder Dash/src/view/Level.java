@@ -1,3 +1,4 @@
+//AUTORE: Davide Caligiuri
 package view;
 
 import java.awt.Color;
@@ -5,7 +6,9 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+
 import java.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -13,24 +16,19 @@ import java.util.Random;
 import javax.swing.JPanel;
 
 import ai.IntelligentEnemy;
+
 import menu.Options;
 import menu.Options.Difficulty;
 import model.*;
 
 public class Level extends JPanel implements KeyListener {
-	/**
-	 * 
-	 */
-	private boolean mouseReleased = false;
 	
 	private static final long serialVersionUID = 9009048960794622320L;
 	// mappa che collega ogni pressione di tastiera al movimento corrispondente
 	// nello specifico: enumeratore Awt di pressione tasto , enumeratore logico di
 	// direzione
 	public static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>() {
-		/**
-		 * 
-		 */
+
 		private static final long serialVersionUID = -6595629016610529055L;
 
 		{
@@ -42,9 +40,7 @@ public class Level extends JPanel implements KeyListener {
 	};
 
 	public static final HashMap<String, Integer[]> blocks = new HashMap<String, Integer[]>() {
-		/**
-		 * 
-		 */
+		
 		private static final long serialVersionUID = 7591763942826182803L;
 
 		{
@@ -57,7 +53,6 @@ public class Level extends JPanel implements KeyListener {
 		}
 	};
 
-	private int FPS = 30;
 	private static Sprite spritesheet = new Sprite();
 	private static Random r = new Random();
 	/*
@@ -65,9 +60,12 @@ public class Level extends JPanel implements KeyListener {
 	 * File.separator + "assets" + File.separator + "music" + File.separator +
 	 * "game_song"+ ".wav");
 	 */
+	private int FPS = 30;
+	private boolean mouseReleased = false;
 	private Thread t;
 	private Game game;
-	// Questa classe far� da interfaccia a TUTTA la logica di un livello
+	private Score score;
+	// Questa classe fara' da interfaccia a TUTTA la logica di un livello
 	World world;
 	LocalTime lastTimePressed;
 	// graphics for blocks
@@ -76,10 +74,27 @@ public class Level extends JPanel implements KeyListener {
 	ArrayList<LivingSprite> playerSprites;
 	ArrayList<LivingSprite> hostSprites;
 	ArrayList<LivingSprite> enemySprites;
-	private Score score;
 
-	public void setScore(Score score) {
+	public Level(Game g, int stage, Score score) {
+		super();
+
 		this.score = score;
+		
+		setBackground(Color.GRAY);
+		setFocusable(true);
+		setVisible(true);
+		setEnabled(true);
+
+		// crea un world...
+		world = new World(stage);
+		game = g;
+		
+		t = null;
+		
+		initGraphics();
+
+		lastTimePressed = java.time.LocalTime.now();
+		Renderer.init(world);
 	}
 
 	private void initGraphics() {
@@ -144,41 +159,7 @@ public class Level extends JPanel implements KeyListener {
 			enemySprites.add(new LivingSprite("enemySpriteSheet", e.getSpeed(), e));
 		}
 	}
-
-	public Level(Game g, int stage, Score score) {
-		super();
-
-		this.score = score;
-		
-		setBackground(Color.GRAY);
-		setFocusable(true);
-		setVisible(true);
-		setEnabled(true);
-
-		// crea un world...
-		world = new World(FPS, stage);
-		game = g;
-		
-		t = null;
-		
-		initGraphics();
-
-		lastTimePressed = java.time.LocalTime.now();
-		Renderer.init(world);
-	}
-
-	public ArrayList<BlockSprite> getBlockSprites() {
-		return blockSprites;
-	}
-
-	public World getWorld() {
-		return world;
-	}
-
-	public void setWorld(World world) {
-		this.world = world;
-	}
-
+	
 	private void updateCategory(ArrayList<? extends DummyClass> Arr, boolean toRemove, boolean toAdd) {
 		
 		for (int i = 0; i < Arr.size(); ++i) {
@@ -199,8 +180,8 @@ public class Level extends JPanel implements KeyListener {
 			}
 		}
 	}
-	
-	// sincronizza la grafica con la logica
+
+// 	sincronizza la grafica con la logica
 	public synchronized void updateGraphics() throws NullPointerException {
 
 		updateCategory(blockSprites, false, false);
@@ -245,22 +226,8 @@ public class Level extends JPanel implements KeyListener {
 		score.setMissing_diamonds(world.getMap().getNumDiamonds());
 	}
 
-	// permette di ridefinire i componenti del pannello di default.
-	// questo metodo viene invocato ogni volta che usiamo il metodo repaint().
-	@Override
-	protected void paintComponent(Graphics g) {
-
-		super.paintComponent(g);
-
-		try {
-			updateGraphics();
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
-
-		Renderer.render(g, this);
-	}
-
+//	gestione update per gli eventi e il multiplayer
+	
 	public synchronized void updatePlayerOnPressing(int dir) {
 
 		if (!world.getPlayer().isDead()) {
@@ -310,32 +277,8 @@ public class Level extends JPanel implements KeyListener {
 		}
 	}
 
-	// eventi di movimento da tastiera del player...
-	@Override public void keyTyped(KeyEvent e) {}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if ((java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0) {
-			lastTimePressed = java.time.LocalTime.now();
-			if(pgMove.containsKey(e.getKeyCode()))
-				updatePlayerOnPressing(pgMove.get(e.getKeyCode()));
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		if(pgMove.containsKey(e.getKeyCode()))
-			updatePlayerOnRelease(pgMove.get(e.getKeyCode()));
-	}
-
-	public boolean isMouseReleased() {
-		return mouseReleased;
-	}
-
-	public void setMouseReleased(boolean mouseReleased) {
-		this.mouseReleased = mouseReleased;
-	}
-
+// 	gestione multithreading
+	
 	public void launchThread() {
 		world.launchThread();
 	
@@ -379,4 +322,46 @@ public class Level extends JPanel implements KeyListener {
 			t.interrupt();
 		world.closeThread();
 	}
+
+	// eventi di movimento da tastiera del player...
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if ((java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0) {
+			lastTimePressed = java.time.LocalTime.now();
+			if(pgMove.containsKey(e.getKeyCode()))
+				updatePlayerOnPressing(pgMove.get(e.getKeyCode()));
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if(pgMove.containsKey(e.getKeyCode()))
+			updatePlayerOnRelease(pgMove.get(e.getKeyCode()));
+	}
+	
+	@Override public void keyTyped(KeyEvent e) {}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+
+		super.paintComponent(g);
+
+		try {
+			updateGraphics();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+
+		Renderer.render(g, this);
+	}
+	
+	public void setScore(Score score) 					{ this.score = score; }
+
+	public ArrayList<BlockSprite> getBlockSprites() 	{ return blockSprites; }
+
+	public World getWorld() 							{ return world; }
+	public void setWorld(World world) 					{ this.world = world; }
+		
+	public boolean isMouseReleased() 					{ return mouseReleased; }
+	public void setMouseReleased(boolean mouseReleased) { this.mouseReleased = mouseReleased; }
 }

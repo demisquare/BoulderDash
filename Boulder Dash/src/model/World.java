@@ -10,8 +10,6 @@ import view.Sprite;
 //classe che contiene sia il player che la mappa
 public class World {
 
-	//frequenza d'aggiornamento
-	private int FPS;
 	//true se il world � stato aggiornato
 	private boolean hasChanged;
 	private Thread t;
@@ -23,12 +21,11 @@ public class World {
 	final int height;
 	
 	// costruttore di default
-	public World(int FPS, int stage) {
+	public World(int stage) {
 		
 		//sostituire con il filename
 		map = new GameMap("level" + stage);
 		
-		this.FPS = FPS;
 		//default a true (per evitare un aggiornamento immediato)
 		hasChanged = true;
 		
