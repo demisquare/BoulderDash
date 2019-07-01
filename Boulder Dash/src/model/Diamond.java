@@ -1,16 +1,17 @@
+//AUTORE: Davide Caligiuri
 package model;
 
-//TODO
 public class Diamond extends GameObject implements Sliding {
 	
-	public Diamond(int x, int y) {
-		super(x, y);
-	}
-	
+	public Diamond(int x, int y) { super(x, y); }
+
+	@Override public boolean update() 			{ return fall(); }
+	@Override public boolean update(int dir) 	{ return false; }
+
 	@Override
 	protected boolean fall() {
 		
-		if(!(y+1 < 0 || y+1 >= map.dimY)) {
+		if(!(y+1 < 0 || y+1 >= GameMap.dimY)) {
 			
 			try { 
 				if(map.getTile(x, y+1) instanceof EmptyBlock) {
@@ -21,7 +22,7 @@ public class Diamond extends GameObject implements Sliding {
 				
 				} else if(map.getTile(x, y+1) instanceof Player) {
 					
-					++((Player) map.getTile(x, y+1)).diamondCount;
+					((Player) map.getTile(x, y+1)).diamondCount += 1;
 					isFalling = false;
 					destroy();
 					return true;
@@ -33,17 +34,6 @@ public class Diamond extends GameObject implements Sliding {
 		}
 		
 		isFalling = false;
-		return false;
-	}
-	
-	@Override
-	public boolean update() {
-		return fall();
-	}
-
-	@Override
-	public boolean update(int dir) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }
