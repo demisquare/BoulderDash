@@ -29,8 +29,6 @@ public class Multiplayer extends JPanel {
 			"Menu" + File.separator + 
 			"MultiPage" + File.separator;
 
-	private Thread t;
-
 	BufferedImage background;
 	Image arrow_back;
 	Image arrow_back_SELECTED;
@@ -96,7 +94,6 @@ public class Multiplayer extends JPanel {
 				Music.setSong(Music.gameSong);
 			}
 
-			closeThread();
 			frame.remove(this);
 			frame.setContentPane(game);
 			game.level.requestFocusInWindow();
@@ -122,7 +119,6 @@ public class Multiplayer extends JPanel {
 				Music.setSong(Music.gameSong);
 			}
 
-			closeThread();
 			frame.remove(this);
 			frame.setContentPane(game);
 			game.level.requestFocusInWindow();
@@ -317,13 +313,5 @@ public class Multiplayer extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
-	}
-
-	public synchronized void launchThread() {
-		t.start();
-	}
-
-	public synchronized void closeThread() {
-		t.interrupt();
 	}
 }
