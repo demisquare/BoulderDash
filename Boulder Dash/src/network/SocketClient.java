@@ -10,6 +10,7 @@ import model.Player;
 import network.packet.Packet;
 import network.packet.PacketDie;
 import network.packet.PacketMove;
+import network.packet.PacketStand;
 import view.Game;
 
 public class SocketClient {
@@ -64,7 +65,7 @@ public class SocketClient {
 					System.out.println("[CLIENT] Avvio thread invio...");
 					while (socket.isConnected() && !socket.isClosed()) {
 
-						if (player.hasMoved()) {
+						if (player.hasMoved() && player.getLastDir() != -1) {
 							Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir(), -1);
 
 							try {
@@ -80,6 +81,24 @@ public class SocketClient {
 							System.out.println("[CLIENT] Invio al server: " + move.toString());
 
 							player.setMoved(false);
+						}
+
+						if (game.level.isMouseReleased() && player.getLastDir() != -1) {
+							Packet stand = new PacketStand(player.getX(), player.getY(), player.getLastDir(), -1);
+
+							try {
+								msg.sendObject(stand);
+							} catch (IOException e) {
+
+								//System.err.println("[SERVER] Client disconnesso...");
+								JOptionPane.showMessageDialog(null, "Connection Timeout.", "Error",
+										JOptionPane.ERROR_MESSAGE);
+								close();
+							}
+
+							System.out.println("[SERVER] Invio al client: " + stand.toString());
+
+							game.level.setMouseReleased(false);
 						}
 
 						if (player.isRespawned()) {
@@ -133,8 +152,6 @@ public class SocketClient {
 						}
 
 						if (pkg != null) {
-							if (host == null)
-								System.out.println("rcodi");
 
 							msg.HandlePacket(pkg, game.level);
 

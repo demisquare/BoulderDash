@@ -21,6 +21,8 @@ public class Level extends JPanel implements KeyListener {
 	/**
 	 * 
 	 */
+	private boolean mouseReleased = false;
+	
 	private static final long serialVersionUID = 9009048960794622320L;
 	// mappa che collega ogni pressione di tastiera al movimento corrispondente
 	// nello specifico: enumeratore Awt di pressione tasto , enumeratore logico di
@@ -281,6 +283,7 @@ public class Level extends JPanel implements KeyListener {
 			// a static map instead of a switch
 			playerSprites.get(0).standPose(dir);
 			playerSprites.get(0).getAnimation().update();
+			setMouseReleased(true);
 		}
 	}
 	
@@ -323,6 +326,14 @@ public class Level extends JPanel implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		if(pgMove.containsKey(e.getKeyCode()))
 			updatePlayerOnRelease(pgMove.get(e.getKeyCode()));
+	}
+
+	public boolean isMouseReleased() {
+		return mouseReleased;
+	}
+
+	public void setMouseReleased(boolean mouseReleased) {
+		this.mouseReleased = mouseReleased;
 	}
 
 	public void launchThread() {
