@@ -46,7 +46,7 @@ public class GameMap {
 	final static int dimX = 40;
 	final static int dimY = 22;
 
-	public GameMap(String filename/* , Mode m */) {
+	public GameMap(String filename) {
 		
 		GameObject.map = this;
 		winCon = false;
@@ -67,9 +67,9 @@ public class GameMap {
 		BufferedReader bIn = null;
 		try {
 			bIn = new BufferedReader(new FileReader(defaultPath + filename));
-		} catch (FileNotFoundException e) { // trovare una gestione migliore
-			GameObject.map = null;
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			System.exit(0);
 		}
 
 		char[][] ret = new char[dimY][dimX];
@@ -113,64 +113,67 @@ public class GameMap {
 			for (int y = 0; y < dimY; ++y) {
 				switch (cfile[y][x]) {
 
-				case GameObject.DIAMOND:
-					diamondsMap.put(x * dimX + y, new Diamond(x, y));
+					case GameObject.DIAMOND:
+						diamondsMap.put(x * dimX + y, new Diamond(x, y));
 					break;
 
-				case GameObject.GROUND:
-					groundMap.put(x * dimX + y, new Ground(x, y));
+					case GameObject.GROUND:
+						groundMap.put(x * dimX + y, new Ground(x, y));
 					break;
 
-				case GameObject.WALL:
-					blocks.put(x * dimX + y, new Wall(x, y));
+					case GameObject.WALL:
+						blocks.put(x * dimX + y, new Wall(x, y));
 					break;
 
-				case GameObject.ROCK:
-					rocksMap.put(x * dimX + y, new Rock(x, y));
+					case GameObject.ROCK:
+						rocksMap.put(x * dimX + y, new Rock(x, y));
 					break;
 
-				case GameObject.DOOR:
-					blocks.put(x * dimX + y, new Door(x, y));
+					case GameObject.DOOR:
+						blocks.put(x * dimX + y, new Door(x, y));
 					break;
 
-				case GameObject.PLAYER:
-					if(Options.multiplayer) {
-						if(Options.host) {
-							host = new Host(x, y, 1);
-							blocks.put(x * dimX + y, host);
+					case GameObject.PLAYER:
+						if(Options.multiplayer) {
+							if(Options.host) {
+								host = new Host(x, y, 1);
+								blocks.put(x * dimX + y, host);
+							} else {
+								player = new Player(x, y, 1);
+								blocks.put(x * dimX + y, player);
+							}
 						} else {
 							player = new Player(x, y, 1);
 							blocks.put(x * dimX + y, player);
 						}
-					} else {
-						player = new Player(x, y, 1);
-						blocks.put(x * dimX + y, player);
-					}
 
 					break;
 
-				case GameObject.HOST:
-					if(Options.multiplayer) {
-						if(Options.host) {
-							player = new Player(x, y, 1);
-							blocks.put(x * dimX + y, player);
+					case GameObject.HOST:
+						if(Options.multiplayer) {
+							if(Options.host) {
+								player = new Player(x, y, 1);
+								blocks.put(x * dimX + y, player);
+							} else {
+								host = new Host(x, y, 1);
+								blocks.put(x * dimX + y, host);
+							}
 						} else {
-							host = new Host(x, y, 1);
-							blocks.put(x * dimX + y, host);
+							emptyBlocksMap.put(x * dimX + y, new EmptyBlock(x, y));
 						}
-					} else {
+				
+					break;
+
+					case GameObject.ENEMY:
+						GameObject e = new IntelligentEnemy(x, y, 1);
+						enemy.add(e);
+						blocks.put(x * dimX + y, e);
+					
+					break;
+
+					case GameObject.EMPTY_BLOCK:
 						emptyBlocksMap.put(x * dimX + y, new EmptyBlock(x, y));
-					}
-					break;
-
-				case GameObject.ENEMY:
-					GameObject e = new IntelligentEnemy(x, y, 1);
-					enemy.add(e);
-					blocks.put(x * dimX + y, e);
-					break;
-
-				case GameObject.EMPTY_BLOCK:
-					emptyBlocksMap.put(x * dimX + y, new EmptyBlock(x, y));
+					
 					break;
 				}
 			}
@@ -192,14 +195,10 @@ public class GameMap {
 
 		GameObject ret = blocks.get(x * dimX + y);
 
-		if (ret == null)
-			ret = emptyBlocksMap.get(x * dimX + y);
-		if (ret == null)
-			ret = rocksMap.get(x * dimX + y);
-		if (ret == null)
-			ret = diamondsMap.get(x * dimX + y);
-		if (ret == null)
-			ret = groundMap.get(x * dimX + y);
+		if(ret == null)		ret = emptyBlocksMap.get(x * dimX + y);
+		if(ret == null)		ret = rocksMap.get(x * dimX + y);
+		if(ret == null)		ret = diamondsMap.get(x * dimX + y);
+		if(ret == null)		ret = groundMap.get(x * dimX + y);
 
 		return ret;
 	}
@@ -210,6 +209,8 @@ public class GameMap {
 
 		GameObject ret = getTile(x, y);
 
+		if(ret.equals(value)) return ret;
+		
 		if (value instanceof EmptyBlock)
 			emptyBlocksMap.put(x * dimX + y, value);
 		else if (value instanceof Ground)
@@ -218,9 +219,12 @@ public class GameMap {
 			diamondsMap.put(x * dimX + y, value);
 		else if (value instanceof Rock)
 			rocksMap.put(x * dimX + y, value);
-		else
+		else {
 			blocks.put(x * dimX + y, value);
-
+			if(value instanceof Enemy && !enemy.contains(value)) 
+				enemy.add(value);
+		}
+		
 		if (ret instanceof EmptyBlock)
 			emptyBlocksMap.remove(x * dimX + y, ret);
 		else if (ret instanceof Ground)
@@ -229,9 +233,12 @@ public class GameMap {
 			diamondsMap.remove(x * dimX + y, ret);
 		else if (ret instanceof Rock)
 			rocksMap.remove(x * dimX + y, ret);
-		else
+		else {
 			blocks.remove(x * dimX + y, ret);
-
+			if(value instanceof Enemy && enemy.contains(ret))
+				enemy.remove(ret);
+		}
+		
 		return ret;
 	}
 	

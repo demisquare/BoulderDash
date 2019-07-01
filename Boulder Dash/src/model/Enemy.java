@@ -33,10 +33,7 @@ public class Enemy extends GameObject implements Living {
 		return false;
 	}
 
-	@Override
-	public boolean update(int dir) {
-		return false;
-	}
+	@Override public boolean update(int dir) 	{ return false; }
 	
 	@Override
 	protected boolean move(int dir) {
@@ -48,6 +45,9 @@ public class Enemy extends GameObject implements Living {
 				
 			if(map.getTile(i, j) instanceof Player) {
 				
+				moved = true;
+				processed = true;
+				
 				((Player)map.getTile(i, j)).respawn();
 					
 				return true;
@@ -58,6 +58,7 @@ public class Enemy extends GameObject implements Living {
 	}
 
 	protected boolean calculateDirection() {
+		
 		lastDir = r.nextInt(4);
 		return true;
 	}

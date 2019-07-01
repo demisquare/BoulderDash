@@ -3,8 +3,10 @@ package view;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import java.awt.image.BufferedImage;
 
 import java.time.LocalTime;
@@ -16,8 +18,10 @@ import java.util.Random;
 import javax.swing.JPanel;
 
 import ai.IntelligentEnemy;
+
 import menu.Options;
 import menu.Options.Difficulty;
+
 import model.*;
 
 public class Level extends JPanel implements KeyListener {
@@ -74,6 +78,7 @@ public class Level extends JPanel implements KeyListener {
 	ArrayList<LivingSprite> enemySprites;
 
 	public Level(Game g, int stage, Score score) {
+		
 		super();
 
 		this.score = score;
@@ -158,6 +163,8 @@ public class Level extends JPanel implements KeyListener {
 		}
 	}
 	
+//	questo metodo è l'unico motivo per l'esistenza di DummyClass:
+//	permette di gestire in maniera uniforme l'aggiornamento di ogni tipologia di sprite
 	private void updateCategory(ArrayList<? extends DummyClass> Arr, boolean toRemove, boolean toAdd) {
 		
 		for (int i = 0; i < Arr.size(); ++i) {
@@ -217,8 +224,6 @@ public class Level extends JPanel implements KeyListener {
 			
 			//inserisci qui canzone di vittoria livello
 			game.launchGame();
-		
-			//System.out.println("difficulty changed");
 		}
 		
 		score.setMissing_diamonds(world.getMap().getNumDiamonds());

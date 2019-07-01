@@ -2,7 +2,6 @@
 package model;
 
 public abstract class GameObject {
-
 //	costanti usate per le direzioni di movimento
 	public static final int DOWN  = 0;
 	public static final int LEFT  = 1;
@@ -102,7 +101,7 @@ public abstract class GameObject {
 		map.setTile(x, y, temp);
 		temp.x = x;
 		temp.y = y;
-		temp.processed = true;
+		temp.processed = false;
 	
 		if(!map.getTile(i, j).equals(temp))
 			System.err.println("in model.GameObject.swap(): " + temp + " != " + map.getTile(i, j));
@@ -111,7 +110,7 @@ public abstract class GameObject {
 		x = i;
 		y = j;
 		processed = true;
-		
+
 	}
 	
 //	implementazione generica della gravità:
@@ -153,7 +152,6 @@ public abstract class GameObject {
 			if(map.getTile(i, j) instanceof EmptyBlock) {
 				
 				moved = true;
-				//System.out.println("si muove...");
 				swap(i, j);
 				return true;
 			}
