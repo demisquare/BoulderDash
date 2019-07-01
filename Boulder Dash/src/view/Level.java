@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import ai.IntelligentEnemy;
 import menu.Options;
+import menu.Options.Difficulty;
 import model.*;
 
 public class Level extends JPanel implements KeyListener {
@@ -215,8 +216,17 @@ public class Level extends JPanel implements KeyListener {
 		
 		if(((Player)world.getPlayer()).getLifes() == 0)
 			game.youLose();
-		if(world.getWinCon())
+		
+		if(world.getWinCon()) {
 			game.launchGame();
+		
+			if(Options.difficulty == Difficulty.paradiso)
+				Options.difficulty = Difficulty.purgatorio;
+			else if(Options.difficulty == Difficulty.purgatorio)
+				Options.difficulty = Difficulty.inferno;
+			
+			//System.out.println("difficulty changed");
+		}
 	}
 
 	// permette di ridefinire i componenti del pannello di default.
