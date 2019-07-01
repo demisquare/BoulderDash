@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import audio.Music;
 import menu.*;
 
 //import java.awt.event.WindowEvent;
@@ -42,27 +41,5 @@ public class Main implements Runnable/*, WindowListener*/ {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);	
-	
-		//__________AUDIO ENGINE____________
-		Music.backgroundMusic = Music.menuSong;	
-		t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-						
-				while (true) {
-					
-					synchronized(this) {
-						Music.start();
-					}
-							
-					try {
-						Thread.sleep(34);
-					} catch (InterruptedException e) {
-						return;
-					}
-				}
-			}
-		});
-		t.start();		
 	}
 }
