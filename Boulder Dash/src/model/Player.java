@@ -1,9 +1,6 @@
 //AUTORE: Davide Caligiuri
 package model;
 
-import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
-
 import audio.Music;
 
 public class Player extends GameObject implements Living {

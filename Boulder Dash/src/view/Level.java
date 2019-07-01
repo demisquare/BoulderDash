@@ -183,8 +183,6 @@ public class Level extends JPanel implements KeyListener {
 				else
 					blockSprites.add(i, new BlockSprite(img, newObj));
 				if(toRemove) {
-					
-					System.out.println(g + " is removed");
 					Arr.remove(i);
 				}
 			}
@@ -232,8 +230,6 @@ public class Level extends JPanel implements KeyListener {
 				Options.difficulty = Difficulty.purgatorio;
 			else if(Options.difficulty == Difficulty.purgatorio)
 				Options.difficulty = Difficulty.inferno;
-			
-			System.out.println("level transition");
 			
 			if(score.getRemaining_time() > 0)
 				score.setTotal_score(score.getTotal_score() + score.getRemaining_time());
