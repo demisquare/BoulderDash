@@ -16,7 +16,6 @@ import java.util.Random;
 import javax.swing.JPanel;
 
 import ai.IntelligentEnemy;
-
 import menu.Options;
 import menu.Options.Difficulty;
 import model.*;
@@ -54,22 +53,22 @@ public class Level extends JPanel implements KeyListener {
 
 	private static Sprite spritesheet = new Sprite();
 	private static Random r = new Random();
-	/*
-	 * AudioPlayer game_song = new AudioPlayer("." + File.separator + "resources" +
-	 * File.separator + "assets" + File.separator + "music" + File.separator +
-	 * "game_song"+ ".wav");
-	 */
+/*
+* AudioPlayer game_song = new AudioPlayer("." + File.separator + "resources" +
+* File.separator + "assets" + File.separator + "music" + File.separator +
+* "game_song"+ ".wav");
+*/
 	private int FPS = 30;
 	private boolean mouseReleased = false;
 	private Thread t;
 	private Game game;
 	private Score score;
-	// Questa classe fara' da interfaccia a TUTTA la logica di un livello
+// 	Questa classe fara' da interfaccia a TUTTA la logica di un livello
 	World world;
 	LocalTime lastTimePressed;
-	// graphics for blocks
+// 	graphics for blocks
 	ArrayList<BlockSprite> blockSprites;
-	// graphics for both Player and Enemies
+// 	graphics for both Player and Enemies
 	ArrayList<LivingSprite> playerSprites;
 	ArrayList<LivingSprite> hostSprites;
 	ArrayList<LivingSprite> enemySprites;
@@ -210,13 +209,15 @@ public class Level extends JPanel implements KeyListener {
 		}
 		
 		if(world.getWinCon()) {
-			game.launchGame();
-		
+			
 			if(Options.difficulty == Difficulty.paradiso)
 				Options.difficulty = Difficulty.purgatorio;
 			else if(Options.difficulty == Difficulty.purgatorio)
 				Options.difficulty = Difficulty.inferno;
 			
+			//inserisci qui canzone di vittoria livello
+			game.launchGame();
+		
 			//System.out.println("difficulty changed");
 		}
 		

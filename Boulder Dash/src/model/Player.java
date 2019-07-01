@@ -4,6 +4,8 @@ package model;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 
+import audio.Music;
+
 public class Player extends GameObject implements Living {
 
 // 	metodo semplice per aggiungere un delay al movimento
@@ -50,6 +52,7 @@ public class Player extends GameObject implements Living {
 			if (movingCounter >= 1) {
 				movingCounter = 0;
 				if (g.destroy()) {
+					Music.playTone("diamond");
 					return move(dir);
 				}
 			}
@@ -60,9 +63,9 @@ public class Player extends GameObject implements Living {
 			//System.out.println("scava...");
 			++movingCounter;
 			pushRockCounter = 0;
-			if (movingCounter >= 1) {
+			if(movingCounter >= 1) {
 				movingCounter = 0;
-				if (g.destroy()) {
+				if(g.destroy()) {
 					return move(dir);
 				}
 			}
@@ -154,7 +157,8 @@ public class Player extends GameObject implements Living {
 			GameObject g = temp.get(Collections.min(temp.keySet()));
 			swap(g.getX(), g.getY());
 			--lifes;
-		
+			//inserisci suono di sconfitta
+			
 		} else {
 			moved = false;
 			lifes = 0;
