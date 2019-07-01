@@ -2,7 +2,6 @@ package menu;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -32,38 +31,12 @@ public class You_Win extends JPanel {
 
 	JLabel MENU_scaled;
 
-	private void menu(JFrame frame, Menu menu) {
-		frame.remove(this);
-		frame.setContentPane(menu);
-		frame.revalidate();
-		frame.repaint();
-		
-		synchronized(this) {
-			Music.setSong(Music.menuSong);
-		}
-	}
-
-	public void check_resize() {
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		double xSize = tk.getScreenSize().getWidth();
-		double ySize = tk.getScreenSize().getHeight();
-		
-		MENU_scaled.setIcon(new ImageIcon(Scaling.get(Menu, 250, 60, Options.full_screen)));
-		
-		Scaling.set(MENU_scaled, 490, 560, 250, 60, Options.full_screen);
-	}
-	
 	public You_Win(JFrame frame, Game game, Menu menu) {
-		try {
-			background = ImageIO.read(new File(YouWinPath + "background.png"));
-			Menu = ImageIO.read(new File(YouWinPath + "Menu.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
-			Menu_SELECTED = ImageIO.read(new File(YouWinPath + "Menu_SELECTED.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
-			
-			
-			MENU_scaled = new JLabel(new ImageIcon(Menu));
+		image_init();
+				
+		MENU_scaled = new JLabel(new ImageIcon(Menu));
 
-
-			MENU_scaled.addMouseListener(new MouseListener() {
+		MENU_scaled.addMouseListener(new MouseListener() {
 
 				@Override
 				public void mouseReleased(MouseEvent e) {
@@ -102,11 +75,34 @@ public class You_Win extends JPanel {
 				}
 			});
 
-			this.setLayout(null);
-			this.add(MENU_scaled);
-			
-			
+		this.setLayout(null);
+		this.add(MENU_scaled);	
+	}
+	
+	private void menu(JFrame frame, Menu menu) {
+		frame.remove(this);
+		frame.setContentPane(menu);
+		frame.revalidate();
+		frame.repaint();
+		
+		synchronized(this) {
+			Music.setSong(Music.menuSong);
+		}
+	}
+
+	public void check_resize() {
+		MENU_scaled.setIcon(new ImageIcon(Scaling.get(Menu, 250, 60, Options.full_screen)));
+		
+		Scaling.set(MENU_scaled, 490, 560, 250, 60, Options.full_screen);
+	}
+	
+	private void image_init() {
+		try {
+			background = ImageIO.read(new File(YouWinPath + "background.png"));
+			Menu = ImageIO.read(new File(YouWinPath + "Menu.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
+			Menu_SELECTED = ImageIO.read(new File(YouWinPath + "Menu_SELECTED.png")).getScaledInstance(698, 79, Image.SCALE_SMOOTH);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -32,30 +32,13 @@ public class Credits extends JPanel{
 	Image arrow_back;
 	Image arrow_back_SELECTED;
 	JLabel ARROW_BACK_scaled;
-
-	public void turn_back(JFrame frame, Menu menu) {
-		
-		menu.check_resize();
-		frame.remove(this);
-		frame.setContentPane(menu);
-		frame.revalidate();
-		frame.repaint();
-		
-		synchronized(this) {
-			Music.setSong(Music.menuSong);
-		}
-	}
 	
 	public Credits(JFrame frame, Menu menu) {
-		
-		try {			
-			background = ImageIO.read(new File(CreditsPagePath + "background.png"));
-			arrow_back = ImageIO.read(new File(CreditsPagePath + "arrow_back.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
-			arrow_back_SELECTED = ImageIO.read(new File(CreditsPagePath + "arrow_back_SELECTED.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
-	
-			ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
+		image_init();		
+			
+		ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
 					
-			ARROW_BACK_scaled.addMouseListener(new MouseListener() {
+		ARROW_BACK_scaled.addMouseListener(new MouseListener() {
 								
 				@Override
 				public void mousePressed(MouseEvent e) {
@@ -89,11 +72,31 @@ public class Credits extends JPanel{
 				@Override public void mouseReleased(MouseEvent e) 	{}
 			});
 			
-			this.setLayout(null);
-			this.add(ARROW_BACK_scaled);
-			ARROW_BACK_scaled.setBounds(5, 5, 146, 97);
-			
+		this.setLayout(null);
+		this.add(ARROW_BACK_scaled);
+		ARROW_BACK_scaled.setBounds(5, 5, 146, 97);	
+	}
+
+	public void turn_back(JFrame frame, Menu menu) {
+		
+		menu.check_resize();
+		frame.remove(this);
+		frame.setContentPane(menu);
+		frame.revalidate();
+		frame.repaint();
+		
+		synchronized(this) {
+			Music.setSong(Music.menuSong);
+		}
+	}
+	
+	private void image_init() {
+		try {
+			background = ImageIO.read(new File(CreditsPagePath + "background.png"));
+			arrow_back = ImageIO.read(new File(CreditsPagePath + "arrow_back.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
+			arrow_back_SELECTED = ImageIO.read(new File(CreditsPagePath + "arrow_back_SELECTED.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
