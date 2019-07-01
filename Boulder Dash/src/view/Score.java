@@ -38,6 +38,9 @@ public class Score extends JPanel implements Serializable {
 			"assets" + File.separator + 
 			"ScoreTab" + File.separator;
 	
+	private JFrame frame;
+	private Menu menu;
+	private Game game;
 	
 	BufferedImage Background;
 	Image arrow_back;
@@ -59,7 +62,7 @@ public class Score extends JPanel implements Serializable {
 	JLabel Diamonds;
 	JLabel score;
 	
-	public void check_resize(Level level) {
+	public void check_resize() {
 		ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 80, 50, Options.full_screen)));
 		
 		Scaling.set(ARROW_BACK_scaled, 230, 640, 146, 97, Options.full_screen);
@@ -69,7 +72,7 @@ public class Score extends JPanel implements Serializable {
 		Scaling.set(score, 12, 275, 350, 100, Options.full_screen);	
 	}
 	
-	private void turn_back(JFrame frame, Menu menu, Game game) throws InterruptedException {
+	private void turn_back() throws InterruptedException {
 		
 //		if (Options.multiplayer) {
 //			if (socketClient != null && socketClient.isConnected()) {
@@ -106,7 +109,11 @@ public class Score extends JPanel implements Serializable {
 		setFocusable(false);
 		setEnabled(false);
 		
-		this.level=level;
+		this.frame = frame;
+		this.menu = menu;
+		this.game = game;
+		this.level = level;
+		
 		missing_diamonds = level.getWorld().getMap().getNumDiamonds();
 		
 		try {
@@ -130,7 +137,7 @@ public class Score extends JPanel implements Serializable {
 					Music.playTone("select");
 					
 					try {
-						turn_back(frame, menu, game);
+						turn_back();
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
@@ -210,5 +217,3 @@ public class Score extends JPanel implements Serializable {
 			Lives.setIcon(new ImageIcon(Scaling.get(lives_1, 240, 73, Options.full_screen)));
 	}
 }
-
-

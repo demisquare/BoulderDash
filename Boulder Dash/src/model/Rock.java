@@ -1,8 +1,5 @@
 package model;
 
-import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
-
 //TODO
 public class Rock extends GameObject implements Sliding {
 	

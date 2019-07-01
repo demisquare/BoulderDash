@@ -1,8 +1,8 @@
 package model;
 
-import java.util.Collections;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
+
+import menu.Options;
 
 //TODO
 public class Enemy extends GameObject implements Living {
@@ -44,7 +44,6 @@ public class Enemy extends GameObject implements Living {
 					
 					//map.getTile(i, j).destroy();
 					//swap(i, j);
-
 					((Player)map.getTile(i, j)).respawn();
 					
 					return true;

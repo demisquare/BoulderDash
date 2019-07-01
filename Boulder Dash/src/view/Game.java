@@ -99,7 +99,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 			
 			score = new Score(frame, menu, this, level);
 		
-			score.check_resize(level);
+			score.check_resize();
 			this.setLeftComponent(level);
 			this.setRightComponent(score);
 			
