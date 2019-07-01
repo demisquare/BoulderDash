@@ -6,8 +6,8 @@ public class PacketStand extends Packet {
 	
 	private int dir;
 	
-	public PacketStand(int x, int y, int dir) {
-		super(x, y);
+	public PacketStand(int x, int y, int dir, int dest) {
+		super(x, y, dest);
 		this.dir = dir;
 	}
 	

@@ -66,7 +66,7 @@ public class SocketClient {
 					while (socket.isConnected() && !socket.isClosed()) {
 
 						if (player.hasMoved() && player.getLastDir() != -1) {
-							Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir());
+							Packet move = new PacketMove(player.getX(), player.getY(), player.getLastDir(), -1);
 
 							try {
 								msg.sendObject(move);
@@ -84,13 +84,15 @@ public class SocketClient {
 						}
 
 						if (game.level.isMouseReleased() && player.getLastDir() != -1) {
-							Packet stand = new PacketStand(player.getX(), player.getY(), player.getLastDir());
+							Packet stand = new PacketStand(player.getX(), player.getY(), player.getLastDir(), -1);
 
 							try {
 								msg.sendObject(stand);
 							} catch (IOException e) {
 
-								System.err.println("[SERVER] Client disconnesso...");
+								//System.err.println("[SERVER] Client disconnesso...");
+								JOptionPane.showMessageDialog(null, "Connection Timeout.", "Error",
+										JOptionPane.ERROR_MESSAGE);
 								close();
 							}
 
