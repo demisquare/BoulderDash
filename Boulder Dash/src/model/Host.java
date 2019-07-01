@@ -8,6 +8,12 @@ public class Host extends Player {
 	
 	public void respawn(int x, int y) {
 		
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		};
+		
 		if(lifes > 1) {
 			respawned = true;
 			

@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -23,11 +24,11 @@ public class Multiplayer extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private static final String MultiPagePath = 
-			"." + File.separator 
-			+ "resources" + File.separator 
-			+ "assets" + File.separator 
-			+ "Menu" + File.separator 
-			+ "MultiPage" + File.separator;
+			"." + File.separator + 
+			"resources" + File.separator + 
+			"assets" + File.separator + 
+			"Menu" + File.separator + 
+			"MultiPage" + File.separator;
 
 	private Thread t;
 
@@ -47,16 +48,16 @@ public class Multiplayer extends JPanel {
 	private SocketClient socketClient;
 
 	private void turn_back(JFrame frame, Menu menu) throws InterruptedException {
-		
-		if(Options.multiplayer) {
-			if(Options.host) {
+
+		if (Options.multiplayer) {
+			if (Options.host && socketClient.isConnected()) {
 				socketClient.close();
 				Options.host = false;
-			} else
+			} else if(socketServer.isConnected())
 				socketServer.close();
 			Options.multiplayer = false;
 		}
-		
+
 		frame.remove(this);
 		frame.setContentPane(menu);
 		frame.revalidate();
@@ -67,44 +68,52 @@ public class Multiplayer extends JPanel {
 
 		Options.multiplayer = true;
 		Options.host = true;
-		
-		game.launchGame(frame, menu);
-		
+
+		game.launchGame();
+
 		socketClient = new SocketClient(game);
 		socketClient.connect();
 
-		synchronized(this) {
-			Music.setSong(Music.gameSong);
+		if (socketClient.isConnected()) {
+
+			synchronized (this) {
+				Music.setSong(Music.gameSong);
+			}
+
+			closeThread();
+			frame.remove(this);
+			frame.setContentPane(game);
+			game.level.requestFocusInWindow();
+			frame.revalidate();
+			frame.repaint();
 		}
-		
-		closeThread();
-		frame.remove(this);
-		frame.setContentPane(game);
-		game.level.requestFocusInWindow();
-		frame.revalidate();
-		frame.repaint();
+
 	}
 
 	private void server_selected(JFrame frame, Menu menu, Game game) throws InterruptedException {
-		
+
 		Options.multiplayer = true;
 		Options.host = false;
-		
-		game.launchGame(frame, menu);
-		
+
+		game.launchGame();
+
 		socketServer = new SocketServer(game);
 		socketServer.connect();
-		
-		synchronized(this) {
-			Music.setSong(Music.gameSong);
+
+		if (socketServer.isConnected()) {
+
+			synchronized (this) {
+				Music.setSong(Music.gameSong);
+			}
+
+			closeThread();
+			frame.remove(this);
+			frame.setContentPane(game);
+			game.level.requestFocusInWindow();
+			frame.revalidate();
+			frame.repaint();
 		}
-		
-		closeThread();
-		frame.remove(this);
-		frame.setContentPane(game);
-		game.level.requestFocusInWindow();
-		frame.revalidate();
-		frame.repaint();
+
 	}
 
 	public Multiplayer(JFrame frame, Game game, Menu menu) {
@@ -168,10 +177,15 @@ public class Multiplayer extends JPanel {
 					repaint();
 				}
 
-				@Override public void mouseClicked(MouseEvent e) 	{}
-				@Override public void mouseReleased(MouseEvent e) 	{}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+				}
 			});
-			
+
 			CREATE_GAME_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -211,10 +225,15 @@ public class Multiplayer extends JPanel {
 					repaint();
 				}
 
-				@Override public void mouseClicked(MouseEvent e) 	{}
-				@Override public void mouseReleased(MouseEvent e) 	{}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+				}
 			});
-			
+
 			JOIN_GAME_scaled.addMouseListener(new MouseListener() {
 
 				@Override
@@ -254,8 +273,13 @@ public class Multiplayer extends JPanel {
 					repaint();
 				}
 
-				@Override public void mouseClicked(MouseEvent e) 	{}
-				@Override public void mouseReleased(MouseEvent e) 	{}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+				}
 			});
 
 			this.setLayout(null);
@@ -290,9 +314,9 @@ public class Multiplayer extends JPanel {
 					}
 				}
 			});
-			
+
 			launchThread();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -303,7 +327,12 @@ public class Multiplayer extends JPanel {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
-	
-	public synchronized void launchThread() { t.start(); 	 }
-	public synchronized void closeThread() 	{ t.interrupt(); }
+
+	public synchronized void launchThread() {
+		t.start();
+	}
+
+	public synchronized void closeThread() {
+		t.interrupt();
+	}
 }

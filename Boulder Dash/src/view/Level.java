@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -138,15 +139,16 @@ public class Level extends JPanel implements KeyListener {
 		}
 	}
 
-	public Level(Game g) {
+	public Level(Game g, int stage) {
 		super();
 
+		setBackground(Color.GRAY);
 		setFocusable(true);
 		setVisible(true);
 		setEnabled(true);
 
 		// crea un world...
-		world = new World(FPS);
+		world = new World(FPS, stage);
 		game = g;
 		
 		t = null;
@@ -215,9 +217,8 @@ public class Level extends JPanel implements KeyListener {
 		
 		if(((Player)world.getPlayer()).getLifes() == 0)
 			game.youLose();
-		
 		if(world.getWinCon())
-			game.youWin();
+			game.launchGame();
 	}
 
 	// permette di ridefinire i componenti del pannello di default.

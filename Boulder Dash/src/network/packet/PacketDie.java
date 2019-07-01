@@ -4,8 +4,8 @@ public class PacketDie extends Packet {
 
 	private static final long serialVersionUID = 5685846674369289480L;
 
-	public PacketDie(int x, int y) {
-		super(x, y);
+	public PacketDie(int x, int y, int dest) {
+		super(x, y, dest);
 	}
 	@Override
 	public String toString() {

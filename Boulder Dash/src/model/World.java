@@ -21,10 +21,10 @@ public class World {
 
 	
 	// costruttore di default
-	public World(int FPS) {
+	public World(int FPS, int stage) {
 		
 		//sostituire con il filename
-		map = new GameMap("levelmap");
+		map = new GameMap("level_" + stage);
 		
 		this.FPS = FPS;
 		//default a true (per evitare un aggiornamento immediato)
@@ -44,6 +44,7 @@ public class World {
 			return;
 		//aggiorna gli stati di ogni casella
 		try {
+			
 			Collection<GameObject> temp = map.getBlocks().values();
 			for(GameObject e : temp)
 				if(e.processed == false)

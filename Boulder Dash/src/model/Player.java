@@ -110,6 +110,12 @@ public class Player extends GameObject implements Living {
 				return move(dir);
 			}
 			return false;
+		
+		} else if (g instanceof Enemy) {
+			
+			moved = true;
+			respawn();
+			return true;
 		}
 
 		// this is for EmptyBlock
@@ -125,9 +131,15 @@ public class Player extends GameObject implements Living {
 	
 	public void respawn() {	
 		
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		};
+		
 		if(lifes > 1) {
-			respawned = true;
 			
+			respawned = true;
 			ConcurrentHashMap<Integer, GameObject> temp = map.getEmptyBlocksMap();
 			GameObject g = temp.get(Collections.min(temp.keySet()));
 			swap(g.getX(), g.getY());
@@ -151,29 +163,16 @@ public class Player extends GameObject implements Living {
 				if (map.getTile(i, j) instanceof EmptyBlock) {
 	
 					moved = true;
-					//System.out.println("si muove...");
-					swap(i, j);
-						
+					swap(i, j);	
 					return true;
 	
 				} else if (map.getTile(i, j) instanceof Door) {
 	
 					moved = true;
 					map.setWinCon(true);
-	
-					//System.out.println("VITTORIA");
-	
 					destroy();
-					
 					return true;
 	
-				} else if (map.getTile(i, j) instanceof Enemy) {
-	
-					moved = true;
-					
-					this.respawn();
-					
-					return true;
 				}
 			}
 			

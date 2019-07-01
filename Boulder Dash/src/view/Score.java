@@ -46,6 +46,9 @@ public class Score extends JPanel implements Serializable {
 	Image lives_2;
 	Image lives_1;
 	
+	Level level;
+	
+	public int missing_diamonds;
 	public static int total_score = 0;
 	public static int remaining_time = 150; //150 secondi per livello
 	public boolean turn_back = false;
@@ -73,20 +76,27 @@ public class Score extends JPanel implements Serializable {
 	}
 	
 	private void turn_back(JFrame frame, Menu menu, Game game) throws InterruptedException {
-		//socketServer.close();
-		//socketClient.close();
+		
+//		if (Options.multiplayer) {
+//			if (socketClient != null && socketClient.isConnected()) {
+//				socketClient.close();
+//				Options.host = false;
+//			}
+//			if(socketServer != null && socketServer.isConnected())
+//				socketServer.close();
+//			Options.multiplayer = false;
+//		}
+		
 		try{
 
 			menu.check_resize();
 			game.isReset = false;
+			game.closeThread();
 			frame.remove(game);
 			frame.setContentPane(menu);
 			frame.revalidate();
 			frame.repaint();
 			Music.setSong(Music.menuSong);
-			
-			//game.stopThread();
-			//menu.wakeThread();
 			
 		} catch(NullPointerException e) {
 			e.printStackTrace();
@@ -95,6 +105,9 @@ public class Score extends JPanel implements Serializable {
 	}
 	
 	public Score(JFrame frame, Menu menu, Game game, Level level) { //Default Score resolution: 360x720
+		
+		this.level=level;
+		missing_diamonds = level.getWorld().getMap().getNumDiamonds();
 		
 		try {
 			Font eightBit = Font.createFont(Font.TRUETYPE_FONT, new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "8BITFONT.TTF")).deriveFont(80f);
@@ -150,7 +163,6 @@ public class Score extends JPanel implements Serializable {
 			time_left.setForeground(Color.WHITE);
 			time_left.setFont(eightBit);
 			
-			int missing_diamonds = level.getWorld().getMap().getNumDiamonds();
 			Diamonds = new JLabel("" + missing_diamonds, JLabel.CENTER);
 			Diamonds.setForeground(Color.WHITE);
 			Diamonds.setFont(eightBit);
@@ -179,4 +191,15 @@ public class Score extends JPanel implements Serializable {
 		
 		g.drawImage(Background, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
+	
+	int getMissing_diamonds() {return missing_diamonds;}
+	void setMissing_diamonds(int md) {missing_diamonds=md; Diamonds.setText("" + missing_diamonds);}
+	
+	int getTotal_score() {return total_score;}
+	void setTotal_score(int ts) {total_score=ts; score.setText("" + total_score);}
+	
+	int getRemaining_time() {return remaining_time;}
+	void setRemaining_time(int rt) {remaining_time=rt; time_left.setText("" + remaining_time);}
 }
+
+

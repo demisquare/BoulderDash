@@ -1,9 +1,8 @@
 package model;
-//import java.util.concurrent.locks.Condition;
-//import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class GameObject {
 
+	//costanti usate per la lettura da file
 	static final char EMPTY_BLOCK = '0';
 	static final char WALL	 	  = '1';
 	static final char DIAMOND 	  = '2';
@@ -14,46 +13,38 @@ public abstract class GameObject {
 	static final char HOST	 	  = 'H';
 	static final char ENEMY		  = 'E';
 	
+	//costanti usate per le direzioni di movimento
 	public static final int DOWN  = 0;
 	public static final int LEFT  = 1;
 	public static final int RIGHT = 2;
 	public static final int UP    = 3;
 		
+	//mappa costante direzione -> variazione coordinate
 	public static final int dmap[][] = { { 0,  1},
 			               				 {-1,  0},
 			               				 { 1,  0},
 			               				 { 0, -1} };
 	
+	//riferimento alla mappa di gioco
 	public static GameMap map = null;
 	
+	//coordinate dell'oggetto
 	protected int x;
 	protected int y;
 	
+	//verifica se l'oggetto ha subito un aggiornamento (tramite update())
 	protected boolean processed;
+	//verifica se l'oggetto necessita di essere eliminato
 	protected boolean dead;
+	//verifica se l'oggetto sta cadendo
 	protected boolean isFalling;
+	//verifica se l'oggetto si sta muovendo
 	public boolean moved;
+	//verifica se l'oggetto è respawnato
 	public boolean respawned;
 	
-	//public static ReentrantLock lock;
-	//public static Condition hasMoved;
-	
-	public boolean isMoved() {
-		return moved;
-	}
-
-	public void setMoved(boolean moved) {
-		this.moved = moved;
-	}
-
-	public boolean isRespawned() {
-		return respawned;
-	}
-
-	public void setRespawned(boolean respawned) {
-		this.respawned = respawned;
-	}
-
+	//nel caso l'oggetto vada sostituito, 
+	//corrisponde all'oggetto con cui sostituirlo
 	protected GameObject successor;
 	
 	public GameObject(int x, int y) {
@@ -64,53 +55,17 @@ public abstract class GameObject {
 		isFalling = false;
 		moved = false;
 		dead = false;
-		respawned = false;
-		//lock = new ReentrantLock();
-		//hasMoved = lock.newCondition();
-		
+		respawned = false;		
 		successor = null;
 	}
 	
-	@Override
-	public int hashCode() {
-		return x*map.dimX + y;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return obj.getClass().isInstance(this) && 
-				obj.hashCode() == hashCode();
-	}
-	
-	@Override
-	public String toString() {
-		return this.getClass().getCanonicalName() + " at [" + x + ", " + y + "]";
-	}
-	
-	public int getX() 		{ return x;   }	
-	public void setX(int x) { this.x = x; }
-	
-	public int getY() 		{ return y;   }
-	public void setY(int y) { this.y = y; }	
-	
-	public boolean hasChanged()  { return processed; }
-	
-	public boolean isDead() { return dead; }
-	
-	public boolean hasMoved() { return moved; }
-	
-	public GameObject getSuccessor() { return successor; }
-	
-	public void setDead(boolean x) {dead = x; }
-	
 	public abstract boolean update();
 	public abstract boolean update(int dir);
-	/*
-	 * Primo metodo fondamentale: gestisce la distruzione di un oggetto
-	 * (diamanti, terreno, nemici...) sostituendolo nella map con un EmptyBlock,
-	 * conservato in successor per facilitï¿½ di recupero nella fase
-	 * di aggiornamento della grafica ( si veda Level.updateGraphics() )
-	 * */
+
+//	Primo metodo fondamentale: gestisce la distruzione di un oggetto
+//	(diamanti, terreno, nemici...) sostituendolo nella map con un EmptyBlock,
+//	conservato in successor per facilita' di recupero nella fase
+//	di aggiornamento della grafica ( si veda Level.updateGraphics() )
 	protected final boolean destroy() {
 	
 		try {
@@ -138,11 +93,10 @@ public abstract class GameObject {
 		
 		return false;
 	}
-	/*
-	 * Secondo metodo fondamentale: gestisce il movimento di oggetti tramite lo
-	 * "swap" (scambio) delle posizioni in termini di coordinate sulla mappa logica,
-	 * garantendo che i dati di ogni oggetto siano coerenti in ogni fase di esecuzione.
-	 * */
+	
+//	 Secondo metodo fondamentale: gestisce il movimento di oggetti tramite lo
+//	 "swap" (scambio) delle posizioni in termini di coordinate sulla mappa logica,
+//	 garantendo che i dati di ogni oggetto siano coerenti in ogni fase di esecuzione.
 	protected final void swap(int i, int j) {
 		
 		GameObject temp = map.getTile(i, j);
@@ -177,6 +131,10 @@ public abstract class GameObject {
 		//}
 	}
 	
+//	implementazione generica della gravità:
+//	qualora la casella inferiore sia vuota,
+//	l'oggetto scambia la sua posizione con quello sottostante
+//	(simulando una caduta)
 	protected boolean fall() {
 		
 		if(!(y+1 < 0 || y+1 >= map.dimY)) {
@@ -197,7 +155,11 @@ public abstract class GameObject {
 		isFalling = false;
 		return false;
 	}
-	
+
+//	questo metodo gestisce il movimento in una determinata direzione:
+//	se la posizione nella direzione data è libera, l'ogetto scambia
+//	la sua posizione con quella sottostante
+//	(simulando una caduta)
 	protected boolean move(int dir) {
 		
 		int i = (x + dmap[dir][0]);
@@ -217,7 +179,43 @@ public abstract class GameObject {
 		return false;
 	}
 
-	public void clearFlags() {
-		processed = false;
+	public void clearFlags()					{ processed = false; }
+	
+	public int getX() 							{ return x;   }	
+	public void setX(int x) 					{ this.x = x; }
+	
+	public int getY() 							{ return y;   }
+	public void setY(int y) 					{ this.y = y; }	
+	
+	public boolean hasChanged()  				{ return processed; }
+	
+	public boolean isDead() 					{ return dead; }
+	public void setDead(boolean x) 				{ dead = x; }
+	
+	public boolean hasMoved() 					{ return moved; }
+	public boolean isMoved() 					{ return moved; }
+	public void setMoved(boolean moved) 		{ this.moved = moved; }
+
+	public boolean isRespawned() 				{ return respawned; }
+	public void setRespawned(boolean respawned) { this.respawned = respawned; }
+	
+	public GameObject getSuccessor()	{ return successor; }
+
+	@Override
+	public int hashCode() {
+		return 
+			x*map.dimX + y;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return 
+			obj.getClass().isInstance(this) && obj.hashCode() == hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return
+			this.getClass().getCanonicalName() + " at [" + x + ", " + y + "]";
 	}
 }

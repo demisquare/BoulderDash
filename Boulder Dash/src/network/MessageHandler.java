@@ -24,6 +24,11 @@ public class MessageHandler {
 		write = null;
 	}
 
+	public void close() throws IOException {
+		write.close();
+		read.close();
+	}
+
 	public void initInput() throws IOException {
 		read = new ObjectInputStream(socket.getInputStream());
 	}
@@ -56,10 +61,17 @@ public class MessageHandler {
 	public void HandlePacket(Packet pkg, Level level) {
 
 		if (pkg instanceof PacketMove) {
+			// TODO: operazioni per muovere player/nemici...
 			if (((PacketMove) pkg).getDir() != -1) {
-				synchronized (this) {
-					level.updateHostOnPressing(((PacketMove) pkg).getDir());
+				if (((PacketMove) pkg).getDest() == -1) {
+					synchronized (this) {
+						level.updateHostOnPressing(((PacketMove) pkg).getDir());
+					}
+				} else {
+					//muovi nemici...
+					
 				}
+				
 			}
 		}
 
@@ -72,12 +84,9 @@ public class MessageHandler {
 		}
 
 		else if (pkg instanceof PacketDie) {
+			// TODO: operazioni per uccidere player/nemici...
 			synchronized (this) {
-				Host host = ((Host) level.getWorld().getHost());
-				System.out.println("Host Respawn: " + pkg.toString());
-				
-				host.respawn(((PacketDie) pkg).getX(), ((PacketDie) pkg).getY());
-				System.out.println("host: " + host.getX() + " - " + host.getY());
+				((Host) level.getWorld().getHost()).respawn(((PacketDie) pkg).getX(), ((PacketDie) pkg).getY());
 			}
 		}
 	}

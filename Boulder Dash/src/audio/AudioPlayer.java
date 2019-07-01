@@ -65,7 +65,7 @@ public class AudioPlayer {
 		if (clip == null)
 			return;
 		stop();
-		clip.setFramePosition(0);
+		//clip.setFramePosition(0);
 		clip.start();
 		isOn = true;
 	}
@@ -86,8 +86,8 @@ public class AudioPlayer {
 		return isOn;
 	}
 
-	public void rewind() {
-		clip.setFramePosition(0);
-	}
+	//public void rewind() {
+	//	clip.setFramePosition(0);
+	//}
 
 }
