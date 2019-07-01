@@ -6,6 +6,70 @@
  - EmbASP Framework
  
 ## History:
+#### 30-06-19
+- AI completed
+- Fixed Multiplayer exceptions
+- Music fixes
+- Fixed turn_back on Multiplayer
+- Added error messages on Multiplayer
+- Added "You Win" and "You Lose" events
+- Retry button now work on "You Lose" page 
+- New levels
+
+#### 29-06-19
+- First implementation of AI
+- Added You_Win Class
+- Added PacketStand class
+- Added missing diamonds and score voice in class "Score".
+- Minor graphics improvements
+- Network improvements
+- Minor fixes
+
+#### 28-06-19
+- Level has its own Thread again, to ensure frame rate coherence
+- Minor improvements to the thread management
+- Minor cleanup
+
+#### 27-06-19
+- Now the player respawns instead of dying
+- Fix to Host input from file
+- Made a method for respawing
+- Now each player (or host) has at most 3 respawns
+- Network improvements
+
+#### 26-06-19:
+- Added multiplayer boolean in Options
+- Added Host spritesheet
+- Added some send methods (not yet tested)
+- Minor fixes on socket classes
+- Now Host Extends Player
+- Added isMoved() method
+
+#### 25-06-19:
+- Added Packet Classes
+- Added new methods on MessageHandler
+- Now sockets class just handle connessions
+- Multiplayer class fixes (but still throws NullPointerException)
+- MessageHandler works
+
+#### 23-06-19:
+- SocketClient threads are now interrupted by SocketClient methods
+- SocketServer thread are now interrupted by SocketServer methods
+- An anonymous "music" thread in Main class is now  interrupted by an anonymous WindowListener methods
+- Game threads are now interrupted by Menu methods
+- Menu threads are now interrupted by Main methods
+- Multiplayer threads are now interrupted ny Menu methods
+- Added some locks on music methods to avoid concurrent calls; needs further testing
+- Modified a bit the Main structure to make better use of the EDT; needs further testing, too
+- now the World class has its own thread again, which gets interrupted by Level.closeThread()
+- minor cleanup
+
+#### 23-06-19:
+- Now, using the Start button in the Menu repeatedly gives the expected
+results
+- Added You_Lose Class
+- Camera fixed in fullscreen mode
+
 #### 22-06-19:
 - New AudioPlayer(solves OpenJDK problems)
 - Added some exception handling for the menu-level interaction problem, just for debug purposes
