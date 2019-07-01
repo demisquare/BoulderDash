@@ -52,28 +52,23 @@ public class You_Lose extends JPanel {
 			Music.setSong(Music.menuSong);
 		}
 	}
-	private void retry(JFrame frame, Game game) throws InterruptedException {
+	private void retry(JFrame frame, Game game) throws InterruptedException {		
+		frame.remove(this);
 				
-				frame.remove(this);
+		game.launchGame(); 
 				
-				game.launchGame(); 
+		frame.setContentPane(game);
 				
-				frame.setContentPane(game);
+		if(!game.level.requestFocusInWindow()) { 
+			throw new InterruptedException(); 
+		}
 				
-				if(!frame.isAncestorOf(game)) { 
-					throw new InterruptedException();
-				}
+		frame.revalidate();
+		frame.repaint();
 				
-				if(!game.level.requestFocusInWindow()) { 
-					throw new InterruptedException(); 
-				}
-				
-				frame.revalidate();
-				frame.repaint();
-				
-				synchronized(this) {
-					Music.setSong(Music.gameSong);
-				}
+		synchronized(this) {
+			Music.setSong(Music.gameSong);
+		}
 	}
 	
 	public void check_resize() {
