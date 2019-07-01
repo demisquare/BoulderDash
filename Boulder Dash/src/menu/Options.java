@@ -506,11 +506,9 @@ public class Options extends JPanel {
 				
 				if (music) {
 					music = false;
-					Music.stop();
 					MUSIC_check.setIcon(new ImageIcon(Scaling.get(music_unchecked, 50, 50, Options.full_screen)));
 				} else if (!music) {
 					music = true;
-					Music.start();
 					MUSIC_check.setIcon(new ImageIcon(Scaling.get(music_checked, 50, 50, Options.full_screen)));
 				}
 				revalidate();

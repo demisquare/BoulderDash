@@ -71,11 +71,7 @@ public class Menu extends JPanel implements Serializable {
 		menu_choices_init();
 		
 		this.setLayout(null);
-		this.add(menu_choices);
-		
-		synchronized (this) {
-			Music.setSong(Music.menuSong);
-		}
+		this.add(menu_choices);		
 	}
 	
 	public void check_resize() {
