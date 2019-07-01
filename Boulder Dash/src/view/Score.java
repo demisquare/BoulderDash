@@ -62,6 +62,29 @@ public class Score extends JPanel implements Serializable {
 	JLabel Diamonds;
 	JLabel score;
 	
+	public Score(JFrame frame, Menu menu, Game game, Level level) { //Default Score resolution: 360x720		
+		this.frame = frame;
+		this.menu = menu;
+		this.game = game;
+		this.level = level;
+		
+		missing_diamonds = level.getWorld().getMap().getNumDiamonds();
+		
+		Font eightBit=null;
+		try {
+			eightBit = Font.createFont(Font.TRUETYPE_FONT, new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "8BITFONT.TTF")).deriveFont(80f);
+		} catch (FontFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		image_init();
+		label_init(eightBit);
+		MouseListener_init();
+		panel_init();
+	}
+	
 	public void check_resize() {
 		ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 80, 50, Options.full_screen)));
 		
@@ -104,92 +127,81 @@ public class Score extends JPanel implements Serializable {
 		
 	}
 	
-	public Score(JFrame frame, Menu menu, Game game, Level level) { //Default Score resolution: 360x720
-		
-		setFocusable(false);
-		setEnabled(false);
-		
-		this.frame = frame;
-		this.menu = menu;
-		this.game = game;
-		this.level = level;
-		
-		missing_diamonds = level.getWorld().getMap().getNumDiamonds();
-		
+	private void image_init() {
 		try {
-			Font eightBit = Font.createFont(Font.TRUETYPE_FONT, new File("." + File.separator + "resources" + File.separator + "assets" + File.separator + "8BITFONT.TTF")).deriveFont(80f);
-			
 			Background = ImageIO.read(new File(ScoreTabPath + "score_background.png"));
 			arrow_back = ImageIO.read(new File(ScoreTabPath + "arrow_back.png")).getScaledInstance(80, 50, Image.SCALE_SMOOTH);
 			arrow_back_SELECTED = ImageIO.read(new File(ScoreTabPath + "arrow_back_SELECTED.png")).getScaledInstance(80, 50, Image.SCALE_SMOOTH);
 			lives_3 = ImageIO.read(new File(ScoreTabPath + "3_Hearts.png")).getScaledInstance(240, 73, Image.SCALE_SMOOTH);
 			lives_2 = ImageIO.read(new File(ScoreTabPath + "2_Hearts.png")).getScaledInstance(240, 73, Image.SCALE_SMOOTH);
 			lives_1 = ImageIO.read(new File(ScoreTabPath + "1_Hearts.png")).getScaledInstance(240, 73, Image.SCALE_SMOOTH);
-			
-			Lives = new JLabel(new ImageIcon(lives_3));
-			
-			ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
-			
-			ARROW_BACK_scaled.addMouseListener(new MouseListener() {
-					
-				@Override
-				public void mousePressed(MouseEvent e) {
-					Music.playTone("select");
-					
-					try {
-						turn_back();
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-					
-					ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 80, 50, Options.full_screen)));
-					revalidate();
-					repaint();
-				}
-				
-				@Override
-				public void mouseExited(MouseEvent e) {
-					ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 80, 50, Options.full_screen)));
-					revalidate();
-					repaint();
-				}
-				
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					Music.playTone("hover");
-					ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back_SELECTED, 80, 50, Options.full_screen)));
-					revalidate();
-					repaint();
-				}
-				
-				@Override public void mouseClicked(MouseEvent e) {}
-				@Override public void mouseReleased(MouseEvent e) {}
-			});
-			
-			time_left = new JLabel("" + remaining_time, JLabel.CENTER);
-			time_left.setForeground(Color.WHITE);
-			time_left.setFont(eightBit);
-			
-			Diamonds = new JLabel("" + missing_diamonds, JLabel.CENTER);
-			Diamonds.setForeground(Color.WHITE);
-			Diamonds.setFont(eightBit);
-			
-			score = new JLabel("" + total_score, JLabel.CENTER);
-			score.setForeground(Color.WHITE);
-			score.setFont(eightBit);
-					
-			this.add(Lives);
-			this.setLayout(null); //se non settiamo a null non possiamo usare il setBounds.
-			this.add(ARROW_BACK_scaled);
-			this.add(time_left);
-			this.add(Diamonds);
-			this.add(score);
-			
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (FontFormatException e) {
-			e.printStackTrace();
 		}
+	}
+	
+	private void label_init(Font eightBit) {
+		Lives = new JLabel(new ImageIcon(lives_3));	
+		ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
+		
+		time_left = new JLabel("" + remaining_time, JLabel.CENTER);
+		time_left.setForeground(Color.WHITE);
+		time_left.setFont(eightBit);
+		
+		Diamonds = new JLabel("" + missing_diamonds, JLabel.CENTER);
+		Diamonds.setForeground(Color.WHITE);
+		Diamonds.setFont(eightBit);
+		
+		score = new JLabel("" + total_score, JLabel.CENTER);
+		score.setForeground(Color.WHITE);
+		score.setFont(eightBit);
+	}
+	
+	private void MouseListener_init() {
+		ARROW_BACK_scaled.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music.playTone("select");
+				
+				try {
+					turn_back();
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				
+				ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 80, 50, Options.full_screen)));
+				revalidate();
+				repaint();
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 80, 50, Options.full_screen)));
+				revalidate();
+				repaint();
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				Music.playTone("hover");
+				ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back_SELECTED, 80, 50, Options.full_screen)));
+				revalidate();
+				repaint();
+			}
+			
+			@Override public void mouseClicked(MouseEvent e) {}
+			@Override public void mouseReleased(MouseEvent e) {}
+		});
+	}
+	
+	private void panel_init() {
+		this.add(Lives);
+		this.setLayout(null);
+		this.add(ARROW_BACK_scaled);
+		this.add(time_left);
+		this.add(Diamonds);
+		this.add(score);
 	}
 	
 	@Override

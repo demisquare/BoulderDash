@@ -3,7 +3,6 @@ package menu;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -62,6 +61,17 @@ public class Menu extends JPanel implements Serializable {
 	Credits credits;
 	You_Lose youlose;
 	
+	public Menu(JFrame frame) {
+		panel_init(frame);
+		image_init();
+		label_init();
+		MouseListener_init(frame);
+		menu_choices_init();
+		
+		this.setLayout(null);
+		this.add(menu_choices);		
+	}
+	
 	public void check_resize() {
 		
 		START_scaled.setIcon(new ImageIcon(Scaling.get(START, 191, 55, Options.full_screen)));
@@ -111,6 +121,7 @@ public class Menu extends JPanel implements Serializable {
 	
 //		closeThread();
 		frame.remove(this);
+		multi.check_resize();
 		frame.setContentPane(multi);
 		frame.revalidate();
 		frame.repaint();
@@ -382,17 +393,6 @@ public class Menu extends JPanel implements Serializable {
 		credits  = new Credits(frame, this);
 		game 	 = new Game(frame, this);
 		multi	 = new Multiplayer(frame, game, this);
-	}
-	
-	public Menu(JFrame frame) {
-		panel_init(frame);
-		image_init();
-		label_init();
-		MouseListener_init(frame);
-		menu_choices_init();
-		
-		this.setLayout(null);
-		this.add(menu_choices);		
 	}
 
 	@Override

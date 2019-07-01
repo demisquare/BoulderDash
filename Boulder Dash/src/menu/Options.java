@@ -2,7 +2,6 @@ package menu;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -62,6 +61,13 @@ public class Options extends JPanel {
 	JLabel WINDOWED_scaled;
 	JLabel FULLSCREEN_scaled;
 	JLabel MUSIC_check;
+	
+	public Options(JFrame frame, Menu menu) {
+		image_init();
+		label_init();
+		MouseListener_init(frame, menu);
+		panel_init();	
+	}
 	
 	public void check_resize() {
 		
@@ -127,9 +133,8 @@ public class Options extends JPanel {
 		frame.setSize(1280, 749);
 	}
 	
-	public Options(JFrame frame, Menu menu) {
+	private void image_init() {
 		try {
-			
 			background = ImageIO.read(new File(OptionsPagePath + "background.png"));
 			arrow_back = ImageIO.read(new File(OptionsPagePath + "arrow_back.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
 			paradiso = ImageIO.read(new File(OptionsPagePath + "Paradiso.png")).getScaledInstance(297, 61, Image.SCALE_SMOOTH);
@@ -145,378 +150,385 @@ public class Options extends JPanel {
 			fullscreen_SELECTED = ImageIO.read(new File(OptionsPagePath + "FullScreen_SELECTED.png")).getScaledInstance(305, 41, Image.SCALE_SMOOTH);
 			music_unchecked = ImageIO.read(new File(OptionsPagePath + "unchecked.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			music_checked = ImageIO.read(new File(OptionsPagePath + "checked.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-			ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
-			PARADISO_scaled = new JLabel(new ImageIcon(paradiso));
-			PURGATORIO_scaled = new JLabel(new ImageIcon(purgatorio_SELECTED));
-			INFERNO_scaled = new JLabel(new ImageIcon(inferno));
-			WINDOWED_scaled = new JLabel(new ImageIcon(windowed_SELECTED));
-			FULLSCREEN_scaled = new JLabel(new ImageIcon(fullscreen));
-			
-			if(music)	MUSIC_check = new JLabel(new ImageIcon(music_checked));
-			else 		MUSIC_check = new JLabel(new ImageIcon(music_unchecked));
-			
-			ARROW_BACK_scaled.addMouseListener(new MouseListener() {
+	}
+	
+	private void label_init () {
+		ARROW_BACK_scaled = new JLabel(new ImageIcon(arrow_back));
+		PARADISO_scaled = new JLabel(new ImageIcon(paradiso));
+		PURGATORIO_scaled = new JLabel(new ImageIcon(purgatorio_SELECTED));
+		INFERNO_scaled = new JLabel(new ImageIcon(inferno));
+		WINDOWED_scaled = new JLabel(new ImageIcon(windowed_SELECTED));
+		FULLSCREEN_scaled = new JLabel(new ImageIcon(fullscreen));
+		
+		if(music)	MUSIC_check = new JLabel(new ImageIcon(music_checked));
+		else 		MUSIC_check = new JLabel(new ImageIcon(music_unchecked));
+	}
+	
+	private void MouseListener_init(JFrame frame, Menu menu) {
+		ARROW_BACK_scaled.addMouseListener(new MouseListener() {
 
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
 
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("select");
 				}
+				
+				try {
+					turn_back(frame, menu);
+				} catch (InterruptedException e1) {	
+					e1.printStackTrace();
+				}
+				
+				ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 120, 80, Options.full_screen)));
+				revalidate();
+				repaint();
+			}
 
-				@Override
-				public void mousePressed(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("select");
-					}
-					
-					try {
-						turn_back(frame, menu);
-					} catch (InterruptedException e1) {	
-						e1.printStackTrace();
-					}
-					
-					ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 120, 80, Options.full_screen)));
+			@Override
+			public void mouseExited(MouseEvent e) {
+				ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 120, 80, Options.full_screen)));
+				revalidate();
+				repaint();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("hover");
+				}
+				
+				ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back_SELECTED, 120, 80, Options.full_screen)));
+				revalidate();
+				repaint();
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		
+		PARADISO_scaled.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("select");
+				}
+				
+				if (difficulty != Difficulty.paradiso) {
+					difficulty = Difficulty.paradiso;
+					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso_SELECTED, 297, 61, Options.full_screen)));
+					PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio, 313, 61, Options.full_screen)));
+					INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno, 235, 61, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
+			}
 
-				@Override
-				public void mouseExited(MouseEvent e) {
-					ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 120, 80, Options.full_screen)));
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if (difficulty != Difficulty.paradiso) {
+					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 297, 61, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
+			}
 
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("hover");
-					}
-					
-					ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back_SELECTED, 120, 80, Options.full_screen)));
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("hover");
+				}
+				
+				if (difficulty != Difficulty.paradiso) {
+					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso_SELECTED, 297, 61, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
+			}
 
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
 
+			}
+		});
+		
+		PURGATORIO_scaled.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("select");
 				}
-			});
-			
-			PARADISO_scaled.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void mousePressed(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("select");
-					}
-					
-					if (difficulty != Difficulty.paradiso) {
-						difficulty = Difficulty.paradiso;
-						PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso_SELECTED, 297, 61, Options.full_screen)));
-						PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio, 313, 61, Options.full_screen)));
-						INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno, 235, 61, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
-				}
-
-				@Override
-				public void mouseExited(MouseEvent e) {
-					if (difficulty != Difficulty.paradiso) {
-						PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 297, 61, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
-				}
-
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("hover");
-					}
-					
-					if (difficulty != Difficulty.paradiso) {
-						PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso_SELECTED, 297, 61, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
-				}
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-			
-			PURGATORIO_scaled.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void mousePressed(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("select");
-					}
-					
-					if (difficulty != Difficulty.purgatorio) {
-						difficulty = Difficulty.purgatorio;
-						PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 297, 61, Options.full_screen)));
-						PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio_SELECTED, 313, 61, Options.full_screen)));
-						INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno, 235, 61, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
-				}
-
-				@Override
-				public void mouseExited(MouseEvent e) {
-					if (difficulty != Difficulty.purgatorio) {
-						PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio, 313, 61, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
-				}
-
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("hover");
-					}
-					
-					if (difficulty != Difficulty.purgatorio) {
-						PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio_SELECTED, 313, 61, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
-				}
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-			
-			INFERNO_scaled.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void mousePressed(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("select");
-					}
-					
-					if (difficulty != Difficulty.inferno) {
-						difficulty = Difficulty.inferno;
-						PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 297, 61, Options.full_screen)));
-						PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio, 313, 61, Options.full_screen)));
-						INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno_SELECTED, 235, 61, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
-				}
-
-				@Override
-				public void mouseExited(MouseEvent e) {
-					if (difficulty != Difficulty.inferno) {
-						INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno, 235, 61, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
-				}
-
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("hover");
-					}
-					
-					if (difficulty != Difficulty.inferno) {
-						INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno_SELECTED, 235, 61, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
-				}
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-			
-			WINDOWED_scaled.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void mousePressed(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("select");
-					}
-					
-					full_screen = false;
-					windowed(frame);
-					FULLSCREEN_scaled.setIcon(new ImageIcon(Scaling.get(fullscreen, 305, 41, Options.full_screen)));
-					WINDOWED_scaled.setIcon(new ImageIcon(Scaling.get(windowed_SELECTED, 265, 41, Options.full_screen)));
+				
+				if (difficulty != Difficulty.purgatorio) {
+					difficulty = Difficulty.purgatorio;
+					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 297, 61, Options.full_screen)));
+					PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio_SELECTED, 313, 61, Options.full_screen)));
+					INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno, 235, 61, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
+			}
 
-				@Override
-				public void mouseExited(MouseEvent e) {
-					if (full_screen) {
-						WINDOWED_scaled.setIcon(new ImageIcon(Scaling.get(windowed, 265, 41, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if (difficulty != Difficulty.purgatorio) {
+					PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio, 313, 61, Options.full_screen)));
+					revalidate();
+					repaint();
 				}
+			}
 
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("hover");
-					}
-					
-					if (full_screen) {
-						WINDOWED_scaled.setIcon(new ImageIcon(Scaling.get(windowed_SELECTED, 265, 41, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("hover");
 				}
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-
+				
+				if (difficulty != Difficulty.purgatorio) {
+					PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio_SELECTED, 313, 61, Options.full_screen)));
+					revalidate();
+					repaint();
 				}
-			});
-			
-			FULLSCREEN_scaled.addMouseListener(new MouseListener() {
+			}
 
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
 
+			}
+		});
+		
+		INFERNO_scaled.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("select");
 				}
+				
+				if (difficulty != Difficulty.inferno) {
+					difficulty = Difficulty.inferno;
+					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 297, 61, Options.full_screen)));
+					PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio, 313, 61, Options.full_screen)));
+					INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno_SELECTED, 235, 61, Options.full_screen)));
+					revalidate();
+					repaint();
+				}
+			}
 
-				@Override
-				public void mousePressed(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("select");
-					}
-					
-					full_screen=true;
-					full_screen(frame);
-					FULLSCREEN_scaled.setIcon(new ImageIcon(Scaling.get(fullscreen_SELECTED, 305, 41, Options.full_screen)));
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if (difficulty != Difficulty.inferno) {
+					INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno, 235, 61, Options.full_screen)));
+					revalidate();
+					repaint();
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("hover");
+				}
+				
+				if (difficulty != Difficulty.inferno) {
+					INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno_SELECTED, 235, 61, Options.full_screen)));
+					revalidate();
+					repaint();
+				}
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		
+		WINDOWED_scaled.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("select");
+				}
+				
+				full_screen = false;
+				windowed(frame);
+				FULLSCREEN_scaled.setIcon(new ImageIcon(Scaling.get(fullscreen, 305, 41, Options.full_screen)));
+				WINDOWED_scaled.setIcon(new ImageIcon(Scaling.get(windowed_SELECTED, 265, 41, Options.full_screen)));
+				revalidate();
+				repaint();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if (full_screen) {
 					WINDOWED_scaled.setIcon(new ImageIcon(Scaling.get(windowed, 265, 41, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
+			}
 
-				@Override
-				public void mouseExited(MouseEvent e) {
-					if (!full_screen) {
-						FULLSCREEN_scaled.setIcon(new ImageIcon(Scaling.get(fullscreen, 305, 41, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("hover");
 				}
-
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("hover");
-					}
-					
-					if (!full_screen) {
-						FULLSCREEN_scaled.setIcon(new ImageIcon(Scaling.get(fullscreen_SELECTED, 305, 41, Options.full_screen)));
-						revalidate();
-						repaint();
-					}
-				}
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-			
-			MUSIC_check.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mousePressed(MouseEvent e) {
-					
-					synchronized(this) {
-						Music.playTone("select");
-					}
-					
-					if (music) {
-						music = false;
-						MUSIC_check.setIcon(new ImageIcon(Scaling.get(music_unchecked, 50, 50, Options.full_screen)));
-					} else if (!music) {
-						music = true;
-						MUSIC_check.setIcon(new ImageIcon(Scaling.get(music_checked, 50, 50, Options.full_screen)));
-					}
+				
+				if (full_screen) {
+					WINDOWED_scaled.setIcon(new ImageIcon(Scaling.get(windowed_SELECTED, 265, 41, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
+			}
 
-				@Override public void mouseExited(MouseEvent e) 	{}
-				@Override public void mouseEntered(MouseEvent e) 	{}
-				@Override public void mouseClicked(MouseEvent e) 	{}
-				@Override public void mouseReleased(MouseEvent e) 	{}
-			});
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
 
-			this.setLayout(null);
-			this.add(ARROW_BACK_scaled);
-			this.add(PARADISO_scaled);
-			this.add(PURGATORIO_scaled);
-			this.add(INFERNO_scaled);
-			this.add(WINDOWED_scaled);
-			this.add(FULLSCREEN_scaled);
-			this.add(MUSIC_check);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			}
+		});
+		
+		FULLSCREEN_scaled.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("select");
+				}
+				
+				full_screen=true;
+				full_screen(frame);
+				FULLSCREEN_scaled.setIcon(new ImageIcon(Scaling.get(fullscreen_SELECTED, 305, 41, Options.full_screen)));
+				WINDOWED_scaled.setIcon(new ImageIcon(Scaling.get(windowed, 265, 41, Options.full_screen)));
+				revalidate();
+				repaint();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if (!full_screen) {
+					FULLSCREEN_scaled.setIcon(new ImageIcon(Scaling.get(fullscreen, 305, 41, Options.full_screen)));
+					revalidate();
+					repaint();
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("hover");
+				}
+				
+				if (!full_screen) {
+					FULLSCREEN_scaled.setIcon(new ImageIcon(Scaling.get(fullscreen_SELECTED, 305, 41, Options.full_screen)));
+					revalidate();
+					repaint();
+				}
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		
+		MUSIC_check.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				synchronized(this) {
+					Music.playTone("select");
+				}
+				
+				if (music) {
+					music = false;
+					MUSIC_check.setIcon(new ImageIcon(Scaling.get(music_unchecked, 50, 50, Options.full_screen)));
+				} else if (!music) {
+					music = true;
+					MUSIC_check.setIcon(new ImageIcon(Scaling.get(music_checked, 50, 50, Options.full_screen)));
+				}
+				revalidate();
+				repaint();
+			}
+
+			@Override public void mouseExited(MouseEvent e) 	{}
+			@Override public void mouseEntered(MouseEvent e) 	{}
+			@Override public void mouseClicked(MouseEvent e) 	{}
+			@Override public void mouseReleased(MouseEvent e) 	{}
+		});
+	}
+	
+	private void panel_init () {
+		this.setLayout(null);
+		this.add(ARROW_BACK_scaled);
+		this.add(PARADISO_scaled);
+		this.add(PURGATORIO_scaled);
+		this.add(INFERNO_scaled);
+		this.add(WINDOWED_scaled);
+		this.add(FULLSCREEN_scaled);
+		this.add(MUSIC_check);
 	}
 
 	@Override

@@ -4,9 +4,6 @@ import java.awt.Component;
 import java.awt.Image;
 import java.awt.Toolkit;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 public class Scaling {
 	
 	private Scaling() {}
