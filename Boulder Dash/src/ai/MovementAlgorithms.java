@@ -1,7 +1,6 @@
 package ai;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -101,6 +100,9 @@ class MovementAlgorithms {
 				
 				int new_x = enemy.getX() + GameObject.dmap[i][0];
 				int new_y = enemy.getY() + GameObject.dmap[i][1];
+				
+				if(new_x == player.getX() && new_y == player.getY())
+					return i;
 				
 				double temp = norm2D(player.getX()-new_x, player.getY()-new_y, 2);
 				
