@@ -21,10 +21,25 @@ public class IntelligentEnemy extends Enemy implements Agent {
 		counter = 5;
 	}
 
+	@Override public boolean update(int dir) { return false; }
+	
 	@Override
-	public GameMap getEnvironment() {
-		return map;
+	public boolean update() {
+		
+		++delayMovement;
+		if(delayMovement >= 3) {
+			
+			delayMovement = 0;
+			if(calculateDirection()) {
+				return tryMove();
+			}
+		}
+		
+		moved = false;
+		return false;
 	}
+	
+	@Override public GameMap getEnvironment() { return map; }
 	
 	@Override
 	protected boolean calculateDirection() {
@@ -50,7 +65,6 @@ public class IntelligentEnemy extends Enemy implements Agent {
 			}
 			
 			if(directions != null && !directions.isEmpty()) {
-				System.out.println(directions.getFirst());
 				lastDir = directions.getFirst();
 				directions.removeFirst();
 			}
@@ -68,28 +82,9 @@ public class IntelligentEnemy extends Enemy implements Agent {
 	
 	private boolean tryMove() {
 		for(int i = 0; i < 4; ++i)
-			if(move(tryAgain[i]))
+			if(move(tryAgain[i])) {
 				return true;
-		return false;
-	}
-	
-	@Override
-	public boolean update() {
-		
-		++delayMovement;
-		if(delayMovement >= 3) {
-			
-			delayMovement = 0;
-			if(calculateDirection()) {
-				return tryMove();
 			}
-		}
-		
 		return false;
-	}
-	
-	@Override
-	public boolean update(int dir) {
-		return false;
-	}
+	}	
 }

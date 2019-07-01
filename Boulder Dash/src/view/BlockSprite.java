@@ -1,3 +1,4 @@
+//AUTORE: Davide Caligiuri
 package view;
 
 import java.awt.image.BufferedImage;
@@ -33,6 +34,4 @@ public class BlockSprite extends DummyClass {
 	public void setLogicObject(GameObject g) {
 		this.logicObj = g;
 	}
-	
-	
 }

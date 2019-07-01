@@ -8,8 +8,7 @@ import model.World;
 
 public class Renderer {
 
-	private Renderer() {
-	};
+	private Renderer() {};
 
 	// dimensioni viewport
 	public static int WINDOW_WIDTH = 920;
@@ -61,7 +60,8 @@ public class Renderer {
 			int x = l.getBlockSprites().get(i).getLogicObject().getX();
 			int y = l.getBlockSprites().get(i).getLogicObject().getY();
 
-			g.drawImage(l.getBlockSprites().get(i).getImg(), 
+			g.drawImage(
+					l.getBlockSprites().get(i).getImg(), 
 					x * Sprite.TILE_SIZE, 
 					y * Sprite.TILE_SIZE, 
 					null);
@@ -70,7 +70,8 @@ public class Renderer {
 		// disegna player...
 		for (int i = 0; i < l.playerSprites.size(); ++i) {
 
-			g.drawImage(l.playerSprites.get(i).getAnimation().getSprite(),
+			g.drawImage(
+					l.playerSprites.get(i).getAnimation().getSprite(),
 					l.world.getPlayer().getX() * Sprite.TILE_SIZE, 
 					l.world.getPlayer().getY() * Sprite.TILE_SIZE, 
 					null);
@@ -80,7 +81,8 @@ public class Renderer {
 			// disegna host...
 			for (int i = 0; i < l.hostSprites.size(); ++i) {
 
-				g.drawImage(l.hostSprites.get(i).getAnimation().getSprite(),
+				g.drawImage(
+						l.hostSprites.get(i).getAnimation().getSprite(),
 						l.world.getHost().getX() * Sprite.TILE_SIZE, 
 						l.world.getHost().getY() * Sprite.TILE_SIZE, 
 						null);
@@ -89,7 +91,9 @@ public class Renderer {
 
 		for (int i = 0; i < l.enemySprites.size(); ++i) {
 			// disegna i nemici...
-			g.drawImage(l.enemySprites.get(i).getAnimation().getSprite(),
+			if(!l.enemySprites.get(i).getLogicObj().isDead())
+			g.drawImage(
+					l.enemySprites.get(i).getAnimation().getSprite(),
 					l.world.getEnemies().get(i).getX() * Sprite.TILE_SIZE,
 					l.world.getEnemies().get(i).getY() * Sprite.TILE_SIZE, 
 					null);

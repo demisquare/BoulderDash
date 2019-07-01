@@ -21,8 +21,7 @@ public class Rock extends GameObject implements Sliding {
 	@Override
 	protected boolean fall() {
 		
-		try {
-			
+		try {		
 			if(map.getTile(x, y+1) instanceof Living) {
 				
 				if(isFalling) {
@@ -44,10 +43,12 @@ public class Rock extends GameObject implements Sliding {
 					if(map.getTile(x, y+1) instanceof Player) {
 
 						((Player)map.getTile(x, y+1)).respawn();
+						isFalling = false;
 						
 					} else if(map.getTile(x, y+1) instanceof Enemy) {
 						
 						map.getTile(x, y+1).destroy();
+						isFalling = false;
 					}
 					
 					return true;
@@ -59,35 +60,41 @@ public class Rock extends GameObject implements Sliding {
 						&& (map.getTile(x+1, y) instanceof EmptyBlock 
 								|| map.getTile(x+1, y) instanceof Living)) {
 
-					isFalling = true;
+					if(isFalling) {
+						if(map.getTile(x+1, y) instanceof Player) {
+						
+							((Player)map.getTile(x+1, y)).respawn();
+							isFalling = false;
 					
-					if(map.getTile(x+1, y) instanceof Player) {
+						} else if(map.getTile(x+1, y) instanceof Enemy) {
 						
-						((Player)map.getTile(x+1, y)).respawn();
-						
-					} else if(map.getTile(x+1, y) instanceof Enemy) {
-						map.getTile(x+1, y).destroy();
+							map.getTile(x+1, y).destroy();
+							isFalling = false;
+						}
+					} else {
+						isFalling = true;
+						swap(x+1, y+1);
+						return true;
 					}
-					
-					swap(x+1, y+1);
-					return true;
-					
 				} else if(map.getTile(x-1, y+1) instanceof EmptyBlock 
 						&& (map.getTile(x-1, y) instanceof EmptyBlock
 								|| map.getTile(x-1, y) instanceof Living)) {
 
-					isFalling = true;
-					
-					if(map.getTile(x+1, y) instanceof Player) {
+					if(isFalling) {
+						if(map.getTile(x+1, y) instanceof Player) {
 						
-						((Player)map.getTile(x+1, y)).respawn();
+							((Player)map.getTile(x+1, y)).respawn();
+							isFalling = false;
 						
-					} else if(map.getTile(x+1, y) instanceof Enemy) {
-						map.getTile(x+1, y).destroy();
+						} else if(map.getTile(x+1, y) instanceof Enemy) {
+							map.getTile(x+1, y).destroy();
+							isFalling = false;
+						}
+					} else {
+						isFalling = true;
+						swap(x-1, y+1);
+						return true;
 					}
-					
-					swap(x-1, y+1);
-					return true;
 				}
 			}
 			

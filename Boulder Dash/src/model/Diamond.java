@@ -1,6 +1,8 @@
 //AUTORE: Davide Caligiuri
 package model;
 
+import audio.Music;
+
 public class Diamond extends GameObject implements Sliding {
 	
 	public Diamond(int x, int y) { super(x, y); }
@@ -22,6 +24,7 @@ public class Diamond extends GameObject implements Sliding {
 				
 				} else if(map.getTile(x, y+1) instanceof Player) {
 					
+					Music.playTone("diamond");
 					((Player) map.getTile(x, y+1)).diamondCount += 1;
 					isFalling = false;
 					destroy();

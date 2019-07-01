@@ -53,7 +53,7 @@ public class Score extends JPanel implements Serializable {
 	
 	public int missing_diamonds;
 	public static int total_score = 0;
-	public static int remaining_time = 150; //150 secondi per livello
+	public int remaining_time; //150 secondi per livello
 	public boolean turn_back = false;
 	
 	JLabel ARROW_BACK_scaled;
@@ -67,6 +67,8 @@ public class Score extends JPanel implements Serializable {
 		this.menu = menu;
 		this.game = game;
 		this.level = level;
+		
+		remaining_time = 150;
 		
 		missing_diamonds = level.getWorld().getMap().getNumDiamonds();
 		
@@ -110,6 +112,7 @@ public class Score extends JPanel implements Serializable {
 		try{
 			
 			Options.difficulty = game.getStartingDifficulty();
+			total_score = 0;
 			//System.out.println("difficulty resetted");
 			game.setStage(0);
 			menu.check_resize();

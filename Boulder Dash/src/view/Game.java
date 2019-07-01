@@ -125,6 +125,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	public void youLose() {
 		
 		stage = 0;
+		score.setTotal_score(0);
 		
 		frame.remove(this);
 		youlose.check_resize();
