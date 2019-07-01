@@ -72,26 +72,26 @@ public class Options extends JPanel {
 	public void check_resize() {
 		
 		Scaling.set(ARROW_BACK_scaled, 5, 5, 146, 97, Options.full_screen);
-		Scaling.set(PARADISO_scaled, 100, 90, 350, 150, Options.full_screen);
+		Scaling.set(PARADISO_scaled, 100, 92, 350, 150, Options.full_screen);
 		Scaling.set(PURGATORIO_scaled, 460, 90, 350, 150, Options.full_screen);
 		Scaling.set(INFERNO_scaled, 800, 90, 350, 150, Options.full_screen);
-		Scaling.set(WINDOWED_scaled, 280, 280, 350, 150, Options.full_screen);
-		Scaling.set(FULLSCREEN_scaled, 620, 280, 350, 150, Options.full_screen);
+		Scaling.set(WINDOWED_scaled, 280, 330, 265, 41, Options.full_screen);
+		Scaling.set(FULLSCREEN_scaled, 620, 330, 305, 41, Options.full_screen);
 		Scaling.set(MUSIC_check, 720, 430, 50, 50, Options.full_screen);		
 		
 		ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 120, 80, Options.full_screen)));
 		if(difficulty==Difficulty.paradiso) {
-			PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso_SELECTED, 297, 61, Options.full_screen)));
+			PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso_SELECTED, 285, 55, Options.full_screen)));
 			PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio, 313, 61, Options.full_screen)));
 			INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno, 235, 61, Options.full_screen)));
 		}
 		else if(difficulty==Difficulty.purgatorio) {
-			PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 297, 61, Options.full_screen)));
+			PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 285, 55, Options.full_screen)));
 			PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio_SELECTED, 313, 61, Options.full_screen)));
 			INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno, 235, 61, Options.full_screen)));
 			}
 		else if(difficulty==Difficulty.inferno) {
-			PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 297, 61, Options.full_screen)));
+			PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 285, 55, Options.full_screen)));
 			PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio, 313, 61, Options.full_screen)));
 			INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno_SELECTED, 235, 61, Options.full_screen)));
 			}
@@ -137,7 +137,7 @@ public class Options extends JPanel {
 		try {
 			background = ImageIO.read(new File(OptionsPagePath + "background.png"));
 			arrow_back = ImageIO.read(new File(OptionsPagePath + "arrow_back.png")).getScaledInstance(120, 80, Image.SCALE_SMOOTH);
-			paradiso = ImageIO.read(new File(OptionsPagePath + "Paradiso.png")).getScaledInstance(297, 61, Image.SCALE_SMOOTH);
+			paradiso = ImageIO.read(new File(OptionsPagePath + "Paradiso.png")).getScaledInstance(285, 55, Image.SCALE_SMOOTH);
 			purgatorio = ImageIO.read(new File(OptionsPagePath + "Purgatorio.png")).getScaledInstance(313, 61, Image.SCALE_SMOOTH);
 			inferno = ImageIO.read(new File(OptionsPagePath + "Inferno.png")).getScaledInstance(235, 61, Image.SCALE_SMOOTH);
 			windowed = ImageIO.read(new File(OptionsPagePath + "Windowed.png")).getScaledInstance(265, 41, Image.SCALE_SMOOTH);
@@ -239,7 +239,7 @@ public class Options extends JPanel {
 				
 				if (difficulty != Difficulty.paradiso) {
 					difficulty = Difficulty.paradiso;
-					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso_SELECTED, 297, 61, Options.full_screen)));
+					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso_SELECTED, 285, 55, Options.full_screen)));
 					PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio, 313, 61, Options.full_screen)));
 					INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno, 235, 61, Options.full_screen)));
 					revalidate();
@@ -250,7 +250,7 @@ public class Options extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if (difficulty != Difficulty.paradiso) {
-					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 297, 61, Options.full_screen)));
+					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 285, 55, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -264,7 +264,7 @@ public class Options extends JPanel {
 				}
 				
 				if (difficulty != Difficulty.paradiso) {
-					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso_SELECTED, 297, 61, Options.full_screen)));
+					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso_SELECTED, 285, 55, Options.full_screen)));
 					revalidate();
 					repaint();
 				}
@@ -294,7 +294,7 @@ public class Options extends JPanel {
 				
 				if (difficulty != Difficulty.purgatorio) {
 					difficulty = Difficulty.purgatorio;
-					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 297, 61, Options.full_screen)));
+					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 285, 55, Options.full_screen)));
 					PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio_SELECTED, 313, 61, Options.full_screen)));
 					INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno, 235, 61, Options.full_screen)));
 					revalidate();
@@ -349,7 +349,7 @@ public class Options extends JPanel {
 				
 				if (difficulty != Difficulty.inferno) {
 					difficulty = Difficulty.inferno;
-					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 297, 61, Options.full_screen)));
+					PARADISO_scaled.setIcon(new ImageIcon(Scaling.get(paradiso, 285, 55, Options.full_screen)));
 					PURGATORIO_scaled.setIcon(new ImageIcon(Scaling.get(purgatorio, 313, 61, Options.full_screen)));
 					INFERNO_scaled.setIcon(new ImageIcon(Scaling.get(inferno_SELECTED, 235, 61, Options.full_screen)));
 					revalidate();
