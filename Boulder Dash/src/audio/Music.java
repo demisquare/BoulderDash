@@ -1,3 +1,4 @@
+//AUTORE: Maria De Miglio
 package audio;
 
 import java.io.File;
@@ -63,5 +64,5 @@ public class Music {
 		}
 	}
 	
-	public static AudioPlayer backgroundMusic = null;
+	public static AudioPlayer backgroundMusic = Music.menuSong;
 }

@@ -1,3 +1,4 @@
+//AUTORE: Maria De Miglio
 package network.packet;
 
 public class PacketDie extends Packet {
