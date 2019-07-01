@@ -2,7 +2,7 @@
  **Boulder Dash** for University Project, written in Java by **Monster Group**.
  
  ## Requires:
- - Java 8 (Java Swing, JavaFX)
+ - Java 8 (Java Swing, AWT)
  - EmbASP Framework
  
 ## History:
@@ -14,6 +14,8 @@
 - Added error messages on Multiplayer
 - Added "You Win" and "You Lose" events
 - Retry button now work on "You Lose" page 
+- Added win and lose Music effects
+- Added ingame sfx
 - New levels
 
 #### 29-06-19
