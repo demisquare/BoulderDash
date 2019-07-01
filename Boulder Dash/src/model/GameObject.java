@@ -67,7 +67,7 @@ public abstract class GameObject {
 				
 				map.setTile(x, y, successor);
 				
-				successor.processed = false;		
+				successor.processed = true;
 				processed = true;
 				dead = true;
 				
@@ -101,7 +101,7 @@ public abstract class GameObject {
 		map.setTile(x, y, temp);
 		temp.x = x;
 		temp.y = y;
-		temp.processed = false;
+		temp.processed = true;
 	
 		if(!map.getTile(i, j).equals(temp))
 			System.err.println("in model.GameObject.swap(): " + temp + " != " + map.getTile(i, j));
@@ -120,14 +120,12 @@ public abstract class GameObject {
 	protected boolean fall() {
 		
 		if(!(y+1 < 0 || y+1 >= GameMap.dimY)) {
-			
 			try { 
 				if(map.getTile(x, y+1) instanceof EmptyBlock) {
 
 					isFalling = true;
 					swap(x, y+1);
 					return true;
-				
 				}
 			} catch(NullPointerException e) {
 				e.printStackTrace();
@@ -170,14 +168,13 @@ public abstract class GameObject {
 	
 	public boolean hasChanged()  				{ return processed; }
 	
-	public boolean isDead() 					{ return dead; }
-	public void setDead(boolean x) 				{ dead = x; }
+	public boolean isDead() 					{ return dead; 	}
+	public void setDead(boolean x) 				{ dead = x; 	}
 	
-	public boolean hasMoved() 					{ return moved; }
-	public boolean isMoved() 					{ return moved; }
+	public boolean hasMoved() 					{ return moved; 	  }
 	public void setMoved(boolean moved) 		{ this.moved = moved; }
 
-	public boolean isRespawned() 				{ return respawned; }
+	public boolean hasRespawned() 				{ return respawned; 		  }
 	public void setRespawned(boolean respawned) { this.respawned = respawned; }
 	
 	public GameObject getSuccessor()			{ return successor; }

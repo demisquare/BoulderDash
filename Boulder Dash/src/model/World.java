@@ -37,10 +37,9 @@ public class World {
 
 //	questa funzione aggiorna in automatico gli stati di 
 //	Player, Enemy, etc, ogni tick del timer
-	public void update() {
+	public synchronized void update() {
 		
-		if(hasChanged)
-			return;
+		if(hasChanged) return;
 		
 		try {
 			
@@ -76,7 +75,7 @@ public class World {
 		hasChanged = true;
 	}
 		
-	public void reset() {
+	public synchronized void reset() {
 
 		Collection<GameObject> temp = map.getBlocks().values();
 		for(GameObject e : temp) {

@@ -101,7 +101,7 @@ public class SocketClient {
 							game.level.setMouseReleased(false);
 						}
 
-						if (player.isRespawned()) {
+						if (player.hasRespawned()) {
 							Packet die = new PacketDie(player.getX(), player.getY(), -1);
 
 							try {

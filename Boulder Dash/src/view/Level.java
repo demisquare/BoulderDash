@@ -57,11 +57,8 @@ public class Level extends JPanel implements KeyListener {
 
 	private static Sprite spritesheet = new Sprite();
 	private static Random r = new Random();
-/*
-* AudioPlayer game_song = new AudioPlayer("." + File.separator + "resources" +
-* File.separator + "assets" + File.separator + "music" + File.separator +
-* "game_song"+ ".wav");
-*/
+
+	private int prevDiamonds;
 	private int FPS = 30;
 	private boolean mouseReleased = false;
 	private Thread t;
@@ -91,6 +88,8 @@ public class Level extends JPanel implements KeyListener {
 		// crea un world...
 		world = new World(stage);
 		game = g;
+		
+		prevDiamonds = world.getMap().getNumDiamonds();
 		
 		t = null;
 		
@@ -178,8 +177,11 @@ public class Level extends JPanel implements KeyListener {
 					blockSprites.set(i, new BlockSprite(img, newObj));
 				else
 					blockSprites.add(i, new BlockSprite(img, newObj));
-				if(toRemove)
+				if(toRemove) {
+					
+					System.out.println(g + " is removed");
 					Arr.remove(i);
+				}
 			}
 		}
 	}
@@ -192,7 +194,8 @@ public class Level extends JPanel implements KeyListener {
 		updateCategory(enemySprites, true, true);
 		if(Options.multiplayer && Options.host)
 			updateCategory(hostSprites, true, true);
-		// aggiorna gli enemies pt.2
+		
+		// aggiorna gli enemies 
 		for (int i = 0; i < enemySprites.size(); ++i) {
 			Enemy e = (Enemy) enemySprites.get(i).getLogicObj();
 			if (!e.isDead()) {
@@ -206,15 +209,18 @@ public class Level extends JPanel implements KeyListener {
 				}
 			}
 		}
-		
+
+//		condizione di sconfitta
 		if(((Player)world.getPlayer()).getLifes() == 0)
 			game.youLose();
-		else if(world.getPlayer().isRespawned()) {
+//		aggiornamento vite
+		else if(world.getPlayer().hasRespawned()) {
 			score.updateHearts();
 			if(Options.multiplayer == false)
 				world.getPlayer().setRespawned(false);
 		}
-		
+
+//		vittoria livello
 		if(world.getWinCon()) {
 			
 			if(Options.difficulty == Difficulty.paradiso)
@@ -222,11 +228,20 @@ public class Level extends JPanel implements KeyListener {
 			else if(Options.difficulty == Difficulty.purgatorio)
 				Options.difficulty = Difficulty.inferno;
 			
+			System.out.println("level transition");
+			
+			if(score.getRemaining_time() > 0)
+				score.setTotal_score(score.getTotal_score() + score.getRemaining_time());
 			//inserisci qui canzone di vittoria livello
 			game.launchGame();
 		}
 		
-		score.setMissing_diamonds(world.getMap().getNumDiamonds());
+//		aggiornamento diamanti
+		if(prevDiamonds != world.getMap().getNumDiamonds()) {
+			score.setMissing_diamonds(world.getMap().getNumDiamonds());
+			score.setTotal_score(score.getTotal_score() + 20);
+			prevDiamonds = world.getMap().getNumDiamonds();
+		}
 	}
 
 //	gestione update per gli eventi e il multiplayer
@@ -236,10 +251,8 @@ public class Level extends JPanel implements KeyListener {
 		if (!world.getPlayer().isDead()) {
 			// a static map instead of a switch
 			playerSprites.get(0).movePose(dir);
-			synchronized (this) {
-				if(world.getPlayer().update(dir)) {
-					((Player)world.getPlayer()).setLastDir(dir);
-				}
+			if(world.getPlayer().update(dir)) {
+				((Player)world.getPlayer()).setLastDir(dir);
 			}
 			playerSprites.get(0).getAnimation().update();
 		}
@@ -262,9 +275,7 @@ public class Level extends JPanel implements KeyListener {
 		if (!world.getHost().isDead()) {
 			// a static map instead of a switch
 			hostSprites.get(0).movePose(dir);
-			synchronized (this) {
-				world.getHost().update(dir);
-			}
+			world.getHost().update(dir);
 			hostSprites.get(0).getAnimation().update();
 		}
 	}
@@ -297,9 +308,7 @@ public class Level extends JPanel implements KeyListener {
 				while(true) {
 					revalidate();
 					repaint();
-					synchronized(this) {
-						world.reset();
-					}
+					world.reset();
 					try {
 						Thread.sleep(1000/FPS + 1);
 					} catch(InterruptedException e) {

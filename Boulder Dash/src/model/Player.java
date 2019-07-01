@@ -46,13 +46,15 @@ public class Player extends GameObject implements Living {
 
 		if (g instanceof Diamond) {
 
-			++diamondCount;
 			++movingCounter;
 			pushRockCounter = 0;
 			if (movingCounter >= 1) {
 				movingCounter = 0;
 				if (g.destroy()) {
+					
+					++diamondCount;
 					Music.playTone("diamond");
+					
 					return move(dir);
 				}
 			}

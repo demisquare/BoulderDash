@@ -65,7 +65,6 @@ public class IntelligentEnemy extends Enemy implements Agent {
 			}
 			
 			if(directions != null && !directions.isEmpty()) {
-				System.out.println(directions.getFirst());
 				lastDir = directions.getFirst();
 				directions.removeFirst();
 			}
