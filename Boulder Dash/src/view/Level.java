@@ -74,6 +74,11 @@ public class Level extends JPanel implements KeyListener {
 	ArrayList<LivingSprite> playerSprites;
 	ArrayList<LivingSprite> hostSprites;
 	ArrayList<LivingSprite> enemySprites;
+	private Score score;
+
+	public void setScore(Score score) {
+		this.score = score;
+	}
 
 	private void initGraphics() {
 
@@ -138,9 +143,11 @@ public class Level extends JPanel implements KeyListener {
 		}
 	}
 
-	public Level(Game g, int stage) {
+	public Level(Game g, int stage, Score score) {
 		super();
 
+		this.score = score;
+		
 		setBackground(Color.GRAY);
 		setFocusable(true);
 		setVisible(true);
@@ -216,6 +223,11 @@ public class Level extends JPanel implements KeyListener {
 		
 		if(((Player)world.getPlayer()).getLifes() == 0)
 			game.youLose();
+		else if(world.getPlayer().isRespawned()) {
+			score.updateHearts();
+			if(Options.multiplayer == false)
+				world.getPlayer().setRespawned(false);
+		}
 		
 		if(world.getWinCon()) {
 			game.launchGame();
@@ -227,6 +239,8 @@ public class Level extends JPanel implements KeyListener {
 			
 			//System.out.println("difficulty changed");
 		}
+		
+		score.setMissing_diamonds(world.getMap().getNumDiamonds());
 	}
 
 	// permette di ridefinire i componenti del pannello di default.
@@ -320,6 +334,9 @@ public class Level extends JPanel implements KeyListener {
 		t = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				
+				int timecounter = 0;
+				
 				while(true) {
 					revalidate();
 					repaint();
@@ -330,6 +347,14 @@ public class Level extends JPanel implements KeyListener {
 						Thread.sleep(1000/FPS + 1);
 					} catch(InterruptedException e) {
 						return;
+					}
+					
+					++timecounter;
+					if(timecounter == FPS) {
+						
+						timecounter = 0;
+						int rt = score.getRemaining_time()-1;
+						score.setRemaining_time(rt >= 0 ? rt : 0);
 					}
 				}
 			}

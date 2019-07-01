@@ -218,4 +218,8 @@ public abstract class GameObject {
 		return
 			this.getClass().getCanonicalName() + " at [" + x + ", " + y + "]";
 	}
+
+	public int getDiamondsCollected() {
+		return 0;
+	}
 }

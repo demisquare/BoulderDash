@@ -15,14 +15,19 @@ public class Player extends GameObject implements Living {
 	int diamondCount;
 	// variabile inutile, viene usata per le animazioni ma si pu� sostituire
 	private int speed;
+
+	private int lastDir;
 	
 	protected int lifes;
+
+	@Override
+	public int getDiamondsCollected() {
+		return diamondCount;
+	}
 	
 	public int getLifes() {
 		return lifes;
 	}
-
-	private int lastDir;
 
 	public int getLastDir() {
 		return lastDir;
@@ -155,28 +160,28 @@ public class Player extends GameObject implements Living {
 	@Override
 	protected boolean move(int dir) {
 		
-			int i = x + dmap[dir][0];
-			int j = y + dmap[dir][1];
+		int i = x + dmap[dir][0];
+		int j = y + dmap[dir][1];
 	
-			if (!(i < 0 || i >= map.dimX) && !(j < 0 || j >= map.dimY)) {
+		if (!(i < 0 || i >= map.dimX) && !(j < 0 || j >= map.dimY)) {
 	
-				if (map.getTile(i, j) instanceof EmptyBlock) {
+			if (map.getTile(i, j) instanceof EmptyBlock) {
 	
-					moved = true;
-					swap(i, j);	
-					return true;
+				moved = true;
+				swap(i, j);	
+				return true;
 	
-				} else if (map.getTile(i, j) instanceof Door) {
+			} else if (map.getTile(i, j) instanceof Door) {
 	
-					moved = true;
-					map.setWinCon(true);
-					destroy();
-					return true;
+				moved = true;
+				map.setWinCon(true);
+				destroy();
+				return true;
 	
-				}
 			}
-			
-			moved = false;
-			return moved;
 		}
+			
+		moved = false;
+		return moved;
+	}
 }

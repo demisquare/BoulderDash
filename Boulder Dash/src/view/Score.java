@@ -61,12 +61,6 @@ public class Score extends JPanel implements Serializable {
 	
 	public void check_resize(Level level) {
 		ARROW_BACK_scaled.setIcon(new ImageIcon(Scaling.get(arrow_back, 80, 50, Options.full_screen)));
-		if(((Player)level.getWorld().getPlayer()).getLifes() == 3)
-			Lives.setIcon(new ImageIcon(Scaling.get(lives_3, 240, 73, Options.full_screen)));
-		else if(((Player)level.getWorld().getPlayer()).getLifes() == 2)
-			Lives.setIcon(new ImageIcon(Scaling.get(lives_2, 240, 73, Options.full_screen)));
-		else
-			Lives.setIcon(new ImageIcon(Scaling.get(lives_1, 240, 73, Options.full_screen)));
 		
 		Scaling.set(ARROW_BACK_scaled, 230, 640, 146, 97, Options.full_screen);
 		Scaling.set(Lives, 32, 440, 305, 94, Options.full_screen);
@@ -206,6 +200,15 @@ public class Score extends JPanel implements Serializable {
 	
 	int getRemaining_time() {return remaining_time;}
 	void setRemaining_time(int rt) {remaining_time=rt; time_left.setText("" + remaining_time);}
+
+	void updateHearts() {
+		if(((Player)level.getWorld().getPlayer()).getLifes() == 3)
+			Lives.setIcon(new ImageIcon(Scaling.get(lives_3, 240, 73, Options.full_screen)));
+		else if(((Player)level.getWorld().getPlayer()).getLifes() == 2)
+			Lives.setIcon(new ImageIcon(Scaling.get(lives_2, 240, 73, Options.full_screen)));
+		else
+			Lives.setIcon(new ImageIcon(Scaling.get(lives_1, 240, 73, Options.full_screen)));
+	}
 }
 
 
