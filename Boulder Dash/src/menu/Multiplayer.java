@@ -1,4 +1,5 @@
-//AUTORE: Maria De Miglio
+//AUTORE: Davide Gena
+
 package menu;
 
 import java.awt.Graphics;

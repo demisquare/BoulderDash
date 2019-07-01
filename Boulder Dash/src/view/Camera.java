@@ -1,3 +1,5 @@
+//AUTORE: Davide Gena
+
 package view;
 
 public class Camera {
