@@ -3,6 +3,7 @@
  
  ## Requires:
  - Java 8 (Java Swing, AWT)
+ - EmbASP Framework
  
 ## History:
 #### 30-06-19
@@ -241,6 +242,8 @@ results
 - First release.
 
 ## Authors:
-Maria De Miglio
-Davide Caligiuri
-Davide Gena
+
+* **demisquare** - (https://github.com/demisquare)
+* **Dygwah98** - (https://github.com/Dygwah98)
+* **DavidG33k** - (https://github.com/DavidG33k)
+* **TizianaOliviero** - (https://github.com/TizianaOliviero)
