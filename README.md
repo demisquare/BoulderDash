@@ -1,5 +1,10 @@
-# BoulderDash
+# Boulder Dash
  **Boulder Dash** for University Project, written in Java by **Monster Group**.
+ 
+![Menu](https://user-images.githubusercontent.com/48382390/60602848-e600d880-9db4-11e9-95ec-6fb4db973a17.png)
+![Game](https://user-images.githubusercontent.com/48382390/60602866-f1540400-9db4-11e9-8c08-92b07f4ae77e.png)
+![Options](https://user-images.githubusercontent.com/48382390/60602872-f44ef480-9db4-11e9-8b2b-e30b4b5a9434.png)
+![Credits](https://user-images.githubusercontent.com/48382390/60602880-f6b14e80-9db4-11e9-8123-e836dcd66073.png)
  
  ## Requires:
  - Java 8 (Java Swing, AWT)
@@ -242,8 +247,14 @@ results
 - First release.
 
 ## Authors:
-
 * **demisquare** - (https://github.com/demisquare)
 * **Dygwah98** - (https://github.com/Dygwah98)
 * **DavidG33k** - (https://github.com/DavidG33k)
 * **TizianaOliviero** - (https://github.com/TizianaOliviero)
+
+## License:
+This is just a **fan made game** ispired by Boulder Dash®, made for a university exam.
+
+Boulder Dash® is a trademark of BBG Entertainment GmbH.
+Copyright © 1984-2019 BBG Entertainment GmbH. All rights reserved.
+The original Boulder Dash® was created by Peter Liepa with Chris Gray.
