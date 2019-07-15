@@ -1,6 +1,8 @@
 //AUTORE: Davide Caligiuri
 package model;
 
+import it.unical.mat.embasp.languages.Param;
+
 public abstract class GameObject {
 //	costanti usate per le direzioni di movimento
 	public static final int DOWN  = 0;
@@ -25,7 +27,9 @@ public abstract class GameObject {
 	static final char HOST	 	  = 'H';
 	static final char ENEMY		  = 'E';
 //	coordinate dell'oggetto
+	@Param(0)
 	protected int x;
+	@Param(1)
 	protected int y;
 //	verifica se l'oggetto ha subito un aggiornamento (tramite update())
 	protected boolean processed;

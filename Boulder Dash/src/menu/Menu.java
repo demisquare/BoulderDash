@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ai.ASPEngine;
 import audio.Music;
 import view.Game;
 
@@ -62,6 +63,7 @@ public class Menu extends JPanel implements Serializable {
 	public Options options;
 	Credits credits;
 	You_Lose youlose;
+	public ASPEngine ai;
 	
 	public Menu(JFrame frame) {
 		super();
@@ -95,7 +97,10 @@ public class Menu extends JPanel implements Serializable {
 		
 		frame.remove(this);
 		
-		game.launchGame(); 
+		game.launchGame();
+		
+		ai = new ASPEngine(game);
+		ai.start();
 		
 		frame.setContentPane(game);
 		

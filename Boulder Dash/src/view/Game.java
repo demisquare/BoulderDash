@@ -53,7 +53,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		setEnabled(true);
 		
 		level = new Level(this, stage, null);
-		level.addKeyListener(level);
+		//level.addKeyListener(level);
 			
 		score_init();
 	}
@@ -94,7 +94,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 			
 			level.closeThread();
 			level = new Level(this, stage, null);
-			level.addKeyListener(level);
+			//level.addKeyListener(level);
 			
 			score = new Score(frame, menu, this, level);
 		

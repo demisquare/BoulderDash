@@ -2,7 +2,9 @@
 package model;
 
 import audio.Music;
+import it.unical.mat.embasp.languages.Id;
 
+@Id("player")
 public class Player extends GameObject implements Living {
 
 // 	metodo semplice per aggiungere un delay al movimento

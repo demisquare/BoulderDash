@@ -1,6 +1,9 @@
 //AUTORE: Davide Caligiuri
 package model;
 
+import it.unical.mat.embasp.languages.Id;
+
+@Id("empty")
 public class EmptyBlock extends GameObject {
 	
 	public EmptyBlock(int x, int y) 			{ super(x, y); }

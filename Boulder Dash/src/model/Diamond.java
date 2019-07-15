@@ -2,7 +2,9 @@
 package model;
 
 import audio.Music;
+import it.unical.mat.embasp.languages.Id;
 
+@Id("diamond")
 public class Diamond extends GameObject implements Sliding {
 	
 	public Diamond(int x, int y) { super(x, y); }

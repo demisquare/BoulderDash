@@ -1,6 +1,9 @@
 //AUTORE: Davide Caligiuri
 package model;
 
+import it.unical.mat.embasp.languages.Id;
+
+@Id("door")
 public class Door extends GameObject {
 	
 	public Door(int x, int y) { super(x, y); }

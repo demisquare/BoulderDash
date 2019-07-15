@@ -1,5 +1,2 @@
-% dir(0..3).
-% move(x)|stand(x):-dir(x).
-
-move(0);
-move(1);
+% move(0).
+% move(1).

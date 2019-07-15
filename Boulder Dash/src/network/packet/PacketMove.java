@@ -1,10 +1,15 @@
 //AUTORE: Maria De Miglio
 package network.packet;
 
+import it.unical.mat.embasp.languages.Id;
+import it.unical.mat.embasp.languages.Param;
+
+@Id("move")
 public class PacketMove extends Packet {
 	
 	private static final long serialVersionUID = -4739418266360642653L;
 	
+	@Param(0)
 	private int dir;
 	
 	public PacketMove(int x, int y, int dir, int dest) {
