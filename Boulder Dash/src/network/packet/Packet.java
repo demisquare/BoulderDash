@@ -23,6 +23,10 @@ public abstract class Packet implements Serializable{
 		this.dest = dest;
 	}
 	
+	public Packet() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getDest() {
 		return dest;
 	}

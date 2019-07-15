@@ -3,7 +3,7 @@ package model;
 
 import it.unical.mat.embasp.languages.Id;
 
-@Id("empty")
+@Id("emptyblock")
 public class EmptyBlock extends GameObject {
 	
 	public EmptyBlock(int x, int y) 			{ super(x, y); }

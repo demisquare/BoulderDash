@@ -1,2 +1,33 @@
-% move(0).
-% move(1).
+%directions:
+%0 = DOWN
+%1 = LETT
+%2 = RIGHT
+%3 = UP
+
+dir(0..3).
+move(X)|stand(X):-dir(X).
+
+% non è possibile intersecare i muri in basso...
+:- move(0), player(X, Y), wall(X+1, Y).
+
+% non è possibile intersecare i muri a sx...
+:- move(1), player(X, Y), wall(X, Y-1).
+
+% non è possibile intersecare i muri a dx...
+:- move(2), player(X, Y), wall(X, Y+1).
+
+% non è possibile intersecare i muri in alto...
+:- move(3), player(X, Y), wall(X-1, Y).
+
+
+% non è possibile intersecare le rocce in basso...
+:- move(0), player(X, Y), rock(X+1, Y).
+
+% non è possibile intersecare le rocce a sx...
+:- move(1), player(X, Y), rock(X, Y-1).
+
+% non è possibile intersecare le rocce a dx...
+:- move(2), player(X, Y), rock(X, Y+1).
+
+% non è possibile intersecare le rocce in alto...
+:- move(3), player(X, Y), rock(X-1, Y).

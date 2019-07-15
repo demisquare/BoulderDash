@@ -17,6 +17,11 @@ public class PacketMove extends Packet {
 		this.dir = dir;
 	}
 	
+	public PacketMove(int dir)  {
+		super();
+		this.dir = dir;
+	}
+	
 	public int getDir() {
 		return dir;
 	}

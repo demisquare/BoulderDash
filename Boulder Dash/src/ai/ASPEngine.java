@@ -1,55 +1,63 @@
 package ai;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import it.unical.mat.embasp.base.Handler;
 import it.unical.mat.embasp.base.InputProgram;
 import it.unical.mat.embasp.base.Output;
 import it.unical.mat.embasp.languages.asp.ASPInputProgram;
-import it.unical.mat.embasp.languages.asp.ASPMapper;
 import it.unical.mat.embasp.languages.asp.AnswerSet;
 import it.unical.mat.embasp.languages.asp.AnswerSets;
 import it.unical.mat.embasp.platforms.desktop.DesktopHandler;
 import it.unical.mat.embasp.specializations.dlv.desktop.DLVDesktopService;
 import model.*;
-import network.packet.PacketMove;
-import view.Game;
-import view.Level;
+import view.*;
 
 public class ASPEngine {
 	// definisce l'handler per dlv...
 	private String encodingResource = "." + File.separator + "resources" + File.separator + "encodings" + File.separator
-			+ "move";
+			+ "test";
+	// fatti presenti nel gioco...
+	private String instanceResource = "." + File.separator + "resources" + File.separator + "encodings" + File.separator
+			+ "facts";
 	private Handler handler;
 
-	// fatti presenti nel gioco...
-	// private InputProgram facts;
-
 	// encoding delle regole...
-	private InputProgram encoding;
-	Output o;
+	private InputProgram program;
+
 	Thread t;
 
-	Game game;
+	Level level;
+	GameMap map;
+	Player player;
 
 	public ASPEngine(Game game) {
-
-		this.game = game;
+		map = game.level.getWorld().getMap();
+		player = (Player)game.level.getWorld().getPlayer();
+		level = game.level;
 
 		handler = new DesktopHandler(new DLVDesktopService(
 				"." + File.separator + "resources" + File.separator + "lib" + File.separator + "dlv.mingw.exe"));
+		
+		// carica encoding...
+		program = new ASPInputProgram();
+		program.addFilesPath(encodingResource);
+		handler.addProgram(program);
 
 	}
 
-	/*public void start() {
+	public void start() {
 		t = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				while (true) {
-
+					callback();
 					try {
-						Thread.sleep(10000);
+						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -58,80 +66,42 @@ public class ASPEngine {
 		});
 		// trova un modo di interrompere il thread...
 		t.start();
-	}*/
+	}
 	
-	public void start() {
-		// carica i fatti...
-		/* facts = new ASPInputProgram();
-		
-		for(int x = 0; x < game.level.getWorld().getMap().getDimX(); ++x)
-			for(int y = 0; y < game.level.getWorld().getMap().getDimY(); ++y)
-			{
-				GameObject g = game.level.getWorld().getMap().getTile(x, y);
-				try {
-						if(g instanceof Rock)
-						facts.addObjectInput((Rock)g);
-					
-					else if(g instanceof Diamond)
-						facts.addObjectInput((Diamond)g);
-					
-					else if(g instanceof Ground)
-						facts.addObjectInput((Ground)g);
-					
-					else if(g instanceof Door)
-						facts.addObjectInput((Door)g);
-					
-					else if(g instanceof Wall)
-						facts.addObjectInput((Wall)g);
-					
-					else if(g instanceof Player)
-						facts.addObjectInput((Player)g);
-					
-					else if(g instanceof EmptyBlock)
-						facts.addObjectInput((EmptyBlock)g);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-				
-		handler.addProgram(facts);
-		*/
-		// carica encoding...
-		encoding = new ASPInputProgram();
-		encoding.addFilesPath(encodingResource);
-		handler.addProgram(encoding);
-		
-		// register the class for reflection
+	private void updateFacts() {
 		try {
-			/*ASPMapper.getInstance().registerClass(Rock.class);
-			ASPMapper.getInstance().registerClass(Diamond.class);
-			ASPMapper.getInstance().registerClass(Ground.class);
-			ASPMapper.getInstance().registerClass(Door.class);
-			ASPMapper.getInstance().registerClass(Wall.class);
-			ASPMapper.getInstance().registerClass(Player.class);
-			ASPMapper.getInstance().registerClass(EmptyBlock.class);*/
-			ASPMapper.getInstance().registerClass(PacketMove.class);
-			
-		} catch (Exception e) {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
+			for(int x = 0; x < map.getDimX(); ++x)
+				for(int y = 0; y < map.getDimY(); ++y)
+					bw.write(map.getTile(x, y).toString()+"\n");
+			bw.close();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void callback() {
+		// carica i fatti...
+		updateFacts();
+		program.addFilesPath(instanceResource);
+		handler.addProgram(program);
 
 		Output o = handler.startSync();
 		AnswerSets answers = (AnswerSets) o;
+		//System.out.println("size : " + answers.getAnswersets().size());
 		for (AnswerSet a : answers.getAnswersets()) {
-
 			try {
-				for (Object obj : a.getAtoms()) {
-					if (obj instanceof PacketMove)
-					/*{
-						PacketMove move = (PacketMove) obj;
+				for (String s : a.getAnswerSet()) {
+					if(s.indexOf("move")!=-1) {
+						int move = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
 						synchronized (this) {
-						 game.level.updatePlayerOnPressing(move.getDir());
-						 }
-					}*/
-					System.out.println(obj);
-						
+							 level.updatePlayerOnPressing(move);
+							 }
+						if(player.hasMoved()) {
+							System.out.println(player.toString());
+							player.setMoved(false);
+						}
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
