@@ -19,14 +19,11 @@ import view.*;
 public class ASPEngine {
 	// definisce l'handler per dlv...
 	private String encodingResource = "." + File.separator + "resources" + File.separator + "encodings" + File.separator
-			+ "test";
+			+ "move";
 	// fatti presenti nel gioco...
 	private String instanceResource = "." + File.separator + "resources" + File.separator + "encodings" + File.separator
 			+ "facts";
 	private Handler handler;
-
-	// encoding delle regole...
-	private InputProgram program;
 
 	Thread t;
 
@@ -37,16 +34,7 @@ public class ASPEngine {
 	public ASPEngine(Game game) {
 		map = game.level.getWorld().getMap();
 		player = (Player)game.level.getWorld().getPlayer();
-		level = game.level;
-
-		handler = new DesktopHandler(new DLVDesktopService(
-				"." + File.separator + "resources" + File.separator + "lib" + File.separator + "dlv.mingw.exe"));
-		
-		// carica encoding...
-		program = new ASPInputProgram();
-		program.addFilesPath(encodingResource);
-		handler.addProgram(program);
-
+		level = game.level;		
 	}
 
 	public void start() {
@@ -55,9 +43,16 @@ public class ASPEngine {
 			@Override
 			public void run() {
 				while (true) {
+					handler = new DesktopHandler(new DLVDesktopService(
+							"." + File.separator + "resources" + File.separator + "lib" + File.separator + "dlv.mingw.exe"));
+					InputProgram  program = new ASPInputProgram();
+					updateFacts();
+					program.addFilesPath(encodingResource);
+					program.addFilesPath(instanceResource);
+					handler.addProgram(program);
 					callback();
 					try {
-						Thread.sleep(100);
+						Thread.sleep(200);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -81,26 +76,22 @@ public class ASPEngine {
 	}
 	
 	public void callback() {
-		// carica i fatti...
-		updateFacts();
-		program.addFilesPath(instanceResource);
-		handler.addProgram(program);
-
 		Output o = handler.startSync();
 		AnswerSets answers = (AnswerSets) o;
-		//System.out.println("size : " + answers.getAnswersets().size());
+		//System.out.println(answers.getAnswersets().size());
 		for (AnswerSet a : answers.getAnswersets()) {
 			try {
 				for (String s : a.getAnswerSet()) {
 					if(s.indexOf("move")!=-1) {
+						System.out.println(s);
 						int move = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
-						synchronized (this) {
-							 level.updatePlayerOnPressing(move);
-							 }
-						if(player.hasMoved()) {
-							System.out.println(player.toString());
+						if(!player.hasMoved()) {
+							synchronized (this) {
+								 level.updatePlayerOnPressing(move);
+								 }
 							player.setMoved(false);
 						}
+			
 					}
 				}
 			} catch (Exception e) {
