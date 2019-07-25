@@ -5,7 +5,7 @@
 %3 = UP
 
 dir(0..3).
-move(X)|stand(X):-dir(X).
+%move(X)|stand(X):-dir(X).
 
 % non è possibile intersecare i muri in basso...
 :- move(0), player(X,Y), z=X+1, wall(Z,Y).
