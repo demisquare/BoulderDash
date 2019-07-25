@@ -63,11 +63,16 @@ public class ASPEngine {
 		t.start();
 	}
 	
+	public synchronized void stop() {
+		if (t != null && t.isAlive())
+			t.interrupt();
+	}
+	
 	private void updateFacts() {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
-			for(int x = 0; x < map.getDimX(); ++x)
-				for(int y = 0; y < map.getDimY(); ++y)
+			for(int x = 0; x < map.getDimX(); x++)
+				for(int y = 0; y < map.getDimY(); y++)
 					bw.write(map.getTile(x, y).toString()+"\n");
 			bw.close();
 		} catch (IOException e) {
@@ -100,10 +105,4 @@ public class ASPEngine {
 
 		}
 	}
-
-	public synchronized void stop() {
-		if (t != null && t.isAlive())
-			t.interrupt();
-	}
-
 }
