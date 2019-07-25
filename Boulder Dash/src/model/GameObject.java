@@ -198,6 +198,6 @@ public abstract class GameObject {
 	@Override
 	public String toString() {
 		return
-			this.getClass().getSimpleName().toLowerCase() + "(" + x + ", " + y + ").";
+			this.getClass().getSimpleName().toLowerCase() + "(" + y + ", " + x + ").";
 	}
 }
