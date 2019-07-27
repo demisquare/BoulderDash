@@ -28,7 +28,7 @@ public class Options extends JPanel {
 			+ "Menu" + File.separator + 
 			"OptionsPage" + File.separator;
 	
-	public static boolean music = true;
+	public static boolean music = false;
 	public static boolean full_screen = false;	
 	
 	public static boolean multiplayer = false;

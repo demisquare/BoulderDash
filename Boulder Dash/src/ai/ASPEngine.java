@@ -20,6 +20,8 @@ public class ASPEngine {
 	// definisce l'handler per dlv...
 	private String encodingResource = "." + File.separator + "resources" + File.separator + "encodings" + File.separator
 			+ "test";
+	private String diamondsInstance = "." + File.separator + "resources" + File.separator + "encodings" + File.separator
+			+ "diamonds";
 	// fatti presenti nel gioco...
 	private String instanceResource = "." + File.separator + "resources" + File.separator + "encodings" + File.separator
 			+ "facts";

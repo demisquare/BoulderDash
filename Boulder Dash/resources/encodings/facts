@@ -65,10 +65,10 @@ ground(19, 2).
 diamond(20, 2).
 wall(21, 2).
 wall(0, 3).
-emptyblock(1, 3).
-player(2, 3).
-ground(3, 3).
-emptyblock(4, 3).
+ground(1, 3).
+emptyblock(2, 3).
+emptyblock(3, 3).
+player(4, 3).
 rock(5, 3).
 ground(6, 3).
 wall(7, 3).
