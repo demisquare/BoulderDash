@@ -70,9 +70,11 @@ public class ASPEngine {
 					InputProgram  program = new ASPInputProgram();
 					InputProgram finder= new ASPInputProgram();
 					
-					updateFacts();
 					finder.addFilesPath(diamondsInstance);
 					finder.addFilesPath(instanceResource);
+					handlerDiamonds.addProgram(finder);
+					updateFacts();
+					
 					
 					program.addFilesPath(encodingResource);
 					program.addFilesPath(instanceResource);
@@ -103,7 +105,7 @@ public class ASPEngine {
 			{
 				Output o = handlerDiamonds.startSync();
 				AnswerSets answers = (AnswerSets) o;
-				System.out.println("godverdomme"+ closerX + closerY);
+				//System.out.println("godverdomme"+ closerX + closerY);
 				for (AnswerSet a : answers.getAnswersets()) {
 					try {
 						for (String s : a.getAnswerSet()) {
