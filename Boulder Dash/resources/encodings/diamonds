@@ -3,4 +3,5 @@ distance(D, X,Y) :-player(A,S), diamond(X,Y), A<X, S<Y, Q=X-A, W=Y-S, D=Q+W.
 distance(D, X,Y) :-player(A,S), diamond(X,Y), A>=X, S<Y, Q=A-X, W=Y-S, D=Q+W.
 distance(D, X,Y) :-player(A,S), diamond(X,Y), A<X, S>=Y, Q=X-A, W=S-Y, D=Q+W.
 
-closer(X,Y) :- #min{D: distance(D,A,S)}= M, distance(M, X,Y).
+mindist(M) :- #min{D: distance(D,A,S)}= M.
+closer(X,Y) :-  distance(M, X,Y), mindist(M).

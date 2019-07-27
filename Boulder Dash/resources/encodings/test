@@ -1,12 +1,3 @@
-%closer(9, 30).
-
-distance(D, X,Y) :-player(A,S), diamond(X,Y), A>=X, S>=Y, Q=A-X, W=S-Y, D=Q+W.
-distance(D, X,Y) :-player(A,S), diamond(X,Y), A<X, S<Y, Q=X-A, W=Y-S, D=Q+W.
-distance(D, X,Y) :-player(A,S), diamond(X,Y), A>=X, S<Y, Q=A-X, W=Y-S, D=Q+W.
-distance(D, X,Y) :-player(A,S), diamond(X,Y), A<X, S>=Y, Q=X-A, W=S-Y, D=Q+W.
-
-closer(X,Y) :- #min{D: distance(D,A,S)}= M, distance(M, X,Y).
-
 move(0) | move(1) | move(2) | move(3).
 
 next(X,Y) :- move(1), player(X, Z), Y=Z-1.

@@ -26,9 +26,11 @@ public class ASPEngine {
 	private String instanceResource = "." + File.separator + "resources" + File.separator + "encodings" + File.separator
 			+ "facts";
 	private Handler handler;
+	private Handler handlerDiamonds;
 
 	Thread t;
-
+	int closerX;
+	int closerY;
 	Level level;
 	GameMap map;
 	Player player;
@@ -36,7 +38,22 @@ public class ASPEngine {
 	public ASPEngine(Game game) {
 		map = game.level.getWorld().getMap();
 		player = (Player)game.level.getWorld().getPlayer();
-		level = game.level;		
+		level = game.level;	
+		closerX=0;
+		closerY=0;
+		
+		try {
+		BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
+		
+		for(int x = 0; x < map.getDimX(); x++)
+			for(int y = 0; y < map.getDimY(); y++)
+				bw.write(map.getTile(x, y).toString()+"\n");
+		bw.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void start() {
@@ -47,11 +64,20 @@ public class ASPEngine {
 				while (true) {
 					handler = new DesktopHandler(new DLVDesktopService(
 							"." + File.separator + "resources" + File.separator + "lib" + File.separator + "dlv.mingw.exe"));
+					
+					handlerDiamonds = new DesktopHandler(new DLVDesktopService(
+							"." + File.separator + "resources" + File.separator + "lib" + File.separator + "dlv.mingw.exe"));
 					InputProgram  program = new ASPInputProgram();
+					InputProgram finder= new ASPInputProgram();
+					
 					updateFacts();
+					finder.addFilesPath(diamondsInstance);
+					finder.addFilesPath(instanceResource);
+					
 					program.addFilesPath(encodingResource);
 					program.addFilesPath(instanceResource);
 					handler.addProgram(program);
+					handlerDiamonds.addProgram(finder);
 					callback();
 					try {
 						Thread.sleep(200);
@@ -72,7 +98,31 @@ public class ASPEngine {
 	
 	private void updateFacts() {
 		try {
+			
+			if( (closerX==0 || closerY==0) || (closerX==map.getPlayer().getX() && closerY==map.getPlayer().getY()) )
+			{
+				Output o = handlerDiamonds.startSync();
+				AnswerSets answers = (AnswerSets) o;
+				System.out.println("godverdomme"+ closerX + closerY);
+				for (AnswerSet a : answers.getAnswersets()) {
+					try {
+						for (String s : a.getAnswerSet()) {
+							if(s.indexOf("closer")!=-1) {
+								System.out.println(s);
+								closerX = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(",")));
+								closerY = Integer.parseInt(s.substring(s.indexOf(",")+1,s.indexOf(")")));
+								
+					
+							}
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
 			BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
+			bw.write("closer("+closerX + "," + closerY +")."+"\n");
 			for(int x = 0; x < map.getDimX(); x++)
 				for(int y = 0; y < map.getDimY(); y++)
 					bw.write(map.getTile(x, y).toString()+"\n");
