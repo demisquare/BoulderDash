@@ -100,12 +100,18 @@ public class ASPEngine {
 	
 	private void updateFacts() {
 		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
+			for(int x = 0; x < map.getDimX(); x++)
+				for(int y = 0; y < map.getDimY(); y++)
+					bw.write(map.getTile(x, y).toString()+"\n");
+			bw.close();
 			
-			if( (closerX==0 || closerY==0) || (closerX==map.getPlayer().getX() && closerY==map.getPlayer().getY()) )
+			System.out.println("godverdomme"+ closerX + " "+ closerY +" "+ map.getPlayer().getY() + " "+ map.getPlayer().getX());
+			if( (closerX==0 || closerY==0) || (closerX==map.getPlayer().getY() && closerY==map.getPlayer().getX()) )
 			{
 				Output o = handlerDiamonds.startSync();
 				AnswerSets answers = (AnswerSets) o;
-				//System.out.println("godverdomme"+ closerX + closerY);
+				System.out.println("godverdomme"+ closerX + closerY);
 				for (AnswerSet a : answers.getAnswersets()) {
 					try {
 						for (String s : a.getAnswerSet()) {
@@ -123,12 +129,15 @@ public class ASPEngine {
 				}
 			}
 			
-			BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
-			bw.write("closer("+closerX + "," + closerY +")."+"\n");
+			BufferedWriter bw2 = new BufferedWriter(new FileWriter(instanceResource));
+			bw2.write("closer("+closerX + "," + closerY +")."+"\n");
+			
 			for(int x = 0; x < map.getDimX(); x++)
 				for(int y = 0; y < map.getDimY(); y++)
-					bw.write(map.getTile(x, y).toString()+"\n");
-			bw.close();
+					bw2.write(map.getTile(x, y).toString()+"\n");
+					
+			bw2.close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
