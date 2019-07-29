@@ -145,6 +145,9 @@ public class ASPEngine {
 	
 	public void callback() {
 		String m="";
+		String playerNow="player("+ (map.getPlayer().getY()) + "," + map.getPlayer().getX() + ").";
+		int xprov=0,yprov=0;
+		int move=-1;
 		Output o = handler.startSync();
 		AnswerSets answers = (AnswerSets) o;
 		//System.out.println(answers.getAnswersets().size());
@@ -153,16 +156,16 @@ public class ASPEngine {
 				for (String s : a.getAnswerSet()) {
 					if(s.indexOf("move")!=-1) {
 						System.out.println(s);
-						int move = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
+						move = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
 						
 						if(move==0)
-							m="player("+ (map.getPlayer().getY()+1) + "," + map.getPlayer().getX() + ").";
+							{m="player("+ (map.getPlayer().getY()+1) + "," + map.getPlayer().getX() + ")."; xprov=map.getPlayer().getY()+1; yprov=map.getPlayer().getX(); }
 						else if(move==1)
-							m="player("+ map.getPlayer().getY() + "," + (map.getPlayer().getX()-1) + ").";
+							{m="player("+ map.getPlayer().getY() + "," + (map.getPlayer().getX()-1) + ")."; xprov=map.getPlayer().getY(); yprov=map.getPlayer().getX()-1;}
 						else if(move==2)
-							m="player("+ map.getPlayer().getY() + "," + (map.getPlayer().getX()+1) + ").";
+							{m="player("+ map.getPlayer().getY() + "," + (map.getPlayer().getX()+1) + ")."; xprov=map.getPlayer().getY(); yprov=map.getPlayer().getX()+1;}
 						else
-							m="player("+ (map.getPlayer().getY()-1) + "," + map.getPlayer().getX() + ").";
+							{m="player("+ (map.getPlayer().getY()-1) + "," + map.getPlayer().getX() + ")."; xprov=map.getPlayer().getY()-1; yprov=map.getPlayer().getX();}
 						
 						/*
 						if(!player.hasMoved()) {
@@ -196,6 +199,7 @@ public class ASPEngine {
 			e.printStackTrace();
 		}
 		
+		String l="";
 		o = handler.startSync();
 		answers = (AnswerSets) o;
 		//System.out.println(answers.getAnswersets().size());
@@ -204,33 +208,72 @@ public class ASPEngine {
 				for (String s : a.getAnswerSet()) {
 					if(s.indexOf("move")!=-1) {
 						System.out.println(s);
-						int move = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
+						int move2 = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
 						
-						if(move==0)
-							m="player("+ (map.getPlayer().getY()+1) + "," + map.getPlayer().getX() + ")";
-						else if(move==1)
-							m="player("+ map.getPlayer().getY() + "," + (map.getPlayer().getX()-1) + ")";
-						else if(move==2)
-							m="player("+ map.getPlayer().getY() + "," + (map.getPlayer().getX()+1) + ")";
+						if(move2==0)
+							l="player("+ (xprov+1) + "," + yprov + ").";
+						else if(move2==1)
+							l="player("+ xprov + "," + (yprov-1) + ").";
+						else if(move2==2)
+							l="player("+ xprov + "," + (yprov+1) + ").";
 						else
-							m="player("+ (map.getPlayer().getY()-1) + "," + map.getPlayer().getX() + ")";
+							l="player("+ (xprov-1) + "," + yprov + ").";
 						
-						/*
-						if(!player.hasMoved()) {
-							synchronized (this) {
-								 level.updatePlayerOnPressing(move);
-								 }
-							player.setMoved(false);
-						}
-						*/
+					
 			
 					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
+			
 		}
+		
 		//fine 2 for
+			if(playerNow.equals(l)) {
+				System.out.print(playerNow + "  " + m + l);
+				try {
+					BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
+					
+					for(int x = 0; x < map.getDimX(); x++)
+						for(int y = 0; y < map.getDimY(); y++)
+							bw.write(map.getTile(x, y).toString()+"\n");
+					bw.write("closer("+closerX + "," + closerY +")."+"\n");
+					bw.write("loop(" + move +")."+"\n");
+					
+					bw.close();
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+				
+				o = handler.startSync();
+				answers = (AnswerSets) o;
+				//System.out.println(answers.getAnswersets().size());
+				for (AnswerSet a : answers.getAnswersets()) {
+					try {
+						for (String s : a.getAnswerSet()) {
+							if(s.indexOf("move")!=-1) {
+								System.out.println(s);
+								move = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
+								
+													
+							}
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+				}
+				
+			} // fine if
+
+			if(!player.hasMoved()) {
+				synchronized (this) {
+					 level.updatePlayerOnPressing(move);
+					 }
+				player.setMoved(false);
+			}
+		
 	}
 }

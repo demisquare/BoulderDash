@@ -17,11 +17,15 @@ next(X,Y) :- move(0), player(Z, Y), X=Z+1.
 %se c'è una roccia a fianco e una sotto di essa, non scendere
 :- player(X,Y), rock(X,Z), Z=Y+1, rock(A,Z), A=X+1, move(0).
 
+%se hai un diamante sotto a una roccia, e sei a lato della roccia, scendi
+:- diamond(X,Y), rock(Z,Y), Z=X-1, player(A,S), A=X-2, S=Y-1, move(M), M!=0.
+:- diamond(X,Y), rock(Z,Y), Z=X-1, player(A,S), A=X-2, S=Y+1, move(M), M!=0.
+
 vector(X,Y) :- next(A,S), closer(D,Q), A>=D, S>=Q, X=A-D, Y=S-Q.
 vector(X,Y) :- next(A,S), closer(D,Q), A<D, S<Q, X=D-A, Y=Q-S.
 vector(X,Y) :- next(A,S), closer(D,Q), A>=D, S<Q, X=A-D, Y=Q-S.
 vector(X,Y) :- next(A,S), closer(D,Q), A<D, S>=Q, X=D-A, Y=S-Q.
-
+:- move(_), player(X,Y), closer(X,Y).
 :-loop(X), move(X).
 :~ vector(X,Y), N=X+Y. [N :3]
 %:~ next(X,Y), rock(Z,Y), Z=X-1. [1:2]
