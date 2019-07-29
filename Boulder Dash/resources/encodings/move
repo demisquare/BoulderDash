@@ -34,3 +34,31 @@ dir(0..3).
 
 % non è possibile muoversi contemporaneamente in più parti...
 :- move(X), move(Y), X!=Y.
+
+
+move(0) | move(1) | move(2) | move(3).
+
+next(X,Y) :- move(1), player(X, Z), Y=Z-1.
+next(X,Y) :- move(2), player(X, Z), Y=Z+1.
+next(X,Y) :- move(3), player(Z, Y), X=Z-1.
+next(X,Y) :- move(0), player(Z, Y), X=Z+1.
+
+:- next(X,Y), rock(X,Y).
+:- next(X,Y), wall(X,Y).
+
+%non andare sotto a due rocce
+:- next(X,Y), rock(Z,Y), rock(A,Y), Z=X-1, A=X-2.
+
+%se hai una roccia sopra non scendere
+:- player(X,Y), rock(Z,Y), Z=X-1, move(0).
+
+%se c'è una roccia a fianco e una sotto di essa, non scendere
+:- player(X,Y), rock(X,Z), Z=Y+1, rock(A,Z), A=X+1, move(0).
+
+vector(X,Y) :- next(A,S), closer(D,Q), A>=D, S>=Q, X=A-D, Y=S-Q.
+vector(X,Y) :- next(A,S), closer(D,Q), A<D, S<Q, X=D-A, Y=Q-S.
+vector(X,Y) :- next(A,S), closer(D,Q), A>=D, S<Q, X=A-D, Y=Q-S.
+vector(X,Y) :- next(A,S), closer(D,Q), A<D, S>=Q, X=D-A, Y=S-Q.
+:~ vector(X,Y), N=X+Y. [N :3]
+%:~ next(X,Y), rock(Z,Y), Z=X-1. [1:2]
+:~next(X,Y). [X:1]
