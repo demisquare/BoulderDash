@@ -201,7 +201,7 @@ public class ASPEngine {
 		
 		String l="";
 		o = handler.startSync();
-		answers = (AnswerSets) o;
+		answers = (AnswerSets) o; 
 		//System.out.println(answers.getAnswersets().size());
 		for (AnswerSet a : answers.getAnswersets()) {
 			try {
@@ -227,9 +227,10 @@ public class ASPEngine {
 				e.printStackTrace();
 			}
 			
-		}
+		} 
 		
 		//fine 2 for
+		
 			if(playerNow.equals(l)) {
 				System.out.print(playerNow + "  " + m + l);
 				try {
@@ -266,7 +267,7 @@ public class ASPEngine {
 					
 				}
 				
-			} // fine if
+			} // fine if 
 
 			if(!player.hasMoved()) {
 				synchronized (this) {

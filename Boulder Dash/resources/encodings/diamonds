@@ -5,7 +5,7 @@ distance(D, X,Y) :-player(A,S), diamond(X,Y), A>=X, S<Y, Q=A-X, W=Y-S, D=Q+W.
 distance(D, X,Y) :-player(A,S), diamond(X,Y), A<X, S>=Y, Q=X-A, W=S-Y, D=Q+W.
 
 mindist(M) :- #min{D: distance(D,A,S), not aggira(A,S), not player(A,S)}= M.
-closer(X,Y) :-  distance(M, X,Y), mindist(M).
+closer(X,Y) :-  distance(M, X,Y), mindist(M), not aggira(X,Y).
 
 %vede le parti di muri continui che devono essere aggirati
 blockedPassage(X,Y) :- wall(X,Y), X>0, X<21, Y>0, Y<39.
