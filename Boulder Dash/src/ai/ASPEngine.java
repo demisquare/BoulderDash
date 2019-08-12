@@ -31,6 +31,7 @@ public class ASPEngine {
 	Thread t;
 	int closerX;
 	int closerY;
+	int xprec=0,yprec=0;
 	Level level;
 	GameMap map;
 	Player player;
@@ -120,7 +121,7 @@ public class ASPEngine {
 								closerX = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(",")));
 								closerY = Integer.parseInt(s.substring(s.indexOf(",")+1,s.indexOf(")")));
 								
-					
+					break;
 							}
 						}
 					} catch (Exception e) {
@@ -150,7 +151,9 @@ public class ASPEngine {
 		int move=-1;
 		Output o = handler.startSync();
 		AnswerSets answers = (AnswerSets) o;
-		//System.out.println(answers.getAnswersets().size());
+		
+		/*inizio parte
+		
 		for (AnswerSet a : answers.getAnswersets()) {
 			try {
 				for (String s : a.getAnswerSet()) {
@@ -167,15 +170,40 @@ public class ASPEngine {
 						else
 							{m="player("+ (map.getPlayer().getY()-1) + "," + map.getPlayer().getX() + ")."; xprov=map.getPlayer().getY()-1; yprov=map.getPlayer().getX();}
 						
-						/*
-						if(!player.hasMoved()) {
-							synchronized (this) {
-								 level.updatePlayerOnPressing(move);
-								 }
-							player.setMoved(false);
-						}
-						*/
-			
+						
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		
+		
+		
+		*/ //fine parte
+		
+		
+		
+		//System.out.println(answers.getAnswersets().size());
+		 
+		for (AnswerSet a : answers.getAnswersets()) {
+			try {
+				for (String s : a.getAnswerSet()) {
+					if(s.indexOf("move")!=-1) {
+						System.out.println(s);
+						move = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
+						
+						if(move==0)
+							{m="player("+ (map.getPlayer().getY()+1) + "," + map.getPlayer().getX() + ")."; xprov=map.getPlayer().getY()+1; yprov=map.getPlayer().getX(); }
+						else if(move==1)
+							{m="player("+ map.getPlayer().getY() + "," + (map.getPlayer().getX()-1) + ")."; xprov=map.getPlayer().getY(); yprov=map.getPlayer().getX()-1;}
+						else if(move==2)
+							{m="player("+ map.getPlayer().getY() + "," + (map.getPlayer().getX()+1) + ")."; xprov=map.getPlayer().getY(); yprov=map.getPlayer().getX()+1;}
+						else
+							{m="player("+ (map.getPlayer().getY()-1) + "," + map.getPlayer().getX() + ")."; xprov=map.getPlayer().getY()-1; yprov=map.getPlayer().getX();}
+						
+						
 					}
 				}
 			} catch (Exception e) {
@@ -269,6 +297,7 @@ public class ASPEngine {
 				
 			} // fine if 
 
+			
 			if(!player.hasMoved()) {
 				synchronized (this) {
 					 level.updatePlayerOnPressing(move);

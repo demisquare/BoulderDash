@@ -16,26 +16,32 @@ next(X,Y) :- move(0), player(Z, Y), X=Z+1.
 
 %se c'è una roccia a fianco e una sotto di essa, non scendere
 :- player(X,Y), rock(X,Z), Z=Y+1, rock(A,Z), A=X+1, move(0).
-
+:- player(X,Y), rock(X,Z), Z=Y-1, rock(A,Z), A=X+1, move(0).
 
 %se hai un diamante sotto a una roccia, e sei sopra, aggirala
-:- diamond(X,Y), rock(Z,Y), Z=X-1, player(Q, Y), Q=Z-1, move(M), M!=2, M!=1.
+:- closer(X,Y), rock(Z,Y), Z=X-1, player(Q, Y), Q=Z-1, move(M), M!=2, M!=1.
 
 %se hai un diamante sotto a una roccia, e sei a lato della roccia, scendi
-:- diamond(X,Y), rock(Z,Y), Z=X-1, player(A,S), A=X-2, S=Y-1, move(M), M!=0.
-:- diamond(X,Y), rock(Z,Y), Z=X-1, player(A,S), A=X-2, S=Y+1, move(M), M!=0.
+:- closer(X,Y), rock(Z,Y), Z=X-1, player(A,S), A=X-2, S=Y-1, move(M), M!=0.
+:- closer(X,Y), rock(Z,Y), Z=X-1, player(A,S), A=X-2, S=Y+1, move(M), M!=0.
 
 %se per avvicinarti a un diam devi evitare 2 rocce e puoi fare il giro largo fallo
-:- diamond(X,Y), player(X,Z), rock(W,Q), W=X-1, Q=Z-1, rock(E,Q), E=W-1, move(M), M!=0.
+:- closer(X,Y), player(X,Z), rock(W,Q), W=X-1, Q=Z-1, rock(E,Q), E=W-1, move(M), M!=0.
 
 %se per avvicinarti a un diam vai a sbattere contro una roccia aggirala
+%interval(Y, S) :- closer(X,Y), player(A,S), Y>S.
+%:- closer(X,Y), rock(X,K), player(A,S), A=X+1, S>K, K>Y, not rock(A,I), interval(MIN, MAX), I>MIN, I<MAX, move(3).
+
 :-diamond(X,_), next(X,Y), rock(X,Z), Z=Y-1, player(A,S), A=X+1, S=Z+1, move(3).
+:- closer(X,A), player(X,Y), rock(X,Z), Z=Y-1, A<Y,  move(2).
 
 vector(X,Y) :- next(A,S), closer(D,Q), A>=D, S>=Q, X=A-D, Y=S-Q.
 vector(X,Y) :- next(A,S), closer(D,Q), A<D, S<Q, X=D-A, Y=Q-S.
 vector(X,Y) :- next(A,S), closer(D,Q), A>=D, S<Q, X=A-D, Y=Q-S.
 vector(X,Y) :- next(A,S), closer(D,Q), A<D, S>=Q, X=D-A, Y=S-Q.
 :- move(_), player(X,Y), closer(X,Y).
+
+
 :-loop(X), move(X).
 :~ vector(X,Y), N=X+Y. [N :3]
 %:~ next(X,Y), rock(Z,Y), Z=X-1. [1:2]
