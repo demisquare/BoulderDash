@@ -18,8 +18,8 @@ next(X,Y) :- move(0), player(Z, Y), X=Z+1.
 :- player(X,Y), rock(X,Z), Z=Y+1, rock(A,Z), A=X+1, move(0).
 :- player(X,Y), rock(X,Z), Z=Y-1, rock(A,Z), A=X+1, move(0).
 
-% non andare a lato di una roccia che ne ha una sopra e a fianco è scavato o muori
-:- next(X,Y), rock(X,Z), Z=Y-1, rock(A,Z), A=X-1, emptyBlock(A,Y), move(.
+% non scendere se hai una roccia a fianco che ne ha una sopra o muori
+:- player(X,Y), rock(X,Z), Z=Y-1, rock(A,Z), A=X-1, emptyBlock(A,Y), move(0).
 
 %se hai un diamante sotto a una roccia, e sei sopra, aggirala
 :- closer(X,Y), rock(Z,Y), Z=X-1, player(Q, Y), Q=Z-1, move(M), M!=2, M!=1.
