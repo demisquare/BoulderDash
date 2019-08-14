@@ -67,7 +67,7 @@ wall(21, 2).
 wall(0, 3).
 emptyblock(1, 3).
 emptyblock(2, 3).
-emptyblock(3, 3).
+ground(3, 3).
 ground(4, 3).
 wall(5, 3).
 emptyblock(6, 3).
@@ -87,9 +87,9 @@ rock(19, 3).
 ground(20, 3).
 wall(21, 3).
 wall(0, 4).
-emptyblock(1, 4).
-emptyblock(2, 4).
-rock(3, 4).
+emptyBlock(4,1).
+rock(2, 4).
+ground(3, 4).
 ground(4, 4).
 wall(5, 4).
 ground(6, 4).
@@ -109,9 +109,9 @@ ground(19, 4).
 ground(20, 4).
 wall(21, 4).
 wall(0, 5).
-ground(1, 5).
+emptyblock(1, 5).
 emptyblock(2, 5).
-emptyblock(3, 5).
+ground(3, 5).
 ground(4, 5).
 wall(5, 5).
 ground(6, 5).
@@ -133,7 +133,7 @@ wall(21, 5).
 wall(0, 6).
 emptyblock(1, 6).
 emptyblock(2, 6).
-emptyblock(3, 6).
+ground(3, 6).
 rock(4, 6).
 wall(5, 6).
 emptyblock(6, 6).
@@ -153,9 +153,9 @@ emptyblock(19, 6).
 emptyblock(20, 6).
 wall(21, 6).
 wall(0, 7).
-ground(1, 7).
+emptyblock(1, 7).
 emptyblock(2, 7).
-emptyblock(3, 7).
+ground(3, 7).
 ground(4, 7).
 wall(5, 7).
 ground(6, 7).
@@ -197,7 +197,7 @@ ground(19, 8).
 ground(20, 8).
 wall(21, 8).
 wall(0, 9).
-ground(1, 9).
+emptyblock(1, 9).
 emptyblock(2, 9).
 emptyblock(3, 9).
 ground(4, 9).
@@ -219,9 +219,9 @@ emptyblock(19, 9).
 ground(20, 9).
 wall(21, 9).
 wall(0, 10).
-ground(1, 10).
+emptyblock(1, 10).
 emptyblock(2, 10).
-emptyBlock(10,3).
+ground(3, 10).
 ground(4, 10).
 wall(5, 10).
 ground(6, 10).
@@ -263,7 +263,7 @@ ground(19, 11).
 ground(20, 11).
 wall(21, 11).
 wall(0, 12).
-ground(1, 12).
+emptyblock(1, 12).
 emptyblock(2, 12).
 ground(3, 12).
 ground(4, 12).
@@ -330,7 +330,7 @@ ground(20, 14).
 wall(21, 14).
 wall(0, 15).
 emptyblock(1, 15).
-ground(2, 15).
+emptyblock(2, 15).
 rock(3, 15).
 ground(4, 15).
 rock(5, 15).
@@ -352,10 +352,10 @@ ground(20, 15).
 wall(21, 15).
 wall(0, 16).
 emptyblock(1, 16).
-ground(2, 16).
-ground(3, 16).
-ground(4, 16).
-ground(5, 16).
+emptyblock(2, 16).
+emptyblock(3, 16).
+emptyblock(4, 16).
+emptyblock(5, 16).
 emptyblock(6, 16).
 emptyblock(7, 16).
 ground(8, 16).
@@ -377,7 +377,7 @@ emptyblock(1, 17).
 emptyblock(2, 17).
 rock(3, 17).
 ground(4, 17).
-ground(5, 17).
+emptyblock(5, 17).
 emptyblock(6, 17).
 emptyblock(7, 17).
 ground(8, 17).
@@ -399,7 +399,7 @@ emptyblock(1, 18).
 ground(2, 18).
 ground(3, 18).
 ground(4, 18).
-ground(5, 18).
+emptyblock(5, 18).
 emptyblock(6, 18).
 ground(7, 18).
 ground(8, 18).
@@ -421,7 +421,7 @@ emptyblock(1, 19).
 ground(2, 19).
 ground(3, 19).
 ground(4, 19).
-ground(5, 19).
+emptyblock(5, 19).
 emptyblock(6, 19).
 ground(7, 19).
 ground(8, 19).
@@ -510,7 +510,7 @@ ground(2, 23).
 emptyblock(3, 23).
 emptyblock(4, 23).
 emptyblock(5, 23).
-ground(6, 23).
+emptyblock(6, 23).
 ground(7, 23).
 rock(8, 23).
 ground(9, 23).
@@ -532,7 +532,7 @@ emptyblock(2, 24).
 emptyblock(3, 24).
 emptyblock(4, 24).
 ground(5, 24).
-ground(6, 24).
+emptyblock(6, 24).
 ground(7, 24).
 ground(8, 24).
 emptyblock(9, 24).
@@ -554,7 +554,7 @@ rock(2, 25).
 ground(3, 25).
 rock(4, 25).
 ground(5, 25).
-ground(6, 25).
+emptyblock(6, 25).
 ground(7, 25).
 ground(8, 25).
 ground(9, 25).
@@ -598,7 +598,7 @@ ground(2, 27).
 ground(3, 27).
 emptyblock(4, 27).
 ground(5, 27).
-ground(6, 27).
+emptyblock(6, 27).
 ground(7, 27).
 emptyblock(8, 27).
 ground(9, 27).
@@ -620,7 +620,7 @@ ground(2, 28).
 ground(3, 28).
 ground(4, 28).
 emptyblock(5, 28).
-ground(6, 28).
+emptyblock(6, 28).
 emptyblock(7, 28).
 rock(8, 28).
 ground(9, 28).
@@ -642,7 +642,7 @@ ground(2, 29).
 rock(3, 29).
 ground(4, 29).
 ground(5, 29).
-ground(6, 29).
+emptyblock(6, 29).
 ground(7, 29).
 ground(8, 29).
 rock(9, 29).
@@ -664,8 +664,8 @@ rock(2, 30).
 ground(3, 30).
 ground(4, 30).
 ground(5, 30).
-ground(6, 30).
-ground(7, 30).
+emptyblock(6, 30).
+emptyblock(7, 30).
 ground(8, 30).
 ground(9, 30).
 ground(10, 30).
@@ -687,7 +687,7 @@ ground(3, 31).
 emptyblock(4, 31).
 ground(5, 31).
 wall(6, 31).
-ground(7, 31).
+emptyblock(7, 31).
 ground(8, 31).
 ground(9, 31).
 ground(10, 31).
@@ -695,9 +695,9 @@ ground(11, 31).
 ground(12, 31).
 ground(13, 31).
 ground(14, 31).
-emptyblock(15, 31).
+ground(15, 31).
 emptyblock(16, 31).
-emptyblock(17, 31).
+rock(17, 31).
 ground(18, 31).
 rock(19, 31).
 ground(20, 31).
@@ -709,7 +709,7 @@ ground(3, 32).
 ground(4, 32).
 ground(5, 32).
 wall(6, 32).
-ground(7, 32).
+emptyblock(7, 32).
 emptyblock(8, 32).
 ground(9, 32).
 ground(10, 32).
@@ -717,8 +717,8 @@ emptyblock(11, 32).
 emptyblock(12, 32).
 ground(13, 32).
 emptyblock(14, 32).
-rock(15, 32).
-ground(16, 32).
+emptyblock(15, 32).
+emptyblock(16, 32).
 rock(17, 32).
 ground(18, 32).
 ground(19, 32).
@@ -731,8 +731,8 @@ ground(3, 33).
 rock(4, 33).
 ground(5, 33).
 wall(6, 33).
-rock(7, 33).
-ground(8, 33).
+emptyblock(7, 33).
+rock(8, 33).
 ground(9, 33).
 ground(10, 33).
 emptyblock(11, 33).
@@ -753,16 +753,16 @@ ground(3, 34).
 ground(4, 34).
 ground(5, 34).
 wall(6, 34).
-ground(7, 34).
-ground(8, 34).
-ground(9, 34).
-ground(10, 34).
-ground(11, 34).
-ground(12, 34).
+emptyblock(7, 34).
+emptyblock(8, 34).
+emptyblock(9, 34).
+emptyblock(10, 34).
+emptyblock(11, 34).
+emptyblock(12, 34).
 emptyblock(13, 34).
-emptyblock(14, 34).
+ground(14, 34).
 emptyblock(15, 34).
-diamond(16, 34).
+emptyblock(16, 34).
 rock(17, 34).
 rock(18, 34).
 ground(19, 34).
@@ -775,17 +775,17 @@ emptyblock(3, 35).
 ground(4, 35).
 emptyblock(5, 35).
 wall(6, 35).
-ground(7, 35).
+emptyblock(7, 35).
 emptyblock(8, 35).
 emptyblock(9, 35).
 ground(10, 35).
-rock(11, 35).
-ground(12, 35).
+emptyblock(11, 35).
+emptyblock(12, 35).
 emptyblock(13, 35).
-rock(14, 35).
-ground(15, 35).
+emptyblock(14, 35).
+emptyblock(15, 35).
 emptyblock(16, 35).
-emptyblock(17, 35).
+rock(17, 35).
 rock(18, 35).
 ground(19, 35).
 ground(20, 35).
@@ -797,18 +797,18 @@ ground(3, 36).
 emptyblock(4, 36).
 ground(5, 36).
 wall(6, 36).
-ground(7, 36).
+emptyblock(7, 36).
 emptyblock(8, 36).
 ground(9, 36).
 ground(10, 36).
-diamond(11, 36).
-ground(12, 36).
+emptyblock(11, 36).
+emptyblock(12, 36).
 rock(13, 36).
 ground(14, 36).
-ground(15, 36).
-ground(16, 36).
+emptyblock(15, 36).
+emptyblock(16, 36).
 emptyblock(17, 36).
-emptyblock(18, 36).
+rock(18, 36).
 rock(19, 36).
 ground(20, 36).
 wall(21, 36).
@@ -819,17 +819,17 @@ ground(3, 37).
 ground(4, 37).
 ground(5, 37).
 wall(6, 37).
-diamond(7, 37).
+emptyblock(7, 37).
 ground(8, 37).
 ground(9, 37).
 ground(10, 37).
-ground(11, 37).
+emptyblock(11, 37).
 emptyblock(12, 37).
 emptyblock(13, 37).
 emptyblock(14, 37).
-rock(15, 37).
-ground(16, 37).
-emptyblock(17, 37).
+emptyblock(15, 37).
+emptyblock(16, 37).
+rock(17, 37).
 rock(18, 37).
 ground(19, 37).
 ground(20, 37).
@@ -846,12 +846,12 @@ emptyblock(8, 38).
 ground(9, 38).
 emptyblock(10, 38).
 ground(11, 38).
-ground(12, 38).
-ground(13, 38).
-ground(14, 38).
+emptyblock(12, 38).
+emptyblock(13, 38).
+emptyblock(14, 38).
 emptyblock(15, 38).
-diamond(16, 38).
-diamond(17, 38).
+emptyblock(16, 38).
+emptyblock(17, 38).
 ground(18, 38).
 ground(19, 38).
 ground(20, 38).
@@ -878,5 +878,5 @@ wall(18, 39).
 wall(19, 39).
 wall(20, 39).
 wall(21, 39).
-closer(13,34).
-player(3,11).
+closer(3,0).
+player(1,3).

@@ -1,7 +1,8 @@
 #maxint=41.
 
 %se non ci sono più diamanti closer è la porta
-closer(X,Y) :- door(X,Y), #count{Q,W: diamond(Q,W)}=0.
+closer(X,Y) :- door(X,Y), not aggira(X,Y), #count{Q,W: diamond(Q,W)}=0.
+closer(X,Y) :- door(X,Y), aggira(X,Y), #count{Q,W: diamond(Q,W)}=0, mindistEdge(M), distanceEdge(M,X,Y).
 
 distance(D, X,Y) :-player(A,S), diamond(X,Y), A>=X, S>=Y, Q=A-X, W=S-Y, D=Q+W.
 distance(D, X,Y) :-player(A,S), diamond(X,Y), A<X, S<Y, Q=X-A, W=Y-S, D=Q+W.
@@ -17,7 +18,13 @@ blockedPassage(X,Y) :- blockedPassage(X,Z), wall(X,Y), Y=Z+1.
 
 %vede se per arrivare al diamante deve aggirare
 aggira(X,Y) :- wallBetween(X,Y).
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), S>=MIN, S<=MAX,  blockedPassage(L,MIN), A<L, X>L.                        
+wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), S>=MIN, S<=MAX,  blockedPassage(L,MIN), A<L, X>L.
+wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), S>=MIN, S<=MAX,  blockedPassage(L,MIN), X<L, A>L.  
+
+%vede se pure per la porta va aggirato
+wallBetween(X,Y) :- player(A,S), door(X,Y), interval(MIN,MAX), S>=MIN, S<=MAX,  blockedPassage(L,MIN), A<L, X>L.
+wallBetween(X,Y) :- player(A,S), door(X,Y), interval(MIN,MAX), S>=MIN, S<=MAX,  blockedPassage(L,MIN), X<L, A>L.
+                 
 first(X,Y) :- blockedPassage(X,Y), not blockedPassage(X,Z), Z=Y-1.
 last(X,Y) :- blockedPassage(X,Y), not blockedPassage(X,Z), Z=Y+1.
 interval(F,L) :- first(X,F), last(X,L).

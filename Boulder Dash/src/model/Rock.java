@@ -63,6 +63,7 @@ public class Rock extends GameObject implements Sliding {
 								|| map.getTile(x+1, y) instanceof Living)) {
 
 					if(isFalling) {
+						/*
 						if(map.getTile(x+1, y) instanceof Player) {
 						
 							((Player)map.getTile(x+1, y)).respawn();
@@ -73,7 +74,7 @@ public class Rock extends GameObject implements Sliding {
 							map.getTile(x+1, y).destroy();
 							isFalling = false;
 						}
-					} else {
+					*/} else {
 						isFalling = true;
 						swap(x+1, y+1);
 						return true;
