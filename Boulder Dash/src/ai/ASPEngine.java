@@ -217,7 +217,7 @@ public class ASPEngine {
 		for(int x = 0; x < map.getDimX(); x++)
 			for(int y = 0; y < map.getDimY(); y++)
 				if(map.getTile(x, y) instanceof Player)
-					bw.write("emptyBlock("+ x +"," + y +")." +"\n");
+					bw.write("emptyblock("+ x +"," + y +")." +"\n");
 				else
 					bw.write(map.getTile(x, y).toString()+"\n");
 		bw.write("closer("+closerX + "," + closerY +")."+"\n");
@@ -258,8 +258,11 @@ public class ASPEngine {
 		} 
 		
 		//fine 2 for
-		
-			if(playerNow.equals(l)) {
+			//ricalcola se va in loop o si blocca per un motivo diverso dall'essere sul closer
+			if(playerNow.equals(l) || (l.contentEquals("") &&  (xprov!=closerX || yprov!=closerY))) 
+			
+			{
+				
 				System.out.print(playerNow + "  " + m + l);
 				try {
 					BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
