@@ -146,42 +146,12 @@ public class ASPEngine {
 	
 	public void callback() {
 		String m="";
+		boolean hasChanged=false;
 		String playerNow="player("+ (map.getPlayer().getY()) + "," + map.getPlayer().getX() + ").";
 		int xprov=0,yprov=0;
 		int move=-1;
 		Output o = handler.startSync();
 		AnswerSets answers = (AnswerSets) o;
-		
-		/*inizio parte
-		
-		for (AnswerSet a : answers.getAnswersets()) {
-			try {
-				for (String s : a.getAnswerSet()) {
-					if(s.indexOf("move")!=-1) {
-						System.out.println(s);
-						move = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
-						
-						if(move==0)
-							{m="player("+ (map.getPlayer().getY()+1) + "," + map.getPlayer().getX() + ")."; xprov=map.getPlayer().getY()+1; yprov=map.getPlayer().getX(); }
-						else if(move==1)
-							{m="player("+ map.getPlayer().getY() + "," + (map.getPlayer().getX()-1) + ")."; xprov=map.getPlayer().getY(); yprov=map.getPlayer().getX()-1;}
-						else if(move==2)
-							{m="player("+ map.getPlayer().getY() + "," + (map.getPlayer().getX()+1) + ")."; xprov=map.getPlayer().getY(); yprov=map.getPlayer().getX()+1;}
-						else
-							{m="player("+ (map.getPlayer().getY()-1) + "," + map.getPlayer().getX() + ")."; xprov=map.getPlayer().getY()-1; yprov=map.getPlayer().getX();}
-						
-						
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
-		
-		
-		
-		*/ //fine parte
 		
 		
 		
@@ -210,16 +180,25 @@ public class ASPEngine {
 				e.printStackTrace();
 			}
 
-		}//fine for
+		}//fine primo for
 		
 		try {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
 		for(int x = 0; x < map.getDimX(); x++)
-			for(int y = 0; y < map.getDimY(); y++)
-				if(map.getTile(x, y) instanceof Player)
+			for(int y = 0; y < map.getDimY(); y++) {
+				if(map.getTile(x+1, y) instanceof Player && map.getTile(x, y) instanceof Rock) {
+					
 					bw.write("emptyblock("+ x +"," + y +")." +"\n");
+					bw.write("rock(" + x+1 + "," + y + ")." +"\n");
+					hasChanged=true;
+					break;
+				}
+				else if( map.getTile(x, y) instanceof Player && !(map.getTile(x-1, y) instanceof Rock) ) {
+					bw.write("emptyblock("+ x +"," + y +")." +"\n");
+				}
 				else
 					bw.write(map.getTile(x, y).toString()+"\n");
+			}
 		bw.write("closer("+closerX + "," + closerY +")."+"\n");
 		bw.write(m);
 		bw.close();
@@ -228,38 +207,43 @@ public class ASPEngine {
 		}
 		
 		String l="";
-		o = handler.startSync();
-		answers = (AnswerSets) o; 
-		//System.out.println(answers.getAnswersets().size());
-		for (AnswerSet a : answers.getAnswersets()) {
-			try {
-				for (String s : a.getAnswerSet()) {
-					if(s.indexOf("move")!=-1) {
-						System.out.println(s);
-						int move2 = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
-						
-						if(move2==0)
-							l="player("+ (xprov+1) + "," + yprov + ").";
-						else if(move2==1)
-							l="player("+ xprov + "," + (yprov-1) + ").";
-						else if(move2==2)
-							l="player("+ xprov + "," + (yprov+1) + ").";
-						else
-							l="player("+ (xprov-1) + "," + yprov + ").";
-						
-					
+		
+		if(!hasChanged) {
 			
+			o = handler.startSync();
+			answers = (AnswerSets) o; 
+			//System.out.println(answers.getAnswersets().size());
+			for (AnswerSet a : answers.getAnswersets()) {
+				try {
+					for (String s : a.getAnswerSet()) {
+						if(s.indexOf("move")!=-1) {
+							System.out.println(s);
+							int move2 = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
+							
+							if(move2==0)
+								l="player("+ (xprov+1) + "," + yprov + ").";
+							else if(move2==1)
+								l="player("+ xprov + "," + (yprov-1) + ").";
+							else if(move2==2)
+								l="player("+ xprov + "," + (yprov+1) + ").";
+							else
+								l="player("+ (xprov-1) + "," + yprov + ").";
+							
+						
+				
+						}
 					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+				
 			}
-			
-		} 
+		
 		
 		//fine 2 for
-			//ricalcola se va in loop o si blocca per un motivo diverso dall'essere sul closer
-			if(playerNow.equals(l) || (l.contentEquals("") &&  (xprov!=closerX || yprov!=closerY))) 
+			//ricalcola se va in loop o si blocca per un motivo diverso dall'essere sul closer o perchè non ha dato nulla nonostante non sia cambiato
+		
+			if(playerNow.equals(l) || (l.contentEquals("") && (xprov!=closerX || yprov!=closerY))) 
 			
 			{
 				
@@ -299,7 +283,7 @@ public class ASPEngine {
 				}
 				
 			} // fine if 
-
+	}
 			
 			if(!player.hasMoved()) {
 				synchronized (this) {
@@ -307,6 +291,6 @@ public class ASPEngine {
 					 }
 				player.setMoved(false);
 			}
-		
+		hasChanged=false;
 	}
 }

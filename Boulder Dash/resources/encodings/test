@@ -1,4 +1,4 @@
-#maxint=411.
+#maxint=4111.
 
 move(0) | move(1) | move(2) | move(3).
 % d         l         r         u
@@ -40,11 +40,30 @@ next(X,Y) :- move(0), player(Z, Y), X=Z+1.
 :-diamond(X,_), next(X,Y), rock(X,Z), Z=Y-1, player(A,S), A=X+1, S=Z+1, move(3).
 :- closer(X,A), player(X,Y), rock(X,Z), Z=Y-1, A<Y,  move(2).
 
+% se davanti ti trovi un muro di rocce, aggiralo da sopra (se lo aggiri da sotto potresti trovarti a passare sotto 2 o + rocce)
+wallOfRocks(X,S) :- player(X,Y), closer(_,Z), rock(X,S), S<Y, Z<S.
+wallOfRocks(X,Y) :- wallOfRocks(A,S), rock(X,Y), X=A-1, Y=S-1. 
+wallOfRocks(X,Y) :- wallOfRocks(A,S), rock(X,Y), X=A-1, Y=S+1. 
+wallOfRocks(X,Y) :- wallOfRocks(A,S), rock(X,Y), X=A+1, Y=S-1.
+wallOfRocks(X,Y) :- wallOfRocks(A,S), rock(X,Y), X=A+1, Y=S+1.  
+
+first(X,Y) :- wallOfRocks(X,Y), not wallOfRocks(A,S), A=X-1, S=Y+1, not wallOfRocks(A,G), G=Y-1.
+last(X,Y) :- wallOfRocks(X,Y), not wallOfRocks(A,S), A=X+1, S=Y+1, not wallOfRocks(A,G), G=Y-1.
+:- player(X,Y), wallOfRocks(X,Z), closer(A,S), S<Z, Z<Y, first(UP,_), last(DO,_), A<DO, A>UP, intervalfreeOr(Y,H), H=Z+1, move(M), M!=3. 
+
+
+%se davanti è libero e il diamante è circondato da rocce, aggiralo andando nella direzione per cui è libero
 :- closer(X,Y), rock(Z,Y), Z=X-1, rock(X,W), W=Y+1, player(A,S), A<X, D=Y-1, S>D, F=Y+2, S<F, G=Z-1, intervalfreeVert(A,G), move(M), M!=1.
 intervalfreeVert(X,Z) :- player(X,Y), ground(Z,Y), Z=X+1.
 intervalfreeVert(X,Z) :- player(X,Y), emptyblock(Z,Y), Z=X+1. 
 intervalfreeVert(X,Z) :- intervalfreeVert(X,Y), ground(Z,Y), Z=X+1.
 intervalfreeVert(X,Z) :- intervalfreeVert(X,Y), emptyblock(Z,Y), Z=X+1.
+
+intervalfreeOr(Y,Y) :- player(X,Y).
+intervalfreeOr(Y,Z) :- player(X,Y), ground(X,Z), Z=Y-1.
+intervalfreeOr(Y,Z) :- player(X,Y), emptyblock(X,Z), Z=Y-1. 
+intervalfreeOr(Y,Z) :- intervalfreeOr(X,Y), ground(X,Z), Z=Y-1.
+intervalfreeOr(Y,Z) :- intervalfreeOr(X,Y), emptyblock(X,Y), Z=Y-1.
 
 vector(X,Y) :- next(A,S), closer(D,Q), A>=D, S>=Q, F=A-D, G=S-Q, X=F*F, Y=G*G.
 vector(X,Y) :- next(A,S), closer(D,Q), A<D, S<Q, F=D-A, G=Q-S, X=F*F, Y=G*G.
@@ -56,4 +75,4 @@ vector(X,Y) :- next(A,S), closer(D,Q), A<D, S>=Q, F=D-A, G=S-Q, X=F*F, Y=G*G.
 :-loop(X), move(X).
 :~ vector(X,Y), N=X+Y. [N :3]
 %:~ next(X,Y), rock(Z,Y), Z=X-1. [1:2]
-:~next(X,Y). [X:1]
+%:~next(X,Y). [X:1]
