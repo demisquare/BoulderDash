@@ -108,7 +108,7 @@ public class ASPEngine {
 			bw.close();
 			
 			System.out.println("godverdomme"+ closerX + " "+ closerY +" "+ map.getPlayer().getY() + " "+ map.getPlayer().getX());
-			if( (closerX==0 || closerY==0) || (closerX==map.getPlayer().getY() && closerY==map.getPlayer().getX()) )
+			if( (closerX==0 || closerY==0) || (closerX==map.getPlayer().getY() && closerY==map.getPlayer().getX()) || (closerX==map.getPlayer().getY()-1 && closerY==map.getPlayer().getX() ) )
 			{
 				Output o = handlerDiamonds.startSync();
 				AnswerSets answers = (AnswerSets) o;
