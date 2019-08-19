@@ -31,6 +31,7 @@ public class ASPEngine {
 	Thread t;
 	int closerX;
 	int closerY;
+	int preClosX, preClosY;
 	int xprec=0,yprec=0;
 	Level level;
 	GameMap map;
@@ -101,6 +102,7 @@ public class ASPEngine {
 	
 	private void updateFacts() {
 		try {
+			
 			BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
 			for(int x = 0; x < map.getDimX(); x++)
 				for(int y = 0; y < map.getDimY(); y++) {
@@ -110,11 +112,28 @@ public class ASPEngine {
 					else bw.write(map.getTile(x, y).toString()+"\n");
 					
 				}
+			bw.write("prec("+ preClosX + ", " + preClosY + ")." +"\n");
 			bw.close();
 			
 			System.out.println("godverdomme"+ closerX + " "+ closerY +" "+ map.getPlayer().getY() + " "+ map.getPlayer().getX());
-			if( (closerX==0 || closerY==0) || (closerX==map.getPlayer().getY() && closerY==map.getPlayer().getX()) || (closerX==map.getPlayer().getY()-1 && closerY==map.getPlayer().getX() ) )
+			if( (closerX==0 || closerY==0) || 
+				(closerX==map.getPlayer().getY() && closerY==map.getPlayer().getX()) || 
+				(closerX==map.getPlayer().getY()-1 && closerY==map.getPlayer().getX()) )
 			{
+				
+				/*
+				BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
+				for(int x = 0; x < map.getDimX(); x++)
+					for(int y = 0; y < map.getDimY(); y++) {
+						if(map.getNumDiamonds()==0 && map.getTile(x, y) instanceof Door)
+							bw.write("diamond(" + y + ", " + x + ")." + "\n");
+						
+						else bw.write(map.getTile(x, y).toString()+"\n");
+						
+					}
+				bw.write("prec("+ closerX + ", " + closerY + ")." +"\n");
+				bw.close();
+				*/
 				Output o = handlerDiamonds.startSync();
 				AnswerSets answers = (AnswerSets) o;
 				System.out.println("godverdomme"+ closerX + closerY);
@@ -123,6 +142,7 @@ public class ASPEngine {
 						for (String s : a.getAnswerSet()) {
 							if(s.indexOf("closer")!=-1) {
 								System.out.println(s);
+								preClosX=closerX; preClosY=closerY;
 								closerX = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(",")));
 								closerY = Integer.parseInt(s.substring(s.indexOf(",")+1,s.indexOf(")")));
 								
