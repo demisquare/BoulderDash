@@ -26,7 +26,7 @@ public class World {
 		
 		isComplete = false;
 		//sostituire con il filename
-		map = new GameMap("level" + stage);
+		map = new GameMap("level" +stage);
 		
 		//default a true (per evitare un aggiornamento immediato)
 		hasChanged = true;

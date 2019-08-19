@@ -103,8 +103,13 @@ public class ASPEngine {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
 			for(int x = 0; x < map.getDimX(); x++)
-				for(int y = 0; y < map.getDimY(); y++)
-					bw.write(map.getTile(x, y).toString()+"\n");
+				for(int y = 0; y < map.getDimY(); y++) {
+					if(map.getNumDiamonds()==0 && map.getTile(x, y) instanceof Door)
+						bw.write("diamond(" + y + ", " + x + ")." + "\n");
+					
+					else bw.write(map.getTile(x, y).toString()+"\n");
+					
+				}
 			bw.close();
 			
 			System.out.println("godverdomme"+ closerX + " "+ closerY +" "+ map.getPlayer().getY() + " "+ map.getPlayer().getX());

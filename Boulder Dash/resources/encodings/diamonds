@@ -1,4 +1,4 @@
-#maxint=41.
+#maxint=4111.
 
 %se non ci sono più diamanti closer è la porta
 closer(X,Y) :- door(X,Y), not aggira(X,Y), #count{Q,W: diamond(Q,W)}=0.
