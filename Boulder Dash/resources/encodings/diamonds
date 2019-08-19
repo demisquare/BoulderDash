@@ -17,6 +17,8 @@ blockedPassage(X,Y) :- blockedPassage(X,Z), wall(X,Y), Y=Z+1.
 aggira(X,Y) :- wallBetween(X,Y).
 wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), S>=MIN, S<=MAX,  blockedPassage(L,MIN), A<L, X>L.
 wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), S>=MIN, S<=MAX,  blockedPassage(L,MIN), X<L, A>L.  
+wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), A<L, X>L.
+wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), X<L, A>L.  
 
                  
 first(X,Y) :- blockedPassage(X,Y), not blockedPassage(X,Z), Z=Y-1.
