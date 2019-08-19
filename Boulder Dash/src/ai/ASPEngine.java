@@ -102,7 +102,7 @@ public class ASPEngine {
 	
 	private void updateFacts() {
 		try {
-			
+			/*
 			BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
 			for(int x = 0; x < map.getDimX(); x++)
 				for(int y = 0; y < map.getDimY(); y++) {
@@ -114,14 +114,14 @@ public class ASPEngine {
 				}
 			bw.write("prec("+ preClosX + ", " + preClosY + ")." +"\n");
 			bw.close();
-			
+			*/
 			System.out.println("godverdomme"+ closerX + " "+ closerY +" "+ map.getPlayer().getY() + " "+ map.getPlayer().getX());
 			if( (closerX==0 || closerY==0) || 
 				(closerX==map.getPlayer().getY() && closerY==map.getPlayer().getX()) || 
 				(closerX==map.getPlayer().getY()-1 && closerY==map.getPlayer().getX()) )
 			{
 				
-				/*
+				
 				BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
 				for(int x = 0; x < map.getDimX(); x++)
 					for(int y = 0; y < map.getDimY(); y++) {
@@ -131,9 +131,9 @@ public class ASPEngine {
 						else bw.write(map.getTile(x, y).toString()+"\n");
 						
 					}
-				bw.write("prec("+ closerX + ", " + closerY + ")." +"\n");
+				bw.write("prec("+ preClosX + ", " + preClosY + ")." +"\n");
 				bw.close();
-				*/
+				
 				Output o = handlerDiamonds.startSync();
 				AnswerSets answers = (AnswerSets) o;
 				System.out.println("godverdomme"+ closerX + closerY);
