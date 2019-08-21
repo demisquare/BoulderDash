@@ -28,10 +28,10 @@ wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=M
 wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), X<L, A>L.  
 
 
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), S<L, Y>L.
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), Y<L, S>L.  
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), S<L, Y>L.
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), Y<L, S>L. 
+wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
+wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), Y<L, S>L.  
+wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
+wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), Y<L, S>L. 
 
                  
 first(X,Y) :- blockedPassage(X,Y), not blockedPassage(X,Z), Z=Y-1.
