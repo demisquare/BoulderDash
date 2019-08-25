@@ -42,14 +42,21 @@ next(X,Y) :- move(0), player(Z, Y), X=Z+1.
 
 % se davanti ti trovi un muro di rocce, aggiralo da sopra (se lo aggiri da sotto potresti trovarti a passare sotto 2 o + rocce)
 wallOfRocks(X,S) :- player(X,Y), closer(_,Z), rock(X,S), S<Y, Z<S.
+
+wallOfRocks(X,S) :- player(X,Y), closer(_,Z), rock(X,S), S>Y, Z>S.
+
 wallOfRocks(X,Y) :- wallOfRocks(A,S), rock(X,Y), X=A-1, Y=S-1. 
 wallOfRocks(X,Y) :- wallOfRocks(A,S), rock(X,Y), X=A-1, Y=S+1. 
 wallOfRocks(X,Y) :- wallOfRocks(A,S), rock(X,Y), X=A+1, Y=S-1.
-wallOfRocks(X,Y) :- wallOfRocks(A,S), rock(X,Y), X=A+1, Y=S+1.  
+wallOfRocks(X,Y) :- wallOfRocks(A,S), rock(X,Y), X=A+1, Y=S+1.
 
-first(X,Y) :- wallOfRocks(X,Y), not wallOfRocks(A,S), A=X-1, S=Y+1, not wallOfRocks(A,G), G=Y-1.
+wallOfRocks(X,S) :- wallOfRocks(A,S), rock(X,S), X=A-1.  
+
+first(X,Y) :- wallOfRocks(X,Y), not wallOfRocks(A,S), A=X-1, S=Y+1, not wallOfRocks(A,G), G=Y-1, not wallOfRocks(A,Y).
 last(X,Y) :- wallOfRocks(X,Y), not wallOfRocks(A,S), A=X+1, S=Y+1, not wallOfRocks(A,G), G=Y-1.
 :- player(X,Y), wallOfRocks(X,Z), closer(A,S), S<Z, Z<Y, first(UP,_), last(DO,_), A<DO, A>UP, intervalfreeOr(Y,H), H=Z+1, move(M), M!=3. 
+%:- player(X,Y), wallOfRocks(X,Z), closer(A,S), S>Z, Z>Y, first(UP,U), last(DO,_), A<=DO, A>=UP, intervalfreeOr(H,Y), H=Z-1, move(M), M!=3, not wall(UPP,U), UPP=UP-1.
+:- player(X,Y), wallOfRocks(X,Z), closer(A,S), S>Z, Z>Y, first(UP,U), last(DO,D), A<=DO, A>=UP, UP<DO, Diff=D-U,Diff<2, intervalfreeOr(H,Y), H=Z-1, move(M), M!=3, not wall(UPP,U), UPP=UP-1.
 
 
 %se davanti è libero e il diamante è circondato da rocce, aggiralo andando nella direzione per cui è libero
@@ -61,6 +68,10 @@ intervalfreeVert(X,Z) :- intervalfreeVert(X,Y), emptyblock(Z,Y), Z=X+1.
 
 intervalfreeOr(Y,Y) :- player(X,Y).
 intervalfreeOr(Y,Z) :- player(X,Y), ground(X,Z), Z=Y-1.
+
+intervalfreeOr(Z,Y) :- player(X,Y), ground(X,Z), Z=Y+1.
+intervalfreeOr(Z,Y) :- player(X,Y), emptyblock(X,Z), Z=Y+1.
+
 intervalfreeOr(Y,Z) :- player(X,Y), emptyblock(X,Z), Z=Y-1. 
 intervalfreeOr(Y,Z) :- intervalfreeOr(X,Y), ground(X,Z), Z=Y-1.
 intervalfreeOr(Y,Z) :- intervalfreeOr(X,Y), emptyblock(X,Y), Z=Y-1.
