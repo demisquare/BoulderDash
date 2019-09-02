@@ -7,6 +7,7 @@ import java.io.Serializable;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
+import ai.ASPEngine;
 import audio.Music;
 
 import menu.Menu;
@@ -31,6 +32,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 
 	public Level level;
 	public Score score;
+	public ASPEngine ai;
 	
 	public boolean isReset;	
 	
@@ -53,6 +55,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		setEnabled(true);
 		
 		level = new Level(this, stage, null);
+		ai = new ASPEngine(this);
 		//level.addKeyListener(level);
 			
 		score_init();
@@ -92,8 +95,10 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		
 		if(stage < 3) {
 			
+			ai.stop();
 			level.closeThread();
 			level = new Level(this, stage, null);
+			ai = new ASPEngine(this);
 			//level.addKeyListener(level);
 			
 			score = new Score(frame, menu, this, level);
@@ -105,6 +110,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 			
 			level.setScore(score);
 			level.launchThread();
+			ai.start();
 			isReset = true;
 			
 			setVisible(true);
@@ -121,6 +127,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	public synchronized void closeThread() {
 		if(t2 != null && t2.isAlive())
 			t2.interrupt();
+		ai.stop();
 		level.closeThread();
 	}
 
