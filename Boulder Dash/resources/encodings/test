@@ -55,8 +55,8 @@ wallOfRocks(X,S) :- wallOfRocks(A,S), rock(X,S), X=A-1.
 first(X,Y) :- wallOfRocks(X,Y), not wallOfRocks(A,S), A=X-1, S=Y+1, not wallOfRocks(A,G), G=Y-1, not wallOfRocks(A,Y).
 last(X,Y) :- wallOfRocks(X,Y), not wallOfRocks(A,S), A=X+1, S=Y+1, not wallOfRocks(A,G), G=Y-1.
 
-%se le rocce si trovano tra te e il diamante e davanti a te c'è spazio libero, muoviti in alto
-:- player(X,Y), wallOfRocks(X,Z), closer(A,S), S<Z, Z<Y, first(UP,_), last(DO,_), A<DO, A>UP, intervalfreeOr(Y,H), H=Z+1, move(M), M!=3. 
+%se le rocce si trovano tra te e il diamante e davanti a te c'è spazio libero, muoviti in alto 
+:- player(X,Y), wallOfRocks(X,Z), closer(A,S), S<Z, Z<Y, first(UP,U), last(DO,D), A<DO, A>UP, UP<DO, Diff=D-U,Diff<2, intervalfreeOr(Y,H), H=Z+1, move(M), M!=3, not wall(UPP,U), UPP=UP-1. 
 :- player(X,Y), wallOfRocks(X,Z), closer(A,S), S>Z, Z>Y, first(UP,U), last(DO,D), A<=DO, A>=UP, UP<DO, Diff=D-U,Diff<2, intervalfreeOr(H,Y), H=Z-1, move(M), M!=3, not wall(UPP,U), UPP=UP-1.
 
 
