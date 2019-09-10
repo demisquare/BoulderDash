@@ -30,10 +30,10 @@ interval(F,L) :- first(X,F), last(X,L).
 
 % vede se per arrivare al diamante deve aggirare, ovvero se dato un intervallo in cui ci sono i muri il player o il diamante si trova dall'altra parte
 aggira(X,Y) :- wallBetween(X,Y).
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), A<L, X>L.
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), X<L, A>L.  
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), A<L, X>L.
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), X<L, A>L.  
+wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  A<L, X>L.
+wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  X<L, A>L.  
+wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  A<L, X>L.
+wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  X<L, A>L.  
 
 % stesso ma in caso di muri verticali
 wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
