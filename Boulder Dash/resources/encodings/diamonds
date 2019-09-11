@@ -1,10 +1,10 @@
 #maxint=2000.
 
 %calcola la distanza tra il player e i diamanti, i vari casi sono per evitare valori negativi.
-distance(D, X,Y) :-player(A,S), diamond(X,Y), A>=X, S>=Y, Q=A-X, W=S-Y, D=Q+W.
-distance(D, X,Y) :-player(A,S), diamond(X,Y), A<X, S<Y, Q=X-A, W=Y-S, D=Q+W.
-distance(D, X,Y) :-player(A,S), diamond(X,Y), A>=X, S<Y, Q=A-X, W=Y-S, D=Q+W.
-distance(D, X,Y) :-player(A,S), diamond(X,Y), A<X, S>=Y, Q=X-A, W=S-Y, D=Q+W.
+distance(D, X,Y) :-player(A,S), diamond(X,Y), A>=X, S>=Y, D1=A-X, D2=S-Y, Q=D1*D1, W=D2*D2, D=Q+W.
+distance(D, X,Y) :-player(A,S), diamond(X,Y), A<X, S<Y, D1=X-A, D2=Y-S,Q=D1*D1, W=D2*D2, D=Q+W.
+distance(D, X,Y) :-player(A,S), diamond(X,Y), A>=X, S<Y, D1=A-X, D2=Y-S,Q=D1*D1, W=D2*D2, D=Q+W.
+distance(D, X,Y) :-player(A,S), diamond(X,Y), A<X, S>=Y, D1=X-A, D2=S-Y,Q=D1*D1, W=D2*D2, D=Q+W.
 
 %calcola la distanza minima tra le distanze dei diamanti per cui non si deve aggirare dei muri, e il closer sarà il diamante che ha la distanza minima
 mindist(M) :- #min{D: distance(D,A,S), not aggira(A,S), not player(A,S)}= M.
