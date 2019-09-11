@@ -48,13 +48,27 @@ edge(X,Z) :- blockedPassage(X,Y), first(X,Y), Z=Y-1, Z>0.
 edge(Z,Y) :- blockedPassageVERT(X,Y), lastDO(X,Y), Z=X+1, Z<21.
 edge(Z,Y) :- blockedPassageVERT(X,Y), firstUP(X,Y), Z=X-1, Z>0.
 
+% anche i bordi potrebbero essere inaccessibili direttamente
+wallBetween(X,Y) :- player(A,S), edge(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  A<L, X>L.
+wallBetween(X,Y) :- player(A,S), edge(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  X<L, A>L.  
+wallBetween(X,Y) :- player(A,S), edge(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  A<L, X>L.
+wallBetween(X,Y) :- player(A,S), edge(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  X<L, A>L.  
+
+% stesso ma in caso di muri verticali
+wallBetween(X,Y) :- player(A,S), edge(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
+wallBetween(X,Y) :- player(A,S), edge(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), Y<L, S>L.  
+wallBetween(X,Y) :- player(A,S), edge(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
+wallBetween(X,Y) :- player(A,S), edge(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), Y<L, S>L. 
+
+
+
 %distanza dai bordi
-distanceEdge(D, X,Y) :-player(A,S), edge(X,Y), A>=X, S>=Y, Q=A-X, W=S-Y, D=Q+W.
-distanceEdge(D, X,Y) :-player(A,S), edge(X,Y), A<X, S<Y, Q=X-A, W=Y-S, D=Q+W.
-distanceEdge(D, X,Y) :-player(A,S), edge(X,Y), A>=X, S<Y, Q=A-X, W=Y-S, D=Q+W.
-distanceEdge(D, X,Y) :-player(A,S), edge(X,Y), A<X, S>=Y, Q=X-A, W=S-Y, D=Q+W.
+distanceEdge(D, X,Y) :-player(A,S), edge(X,Y), A>=X, S>=Y, D1=A-X, D2=S-Y, Q=D1*D1, W=D2*D2, D=Q+W.
+distanceEdge(D, X,Y) :-player(A,S), edge(X,Y), A<X, S<Y, D1=X-A, D2=Y-S, Q=D1*D1, W=D2*D2, D=Q+W.
+distanceEdge(D, X,Y) :-player(A,S), edge(X,Y), A>=X, S<Y, D1=A-X, D2=Y-S,Q=D1*D1, W=D2*D2, D=Q+W.
+distanceEdge(D, X,Y) :-player(A,S), edge(X,Y), A<X, S>=Y, D1=X-A, D2=S-Y, Q=D1*D1, W=D2*D2,D=Q+W.
 
 %calcola la minima
-mindistEdge(M) :- #min{D: distanceEdge(D,A,S), not player(A,S), not prec(A,S)}= M.
+mindistEdge(M) :- #min{D: distanceEdge(D,A,S), not player(A,S), not prec(A,S), not aggira(A,S)}= M.
 % in caso non ci siano distanze minime dal diamanti senza bisogno di aggirare, vuol dire che dobbiamo aggirare un muro, quindi closer diventa il bordo più vicino
 closer(X,Y) :- #count{D: mindist(D)}=0, mindistEdge(M), distanceEdge(M,X,Y).
