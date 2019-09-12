@@ -15,6 +15,9 @@ public class Player extends GameObject implements Living {
 	private int pushRockCounter;
 // 	conta il numero di diamanti raccolti
 	int diamondCount;
+	
+//  conta le vittorie
+	private int victories;
 // 	variabile inutile, viene usata per le animazioni ma si puo' sostituire
 	private int speed;
 
@@ -31,6 +34,7 @@ public class Player extends GameObject implements Living {
 		speed = s;
 		lifes = 3;
 		lastDir = -1;
+		victories = 0;
 	}
 
 	@Override public boolean update() { return false; }
@@ -87,7 +91,7 @@ public class Player extends GameObject implements Living {
 
 			// variare il parametro da 1 in su per semplificare (meno diamanti da
 			// raccogliere)
-		} else if (g instanceof Door && diamondCount >= map.getNumDiamonds() / 1) {
+		} else if (g instanceof Door && diamondCount >= map.getNumDiamonds() / 2) {
 
 			++movingCounter;
 			pushRockCounter = 0;
@@ -132,7 +136,9 @@ public class Player extends GameObject implements Living {
 			} else if (map.getTile(i, j) instanceof Door) {
 	
 				moved = true;
-				map.setWinCon(true);
+				++victories;
+				if(!(this instanceof Host))
+					map.setWinCon(true);
 				destroy();
 				return true;
 	
@@ -166,6 +172,7 @@ public class Player extends GameObject implements Living {
 	}
 
 	public int getLifes() 						{ return lifes; }
+	public int getVictories() 					{ return victories; }
 
 	public int getLastDir() 					{ return lastDir; }
 	public void setLastDir(int lastDir) 		{ this.lastDir = lastDir; }
