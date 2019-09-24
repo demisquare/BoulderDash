@@ -1,13 +1,13 @@
 #maxint=2000.
 
-%calcola la distanza tra il player e i diamanti, i vari casi sono per evitare valori negativi.
-distance(D, X,Y) :-player(A,S), diamond(X,Y), A>=X, S>=Y, D1=A-X, D2=S-Y, Q=D1*D1, W=D2*D2, D=Q+W.
-distance(D, X,Y) :-player(A,S), diamond(X,Y), A<X, S<Y, D1=X-A, D2=Y-S,Q=D1*D1, W=D2*D2, D=Q+W.
-distance(D, X,Y) :-player(A,S), diamond(X,Y), A>=X, S<Y, D1=A-X, D2=Y-S,Q=D1*D1, W=D2*D2, D=Q+W.
-distance(D, X,Y) :-player(A,S), diamond(X,Y), A<X, S>=Y, D1=X-A, D2=S-Y,Q=D1*D1, W=D2*D2, D=Q+W.
+%calcola la distanza tra il host e i diamanti, i vari casi sono per evitare valori negativi.
+distance(D, X,Y) :-host(A,S), diamond(X,Y), A>=X, S>=Y, D1=A-X, D2=S-Y, Q=D1*D1, W=D2*D2, D=Q+W.
+distance(D, X,Y) :-host(A,S), diamond(X,Y), A<X, S<Y, D1=X-A, D2=Y-S,Q=D1*D1, W=D2*D2, D=Q+W.
+distance(D, X,Y) :-host(A,S), diamond(X,Y), A>=X, S<Y, D1=A-X, D2=Y-S,Q=D1*D1, W=D2*D2, D=Q+W.
+distance(D, X,Y) :-host(A,S), diamond(X,Y), A<X, S>=Y, D1=X-A, D2=S-Y,Q=D1*D1, W=D2*D2, D=Q+W.
 
 %calcola la distanza minima tra le distanze dei diamanti per cui non si deve aggirare dei muri, e il closer sarà il diamante che ha la distanza minima
-mindist(M) :- #min{D: distance(D,A,S), not aggira(A,S), not player(A,S)}= M.
+mindist(M) :- #min{D: distance(D,A,S), not aggira(A,S), not host(A,S)}= M.
 closer(X,Y) :-  distance(M, X,Y), mindist(M), not aggira(X,Y).
 
 %vede le parti di muri continui ricorsivamente, ovvero quei muri che non sono quelli dei bordi e che hanno un altro muro accanto
@@ -28,18 +28,18 @@ first(X,Y) :- blockedPassage(X,Y), not blockedPassage(X,Z), Z=Y-1.
 last(X,Y) :- blockedPassage(X,Y), not blockedPassage(X,Z), Z=Y+1.
 interval(F,L) :- first(X,F), last(X,L).
 
-% vede se per arrivare al diamante deve aggirare, ovvero se dato un intervallo in cui ci sono i muri il player o il diamante si trova dall'altra parte
+% vede se per arrivare al diamante deve aggirare, ovvero se dato un intervallo in cui ci sono i muri il host o il diamante si trova dall'altra parte
 aggira(X,Y) :- wallBetween(X,Y).
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  A<L, X>L.
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  X<L, A>L.  
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  A<L, X>L.
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  X<L, A>L.  
+wallBetween(X,Y) :- host(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  A<L, X>L.
+wallBetween(X,Y) :- host(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  X<L, A>L.  
+wallBetween(X,Y) :- host(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  A<L, X>L.
+wallBetween(X,Y) :- host(A,S), diamond(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  X<L, A>L.  
 
 % stesso ma in caso di muri verticali
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), Y<L, S>L.  
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
-wallBetween(X,Y) :- player(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), Y<L, S>L. 
+wallBetween(X,Y) :- host(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
+wallBetween(X,Y) :- host(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), Y<L, S>L.  
+wallBetween(X,Y) :- host(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
+wallBetween(X,Y) :- host(A,S), diamond(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), Y<L, S>L. 
 
 % calcola i bordi, ovvero il primo punto in cui non c'è più il muro
 edge(X,Z) :- blockedPassage(X,Y), last(X,Y), Z=Y+1, Z<40.
@@ -49,26 +49,26 @@ edge(Z,Y) :- blockedPassageVERT(X,Y), lastDO(X,Y), Z=X+1, Z<21.
 edge(Z,Y) :- blockedPassageVERT(X,Y), firstUP(X,Y), Z=X-1, Z>0.
 
 % anche i bordi potrebbero essere inaccessibili direttamente
-wallBetween(X,Y) :- player(A,S), edge(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  A<L, X>L.
-wallBetween(X,Y) :- player(A,S), edge(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  X<L, A>L.  
-wallBetween(X,Y) :- player(A,S), edge(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  A<L, X>L.
-wallBetween(X,Y) :- player(A,S), edge(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  X<L, A>L.  
+wallBetween(X,Y) :- host(A,S), edge(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  A<L, X>L.
+wallBetween(X,Y) :- host(A,S), edge(X,Y), interval(MIN,MAX), MIN!=MAX, S>=MIN, S<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  X<L, A>L.  
+wallBetween(X,Y) :- host(A,S), edge(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  A<L, X>L.
+wallBetween(X,Y) :- host(A,S), edge(X,Y), interval(MIN,MAX), MIN!=MAX, Y>=MIN, Y<=MAX,  blockedPassage(L,MIN), blockedPassage(L,MAX),  X<L, A>L.  
 
 % stesso ma in caso di muri verticali
-wallBetween(X,Y) :- player(A,S), edge(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
-wallBetween(X,Y) :- player(A,S), edge(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), Y<L, S>L.  
-wallBetween(X,Y) :- player(A,S), edge(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
-wallBetween(X,Y) :- player(A,S), edge(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), Y<L, S>L. 
+wallBetween(X,Y) :- host(A,S), edge(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
+wallBetween(X,Y) :- host(A,S), edge(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, A>=MIN, A<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), Y<L, S>L.  
+wallBetween(X,Y) :- host(A,S), edge(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), S<L, Y>L.
+wallBetween(X,Y) :- host(A,S), edge(X,Y), intervalVERT(MIN,MAX), MIN!=MAX, X>=MIN, X<=MAX,  blockedPassageVERT(MIN,L), blockedPassageVERT(MAX,L), Y<L, S>L. 
 
 
 
 %distanza dai bordi
-distanceEdge(D, X,Y) :-player(A,S), edge(X,Y), A>=X, S>=Y, D1=A-X, D2=S-Y, Q=D1*D1, W=D2*D2, D=Q+W.
-distanceEdge(D, X,Y) :-player(A,S), edge(X,Y), A<X, S<Y, D1=X-A, D2=Y-S, Q=D1*D1, W=D2*D2, D=Q+W.
-distanceEdge(D, X,Y) :-player(A,S), edge(X,Y), A>=X, S<Y, D1=A-X, D2=Y-S,Q=D1*D1, W=D2*D2, D=Q+W.
-distanceEdge(D, X,Y) :-player(A,S), edge(X,Y), A<X, S>=Y, D1=X-A, D2=S-Y, Q=D1*D1, W=D2*D2,D=Q+W.
+distanceEdge(D, X,Y) :-host(A,S), edge(X,Y), A>=X, S>=Y, D1=A-X, D2=S-Y, Q=D1*D1, W=D2*D2, D=Q+W.
+distanceEdge(D, X,Y) :-host(A,S), edge(X,Y), A<X, S<Y, D1=X-A, D2=Y-S, Q=D1*D1, W=D2*D2, D=Q+W.
+distanceEdge(D, X,Y) :-host(A,S), edge(X,Y), A>=X, S<Y, D1=A-X, D2=Y-S,Q=D1*D1, W=D2*D2, D=Q+W.
+distanceEdge(D, X,Y) :-host(A,S), edge(X,Y), A<X, S>=Y, D1=X-A, D2=S-Y, Q=D1*D1, W=D2*D2,D=Q+W.
 
 %calcola la minima
-mindistEdge(M) :- #min{D: distanceEdge(D,A,S), not player(A,S), not prec(A,S), not aggira(A,S)}= M.
+mindistEdge(M) :- #min{D: distanceEdge(D,A,S), not host(A,S), not prec(A,S), not aggira(A,S)}= M.
 % in caso non ci siano distanze minime dal diamanti senza bisogno di aggirare, vuol dire che dobbiamo aggirare un muro, quindi closer diventa il bordo più vicino
 closer(X,Y) :- #count{D: mindist(D)}=0, mindistEdge(M), distanceEdge(M,X,Y).

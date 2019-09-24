@@ -13,6 +13,8 @@ import audio.Music;
 import menu.Menu;
 import menu.Options;
 import menu.Options.Difficulty;
+import model.Host;
+import model.Player;
 import menu.You_Lose;
 import menu.You_Win;
 
@@ -55,8 +57,11 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		setEnabled(true);
 		
 		level = new Level(this, stage, null);
-		ai = new ASPEngine(this);
-		//level.addKeyListener(level);
+		
+		if(Options.multiplayer)
+			ai = new ASPEngine(this);
+		
+		level.addKeyListener(level);
 			
 		score_init();
 	}
@@ -95,11 +100,16 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		
 		if(stage < 3) {
 			
-			ai.stop();
+			if(ai!=null)
+				ai.stop();
+			
 			level.closeThread();
 			level = new Level(this, stage, null);
-			ai = new ASPEngine(this);
-			//level.addKeyListener(level);
+			
+			if(Options.multiplayer)
+				ai = new ASPEngine(this);
+			
+			level.addKeyListener(level);
 			
 			score = new Score(frame, menu, this, level);
 		
@@ -110,7 +120,10 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 			
 			level.setScore(score);
 			level.launchThread();
-			ai.start();
+			
+			if(Options.multiplayer)
+				ai.start();
+
 			isReset = true;
 			
 			setVisible(true);
@@ -120,14 +133,24 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 			++stage;
 			
 		} else {
-			youWin();
+			if(Options.multiplayer) {
+			Player p = (Player)level.getWorld().getPlayer();
+			Host h = (Host) level.getWorld().getHost();
+			
+			//se il pc vince...
+			if(h.getVictories() > p.getVictories())
+				youLose();
+			} else
+				youWin();
 		}
 	}
 	
 	public synchronized void closeThread() {
 		if(t2 != null && t2.isAlive())
 			t2.interrupt();
-		ai.stop();
+		if(Options.multiplayer)
+			ai.stop();
+		
 		level.closeThread();
 	}
 

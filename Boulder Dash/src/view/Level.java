@@ -24,14 +24,14 @@ import menu.Options.Difficulty;
 
 import model.*;
 
-public class Level extends JPanel /*implements KeyListener*/ {
+public class Level extends JPanel implements KeyListener {
 	
 	private static final long serialVersionUID = 9009048960794622320L;
 
 // 	mappa che collega ogni pressione di tastiera al movimento corrispondente
 // 	nello specifico: enumeratore Awt di pressione tasto , enumeratore logico di
 // 	direzione
-	/*public static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>() {
+	public static final HashMap<Integer, Integer> pgMove = new HashMap<Integer, Integer>() {
 
 		private static final long serialVersionUID = -6595629016610529055L;
 		{
@@ -40,7 +40,7 @@ public class Level extends JPanel /*implements KeyListener*/ {
 			put(KeyEvent.VK_UP, GameObject.UP);
 			put(KeyEvent.VK_DOWN, GameObject.DOWN);
 		}
-	};	*/
+	};	
 //	mappa che collega ogni classe a una coppia di interi, utilizzati per l'inizializzazione degli sprites
 	public static final HashMap<String, Integer[]> blocks = new HashMap<String, Integer[]>() {
 		
@@ -345,7 +345,7 @@ public class Level extends JPanel /*implements KeyListener*/ {
 	}
 
 	// eventi di movimento da tastiera del player...
-	/*@Override
+	@Override
 	public void keyPressed(KeyEvent e) {
 		if ((java.time.LocalTime.now().minusNanos(100000000)).compareTo(lastTimePressed) > 0) {
 			lastTimePressed = java.time.LocalTime.now();
@@ -360,7 +360,7 @@ public class Level extends JPanel /*implements KeyListener*/ {
 			updatePlayerOnRelease(pgMove.get(e.getKeyCode()));
 	}
 	
-	@Override public void keyTyped(KeyEvent e) {}*/
+	@Override public void keyTyped(KeyEvent e) {}
 
 	@Override
 	protected void paintComponent(Graphics g) {
