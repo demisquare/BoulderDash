@@ -328,8 +328,8 @@ public class Level extends JPanel implements KeyListener {
 					if(timecounter == FPS) {
 						
 						timecounter = 0;
-						//int rt = score.getRemaining_time()-1;
-						//score.setRemaining_time(rt >= 0 ? rt : 0);
+						int rt = score.getRemaining_time()-1;
+						score.setRemaining_time(rt >= 0 ? rt : 0);
 					}
 				}
 			}

@@ -13,6 +13,7 @@ import audio.Music;
 import menu.Menu;
 import menu.Options;
 import menu.Options.Difficulty;
+import model.Host;
 import model.Player;
 import menu.You_Lose;
 import menu.You_Win;
@@ -30,11 +31,8 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 	private Difficulty startingDifficulty;
 	private Thread t2;
 	private int stage;
-	
-	public JSplitPane levels;
 
 	public Level level;
-	public Level cpu;
 	public Score score;
 	public ASPEngine ai;
 	
@@ -59,38 +57,25 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		setEnabled(true);
 		
 		level = new Level(this, stage, null);
-		cpu = new Level(this, stage, null);
 		
 		if(Options.multiplayer)
 			ai = new ASPEngine(this);
 		
-		
-		levels = new JSplitPane(VERTICAL_SPLIT, level, cpu);
-		
-		levels.setVisible(true);
-		levels.setFocusable(true);
-		levels.setEnabled(true);
-		
-		frame.getContentPane().add(levels);
-			
 		level.addKeyListener(level);
-		
+			
 		score_init();
-		
 	}
 	
 	private void checkResize() {
 		
 		if(!Options.full_screen) {
 			setDividerLocation(920);
-			levels.setDividerLocation(320);
 		}
 		else if(Options.full_screen) {
 			Toolkit tk = Toolkit.getDefaultToolkit();
 			double xSize = tk.getScreenSize().getWidth();
 			
 			setDividerLocation((int)(920*(xSize/1280)));
-			levels.setDividerLocation((int)(320*(xSize/1280)));
 		}
 	}
 	
@@ -98,12 +83,9 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		
 		score = new Score(frame, menu, this, level);
 		
-		this.setLeftComponent(levels);
+		this.setLeftComponent(level);
 		this.setRightComponent(score);
 		setDividerLocation(920);
-		//System.out.println("width: " + frame.getWidth()/4);
-		levels.setDividerLocation(320);
-		//levels.setDividerSize(0);
 		setDividerSize(0);
 	
 	}
@@ -122,10 +104,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 				ai.stop();
 			
 			level.closeThread();
-			cpu.closeThread();
-			
 			level = new Level(this, stage, null);
-			cpu = new Level(this, stage, null);
 			
 			if(Options.multiplayer)
 				ai = new ASPEngine(this);
@@ -135,14 +114,12 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 			score = new Score(frame, menu, this, level);
 		
 			score.check_resize();
-			this.setLeftComponent(levels);
+			this.setLeftComponent(level);
 			this.setRightComponent(score);
 			level.requestFocusInWindow();
 			
 			level.setScore(score);
-			
 			level.launchThread();
-			cpu.launchThread();
 			
 			if(Options.multiplayer)
 				ai.start();
@@ -158,7 +135,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		} else {
 			if(Options.multiplayer) {
 			Player p = (Player)level.getWorld().getPlayer();
-			Player h = (Player)cpu.getWorld().getPlayer();
+			Host h = (Host) level.getWorld().getHost();
 			
 			//se il pc vince...
 			if(h.getVictories() > p.getVictories())
@@ -175,7 +152,6 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 			ai.stop();
 		
 		level.closeThread();
-		cpu.closeThread();
 	}
 
 	public void youLose() {
