@@ -57,6 +57,32 @@ public class ASPEngine {
 		}
 		
 	}
+	
+	private void runHandler()
+	{
+		//verifica su che SO sta girando e fa partire la versione corretta di dlv...
+		String handlerPath = "." + File.separator + "resources" + File.separator + "lib" + File.separator;
+		
+		boolean isWindows = System.getProperty("os.name")
+				  .toLowerCase().startsWith("windows");
+		
+		if(isWindows)
+			handlerPath += "dlv.mingw.exe";
+		
+		else
+		{
+			handlerPath += "dlv";
+			try {
+				File h = new File(handlerPath);
+				Runtime.getRuntime().exec("chmod +x " + h.getCanonicalPath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		handler = new DesktopHandler(new DLVDesktopService(handlerPath));
+		handlerDiamonds = new DesktopHandler(new DLVDesktopService(handlerPath));
+	}
 
 	public void start() {
 		t = new Thread(new Runnable() {
@@ -64,13 +90,11 @@ public class ASPEngine {
 			@Override
 			public void run() {
 				while (true) {
-					handler = new DesktopHandler(new DLVDesktopService(
-							"." + File.separator + "resources" + File.separator + "lib" + File.separator + "dlv.mingw.exe"));
 					
-					handlerDiamonds = new DesktopHandler(new DLVDesktopService(
-							"." + File.separator + "resources" + File.separator + "lib" + File.separator + "dlv.mingw.exe"));
+					runHandler();
+					
 					InputProgram  program = new ASPInputProgram();
-					InputProgram finder= new ASPInputProgram();
+					InputProgram finder = new ASPInputProgram();
 					
 					finder.addFilesPath(diamondsInstance);
 					finder.addFilesPath(instanceResource);
@@ -116,7 +140,6 @@ public class ASPEngine {
 			bw.write("prec("+ preClosX + ", " + preClosY + ")." +"\n");
 			bw.close();
 			*/
-			System.out.println("godverdomme"+ closerX + " "+ closerY +" "+ map.getPlayer().getY() + " "+ map.getPlayer().getX());
 			if( (closerX==0 || closerY==0) || 
 				(closerX==map.getPlayer().getY() && closerY==map.getPlayer().getX()) || 
 				(closerX==map.getPlayer().getY()-1 && closerY==map.getPlayer().getX()) )
@@ -137,7 +160,6 @@ public class ASPEngine {
 				
 				Output o = handlerDiamonds.startSync();
 				AnswerSets answers = (AnswerSets) o;
-				System.out.println("godverdomme"+ closerX + closerY);
 				for (AnswerSet a : answers.getAnswersets()) {
 					try {
 						for (String s : a.getAnswerSet()) {
