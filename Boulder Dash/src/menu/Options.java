@@ -28,11 +28,12 @@ public class Options extends JPanel {
 			+ "Menu" + File.separator + 
 			"OptionsPage" + File.separator;
 	
-	public static boolean music = false;
+	public static boolean music = true;
 	public static boolean full_screen = false;	
 	
 	public static boolean multiplayer = false;
 	public static boolean host = false;
+	public static boolean ai = false;
 
 	public enum Difficulty {
 		paradiso, purgatorio, inferno;

@@ -35,11 +35,11 @@ public class ASPEngine {
 	int xprec=0,yprec=0;
 	Level level;
 	GameMap map;
-	Host host;
+	Player player;
 
 	public ASPEngine(Game game) {
 		map = game.level.getWorld().getMap();
-		host = (Host)game.level.getWorld().getHost();
+		player = (Player)game.level.getWorld().getPlayer();
 		level = game.level;	
 		closerX=0;
 		closerY=0;
@@ -84,7 +84,8 @@ public class ASPEngine {
 					handlerDiamonds.addProgram(finder);
 					callback();
 					try {
-						Thread.sleep(200);
+						//velocità ai...
+						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						return;
 					}
@@ -115,10 +116,10 @@ public class ASPEngine {
 			bw.write("prec("+ preClosX + ", " + preClosY + ")." +"\n");
 			bw.close();
 			*/
-			System.out.println("godverdomme"+ closerX + " "+ closerY +" "+ map.getHost().getY() + " "+ map.getHost().getX());
+			System.out.println("godverdomme"+ closerX + " "+ closerY +" "+ map.getPlayer().getY() + " "+ map.getPlayer().getX());
 			if( (closerX==0 || closerY==0) || 
-				(closerX==map.getHost().getY() && closerY==map.getHost().getX()) || 
-				(closerX==map.getHost().getY()-1 && closerY==map.getHost().getX()) )
+				(closerX==map.getPlayer().getY() && closerY==map.getPlayer().getX()) || 
+				(closerX==map.getPlayer().getY()-1 && closerY==map.getPlayer().getX()) )
 			{
 				
 				
@@ -172,7 +173,7 @@ public class ASPEngine {
 	public void callback() {
 		String m="";
 		boolean hasChanged=false;
-		String hostNow="host("+ (map.getHost().getY()) + "," + map.getHost().getX() + ").";
+		String playerNow="player("+ (map.getPlayer().getY()) + "," + map.getPlayer().getX() + ").";
 		int xprov=0,yprov=0;
 		int move=-1;
 		Output o = handler.startSync();
@@ -190,13 +191,13 @@ public class ASPEngine {
 						move = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
 						
 						if(move==0)
-							{m="host("+ (map.getHost().getY()+1) + "," + map.getHost().getX() + ")."; xprov=map.getHost().getY()+1; yprov=map.getHost().getX(); }
+							{m="player("+ (map.getPlayer().getY()+1) + "," + map.getPlayer().getX() + ")."; xprov=map.getPlayer().getY()+1; yprov=map.getPlayer().getX(); }
 						else if(move==1)
-							{m="host("+ map.getHost().getY() + "," + (map.getHost().getX()-1) + ")."; xprov=map.getHost().getY(); yprov=map.getHost().getX()-1;}
+							{m="player("+ map.getPlayer().getY() + "," + (map.getPlayer().getX()-1) + ")."; xprov=map.getPlayer().getY(); yprov=map.getPlayer().getX()-1;}
 						else if(move==2)
-							{m="host("+ map.getHost().getY() + "," + (map.getHost().getX()+1) + ")."; xprov=map.getHost().getY(); yprov=map.getHost().getX()+1;}
+							{m="player("+ map.getPlayer().getY() + "," + (map.getPlayer().getX()+1) + ")."; xprov=map.getPlayer().getY(); yprov=map.getPlayer().getX()+1;}
 						else
-							{m="host("+ (map.getHost().getY()-1) + "," + map.getHost().getX() + ")."; xprov=map.getHost().getY()-1; yprov=map.getHost().getX();}
+							{m="player("+ (map.getPlayer().getY()-1) + "," + map.getPlayer().getX() + ")."; xprov=map.getPlayer().getY()-1; yprov=map.getPlayer().getX();}
 						
 						
 					}
@@ -211,14 +212,14 @@ public class ASPEngine {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
 		for(int x = 0; x < map.getDimX(); x++)
 			for(int y = 0; y < map.getDimY(); y++) {
-				if(map.getTile(x+1, y) instanceof Host && map.getTile(x, y) instanceof Rock) {
+				if(map.getTile(x+1, y) instanceof Player && map.getTile(x, y) instanceof Rock) {
 					
 					bw.write("emptyblock("+ x +"," + y +")." +"\n");
 					bw.write("rock(" + x+1 + "," + y + ")." +"\n");
 					hasChanged=true;
 					break;
 				}
-				else if( map.getTile(x, y) instanceof Host && !(map.getTile(x-1, y) instanceof Rock) ) {
+				else if( map.getTile(x, y) instanceof Player && !(map.getTile(x-1, y) instanceof Rock) ) {
 					bw.write("emptyblock("+ x +"," + y +")." +"\n");
 				}
 				else
@@ -246,13 +247,13 @@ public class ASPEngine {
 							int move2 = Integer.parseInt(s.substring(s.indexOf("(")+1,s.indexOf(")")));
 							
 							if(move2==0)
-								l="host("+ (xprov+1) + "," + yprov + ").";
+								l="player("+ (xprov+1) + "," + yprov + ").";
 							else if(move2==1)
-								l="host("+ xprov + "," + (yprov-1) + ").";
+								l="player("+ xprov + "," + (yprov-1) + ").";
 							else if(move2==2)
-								l="host("+ xprov + "," + (yprov+1) + ").";
+								l="player("+ xprov + "," + (yprov+1) + ").";
 							else
-								l="host("+ (xprov-1) + "," + yprov + ").";
+								l="player("+ (xprov-1) + "," + yprov + ").";
 							
 						
 				
@@ -268,11 +269,11 @@ public class ASPEngine {
 		//fine 2 for
 			//ricalcola se va in loop o si blocca per un motivo diverso dall'essere sul closer o perchè non ha dato nulla nonostante non sia cambiato
 		
-			if(hostNow.equals(l) || (l.contentEquals("") && (xprov!=closerX || yprov!=closerY))) 
+			if(playerNow.equals(l) || (l.contentEquals("") && (xprov!=closerX || yprov!=closerY))) 
 			
 			{
 				
-				System.out.print(hostNow + "  " + m + l);
+				System.out.print(playerNow + "  " + m + l);
 				try {
 					BufferedWriter bw = new BufferedWriter(new FileWriter(instanceResource));
 					
@@ -310,11 +311,11 @@ public class ASPEngine {
 			} // fine if 
 	}
 			
-			if(!host.hasMoved()) {
+			if(!player.hasMoved()) {
 				synchronized (this) {
-					 level.updateHostOnPressing(move);
+					 level.updatePlayerOnPressing(move);
 					 }
-				host.setMoved(false);
+				player.setMoved(false);
 			}
 		hasChanged=false;
 	}

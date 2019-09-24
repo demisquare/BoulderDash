@@ -165,7 +165,7 @@ public class GameMap {
 					break;
 
 					case GameObject.ENEMY:
-						if(!Options.multiplayer) {
+						if(!Options.ai) {
 						GameObject e = new IntelligentEnemy(x, y, 1);
 						enemy.add(e);
 						blocks.put(x * dimX + y, e);

@@ -58,9 +58,9 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 		
 		level = new Level(this, stage, null);
 		
-		if(Options.multiplayer)
+		if(Options.ai)
 			ai = new ASPEngine(this);
-		
+		else		
 		level.addKeyListener(level);
 			
 		score_init();
@@ -106,9 +106,9 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 			level.closeThread();
 			level = new Level(this, stage, null);
 			
-			if(Options.multiplayer)
+			if(Options.ai)
 				ai = new ASPEngine(this);
-			
+			else			
 			level.addKeyListener(level);
 			
 			score = new Score(frame, menu, this, level);
@@ -121,7 +121,7 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 			level.setScore(score);
 			level.launchThread();
 			
-			if(Options.multiplayer)
+			if(Options.ai)
 				ai.start();
 
 			isReset = true;
@@ -132,23 +132,14 @@ public class Game extends JSplitPane implements /*Runnable,*/ Serializable {
 
 			++stage;
 			
-		} else {
-			if(Options.multiplayer) {
-			Player p = (Player)level.getWorld().getPlayer();
-			Host h = (Host) level.getWorld().getHost();
-			
-			//se il pc vince...
-			if(h.getVictories() > p.getVictories())
-				youLose();
-			} else
-				youWin();
-		}
+		} else
+			youWin();
 	}
 	
 	public synchronized void closeThread() {
 		if(t2 != null && t2.isAlive())
 			t2.interrupt();
-		if(Options.multiplayer)
+		if(Options.ai)
 			ai.stop();
 		
 		level.closeThread();

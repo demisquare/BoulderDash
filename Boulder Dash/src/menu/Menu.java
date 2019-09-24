@@ -134,7 +134,7 @@ public class Menu extends JPanel implements Serializable {
 		//frame.revalidate();
 		//frame.repaint();
 		
-		Options.multiplayer = true;
+		Options.ai = true;
 		
 		frame.remove(this);
 		

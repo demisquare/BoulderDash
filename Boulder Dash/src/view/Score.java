@@ -119,6 +119,7 @@ public class Score extends JPanel implements Serializable {
 			Options.multiplayer = false;
 		}*/
 		
+		Options.ai = false;
 		try{
 			
 			Options.difficulty = game.getStartingDifficulty();
