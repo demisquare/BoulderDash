@@ -103,7 +103,7 @@ public class Menu extends JPanel implements Serializable {
 			throw new InterruptedException();
 		}
 		
-		if(!game.levels.getLeftComponent().requestFocusInWindow()) { 
+		if(!game.levels.requestFocusInWindow()) { 
 			throw new InterruptedException(); 
 		}
 		
@@ -146,7 +146,7 @@ public class Menu extends JPanel implements Serializable {
 			throw new InterruptedException();
 		}
 		
-		if(!game.levels.getLeftComponent().requestFocusInWindow()) { 
+		if(!game.levels.requestFocusInWindow()) { 
 			throw new InterruptedException(); 
 		}
 		
