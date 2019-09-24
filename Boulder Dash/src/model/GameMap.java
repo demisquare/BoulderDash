@@ -165,13 +165,10 @@ public class GameMap {
 					break;
 
 					case GameObject.ENEMY:
-						if(!Options.multiplayer) {
 						GameObject e = new IntelligentEnemy(x, y, 1);
 						enemy.add(e);
 						blocks.put(x * dimX + y, e);
-						} else {
-							emptyBlocksMap.put(x * dimX + y, new EmptyBlock(x, y));
-						}
+					
 					break;
 
 					case GameObject.EMPTY_BLOCK:

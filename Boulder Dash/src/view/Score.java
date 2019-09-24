@@ -109,7 +109,7 @@ public class Score extends JPanel implements Serializable {
 	}
 	
 	private void turn_back() throws InterruptedException {		
-		/*if (Options.multiplayer) {
+		if (Options.multiplayer) {
 			if (multi.getSocketClient() != null && multi.getSocketClient().isConnected()) {
 				multi.getSocketClient().close();
 				Options.host = false;
@@ -117,7 +117,7 @@ public class Score extends JPanel implements Serializable {
 			if(multi.getSocketServer() != null && multi.getSocketServer().isConnected())
 				multi.getSocketServer().close();
 			Options.multiplayer = false;
-		}*/
+		}
 		
 		try{
 			

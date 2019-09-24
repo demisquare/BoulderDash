@@ -3,11 +3,11 @@
 move(0) | move(1) | move(2) | move(3).
 % d         l         r         u
 
-% calcola dove sarà il host dopo la mossa
-next(X,Y) :- move(1), host(X, Z), Y=Z-1.
-next(X,Y) :- move(2), host(X, Z), Y=Z+1.
-next(X,Y) :- move(3), host(Z, Y), X=Z-1.
-next(X,Y) :- move(0), host(Z, Y), X=Z+1.
+% calcola dove sarà il player dopo la mossa
+next(X,Y) :- move(1), player(X, Z), Y=Z-1.
+next(X,Y) :- move(2), player(X, Z), Y=Z+1.
+next(X,Y) :- move(3), player(Z, Y), X=Z-1.
+next(X,Y) :- move(0), player(Z, Y), X=Z+1.
 
 %non puoi andare su un muro o una roccia
 :- next(X,Y), rock(X,Y).
@@ -17,34 +17,34 @@ next(X,Y) :- move(0), host(Z, Y), X=Z+1.
 :- next(X,Y), rock(Z,Y), rock(A,Y), Z=X-1, A=X-2.
 
 %se hai una roccia sopra non scendere o muori
-:- host(X,Y), rock(Z,Y), Z=X-1, move(0).
+:- player(X,Y), rock(Z,Y), Z=X-1, move(0).
 
 %se c'è una roccia a fianco e una sotto di essa, non scendere o muori
-%:- host(X,Y), rock(X,Z), Z=Y+1, rock(A,Z), A=X+1, move(0).
-%:- host(X,Y), rock(X,Z), Z=Y-1, rock(A,Z), A=X+1, move(0).
+%:- player(X,Y), rock(X,Z), Z=Y+1, rock(A,Z), A=X+1, move(0).
+%:- player(X,Y), rock(X,Z), Z=Y-1, rock(A,Z), A=X+1, move(0).
 
 % non scendere se hai una roccia a fianco che ne ha una sopra o muori
-:- host(X,Y), rock(X,Z), Z=Y-1, rock(A,Z), A=X-1, emptyblock(A,Y), move(0).
+:- player(X,Y), rock(X,Z), Z=Y-1, rock(A,Z), A=X-1, emptyblock(A,Y), move(0).
 
 %se hai un diamante sotto a una roccia, e sei sopra, aggirala
-:- closer(X,Y), rock(Z,Y), Z=X-1, host(Q, Y), Q=Z-1, move(M), M!=2, M!=1.
+:- closer(X,Y), rock(Z,Y), Z=X-1, player(Q, Y), Q=Z-1, move(M), M!=2, M!=1.
 
 %se hai un diamante sotto a una roccia, e sei a lato della roccia, scendi
-:- closer(X,Y), rock(Z,Y), Z=X-1, host(A,S), A=X-2, S=Y-1, move(M), M!=0.
-:- closer(X,Y), rock(Z,Y), Z=X-1, host(A,S), A=X-2, S=Y+1, move(M), M!=0.
+:- closer(X,Y), rock(Z,Y), Z=X-1, player(A,S), A=X-2, S=Y-1, move(M), M!=0.
+:- closer(X,Y), rock(Z,Y), Z=X-1, player(A,S), A=X-2, S=Y+1, move(M), M!=0.
 
 %se per avvicinarti a un diam devi evitare 2 rocce e puoi fare il giro largo fallo
-:- closer(X,Y), host(X,Z), rock(W,Q), W=X-1, Q=Z-1, rock(E,Q), E=W-1, move(M), M!=0.
+:- closer(X,Y), player(X,Z), rock(W,Q), W=X-1, Q=Z-1, rock(E,Q), E=W-1, move(M), M!=0.
 
 %se per avvicinarti a un diam vai a sbattere contro una roccia aggirala
 
-:-diamond(X,_), next(X,Y), rock(X,Z), Z=Y-1, host(A,S), A=X+1, S=Z+1, move(3).
-:- closer(X,A), host(X,Y), rock(X,Z), Z=Y-1, A<Y,  move(2).
+:-diamond(X,_), next(X,Y), rock(X,Z), Z=Y-1, player(A,S), A=X+1, S=Z+1, move(3).
+:- closer(X,A), player(X,Y), rock(X,Z), Z=Y-1, A<Y,  move(2).
 
 % se davanti ti trovi un muro di rocce, aggiralo da sopra (se lo aggiri da sotto potresti trovarti a passare sotto 2 o + rocce)
 % il muro di rocce è un insieme di rocce messe o una sopra l'altra o una sotto e l'altra i alto a sx o dx
-wallOfRocks(X,S) :- host(X,Y), closer(_,Z), rock(X,S), S<Y, Z<S.
-wallOfRocks(X,S) :- host(X,Y), closer(_,Z), rock(X,S), S>Y, Z>S.
+wallOfRocks(X,S) :- player(X,Y), closer(_,Z), rock(X,S), S<Y, Z<S.
+wallOfRocks(X,S) :- player(X,Y), closer(_,Z), rock(X,S), S>Y, Z>S.
 wallOfRocks(X,Y) :- wallOfRocks(A,S), rock(X,Y), X=A-1, Y=S-1. 
 wallOfRocks(X,Y) :- wallOfRocks(A,S), rock(X,Y), X=A-1, Y=S+1. 
 wallOfRocks(X,Y) :- wallOfRocks(A,S), rock(X,Y), X=A+1, Y=S-1.
@@ -56,36 +56,36 @@ first(X,Y) :- wallOfRocks(X,Y), not wallOfRocks(A,S), A=X-1, S=Y+1, not wallOfRo
 last(X,Y) :- wallOfRocks(X,Y), not wallOfRocks(A,S), A=X+1, S=Y+1, not wallOfRocks(A,G), G=Y-1.
 
 %se le rocce si trovano tra te e il diamante e davanti a te c'è spazio libero, muoviti in alto 
-:- host(X,Y), wallOfRocks(X,Z), closer(A,S), S<Z, Z<Y, first(UP,U), last(DO,D), A<DO, A>UP, UP<DO, Diff=D-U,Diff<2, intervalfreeOr(Y,H), H=Z+1, move(M), M!=3, not wall(UPP,U), UPP=UP-1. 
-:- host(X,Y), wallOfRocks(X,Z), closer(A,S), S>Z, Z>Y, first(UP,U), last(DO,D), A<=DO, A>=UP, UP<DO, Diff=D-U,Diff<2, intervalfreeOr(H,Y), H=Z-1, move(M), M!=3, not wall(UPP,U), UPP=UP-1.
+:- player(X,Y), wallOfRocks(X,Z), closer(A,S), S<Z, Z<Y, first(UP,U), last(DO,D), A<DO, A>UP, UP<DO, Diff=D-U,Diff<2, intervalfreeOr(Y,H), H=Z+1, move(M), M!=3, not wall(UPP,U), UPP=UP-1. 
+:- player(X,Y), wallOfRocks(X,Z), closer(A,S), S>Z, Z>Y, first(UP,U), last(DO,D), A<=DO, A>=UP, UP<DO, Diff=D-U,Diff<2, intervalfreeOr(H,Y), H=Z-1, move(M), M!=3, not wall(UPP,U), UPP=UP-1.
 
 
 %se davanti è libero e il diamante è circondato da rocce, aggiralo andando nella direzione per cui è libero
-:- closer(X,Y), rock(Z,Y), Z=X-1, rock(X,W), W=Y+1, host(A,S), A<X, D=Y-1, S>D, F=Y+2, S<F, G=Z-1, intervalfreeVert(A,G), move(M), M!=1.
-:- closer(X,Y), rock(Z,Y), Z=X-1, rock(X,W), W=Y-1, host(A,S), A<X, D=Y-1, S>D, F=Y+2, S<F, G=Z-1, intervalfreeVert(A,G), move(M), M!=2.
+:- closer(X,Y), rock(Z,Y), Z=X-1, rock(X,W), W=Y+1, player(A,S), A<X, D=Y-1, S>D, F=Y+2, S<F, G=Z-1, intervalfreeVert(A,G), move(M), M!=1.
+:- closer(X,Y), rock(Z,Y), Z=X-1, rock(X,W), W=Y-1, player(A,S), A<X, D=Y-1, S>D, F=Y+2, S<F, G=Z-1, intervalfreeVert(A,G), move(M), M!=2.
 
 %calcola ricorsivamente lo spazio libero sotto di noi, ovvero se c'è la terra o il vuoto
-intervalfreeVert(X,Z) :- host(X,Y), ground(Z,Y), Z=X+1.
-intervalfreeVert(X,Z) :- host(X,Y), emptyblock(Z,Y), Z=X+1. 
+intervalfreeVert(X,Z) :- player(X,Y), ground(Z,Y), Z=X+1.
+intervalfreeVert(X,Z) :- player(X,Y), emptyblock(Z,Y), Z=X+1. 
 intervalfreeVert(X,Z) :- intervalfreeVert(X,Y), ground(Z,Y), Z=X+1.
 intervalfreeVert(X,Z) :- intervalfreeVert(X,Y), emptyblock(Z,Y), Z=X+1.
 
 %stesso, però in orizzontale e in entrambe le direzioni
-intervalfreeOr(Y,Y) :- host(X,Y).
-intervalfreeOr(Y,Z) :- host(X,Y), ground(X,Z), Z=Y-1.
-intervalfreeOr(Z,Y) :- host(X,Y), ground(X,Z), Z=Y+1.
-intervalfreeOr(Z,Y) :- host(X,Y), emptyblock(X,Z), Z=Y+1.
-intervalfreeOr(Y,Z) :- host(X,Y), emptyblock(X,Z), Z=Y-1. 
+intervalfreeOr(Y,Y) :- player(X,Y).
+intervalfreeOr(Y,Z) :- player(X,Y), ground(X,Z), Z=Y-1.
+intervalfreeOr(Z,Y) :- player(X,Y), ground(X,Z), Z=Y+1.
+intervalfreeOr(Z,Y) :- player(X,Y), emptyblock(X,Z), Z=Y+1.
+intervalfreeOr(Y,Z) :- player(X,Y), emptyblock(X,Z), Z=Y-1. 
 intervalfreeOr(Y,Z) :- intervalfreeOr(X,Y), ground(X,Z), Z=Y-1.
 intervalfreeOr(Y,Z) :- intervalfreeOr(X,Y), emptyblock(X,Y), Z=Y-1.
 
 
-%calcola la distanza tra il host e il diamante
+%calcola la distanza tra il player e il diamante
 vector(X,Y) :- next(A,S), closer(D,Q), A>=D, S>=Q, F=A-D, G=S-Q, X=F*F, Y=G*G.
 vector(X,Y) :- next(A,S), closer(D,Q), A<D, S<Q, F=D-A, G=Q-S, X=F*F, Y=G*G.
 vector(X,Y) :- next(A,S), closer(D,Q), A>=D, S<Q, F=A-D, G=Q-S, X=F*F, Y=G*G.
 vector(X,Y) :- next(A,S), closer(D,Q), A<D, S>=Q, F=D-A, G=S-Q, X=F*F, Y=G*G.
-:- move(_), host(X,Y), closer(X,Y).
+:- move(_), player(X,Y), closer(X,Y).
 
 %non andare in quella direzione se vai in loop
 :-loop(X), move(X).

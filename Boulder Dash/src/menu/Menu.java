@@ -128,34 +128,11 @@ public class Menu extends JPanel implements Serializable {
 	private void multi_selected(JFrame frame, Multiplayer multi, You_Lose youlose) throws InterruptedException {
 	
 //		closeThread();
-		//frame.remove(this);
-		//multi.check_resize();
-		//frame.setContentPane(multi);
-		//frame.revalidate();
-		//frame.repaint();
-		
-		Options.multiplayer = true;
-		
 		frame.remove(this);
-		
-		game.launchGame();
-		
-		frame.setContentPane(game);
-		
-		if(!frame.isAncestorOf(game)) { 
-			throw new InterruptedException();
-		}
-		
-		if(!game.level.requestFocusInWindow()) { 
-			throw new InterruptedException(); 
-		}
-		
+		multi.check_resize();
+		frame.setContentPane(multi);
 		frame.revalidate();
 		frame.repaint();
-		
-		synchronized(this) {
-			Music.setSong(Music.gameSong);
-		}
 	}
 	
 	private void credits_selected(JFrame frame, Credits credits) throws InterruptedException {
@@ -175,12 +152,12 @@ public class Menu extends JPanel implements Serializable {
 		try {
 			background = ImageIO.read(new File(MainMenuPage + "MainMenuPage_Background.png"));
 			START = ImageIO.read(new File(MainMenuPage + "MainMenuPage_START.png")).getScaledInstance(191, 55, Image.SCALE_SMOOTH);
-			MULTI = ImageIO.read(new File(MainMenuPage + "MainMenuPage_AIMODE.png")).getScaledInstance(423, 55, Image.SCALE_SMOOTH);
+			MULTI = ImageIO.read(new File(MainMenuPage + "MainMenuPage_MULTI.png")).getScaledInstance(423, 55, Image.SCALE_SMOOTH);
 			OPTIONS = ImageIO.read(new File(MainMenuPage + "MainMenuPage_OPTIONS.png")).getScaledInstance(272, 54, Image.SCALE_SMOOTH);
 			CREDITS = ImageIO.read(new File(MainMenuPage + "MainMenuPage_CREDITS.png")).getScaledInstance(267, 55, Image.SCALE_SMOOTH);
 			EXIT = ImageIO.read(new File(MainMenuPage + "MainMenuPage_EXIT.png")).getScaledInstance(141, 50, Image.SCALE_SMOOTH);
 			START_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_START_SELECTED.png")).getScaledInstance(191, 55, Image.SCALE_SMOOTH);
-			MULTI_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_AIMODE_SELECTED.png")).getScaledInstance(423, 55, Image.SCALE_SMOOTH);
+			MULTI_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_MULTI_SELECTED.png")).getScaledInstance(423, 55, Image.SCALE_SMOOTH);
 			OPTIONS_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_OPTIONS_SELECTED.png")).getScaledInstance(272, 54, Image.SCALE_SMOOTH);
 			CREDITS_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_CREDITS_SELECTED.png")).getScaledInstance(267, 55, Image.SCALE_SMOOTH);
 			EXIT_SELECTED = ImageIO.read(new File(MainMenuPage + "MainMenuPage_EXIT_SELECTED.png")).getScaledInstance(141, 50, Image.SCALE_SMOOTH);
