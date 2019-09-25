@@ -25,6 +25,8 @@ public class ASPEngine {
 	// fatti presenti nel gioco...
 	private String instanceResource = "." + File.separator + "resources" + File.separator + "encodings" + File.separator
 			+ "facts";
+	private String handlerPath = "." + File.separator + "resources" + File.separator + "lib" + File.separator;
+	
 	private Handler handler;
 	private Handler handlerDiamonds;
 
@@ -58,10 +60,9 @@ public class ASPEngine {
 		
 	}
 	
-	private void runHandler()
+	private void checkOS()
 	{
 		//verifica su che SO sta girando e fa partire la versione corretta di dlv...
-		String handlerPath = "." + File.separator + "resources" + File.separator + "lib" + File.separator;
 		
 		boolean isWindows = System.getProperty("os.name")
 				  .toLowerCase().startsWith("windows");
@@ -74,26 +75,32 @@ public class ASPEngine {
 			handlerPath += "dlv";
 			try {
 				File h = new File(handlerPath);
-				Runtime.getRuntime().exec("chmod +x " + h.getCanonicalPath());
-			} catch (IOException e) {
+				
+				ProcessBuilder pb = new ProcessBuilder();
+				pb.command("bash", "-c", "chmod +x '" + h.getCanonicalPath() + "'");
+				Process p = pb.start();
+				p.waitFor();
+				
+			} catch (IOException | InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		handler = new DesktopHandler(new DLVDesktopService(handlerPath));
-		handlerDiamonds = new DesktopHandler(new DLVDesktopService(handlerPath));
 	}
 
 	public void start() {
+		
+		checkOS();
+		
 		t = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				while (true) {
 					
-					runHandler();
+					handler = new DesktopHandler(new DLVDesktopService(handlerPath));
+					handlerDiamonds = new DesktopHandler(new DLVDesktopService(handlerPath));
 					
-					InputProgram  program = new ASPInputProgram();
+					InputProgram program = new ASPInputProgram();
 					InputProgram finder = new ASPInputProgram();
 					
 					finder.addFilesPath(diamondsInstance);
@@ -108,7 +115,7 @@ public class ASPEngine {
 					handlerDiamonds.addProgram(finder);
 					callback();
 					try {
-						//velocità ai...
+						//velocitï¿½ ai...
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						return;
@@ -289,7 +296,7 @@ public class ASPEngine {
 		
 		
 		//fine 2 for
-			//ricalcola se va in loop o si blocca per un motivo diverso dall'essere sul closer o perchè non ha dato nulla nonostante non sia cambiato
+			//ricalcola se va in loop o si blocca per un motivo diverso dall'essere sul closer o perchï¿½ non ha dato nulla nonostante non sia cambiato
 		
 			if(playerNow.equals(l) || (l.contentEquals("") && (xprov!=closerX || yprov!=closerY))) 
 			
